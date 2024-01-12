@@ -1,0 +1,2 @@
+# algowars
+Algowars core application
