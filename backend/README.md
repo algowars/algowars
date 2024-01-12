@@ -66,27 +66,12 @@ The below proposed architecture tries to solve one problem often common for thes
 The architecture "screams" its intentions just by looking at the code structure:
 
 ```
-..ecommerce
-    billing
-        payment
-    sales
+..backend
+    evaluator
+        test-results
+    problems
         category
-        order
-        product
-    shipping
-        delivery
-    warehouse
-```
-
-Going deeper the technical concepts are visible too:
-
-```
-..ecommerce
-    billing
-        payment
-            jdbc
-        listeners
-        rest
+        problem
 ```
 
 ### Packaging
