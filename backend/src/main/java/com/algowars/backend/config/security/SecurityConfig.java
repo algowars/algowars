@@ -12,7 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.RequiredArgsConstructor;
 
-@Log4j2
 @Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity
@@ -25,6 +24,7 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/messages/protected", "/api/messages/admin").authenticated()
+                        .requestMatchers("/api/actuator/**").permitAll()
                         .anyRequest().permitAll())
                 .cors(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2
