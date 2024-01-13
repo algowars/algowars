@@ -1,2 +1,4 @@
-package com.algowars.backend.problems;public class Problem {
+package com.algowars.backend.problems;
+
+public class Problem {
 }
