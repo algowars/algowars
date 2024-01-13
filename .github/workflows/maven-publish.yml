@@ -28,9 +28,14 @@ jobs:
         run: mvn clean verify
         working-directory: ./backend # Specify the working directory for Maven
 
-      - name: Test Report
-        uses: actions/upload-artifact@v3
-        if: success() || failure()
+      - name: Test
+        run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
+
+      - name: Report
+        uses: dorny/test-reporter@v1
+        if: always()
         with:
-          name: SpringBoot Report # Name of the folder
-          path: backend/target/site/serenity/ # Adjust path to test results relative to backend directory
+          name: Maven Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
