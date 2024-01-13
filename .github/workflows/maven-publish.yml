@@ -20,16 +20,9 @@ jobs:
           distribution: "temurin"
           cache: maven
 
-      # Change to backend directory
-      - name: Change to Backend Directory
-        run: cd backend
-
-      - name: Build with Maven
-        run: mvn clean verify
-        working-directory: ./backend # Specify the working directory for Maven
-
-      - name: Test
-        run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
+      - name: Build and Test with Maven
+        run: mvn --batch-mode clean verify
+        working-directory: ./backend
 
       - name: Report
         uses: dorny/test-reporter@v1
