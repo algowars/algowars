@@ -1,4 +1,4 @@
-package com.algowars.backend.problems.repository;
+package com.algowars.backend.problems;
 
 import com.algowars.backend.problems.Problem;
 import org.springframework.data.domain.Page;

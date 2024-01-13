@@ -1,2 +1,5 @@
-package com.algowars.backend.problems.labels;public class ProblemLabel {
+package com.algowars.backend.problems.labels;
+
+public class ProblemLabel {
+
 }

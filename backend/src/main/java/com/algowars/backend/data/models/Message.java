@@ -1,4 +1,4 @@
-package com.algowars.backend.common.error;
+package com.algowars.backend.data.models;
 
 import lombok.Value;
 

@@ -1,2 +1,7 @@
-package com.algowars.backend.data.models;public class FeedType {
+package com.algowars.backend.data.models;
+
+public enum FeedType {
+    LATEST,
+    OLDEST,
+    FEATURED;
 }
