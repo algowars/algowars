@@ -1,3 +1,5 @@
+package com.algowars.backend.common.error;
+
 import lombok.Value;
 
 @Value
