@@ -28,15 +28,76 @@ Several Business Capabilities have been identified:
   - Update a problem
   - Read a problem
   - List problems (paginated)
+  - Use Cases:
+    - Admins can create new problems
+    - Users can browse lists of problems
+    - Admins can edit problems they've created
+    - Problems are categorized by diffficuly, tags(e.g., algorithms, data structures)
 
 - **Evaluator**
-  - Run tests on code anonymously
-    - Rate Limitter
+
+  - Code submissions
+    - Run tests on code anonymously
+      - Rate Limitter
+      - Proper Validation
+    - Run tests on code from user
+  - Execution environment
+    - Set VM to support other languages (Initially JavaScript)
+  - Test evaluation
     - Proper Validation
-  - Run tests on code from user
-    - Rate Limitter (longer than anonymous)
-    - Proper Validation
-  - Set VM to support other languages (Initially JavaScript)
+  - Results Reporting
+  - Rate Limitter (longer than anonymous)
+
+- **Community and Interactions**
+
+  - Discussion Forums
+    - Users can discuss problems and solutions in forums
+  - Leaderboards
+    - Leaderboards display top performers
+  - User Rankings
+    - Rankings based on user performances
+
+- **Competition**
+
+  - Ranked Matchmaking
+    - Users participate in ranked coding challenges against each other
+    - Matches are organized based on user ranks
+  - Season Management
+    - Seasons are defined with start and end dates, and users' ranks are reset or adjusted at the beginning of the season
+  - Rank Calculation
+    - Ranks are calculated based on users' performances in ranked matches.
+  - Reward Distribution
+    - Reward(titles) are given based on season performance
+
+- **Problem Recommendations**
+
+  - Additional Use Cases for Ranked Mode:
+    - Recommend problems to users based on their performance in ranked matches
+
+- **Tournaments**
+
+  - Tournament Creation
+    - Users or administrators can create and organize coding tournaments
+  - Tournament Management
+  - Bracket Generation
+    - Automated bracket generation for tournament structure (e.g., single elimination, round robin)
+  - Live Updates
+    - Live updates and tracking of tournament progress
+
+- **User Profile Customization**
+
+  - Banner Customization
+    - Users earn titles for various achievements (e.g., "Bug Reporter" for reporting a bug, "Code Champion" for winning a ranked season)
+  - Achievement Tracking
+    - Achievements are tracked, and corresponding titles are awarded automatically
+
+- **Social Interactions**
+  - Friending System
+    - Users can send and receive friend requests
+  - Social Notifications
+    - Notifications for friend activities, tournament invitations, and other social interactions
+  - Social Feeds
+    - A social feed where users can see updates from friends (e.g., recent achievements, tournament participation)
 
 ### Supporting Domains
 
@@ -45,6 +106,25 @@ Several Business Capabilities have been identified:
   - Gather bugs and issues
 
 ## Architectural Overview
+
+### Cross-Cutting Concerns for Tournaments and Friending System
+
+- **Scalability:** Ability to handle a large number of concurrent tournaments and social interactions.
+- **Real-Time Processing:** Immediate updates and notifications for tournament progress and social activities.
+- **Security and Privacy:** Ensuring user data privacy in social interactions and maintaining fair play in tournaments.
+
+### SOA Principles in the Context of Tournaments and Social Features
+
+- **Modularity:** Separate services for tournament management and social interactions, each with specific responsibilities.
+- **Interoperability:** Ensuring different services (like tournaments, social interactions, and user profiles) work together seamlessly.
+- **Flexibility:** Ability to add new types of tournaments or enhance the social system without major overhauls.
+
+### Steps to Move Forward with Tournaments and Friending System
+
+1. **Develop Tournament Management System:** Create the backend and frontend components for creating, managing, and displaying tournaments.
+2. **Implement Friending System:** Develop a system for sending, receiving, and managing friend requests, along with a social feed.
+3. **Integrate with Existing Domains:** Ensure the tournament and social systems are well integrated with existing domains like user profiles and competitions.
+4. **User Interface Design:** Design user-friendly interfaces for tournament participation and social interactions.
 
 While no popular architecture ([Onion][onion], [Clean][clean], [Hexagonal][hexagonal], [Trinity][trinity]) was strictly implemented, the used architectural style follows principles and good practices found over all of them.
 
