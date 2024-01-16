@@ -9,7 +9,3 @@ test("Component Renders", () => {
 test("demo", () => {
   expect(true).toBe(true);
 });
-
-test("Renders the main page", () => {
-  expect(true).toBeTruthy();
-});
