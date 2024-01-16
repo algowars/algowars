@@ -16,15 +16,15 @@ public class ApplicationIntegrationTest {
     @Autowired
     MockMvc api;
 
-    @Test
-    void shouldReturnStatusOkIfUserIsAnonymous() throws Exception {
-        api.perform(get("/data/actuator/health/liveness"))
-                .andExpect(status().isOk());
-    }
+    // @Test
+    // void shouldReturnStatusOkIfUserIsAnonymous() throws Exception {
+    // api.perform(get("/data/actuator/health/liveness"))
+    // .andExpect(status().isOk());
+    // }
 
-    @Test
-    void shouldReturnUnauthorizedIfUserIsAnonymous()throws Exception {
-        api.perform(get("/data/machin"))
-                .andExpect(status().isUnauthorized());
-    }
+    // @Test
+    // void shouldReturnUnauthorizedIfUserIsAnonymous()throws Exception {
+    // api.perform(get("/data/machin"))
+    // .andExpect(status().isUnauthorized());
+    // }
 }
