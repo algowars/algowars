@@ -5,6 +5,7 @@ type Props = {
   bgColor?: string;
   borderRadius?: string;
   className?: string;
+  size?: string;
 };
 
 const Card = ({
@@ -13,11 +14,12 @@ const Card = ({
   border = "border border-slate-300 dark:border-slate-700",
   borderRadius = "rounded",
   bgColor = "bg-white dark:bg-slate-800 dark:text-white",
+  size = "",
   className = "",
 }: Props) => {
   return (
     <article
-      className={`${padding} ${border} ${bgColor} ${borderRadius}${
+      className={`${padding} ${size} ${border} ${bgColor} ${borderRadius}${
         className && ` ${className}`
       }`}
     >

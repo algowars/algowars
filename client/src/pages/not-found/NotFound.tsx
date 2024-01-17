@@ -13,7 +13,7 @@ const NotFound = () => {
             Uh oh, we can't seem to find the page you're looking for. Try going
             back to the previous page or to the home page.
           </p>
-          <ButtonLightOutline>Go Home</ButtonLightOutline>
+          <ButtonLightOutline href="/">Go Home</ButtonLightOutline>
         </Card>
       </Container>
     </Layout>
