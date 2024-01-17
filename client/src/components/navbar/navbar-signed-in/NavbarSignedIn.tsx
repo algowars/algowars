@@ -1,4 +1,5 @@
 import ButtonLightOutline from "../../button/button-light-outline/ButtonLightOutline";
+import ButtonLightModeToggle from "../../button/button-lightmode-toggle/ButtonLightModeToggle";
 import NavbarAvatar from "../navbar-avatar/NavbarAvatar";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -11,6 +12,9 @@ const NavbarSignedIn = () => {
       </li>
       <li>
         <NavbarAvatar avatarUrl={user?.picture} />
+      </li>
+      <li>
+        <ButtonLightModeToggle />
       </li>
     </ul>
   );

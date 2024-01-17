@@ -21,7 +21,7 @@ const ButtonLight = ({
       onClick={onClick}
       className={`${className} ${size} text-black hover:text-indigo-800 ${
         hideUnerline ? "" : "hover:underline underline-offset-2"
-      } hover:bg-indigo-100 active:bg-indigo-200 duration-200 ease-out ${spacing} rounded`}
+      } hover:bg-indigo-100 hover:dark:bg-indigo-800 dark:text-white active:bg-indigo-200 duration-200 ease-out ${spacing} rounded`}
     >
       {children}
     </Button>

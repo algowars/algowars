@@ -20,7 +20,7 @@ const ButtonLightOutline = ({
     <Button
       href={href}
       onClick={onClick}
-      className={`text-indigo-700 border border-indigo-700 hover:bg-indigo-700 hover:underline underline-offset-2  hover:text-white active:bg-indigo-200 duration-200 ease-out py-2 px-4 rounded ${size} ${className}`}
+      className={`text-indigo-700 dark:text-indigo-300 border border-indigo-700 dark:border-indigo-300 hover:bg-indigo-700 hover:dark:bg-indigo-300 hover:underline underline-offset-2  hover:text-white dark:hover:text-black active:bg-indigo-200 duration-200 ease-out py-2 px-4 rounded ${size} ${className}`}
     >
       {children}
     </Button>

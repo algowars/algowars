@@ -27,9 +27,9 @@ const NavbarCanvas = ({ isOpen, setIsOpen }: Props) => {
       <div
         className={`${
           isOpen ? "left-0" : "-left-[200%]"
-        } fixed duration-200 ease-out top-0 w-11/12 min-[425px]:w-9/12 min-[500px]:w-7/12 lg:hidden border-r border-zinc-300 text-black drop-shadow bg-white min-h-[100vh] z-50`}
+        } fixed duration-200 ease-out top-0 w-11/12 min-[425px]:w-9/12 min-[500px]:w-7/12 lg:hidden border-r border-slate-300 text-black drop-shadow bg-white min-h-[100vh] z-50`}
       >
-        <div className="border-b border-zinc-300 p-3 flex justify-between items-center">
+        <div className="border-b border-slate-300 p-3 flex justify-between items-center">
           <Link to="/" className="py-0">
             <h1 className="text-lg font-semibold">Ai Adlibs</h1>
           </Link>

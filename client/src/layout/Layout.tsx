@@ -11,7 +11,7 @@ type Props = {
 
 const Layout = ({
   children,
-  bgColor = "bg-zinc-100 text-black ",
+  bgColor = "bg-slate-100 text-black dark:bg-slate-900 dark:text-white",
   mainClassName = "",
 }: Props) => {
   const { theme } = useAppSelector((state) => state.theme);

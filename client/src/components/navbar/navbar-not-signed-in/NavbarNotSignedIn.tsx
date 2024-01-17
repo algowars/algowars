@@ -1,3 +1,4 @@
+import ButtonLightModeToggle from "../../button/button-lightmode-toggle/ButtonLightModeToggle";
 import ButtonLogin from "../../button/button-login/ButtonLogin";
 import ButtonSignup from "../../button/button-signup/ButtonSignup";
 
@@ -9,6 +10,9 @@ const NavbarNotSignedIn = () => {
       </li>
       <li>
         <ButtonSignup />
+      </li>
+      <li>
+        <ButtonLightModeToggle />
       </li>
     </ul>
   );

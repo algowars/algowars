@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useOutsideAlerter } from "../hooks/useOutsideAlerter";
+import { useOutsideAlerter } from "../../hooks/useOutsideAlerter";
 
 type Props = {
   children?: React.ReactNode;

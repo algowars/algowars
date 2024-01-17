@@ -16,7 +16,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white text-white border-b border-zinc-300 text-black">
+    <nav className="bg-white dark:bg-slate-900 border-b border-slate-300 dark:border-slate-700 dark:text-white">
       <Container className="p-2 flex justify-between items-center relative">
         <NavbarCanvas isOpen={isCanvasOpen} setIsOpen={setIsCanvasOpen} />
         <ul className="flex items-center gap-1 sm:gap-2 md:gap-3">
@@ -32,7 +32,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link to="/">
-              <h1 className="text-lg font-semibold text-black">Ai Adlibs</h1>
+              <h1 className="text-lg font-semibold">Algowars</h1>
             </Link>
           </li>
         </ul>
