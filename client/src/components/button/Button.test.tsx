@@ -1,3 +1,4 @@
+import { describe, test, expect, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Button from "./Button";
@@ -62,7 +63,7 @@ describe("Button", () => {
   });
 
   test("Should have the onClick binded on the button", () => {
-    const onClickMock = jest.fn();
+    const onClickMock = vi.fn();
     render(<Button onClick={onClickMock}>Click Button</Button>);
 
     const button = screen.getByRole("button", { name: "Click Button" });

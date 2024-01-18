@@ -30,10 +30,18 @@ const Navbar = () => {
               <i className="fa-solid fa-bars"></i>
             </ButtonLight>
           </li>
-          <li>
+          <li className="mr-3">
             <Link to="/">
               <h1 className="text-lg font-semibold">Algowars</h1>
             </Link>
+          </li>
+          <li>
+            <Link to="/" className="hover:underline underline-offset-2">
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link to="/problems">Problems</Link>
           </li>
         </ul>
 
