@@ -1,8 +1,6 @@
 package com.algowars.backend.problems;
 
-import com.algowars.backend.common.pagination.Pagination;
-import com.algowars.backend.common.pagination.dtos.PaginationDto;
-import com.algowars.backend.common.pagination.dtos.PaginationResponse;
+import com.algowars.backend.data.entities.Problem;
 import com.algowars.backend.problems.dtos.ProblemPaginationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

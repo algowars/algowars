@@ -1,4 +1,4 @@
-package com.algowars.backend.problems;
+package com.algowars.backend.data.entities;
 
 import com.algowars.backend.categories.Category;
 import jakarta.persistence.*;

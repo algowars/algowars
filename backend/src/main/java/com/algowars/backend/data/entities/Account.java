@@ -1,4 +1,4 @@
-package com.algowars.backend.account;
+package com.algowars.backend.data.entities;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;

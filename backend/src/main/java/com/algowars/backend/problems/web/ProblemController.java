@@ -1,8 +1,6 @@
 package com.algowars.backend.problems.web;
 
-import com.algowars.backend.common.pagination.dtos.PaginationDto;
-import com.algowars.backend.common.pagination.dtos.PaginationResponse;
-import com.algowars.backend.problems.Problem;
+import com.algowars.backend.data.entities.Problem;
 import com.algowars.backend.problems.ProblemService;
 import com.algowars.backend.problems.dtos.ProblemPaginationDto;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/messages")
+@RequestMapping("/api/v1/problems")
 public class ProblemController {
     private final ProblemService problemService;
 
