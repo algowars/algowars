@@ -1,52 +1,78 @@
+import { Badge } from "@/components/ui/badge";
 import Markdown from "react-markdown";
 
 const ProblemInfo = () => {
-  const question = `You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
+  const question = `Given an array of integers \`nums\` and an integer \`target\`, return indices of the two numbers such that they add up to \`target\`.
 
-Given an integer array \`nums\` representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
 
-Example 1:
+You can return the answer in any order.
 
-Input: nums = [1,2,3,1]
-Output: 4
-Explanation: Rob house 1 (money = 1) and then rob house 3 (money = 3).
-Total amount you can rob = 1 + 3 = 4.
+**Example 1:**
 
-Example 2:
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
 
-Input: nums = [2,7,9,3,1]
-Output: 12
-Explanation: Rob house 1 (money = 2), rob house 3 (money = 9) and rob house 5 (money = 1).
-Total amount you can rob = 2 + 9 + 1 = 12.
+**Example 2:**
+
+Input: nums = [3,2,4], target = 6
+Output: [1,2]
+
+**Example 3:**
+
+Input: nums = [3,3], target = 6
+Output: [0,1]
 
 Constraints:
 
-1 <= nums.length <= 100
-0 <= nums[i] <= 400`;
+2 <= nums.length <= 104
+-109 <= nums[i] <= 109
+-109 <= target <= 109
+Only one valid answer exists.
+
+Follow-up: Can you come up with an algorithm that is less than O(n2) time complexity?`;
+
   return (
-    <div>
-      <Markdown
-        components={{
-          code(props) {
-            const { children } = props;
-            return (
-              <code className="px-1.5 border border-gray-700 bg-gray-800 rounded inline-block">
-                {children}
-              </code>
-            );
-          },
-          p: ({ children }) => <p className="mb-4">{children}</p>,
-          ul: ({ children }) => (
-            <ul className="list-disc ml-5 mb-4">{children}</ul>
-          ),
-          li: ({ children }) => <li className="mb-4">{children}</li>,
-          strong: ({ children }) => (
-            <strong className="font-bold text-white">{children}</strong>
-          ),
-        }}
-      >
-        {question}
-      </Markdown>
+    <div className="p-5 flex flex-col gap-5 h-full overflow-y-scroll">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-2xl font-semibold">198. House Robber</h2>
+        <ul className="flex gap-3">
+          <li>
+            <Badge variant="secondary">Medium</Badge>
+          </li>
+          <li>
+            <Badge variant="secondary">Topics</Badge>
+          </li>
+          <li>
+            <Badge variant="secondary">Companies</Badge>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <Markdown
+          components={{
+            code(props) {
+              const { children } = props;
+              return (
+                <code className="px-1.5 border border-gray-700 bg-gray-800 rounded inline-block">
+                  {children}
+                </code>
+              );
+            },
+            p: ({ children }) => <p className="mb-3">{children}</p>,
+            ul: ({ children }) => (
+              <ul className="list-disc ml-5 mb-4">{children}</ul>
+            ),
+            li: ({ children }) => <li className="mb-4">{children}</li>,
+            strong: ({ children }) => (
+              <strong className="font-bold text-white">{children}</strong>
+            ),
+          }}
+        >
+          {question}
+        </Markdown>
+      </div>
     </div>
   );
 };

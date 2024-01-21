@@ -4,6 +4,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import ProblemCodeEditor from "@/features/problem/problem-code-editor/ProblemCodeEditor";
 import ProblemInfo from "@/features/problem/problem-info/ProblemInfo";
 import NavbarSolid from "@/layout/navbar/navbar-solid/NavbarSolid";
 
@@ -15,11 +16,16 @@ const ProblemPage = () => {
       </header>
       <main className="grow">
         <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel defaultSize={46}>ONe</ResizablePanel>
+          <ResizablePanel defaultSize={46}>
+            <ProblemCodeEditor />
+          </ResizablePanel>
           <ResizableHandle />
           <ResizablePanel defaultSize={54}>
             <ResizablePanelGroup direction="vertical">
-              <ResizablePanel defaultSize={70}>
+              <ResizablePanel
+                defaultSize={70}
+                className="overflow-y-scroll h-full"
+              >
                 <ProblemInfo />
               </ResizablePanel>
               <ResizableHandle />
