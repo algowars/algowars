@@ -1,17 +1,20 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import themeReducer from "../slices/themeSlice";
 import accountReducer from "../slices/accountSlice";
 
-const store = configureStore({
-  reducer: {
-    theme: themeReducer,
-    account: accountReducer,
-  },
+const rootReducer = combineReducers({
+  theme: themeReducer,
+  account: accountReducer,
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+export function setupStore(preloadedState?: Partial<RootState>) {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
+}
 
-export type AppDispatch = typeof store.dispatch;
-
-export default store;
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore["dispatch"];

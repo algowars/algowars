@@ -1,11 +1,15 @@
+import { describe, expect, test } from "vitest";
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 import App from "./App";
+import { renderWithProviders } from "./test/testUtils";
 
-test("Component Renders", () => {
-  render(<App />);
-});
+describe("App", () => {
+  test("Component Renders", () => {
+    renderWithProviders(<App />);
+  });
 
-test("demo", () => {
-  expect(true).toBe(true);
+  test("demo", () => {
+    expect(true).toBe(true);
+  });
 });
