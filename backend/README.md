@@ -1,230 +1,73 @@
-# Algowars Backend Application
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-This is the core repository for algowars. The project is architect using **Domain-Driven Design (DDD)** and **Service-Oriented Architecture (SOA)** principles. The project is built with spring boot and Auth0 for user management.
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-```sh
-#build
-./mvnw clean install
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-#run
-./mvnw spring-boot:run
+## Description
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Installation
+
+```bash
+$ npm install
 ```
 
-## Table of Contents
+## Running the app
 
-- [Domains](#domains)
-  - [Core Domain](#core-domain)
+```bash
+# development
+$ npm run start
 
-## Domains
+# watch mode
+$ npm run start:dev
 
-Several Business Capabilities have been identified:
-
-### Core Domain
-
-- **Problems**
-
-  - Create a problem
-  - Categorize problems
-  - Update a problem
-  - Read a problem
-  - List problems (paginated)
-  - Use Cases:
-    - Admins can create new problems
-    - Users can browse lists of problems
-    - Admins can edit problems they've created
-    - Problems are categorized by diffficuly, tags(e.g., algorithms, data structures)
-
-- **Evaluator**
-
-  - Code submissions
-    - Run tests on code anonymously
-      - Rate Limitter
-      - Proper Validation
-    - Run tests on code from user
-  - Execution environment
-    - Set VM to support other languages (Initially JavaScript)
-  - Test evaluation
-    - Proper Validation
-  - Results Reporting
-  - Rate Limitter (longer than anonymous)
-
-- **Community and Interactions**
-
-  - Discussion Forums
-    - Users can discuss problems and solutions in forums
-  - Leaderboards
-    - Leaderboards display top performers
-  - User Rankings
-    - Rankings based on user performances
-
-- **Competition**
-
-  - Ranked Matchmaking
-    - Users participate in ranked coding challenges against each other
-    - Matches are organized based on user ranks
-  - Season Management
-    - Seasons are defined with start and end dates, and users' ranks are reset or adjusted at the beginning of the season
-  - Rank Calculation
-    - Ranks are calculated based on users' performances in ranked matches.
-  - Reward Distribution
-    - Reward(titles) are given based on season performance
-
-- **Problem Recommendations**
-
-  - Additional Use Cases for Ranked Mode:
-    - Recommend problems to users based on their performance in ranked matches
-
-- **Tournaments**
-
-  - Tournament Creation
-    - Users or administrators can create and organize coding tournaments
-  - Tournament Management
-  - Bracket Generation
-    - Automated bracket generation for tournament structure (e.g., single elimination, round robin)
-  - Live Updates
-    - Live updates and tracking of tournament progress
-
-- **User Profile Customization**
-
-  - Banner Customization
-    - Users earn titles for various achievements (e.g., "Bug Reporter" for reporting a bug, "Code Champion" for winning a ranked season)
-  - Achievement Tracking
-    - Achievements are tracked, and corresponding titles are awarded automatically
-
-- **Social Interactions**
-  - Friending System
-    - Users can send and receive friend requests
-  - Social Notifications
-    - Notifications for friend activities, tournament invitations, and other social interactions
-  - Social Feeds
-    - A social feed where users can see updates from friends (e.g., recent achievements, tournament participation)
-
-### Supporting Domains
-
-- **User FeedBack**
-  - Gather wanted additions/changes
-  - Gather bugs and issues
-
-## Architectural Overview
-
-### Cross-Cutting Concerns for Tournaments and Friending System
-
-- **Scalability:** Ability to handle a large number of concurrent tournaments and social interactions.
-- **Real-Time Processing:** Immediate updates and notifications for tournament progress and social activities.
-- **Security and Privacy:** Ensuring user data privacy in social interactions and maintaining fair play in tournaments.
-
-### SOA Principles in the Context of Tournaments and Social Features
-
-- **Modularity:** Separate services for tournament management and social interactions, each with specific responsibilities.
-- **Interoperability:** Ensuring different services (like tournaments, social interactions, and user profiles) work together seamlessly.
-- **Flexibility:** Ability to add new types of tournaments or enhance the social system without major overhauls.
-
-### Steps to Move Forward with Tournaments and Friending System
-
-1. **Develop Tournament Management System:** Create the backend and frontend components for creating, managing, and displaying tournaments.
-2. **Implement Friending System:** Develop a system for sending, receiving, and managing friend requests, along with a social feed.
-3. **Integrate with Existing Domains:** Ensure the tournament and social systems are well integrated with existing domains like user profiles and competitions.
-4. **User Interface Design:** Design user-friendly interfaces for tournament participation and social interactions.
-
-While no popular architecture ([Onion][onion], [Clean][clean], [Hexagonal][hexagonal], [Trinity][trinity]) was strictly implemented, the used architectural style follows principles and good practices found over all of them.
-
-- Low coupling, high cohesion
-- Implementation hiding
-- Rich domain model
-- Separation of concerns
-- The Dependency Rule
-
-The below proposed architecture tries to solve one problem often common for these architectural styles: [exposing internals of objects](https://blog.ttulka.com/object-oriented-design-vs-persistence) and breaking their encapsulation. The proposed architecture employs full object encapsulation and rejects anti-patterns like Anemic Domain Model or JavaBean. An Object is a solid unit of behavior. A Service is an Object on higher level of architectural abstraction.
-
-[onion]: http://jeffreypalermo.com/blog/the-onion-architecture-part-1
-[clean]: https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
-[hexagonal]: https://alistair.cockburn.us/hexagonal-architecture/
-[trinity]: https://github.com/oregor-projects/trinity-demo-java
-
-### Screaming Architecture
-
-The architecture "screams" its intentions just by looking at the code structure:
-
-```
-..backend
-    evaluator
-        test-results
-    problems
-        category
-        problem
+# production mode
+$ npm run start:prod
 ```
 
-### Packaging
+## Test
 
-As shown in the previous section, the code is structured by the domain together with packages for technical concerns (`jdbc`, `rest`, `web`, etc.).
+```bash
+# unit tests
+$ npm run test
 
-Such a packaging style is the first step for a further modularization.
+# e2e tests
+$ npm run test:e2e
 
-The semantic of a package is following: `company.product.domain.service.[entity|impl]`, where `entity` and `impl` are optional. Full example: `com.ttulka.ecommerce.billing.payment.jdbc`.
-
-### Assembling
-
-While a physically monolithic deployment is okay for most cases, a logically monolithic design, where everything is coupled with everything, is evil.
-
-To show that the Monolith architectural pattern is not equal to the Big Ball Of Mud, a modular monolithic architecture was chosen as the start point.
-
-The services can be further cut into separate modules (eg. Maven artifacts) by feature:
-
-```
-com.algowars.backend:backend-application
-com.algowars.backend.problems:category-service
-com.algowars.backend.problems:problem-service
-com.algowars.backend.evaluator:evaluator-service
+# test coverage
+$ npm run test:cov
 ```
 
-Note: Events are actually part of the domain, that's why they are in the package `..ecommerce.billing.payment` and not in `..ecommerce.billing.payment.events`. They are in a separate module to break the build cyclic dependencies: a dependent module (Listener) needs to know only Events and not the entire Domain.
+## Support
 
-See this approach in an alternative branch: [modulith](https://github.com/ttulka/ddd-example-ecommerce/tree/modulith).
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-### Anatomy of a Service
+## Stay in touch
 
-**[Service](http://udidahan.com/2010/11/15/the-known-unknowns-of-soa/)** is the technical authority for a specific business capability.
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-- There is a one-to-one mapping between a Bounded Context and a Subdomain (ideal case).
-- A Bounded Context defines the boundaries of the biggest services possible.
-- A Bounded Context can be decomposed into multiple service boundaries.
-  - For example, Sales domain contains Catalog, Cart and Order services.
-- A service boundaries are based on service responsibilities and behavior.
-- A service is defined by its logical boundaries, not a physical deployment unit.
+## License
 
-**Application** is a deployment unit. A monolithic Application can have more Services.
-
-- Bootstrap (application container etc.).
-- Cross-cutting concerns (security, transactions, messaging, logging, etc.).
-
-![Application and Services](doc/application-services.png)
-
-**Configuration** assemblies the Service as a single component.
-
-- Has dependencies to all inner layers.
-- Can be implemented by Spring's context `@Configuration` or simply by object composition and Dependency Injection.
-- Implements the Dependency Inversion Principle.
-
-**Gateways** create the published API of the Service.
-
-- Driving Adapters in the Hexagonal Architecture.
-- REST, SOAP, or web Controllers,
-- Event Listeners,
-- CLI.
-
-**Use-Cases** are entry points to the service capabilities and together with **Entities** form the _Domain API_.
-
-- Ports in the Hexagonal Architecture.
-- No implementation details.
-- None or minimal dependencies.
-
-_Domain Implementation_ fulfills the Business Capabilities with particular technologies.
-
-- Driven Adapters in the Hexagonal Architecture.
-- Tools and libraries,
-- persistence,
-- external interfaces access.
-
-Source code dependencies point always inwards and, except Configuration, are strict: allows coupling only to the one layer below it (for example, Gateways mustn't call Entities directly, etc.).
-
-![Service Anatomy](doc/service-anatomy.png)
+Nest is [MIT licensed](LICENSE).

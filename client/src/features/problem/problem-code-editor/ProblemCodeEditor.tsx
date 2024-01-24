@@ -2,10 +2,13 @@ import { useState } from "react";
 import Editor from "@monaco-editor/react";
 
 const ProblemCodeEditor = () => {
-  const [code] =
-    useState<string>(`function twoSum(nums: number[], target: number): number[] {
-    
-  };`);
+  const [code] = useState<string>(`/**
+    * @param {number} n
+    * @return {string[]}
+    */
+   var fizzBuzz = function(n) {
+       
+   };`);
 
   return (
     <Editor
