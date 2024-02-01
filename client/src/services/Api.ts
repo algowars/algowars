@@ -14,17 +14,11 @@ const callExternalApi = async <T>(options: {
     const response: AxiosResponse = await axiosApi(options.config);
     const { data } = response;
 
-    return {
-      data,
-      error: null,
-    };
+    return [data, null];
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.message === "Request aborted" || error.message === "canceled") {
-        return {
-          data: null,
-          error: null,
-        };
+        return [null, null];
       }
       const axiosError = error as AxiosError;
 
@@ -44,20 +38,20 @@ const callExternalApi = async <T>(options: {
         message = (response.data as ErrorModel).message;
       }
 
-      return {
-        data: null,
-        error: {
+      return [
+        null,
+        {
           message,
         },
-      };
+      ];
     }
 
-    return {
-      data: null,
-      error: {
+    return [
+      null,
+      {
         message: (error as Error).message,
       },
-    };
+    ];
   }
 };
 

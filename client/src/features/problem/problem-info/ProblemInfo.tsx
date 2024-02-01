@@ -31,7 +31,7 @@ const ProblemInfo = () => {
   return (
     <div className="p-5 flex flex-col gap-5 h-full overflow-y-scroll">
       <div className="flex flex-col gap-2">
-        <h2 className="text-2xl font-semibold">198. House Robber</h2>
+        <h2 className="text-2xl font-semibold">Fizz Buzz</h2>
         <ul className="flex gap-3">
           <li>
             <Badge variant="secondary">Medium</Badge>
@@ -50,7 +50,7 @@ const ProblemInfo = () => {
             code(props) {
               const { children } = props;
               return (
-                <code className="px-1.5 border border-gray-700 bg-gray-800 rounded inline-block">
+                <code className="px-1.5 border bg-slate-200 dark:bg-slate-800 rounded inline-block">
                   {children}
                 </code>
               );
@@ -61,7 +61,7 @@ const ProblemInfo = () => {
             ),
             li: ({ children }) => <li className="mb-4">{children}</li>,
             strong: ({ children }) => (
-              <strong className="font-bold text-white">{children}</strong>
+              <strong className="font-bold">{children}</strong>
             ),
           }}
         >

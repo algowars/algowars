@@ -1,20 +1,17 @@
-import { useState } from "react";
 import Editor from "@monaco-editor/react";
 
-const ProblemCodeEditor = () => {
-  const [code] = useState<string>(`/**
-    * @param {number} n
-    * @return {string[]}
-    */
-   var fizzBuzz = function(n) {
-       
-   };`);
+type Props = {
+  code: string;
+  changeCode: (value: string | undefined) => void;
+};
 
+const ProblemCodeEditor = ({ code, changeCode }: Props) => {
   return (
     <Editor
       height="100%"
       defaultLanguage="javascript"
-      defaultValue={code}
+      value={code}
+      onChange={changeCode}
       theme="vs-dark"
     />
   );

@@ -2,7 +2,6 @@ import { AxiosRequestConfig } from "axios";
 import { AccountModel } from "../models/AccountModel";
 import { ApiResponse } from "../models/ApiResponseModel";
 import api from "./Api";
-import { ContentRating } from "../models/ContentRating";
 
 const getAccountBySub = (
   sub: string,
@@ -84,37 +83,12 @@ const getAccountByUsername = (
   }>({ config });
 };
 
-const updateContentRating = (
-  contentRating: ContentRating,
-  sub: string,
-  accountId: string,
-  accessToken: string
-): Promise<ApiResponse<AccountModel>> => {
-  const config: AxiosRequestConfig = {
-    url: `/api/v1/account/${encodeURI(accountId)}/update/rating`,
-    method: "PUT",
-    params: {
-      sub,
-    },
-    data: {
-      contentRating,
-    },
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  return api.callExternalApi<AccountModel>({ config });
-};
-
-const AccountService = {
+const accountService = {
   getAccountBySub,
   isAccountSetup,
   setupAccount,
   getAccountByUsername,
-  updateContentRating,
 };
 
-Object.freeze(AccountService);
-export default AccountService;
+Object.freeze(accountService);
+export { accountService };

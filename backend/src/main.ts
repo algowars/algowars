@@ -5,6 +5,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 function checkEnvironment(configService: ConfigService) {
   const requiredEnvVars = [
@@ -47,7 +48,7 @@ async function bootstrap() {
   app.enableCors({
     origin: configService.get<string>('CLIENT_ORIGIN_URL'),
     methods: ['GET', 'POST', 'PUT'],
-    allowedHeaders: ['Authorization', 'Content-Type'],
+    allowedHeaders: ['Authorization', 'Content-Type', 'content-type'],
     maxAge: 86400,
   });
 
