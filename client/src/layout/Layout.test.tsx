@@ -1,11 +1,11 @@
 import { describe, expect, test } from "vitest";
 import { screen } from "@testing-library/react";
 import Layout from "./Layout";
-import { renderWithRouter } from "../test/testUtils";
+import { renderWithProviders } from "../test/testUtils";
 
 describe("Layout", () => {
   test("Should renderWithRouter the component", () => {
-    renderWithRouter(
+    renderWithProviders(
       <Layout>
         <h1>Test Header</h1>
       </Layout>
@@ -13,7 +13,7 @@ describe("Layout", () => {
   });
 
   test("Should renderWithRouter children", () => {
-    renderWithRouter(
+    renderWithProviders(
       <Layout>
         <h1>Test Header</h1>
       </Layout>
@@ -24,7 +24,7 @@ describe("Layout", () => {
 
   test("Should add bgColor", () => {
     const testBgColor = "bg-test-color";
-    renderWithRouter(
+    renderWithProviders(
       <Layout bgColor={testBgColor}>
         <div>Test Content</div>
       </Layout>
@@ -39,7 +39,7 @@ describe("Layout", () => {
 
   test("Should add mainClassName to main element", () => {
     const testMainClassName = "test-main-class";
-    renderWithRouter(
+    renderWithProviders(
       <Layout mainClassName={testMainClassName}>
         <div>Test Content</div>
       </Layout>

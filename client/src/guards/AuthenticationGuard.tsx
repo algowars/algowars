@@ -1,5 +1,5 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import PageLoader from "../components/loader/page-loader/PageLoader";
+import PageLoader from "@/components/loader/page-loader/PageLoader";
 import { ComponentType } from "react";
 
 interface AuthenticationGuardProps {
