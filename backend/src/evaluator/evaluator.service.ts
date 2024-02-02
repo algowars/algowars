@@ -46,21 +46,20 @@ export class EvaluatorService {
   }
 
   async getSubmission(submissionId: string): Promise<EvaluatorSubmission> {
-    console.log(submissionId);
+    console.log('SUBMISSION ID: ', submissionId);
     const params = {
       base64_encoded: 'true',
-      fields: 'stdout,stderr,status_id,langauge_id',
+      fields: '*',
     };
 
     try {
       const response = await firstValueFrom(
-        this.httpService.get(
-          `/submissions/${encodeURIComponent(submissionId)}`,
-          { params },
-        ),
+        this.httpService.get(`/submissions/${submissionId}`, { params }),
       );
+      console.log('RESPONSE: ', response);
       return response.data;
     } catch (error) {
+      console.log('ERROR: ', error);
       const message =
         error.response?.data?.error || 'An unexpected error occurred';
       const statusCode =
