@@ -66,7 +66,7 @@ export const useProblemPage = () => {
       }
     };
 
-    checkStatus();
+    await checkStatus();
   };
 
   return {
