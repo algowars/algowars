@@ -19,7 +19,7 @@ const LayoutSolid = ({
   showFooter = true,
 }: Props) => {
   return (
-    <div className="flex flex-col min-h-screen relative">
+    <div className="flex flex-col h-screen relative">
       <header className={bgColor}>
         <NavbarSolid />
       </header>

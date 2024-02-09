@@ -9,6 +9,7 @@ import ProblemInfo from "@/features/problem/problem-info/ProblemInfo";
 import NavbarSolid from "@/layout/navbar/navbar-solid/NavbarSolid";
 import { useProblemPage } from "./ProblemPage.hooks";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/ErrorAlertFixed";
+import ProblemResult from "@/features/problem/problem-result/ProblemResult";
 
 const ProblemPage = () => {
   const { code, changeCode, isLoading, error, submitCode, submissionResult } =
@@ -37,7 +38,7 @@ const ProblemPage = () => {
                 </ResizablePanel>
                 <ResizableHandle />
                 <ResizablePanel defaultSize={30}>
-                  {submissionResult ? <p>{submissionResult.stdout}</p> : null}
+                  <ProblemResult submission={submissionResult} />
                 </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>

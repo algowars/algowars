@@ -1,7 +1,6 @@
-import { useSocket } from "@/context/socketProvider";
 import { ErrorModel } from "@/models/ErrorModel";
+import { SubmissionModel } from "@/models/SubmissionModel";
 import { SubmissionStatusDescription } from "@/models/SubmissionStatusDescription";
-import { SubmissionStatusModel } from "@/models/SubmissionStatusModel";
 import { evaluatorService } from "@/services/EvaluatorService";
 import { submissionService } from "@/services/SubmissionService";
 import { useState } from "react";
@@ -16,7 +15,8 @@ export const useProblemPage = () => {
   };`);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<ErrorModel | null>(null);
-  const [submissionResult, setSubmissionResult] = useState<any | null>(null); // Adjust according to the actual result model
+  const [submissionResult, setSubmissionResult] =
+    useState<SubmissionModel | null>(null);
   const changeCode = (value: string | undefined) => {
     setCode(value ?? "");
   };
@@ -24,16 +24,18 @@ export const useProblemPage = () => {
   const submitCode = async () => {
     setIsLoading(true);
     setError(null);
+    setSubmissionResult(null);
+
     const [data, apiError] = await evaluatorService.createAnonymousSubmission(
       code
     );
 
-    if (data && data.token) {
-      pollSubmissionStatus(data.token);
-    }
-
     if (apiError) {
       setError(apiError);
+    }
+
+    if (data && data.token) {
+      await pollSubmissionStatus(data.token);
     }
 
     setIsLoading(false);
