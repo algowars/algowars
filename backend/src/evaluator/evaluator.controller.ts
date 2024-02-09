@@ -11,6 +11,46 @@ export class EvaluatorController {
   evaluateAnonymous(
     @Body() createEvaluationDto: CreateEvaluationDto,
   ): Promise<EvaluatorSubmissionResponse> {
-    return this.evaluatorService.evaluateAnonymous(createEvaluationDto.code);
+    const test = `
+    function test(description, fn) {
+      try {
+          fn();
+          console.log('✅', description);
+      } catch (error) {
+          console.log('❌', description);
+          console.error(error);
+      }
+  }
+  
+  function expect(received) {
+      return {
+          toEqual(expected) {
+              if (JSON.stringify(received) !== JSON.stringify(expected)) {
+                  throw new Error(\`Expected \${JSON.stringify(expected)}, but received \${JSON.stringify(received)}\`);
+              }
+          }
+      }
+  }
+  
+  // Test cases
+  test('returns "Fizz" for multiples of 3', () => {
+      expect(fizzBuzz(3)).toEqual([1, 2, 'Fizz']);
+  });
+  
+  test('returns "Buzz" for multiples of 5', () => {
+      expect(fizzBuzz(5)).toEqual([1, 2, 'Fizz', 4, 'Buzz']);
+  });
+  
+  test('returns "FizzBuzz" for multiples of 3 and 5', () => {
+      expect(fizzBuzz(15)).toEqual([1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 11, 'Fizz', 13, 14, 'FizzBuzz']);
+  });
+  
+  test('handles 0 correctly', () => {
+      expect(fizzBuzz(0)).toEqual([]);
+  });
+  `;
+    return this.evaluatorService.evaluateAnonymous(
+      createEvaluationDto.code + `\n ${test}`,
+    );
   }
 }

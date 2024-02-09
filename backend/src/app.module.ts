@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommonModule } from './common/common.module';
 import { ProblemModule } from './problem/problem.module';
 import { EvaluatorModule } from './evaluator/evaluator.module';
+import { SubmissionModule } from './submission/submission.module';
 import entities from './data-model/entities';
 
 @Module({
@@ -28,6 +29,7 @@ import entities from './data-model/entities';
     CommonModule,
     ProblemModule,
     EvaluatorModule,
+    SubmissionModule,
   ],
   controllers: [],
   providers: [],

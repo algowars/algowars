@@ -11,7 +11,8 @@ import { useProblemPage } from "./ProblemPage.hooks";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/ErrorAlertFixed";
 
 const ProblemPage = () => {
-  const { code, changeCode, isLoading, error, submitCode } = useProblemPage();
+  const { code, changeCode, isLoading, error, submitCode, submissionResult } =
+    useProblemPage();
 
   return (
     <>
@@ -35,7 +36,9 @@ const ProblemPage = () => {
                   <ProblemInfo />
                 </ResizablePanel>
                 <ResizableHandle />
-                <ResizablePanel defaultSize={30}>THREE</ResizablePanel>
+                <ResizablePanel defaultSize={30}>
+                  {submissionResult ? <p>{submissionResult.stdout}</p> : null}
+                </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>
           </ResizablePanelGroup>

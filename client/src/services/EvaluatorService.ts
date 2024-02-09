@@ -2,7 +2,9 @@ import { ApiResponse } from "@/models/ApiResponseModel";
 import { AxiosRequestConfig } from "axios";
 import api from "./Api";
 
-const createAnonymousSubmission = (code: string): Promise<ApiResponse<any>> => {
+const createAnonymousSubmission = (
+  code: string
+): Promise<ApiResponse<{ token: string }>> => {
   const config: AxiosRequestConfig = {
     url: "/api/v1/evaluator/evaluate/anonymous",
     method: "POST",
@@ -14,7 +16,7 @@ const createAnonymousSubmission = (code: string): Promise<ApiResponse<any>> => {
     },
   };
 
-  return api.callExternalApi<any>({ config });
+  return api.callExternalApi<{ token: string }>({ config });
 };
 
 const evaluatorService = {
