@@ -6,7 +6,7 @@ import ProblemPage from "./problem/ProblemPage";
 const PageRoutes = () => {
   return (
     <Routes>
-      <Route path="problem" element={<ProblemPage />} />
+      <Route path="problem/:problemSlug" element={<ProblemPage />} />
       <Route index element={<HomePage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -9,11 +9,7 @@ type Props = {
   headerColor?: string;
 };
 
-const Layout = ({
-  children,
-  bgColor = "dark:bg-slate-950 dark:text-white",
-  mainClassName = "",
-}: Props) => {
+const Layout = ({ children, bgColor = "", mainClassName = "" }: Props) => {
   return (
     <div className="flex flex-col min-h-screen relative">
       <header className={`py-9 ${bgColor}`}>

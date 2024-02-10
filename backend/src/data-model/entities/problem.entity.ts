@@ -4,10 +4,12 @@ import {
   Entity,
   JoinTable,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Account } from './account.entity';
+import { ProblemSolution } from './problem-solution.entity';
 
 @Entity()
 export class Problem {
@@ -18,15 +20,21 @@ export class Problem {
   title: string;
 
   @Column({ nullable: false, length: 750 })
-  body: string;
+  question: string;
+
+  @Column({ nullable: false, length: 110 })
+  titleSlug: string;
 
   @ManyToOne(() => Account, (account) => account.problems)
   @JoinTable()
   createdBy: Promise<Account>;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @OneToOne(() => ProblemSolution)
+  solution: Promise<ProblemSolution>;
 }

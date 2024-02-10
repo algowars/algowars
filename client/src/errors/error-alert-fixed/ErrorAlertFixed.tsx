@@ -14,7 +14,7 @@ const ErrorAlertFixed = ({ error, className = "" }: Props) => {
   return (
     <Alert
       variant="destructive"
-      className={`fixed top-5 left-1/2 max-w-fit -translate-x-1/2 z-50 bg-white dark:bg-slate-950 ${className}`}
+      className={`fixed top-5 left-1/2 max-w-fit -translate-x-1/2 z-50 bg-white bg-background ${className}`}
     >
       <AlertCircle className="h-4 w-4" />
       <AlertTitle>Error</AlertTitle>

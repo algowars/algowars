@@ -6,13 +6,7 @@ import { submissionService } from "@/services/SubmissionService";
 import { useState } from "react";
 
 export const useProblemPage = () => {
-  const [code, setCode] = useState<string>(`/**
-  * @param {number} n
-  * @return {string[]}
-  */
-  var fizzBuzz = function(n) {
-      
-  };`);
+  const [code, setCode] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<ErrorModel | null>(null);
   const [submissionResult, setSubmissionResult] =
