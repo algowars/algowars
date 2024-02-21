@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProblemDto } from './dto/create-problem.dto';
-import { UpdateProblemDto } from './dto/update-problem.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Problem } from 'src/data-model/entities';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProblemService {
-  create(createProblemDto: CreateProblemDto) {
-    return 'This action adds a new problem';
+  constructor(
+    @InjectRepository(Problem)
+    private readonly problemRepository: Repository<Problem>,
+  ) {}
+
+  findOneById(id: number) {
+    if (!id) {
+      return null;
+    }
+
+    return this.problemRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all problem`;
+  findRandomProblem(disallowedIds: number[] = []): Promise<Problem> {
+    const entityName = 'problem';
+    const queryBuilder = this.problemRepository.createQueryBuilder(entityName);
+
+    if (disallowedIds.length) {
+      queryBuilder.where(`${entityName}.id NOT IN (:...ids)`, {
+        ids: disallowedIds,
+      });
+    }
+
+    return queryBuilder.orderBy('RANDOM()').getOne();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} problem`;
-  }
-
-  update(id: number, updateProblemDto: UpdateProblemDto) {
-    return `This action updates a #${id} problem`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} problem`;
+  findProblemSetup(problemId: number, languageId: number) {
+    console.log(problemId, languageId);
   }
 }

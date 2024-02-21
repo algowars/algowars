@@ -1,8 +1,6 @@
 import { ErrorModel } from "@/models/ErrorModel";
 import { SubmissionModel } from "@/models/SubmissionModel";
 import { SubmissionStatusDescription } from "@/models/SubmissionStatusDescription";
-import { evaluatorService } from "@/services/EvaluatorService";
-import { submissionService } from "@/services/SubmissionService";
 import { useState } from "react";
 
 export const useProblemPage = () => {
@@ -20,17 +18,17 @@ export const useProblemPage = () => {
     setError(null);
     setSubmissionResult(null);
 
-    const [data, apiError] = await evaluatorService.createAnonymousSubmission(
-      code
-    );
+    // const [data, apiError] = await evaluatorService.createAnonymousSubmission(
+    //   code
+    // );
 
-    if (apiError) {
-      setError(apiError);
-    }
+    // if (apiError) {
+    //   setError(apiError);
+    // }
 
-    if (data && data.token) {
-      await pollSubmissionStatus(data.token);
-    }
+    // if (data && data.token) {
+    //   await pollSubmissionStatus(data.token);
+    // }
 
     setIsLoading(false);
   };
@@ -39,25 +37,24 @@ export const useProblemPage = () => {
     const interval = 2000;
 
     const checkStatus = async () => {
-      const [submission, statusError] = await submissionService.getSubmission(
-        id
-      );
-
-      if (submission) {
-        if (
-          submission?.status.description ===
-            SubmissionStatusDescription.IN_QUEUE ||
-          submission?.status.description ===
-            SubmissionStatusDescription.PROCESSING
-        ) {
-          setTimeout(checkStatus, interval);
-        } else {
-          if (statusError) {
-            setError(statusError);
-          }
-          setSubmissionResult(submission);
-        }
-      }
+      // const [submission, statusError] = await submissionService.getSubmission(
+      //   id
+      // );
+      // if (submission) {
+      //   if (
+      //     submission?.status.description ===
+      //       SubmissionStatusDescription.IN_QUEUE ||
+      //     submission?.status.description ===
+      //       SubmissionStatusDescription.PROCESSING
+      //   ) {
+      //     setTimeout(checkStatus, interval);
+      //   } else {
+      //     if (statusError) {
+      //       setError(statusError);
+      //     }
+      //     setSubmissionResult(submission);
+      //   }
+      // }
     };
 
     await checkStatus();

@@ -1,24 +1,26 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { ApiResponse } from "../models/ApiResponseModel";
 import { ErrorModel } from "../models/ErrorModel";
 
 const axiosApi = axios.create({
   baseURL: import.meta.env.VITE_API_SERVER_URL ?? "",
-  timeout: 10_000,
+  timeout: 30_000,
 });
 
-const callExternalApi = async <T>(options: {
-  config: AxiosRequestConfig;
-}): Promise<ApiResponse<T>> => {
+const callExternalApi = async <T>(
+  options: {
+    config: AxiosRequestConfig;
+  },
+  onCancel: T
+): Promise<T> => {
   try {
     const response: AxiosResponse = await axiosApi(options.config);
     const { data } = response;
 
-    return [data, null];
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.message === "Request aborted" || error.message === "canceled") {
-        return [null, null];
+        return onCancel;
       }
       const axiosError = error as AxiosError;
 
@@ -38,20 +40,9 @@ const callExternalApi = async <T>(options: {
         message = (response.data as ErrorModel).message;
       }
 
-      return [
-        null,
-        {
-          message,
-        },
-      ];
+      throw new Error(message);
     }
-
-    return [
-      null,
-      {
-        message: (error as Error).message,
-      },
-    ];
+    return onCancel;
   }
 };
 

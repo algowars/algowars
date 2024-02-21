@@ -5,7 +5,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
-import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 function checkEnvironment(configService: ConfigService) {
   const requiredEnvVars = [
