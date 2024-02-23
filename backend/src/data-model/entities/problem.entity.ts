@@ -22,7 +22,7 @@ export class Problem {
   @Column({ nullable: false, length: 750 })
   question: string;
 
-  @Column({ nullable: false, length: 110 })
+  @Column({ nullable: false, length: 110, unique: true })
   titleSlug: string;
 
   @ManyToOne(() => Account, (account) => account.problems)

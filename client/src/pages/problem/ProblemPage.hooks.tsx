@@ -1,71 +1,59 @@
 import { ErrorModel } from "@/models/ErrorModel";
 import { SubmissionModel } from "@/models/SubmissionModel";
-import { SubmissionStatusDescription } from "@/models/SubmissionStatusDescription";
-import { useState } from "react";
+import { ProblemModel } from "@/models/problem/ProblemModel";
+import { ProblemSetupModel } from "@/models/problem/problem-setup/ProblemSetupModel";
+import { problemService } from "@/services/ProblemService";
+import { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 
 export const useProblemPage = () => {
-  const [code, setCode] = useState<string>("");
+  const { problemSlug } = useParams();
+  const [searchParams] = useSearchParams();
+  const [setup, setSetup] = useState<ProblemSetupModel | null>(null);
+  const [problem, setProblem] = useState<ProblemModel | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<ErrorModel | null>(null);
-  const [submissionResult, setSubmissionResult] =
-    useState<SubmissionModel | null>(null);
-  const changeCode = (value: string | undefined) => {
-    setCode(value ?? "");
-  };
+  const [submissionResult] = useState<SubmissionModel | null>(null);
 
-  const submitCode = async () => {
+  const languageId = searchParams.get("language");
+
+  useEffect(() => {
+    let ignore = false;
     setIsLoading(true);
-    setError(null);
-    setSubmissionResult(null);
 
-    // const [data, apiError] = await evaluatorService.createAnonymousSubmission(
-    //   code
-    // );
+    (async () => {
+      if (problemSlug && languageId) {
+        const [data, apiError] = await problemService.getProblemAggregate(
+          problemSlug,
+          +languageId
+        );
 
-    // if (apiError) {
-    //   setError(apiError);
-    // }
+        if (data && !ignore) {
+          setProblem(data.problem);
+          setSetup(data.problemSetup);
+        }
 
-    // if (data && data.token) {
-    //   await pollSubmissionStatus(data.token);
-    // }
+        if (apiError && !ignore) {
+          setError(apiError);
+        }
+      }
+    })();
 
     setIsLoading(false);
-  };
 
-  const pollSubmissionStatus = async (id: string) => {
-    const interval = 2000;
-
-    const checkStatus = async () => {
-      // const [submission, statusError] = await submissionService.getSubmission(
-      //   id
-      // );
-      // if (submission) {
-      //   if (
-      //     submission?.status.description ===
-      //       SubmissionStatusDescription.IN_QUEUE ||
-      //     submission?.status.description ===
-      //       SubmissionStatusDescription.PROCESSING
-      //   ) {
-      //     setTimeout(checkStatus, interval);
-      //   } else {
-      //     if (statusError) {
-      //       setError(statusError);
-      //     }
-      //     setSubmissionResult(submission);
-      //   }
-      // }
+    return () => {
+      ignore = true;
     };
+  }, [languageId, problemSlug]);
 
-    await checkStatus();
-  };
+  const submitCode = async () => {};
 
   return {
-    code,
-    changeCode,
     isLoading,
     error,
     submitCode,
     submissionResult,
+    problem,
+    setup,
   };
 };

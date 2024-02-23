@@ -1,7 +1,11 @@
 import { Badge } from "@/components/ui/badge";
+import { ProblemModel } from "@/models/problem/ProblemModel";
 import Markdown from "react-markdown";
 
-const ProblemInfo = () => {
+type Props = {
+  problem: ProblemModel;
+};
+const ProblemInfo = ({ problem }: Props) => {
   return (
     <div className="p-5 flex flex-col gap-5 h-full overflow-y-scroll">
       <div className="flex flex-col gap-2">
@@ -39,7 +43,7 @@ const ProblemInfo = () => {
             ),
           }}
         >
-          {question}
+          {problem.question}
         </Markdown>
       </div>
     </div>

@@ -5,25 +5,15 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerTimes } from 'src/common/throttler/throttler-times';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     ThrottlerModule.forRoot([
       {
-        name: 'short',
-        ttl: 3_000,
+        ttl: ThrottlerTimes.THREE_SECONDS,
         limit: 1,
-      },
-      {
-        name: 'medium',
-        ttl: 10_000,
-        limit: 5,
-      },
-      {
-        name: 'long',
-        ttl: 60_000,
-        limit: 20,
       },
     ]),
     HttpModule.registerAsync({

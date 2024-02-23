@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { ApiResponse } from "../models/ApiResponseModel";
 import { ErrorModel } from "../models/ErrorModel";
 
 const axiosApi = axios.create({
@@ -6,21 +7,18 @@ const axiosApi = axios.create({
   timeout: 30_000,
 });
 
-const callExternalApi = async <T>(
-  options: {
-    config: AxiosRequestConfig;
-  },
-  onCancel: T
-): Promise<T> => {
+const callExternalApi = async <T>(options: {
+  config: AxiosRequestConfig;
+}): Promise<ApiResponse<T>> => {
   try {
     const response: AxiosResponse = await axiosApi(options.config);
     const { data } = response;
 
-    return data;
+    return [data, null];
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.message === "Request aborted" || error.message === "canceled") {
-        return onCancel;
+        return [null, null];
       }
       const axiosError = error as AxiosError;
 
@@ -40,9 +38,20 @@ const callExternalApi = async <T>(
         message = (response.data as ErrorModel).message;
       }
 
-      throw new Error(message);
+      return [
+        null,
+        {
+          message,
+        },
+      ];
     }
-    return onCancel;
+
+    return [
+      null,
+      {
+        message: (error as Error).message,
+      },
+    ];
   }
 };
 

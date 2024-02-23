@@ -4,12 +4,17 @@ import { cn } from "@/lib/utils";
 import { ProblemModel } from "@/models/problem/ProblemModel";
 import Markdown from "@/components/markdown/Markdown";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 type Props = {
   problem: ProblemModel;
 };
 
 const ProblemsRandomCard = ({ problem }: Props) => {
+  const { preferredLanguage } = useAppSelector(
+    (state) => state.preferredLanguage
+  );
+
   return (
     <Card className="p-5 flex flex-col gap-5">
       <h3 className="text-xl font-semibold">{problem.title}</h3>
@@ -19,7 +24,7 @@ const ProblemsRandomCard = ({ problem }: Props) => {
       <ul className="flex gap-5 items-center">
         <li>
           <Link
-            to={`/problem/${problem.titleSlug}`}
+            to={`/problem/${problem.titleSlug}?language=${preferredLanguage.id}`}
             className={cn(buttonVariants({ variant: "default" }), "w-20")}
           >
             Practice

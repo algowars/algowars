@@ -1,12 +1,15 @@
-import { useProblemRandom } from "@/services/useProblem";
+import ErrorAlert from "@/errors/ErrorAlert";
+import { useProblemsRandom } from "./ProblemsRandom.hooks";
 import ProblemsRandomCard from "./problems-random-card/ProblemsRandomCard";
-import { useState } from "react";
 
 const ProblemsRandom = () => {
-  const [notAllowedProblemIds] = useState<number[]>([]);
-  const problem = useProblemRandom(notAllowedProblemIds);
-  console.log(problem.data);
-  return problem.data ? <ProblemsRandomCard problem={problem.data} /> : null;
+  const { problem, error } = useProblemsRandom();
+  return problem ? (
+    <div className="flex flex-col gap-3">
+      <ErrorAlert error={error} />
+      <ProblemsRandomCard problem={problem} />
+    </div>
+  ) : null;
 };
 
 export default ProblemsRandom;

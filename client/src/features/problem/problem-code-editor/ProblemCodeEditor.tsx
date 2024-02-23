@@ -1,11 +1,12 @@
 import Editor from "@monaco-editor/react";
+import { useProblemCodeEditor } from "./ProblemCodeEditor.hooks";
 
 type Props = {
-  code: string;
-  changeCode: (value: string | undefined) => void;
+  initialCode: string;
 };
 
-const ProblemCodeEditor = ({ code, changeCode }: Props) => {
+const ProblemCodeEditor = ({ initialCode }: Props) => {
+  const { code, changeCode } = useProblemCodeEditor(initialCode);
   return (
     <Editor
       height="100%"

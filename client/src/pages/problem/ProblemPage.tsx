@@ -10,10 +10,15 @@ import NavbarSolid from "@/layout/navbar/navbar-solid/NavbarSolid";
 import { useProblemPage } from "./ProblemPage.hooks";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/ErrorAlertFixed";
 import ProblemResult from "@/features/problem/problem-result/ProblemResult";
+import PageLoader from "@/components/loader/page-loader/PageLoader";
 
 const ProblemPage = () => {
-  const { code, changeCode, isLoading, error, submitCode, submissionResult } =
+  const { problem, setup, isLoading, error, submitCode, submissionResult } =
     useProblemPage();
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <>
@@ -25,7 +30,7 @@ const ProblemPage = () => {
         <main className="grow">
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={46}>
-              <ProblemCodeEditor code={code} changeCode={changeCode} />
+              <ProblemCodeEditor initialCode={setup?.code ?? ""} />
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={54}>
@@ -34,7 +39,7 @@ const ProblemPage = () => {
                   defaultSize={70}
                   className="overflow-y-scroll h-full"
                 >
-                  <ProblemInfo />
+                  {problem ? <ProblemInfo problem={problem} /> : null}
                 </ResizablePanel>
                 <ResizableHandle />
                 <ResizablePanel defaultSize={30}>

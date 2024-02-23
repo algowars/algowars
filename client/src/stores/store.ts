@@ -2,10 +2,12 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import themeReducer from "../slices/themeSlice";
 import accountReducer from "../slices/accountSlice";
+import preferredLanguageSlice from "@/slices/preferredLanguageSlice";
 
 const rootReducer = combineReducers({
   theme: themeReducer,
   account: accountReducer,
+  preferredLanguage: preferredLanguageSlice,
 });
 
 export function setupStore(preloadedState?: Partial<RootState>) {
