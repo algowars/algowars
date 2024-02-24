@@ -18,7 +18,7 @@ const ProblemsRandomCard = ({ problem }: Props) => {
   return (
     <Card className="p-5 flex flex-col gap-5">
       <h3 className="text-xl font-semibold">{problem.title}</h3>
-      <div className="overflow-y-hidden max-h-64">
+      <div className="overflow-y-scroll max-h-32">
         <Markdown content={problem.question ?? ""} />
       </div>
       <ul className="flex gap-5 items-center">

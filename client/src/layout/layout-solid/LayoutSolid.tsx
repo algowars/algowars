@@ -13,13 +13,13 @@ type Props = {
 
 const LayoutSolid = ({
   children,
-  bgColor = "dark:bg-slate-950 dark:text-white",
+  bgColor = "dark:bg-stone-950 dark:text-white",
   mainClassName = "",
   mainClassSize = "grow",
   showFooter = true,
 }: Props) => {
   return (
-    <div className="flex flex-col h-screen relative">
+    <div className="flex flex-col max-h-screen relative">
       <header className={bgColor}>
         <NavbarSolid />
       </header>

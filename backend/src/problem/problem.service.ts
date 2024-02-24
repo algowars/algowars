@@ -22,6 +22,16 @@ export class ProblemService {
     });
   }
 
+  findOneBySlug(titleSlug: string) {
+    if (!titleSlug) {
+      return null;
+    }
+
+    return this.problemRepository.findOneBy({
+      titleSlug,
+    });
+  }
+
   findRandomProblem(disallowedIds: number[] = []): Promise<Problem> {
     const entityName = 'problem';
     const queryBuilder = this.problemRepository.createQueryBuilder(entityName);

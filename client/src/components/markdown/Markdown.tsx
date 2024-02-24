@@ -15,7 +15,7 @@ const Markdown = ({ content }: Props) => {
     code({ children, ...props }: CustomComponentProps) {
       return (
         <code
-          className="px-1.5 h-8 border bg-slate-200 dark:bg-slate-800 rounded inline-block"
+          className="border px-1 leading-5 border bg-stone-200 dark:bg-stone-800 rounded inline-block"
           {...props}
         >
           {children}
@@ -43,7 +43,7 @@ const Markdown = ({ content }: Props) => {
     .join("\n\n");
 
   return (
-    <ReactMarkdown components={components} className="leading-loose">
+    <ReactMarkdown components={components} className="leading-10">
       {processedContent}
     </ReactMarkdown>
   );

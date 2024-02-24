@@ -2,13 +2,14 @@ import { Module } from '@nestjs/common';
 import { ProblemService } from './problem.service';
 import { ProblemController } from './problem.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Problem } from 'src/data-model/entities';
+import { Problem, ProblemSetup } from 'src/data-model/entities';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerTimes } from 'src/common/throttler/throttler-times';
+import { ProblemSetupService } from 'src/problem-setup/problem-setup.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Problem]),
+    TypeOrmModule.forFeature([Problem, ProblemSetup]),
     ThrottlerModule.forRoot([
       {
         ttl: ThrottlerTimes.TEN_SECONDS,
@@ -17,6 +18,6 @@ import { ThrottlerTimes } from 'src/common/throttler/throttler-times';
     ]),
   ],
   controllers: [ProblemController],
-  providers: [ProblemService],
+  providers: [ProblemService, ProblemSetupService],
 })
 export class ProblemModule {}

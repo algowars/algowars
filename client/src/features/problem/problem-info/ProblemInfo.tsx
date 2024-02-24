@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { ProblemModel } from "@/models/problem/ProblemModel";
-import Markdown from "react-markdown";
+import Markdown from "@/components/markdown/Markdown";
 
 type Props = {
   problem: ProblemModel;
@@ -23,28 +23,7 @@ const ProblemInfo = ({ problem }: Props) => {
         </ul>
       </div>
       <div>
-        <Markdown
-          components={{
-            code(props) {
-              const { children } = props;
-              return (
-                <code className="px-1.5 border bg-slate-200 dark:bg-slate-800 rounded inline-block">
-                  {children}
-                </code>
-              );
-            },
-            p: ({ children }) => <p className="mb-3">{children}</p>,
-            ul: ({ children }) => (
-              <ul className="list-disc ml-5 mb-4">{children}</ul>
-            ),
-            li: ({ children }) => <li className="mb-4">{children}</li>,
-            strong: ({ children }) => (
-              <strong className="font-bold">{children}</strong>
-            ),
-          }}
-        >
-          {problem.question}
-        </Markdown>
+        <Markdown content={problem.question ?? ""} />
       </div>
     </div>
   );

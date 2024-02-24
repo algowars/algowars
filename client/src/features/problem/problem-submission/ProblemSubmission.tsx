@@ -14,7 +14,7 @@ const ProblemSubmission = ({ submission }: Props) => {
       {submission.stdin ? (
         <div className="flex flex-col gap-3">
           <p className="text-sm">Input</p>
-          <div className="p-3 bg-slate-900 rounded">
+          <div className="p-3 bg-stone-900 rounded">
             <p>{submission.stdin}</p>
           </div>
         </div>
@@ -22,7 +22,7 @@ const ProblemSubmission = ({ submission }: Props) => {
       {submission.stdout ? (
         <div className="flex flex-col gap-3">
           <p className="text-sm">Output</p>
-          <div className="p-3 bg-slate-900 rounded">
+          <div className="p-3 bg-stone-900 rounded">
             <p>{submission.stdout}</p>
           </div>
         </div>
