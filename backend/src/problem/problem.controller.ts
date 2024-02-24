@@ -40,6 +40,7 @@ export class ProblemController {
     const foundProblemSetup = await this.problemSetupService.findOne(
       foundProblem.id,
       getProblemAggregate.languageId,
+      ['initialInputs'],
     );
     if (!foundProblemSetup) {
       throw new ProblemSetupNotFoundException();

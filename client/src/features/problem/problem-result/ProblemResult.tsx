@@ -4,12 +4,14 @@ import { AvailableTabs } from "./AvailableTabs";
 import { useProblemResult } from "./ProblemResult.hooks";
 import ProblemTestcase from "../problem-testcase/ProblemTestcase";
 import ProblemSubmission from "../problem-submission/ProblemSubmission";
+import { ProblemSetupModel } from "@/models/problem/problem-setup/ProblemSetupModel";
 
 type Props = {
   submission: SubmissionModel | null;
+  setup: ProblemSetupModel | null;
 };
 
-const ProblemResult = ({ submission }: Props) => {
+const ProblemResult = ({ submission, setup }: Props) => {
   const { currentTab, changeTab } = useProblemResult(submission);
 
   return (
@@ -45,7 +47,7 @@ const ProblemResult = ({ submission }: Props) => {
       {currentTab === AvailableTabs.TEST_RESULTS ? (
         <ProblemSubmission submission={submission} />
       ) : (
-        <ProblemTestcase />
+        <ProblemTestcase setup={setup} />
       )}
     </div>
   );

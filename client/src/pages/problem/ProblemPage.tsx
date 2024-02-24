@@ -43,7 +43,7 @@ const ProblemPage = () => {
                 </ResizablePanel>
                 <ResizableHandle />
                 <ResizablePanel defaultSize={30}>
-                  <ProblemResult submission={submissionResult} />
+                  <ProblemResult submission={submissionResult} setup={setup} />
                 </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>

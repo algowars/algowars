@@ -10,10 +10,17 @@ export class ProblemSetupService {
     private readonly problemSetupRepository: Repository<ProblemSetup>,
   ) {}
 
-  findOne(problemId: number, languageId: number) {
-    return this.problemSetupRepository.findOneBy({
-      problemId,
-      languageId,
+  findOne(problemId: number, languageId: number, relations: string[] = []) {
+    const query =
+      this.problemSetupRepository.createQueryBuilder('problemSetup');
+
+    relations.forEach((relation) => {
+      query.leftJoinAndSelect(`problemSetup.${relation}`, relation);
     });
+
+    return query
+      .where('problemSetup.problemId = :problemId', { problemId })
+      .andWhere('problemSetup.languageId = :languageId', { languageId })
+      .getOne();
   }
 }
