@@ -1,22 +1,23 @@
 import ThemeToggle from "@/components/button/ThemeToggle";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import AuthLogoutButton from "@/features/auth/auth-logout-button/AuthLogoutButton";
 import { Link } from "react-router-dom";
 
 const NavbarLoggedIn = () => {
   return (
-    <ul>
+    <ul className="flex items-center gap-5">
       <li>
-        <Link to="/" className="py-2 px-2 block">
+        <Link to="/" className={buttonVariants({ variant: "ghost" })}>
           Home
         </Link>
       </li>
       <li>
-        <Link to="/problems" className="py-2 px-2 block">
+        <Link to="/problems" className={buttonVariants({ variant: "ghost" })}>
           Problem
         </Link>
       </li>
       <li>
-        <Button>Log out</Button>
+        <AuthLogoutButton />
       </li>
       <li>
         <ThemeToggle />

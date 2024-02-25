@@ -1,5 +1,7 @@
 import ThemeToggle from "@/components/button/ThemeToggle";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import AuthLoginButton from "@/features/auth/auth-login-button/AuthLoginButton";
+import AuthSignupButton from "@/features/auth/auth-signup-button/AuthSignupButton";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
@@ -20,10 +22,10 @@ const NavbarNotLoggedIn = () => {
         </Link>
       </li>
       <li>
-        <Button variant="ghost">Log in</Button>
+        <AuthLoginButton />
       </li>
       <li>
-        <Button variant="outline">Sign up</Button>
+        <AuthSignupButton />
       </li>
       <li>
         <ThemeToggle />
