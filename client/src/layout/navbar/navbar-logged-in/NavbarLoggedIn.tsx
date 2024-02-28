@@ -17,6 +17,11 @@ const NavbarLoggedIn = () => {
         </Link>
       </li>
       <li>
+        <Link to="/admin" className={buttonVariants({ variant: "ghost" })}>
+          Admin
+        </Link>
+      </li>
+      <li>
         <AuthLogoutButton />
       </li>
       <li>
