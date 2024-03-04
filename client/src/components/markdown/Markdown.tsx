@@ -3,14 +3,14 @@ import ReactMarkdown, { Components } from "react-markdown";
 
 type Props = {
   content: string;
+  className?: string;
 };
 
 interface CustomComponentProps {
   children?: ReactNode;
-  className?: string;
 }
 
-const Markdown = ({ content }: Props) => {
+const Markdown = ({ content, className = "" }: Props) => {
   const components: Components = {
     code({ children, ...props }: CustomComponentProps) {
       return (
@@ -43,7 +43,10 @@ const Markdown = ({ content }: Props) => {
     .join("\n\n");
 
   return (
-    <ReactMarkdown components={components} className="leading-10">
+    <ReactMarkdown
+      components={components}
+      className={`leading-10 ${className}`}
+    >
       {processedContent}
     </ReactMarkdown>
   );

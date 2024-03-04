@@ -1,13 +1,6 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { ProblemTest } from './problem-test.entity';
-import { ProblemInitialInputs } from './problem-initial-inputs.entity';
+import { ProblemInput } from './problem-input.entity';
 
 @Entity()
 export class ProblemSetup {
@@ -23,7 +16,6 @@ export class ProblemSetup {
   @OneToMany(() => ProblemTest, (problemTest) => problemTest.problemSetup)
   tests: ProblemTest[];
 
-  @ManyToMany(() => ProblemInitialInputs)
-  @JoinTable()
-  initialInputs: ProblemInitialInputs[];
+  @OneToMany(() => ProblemInput, (problemInput) => problemInput.input)
+  inputs: ProblemInput[];
 }

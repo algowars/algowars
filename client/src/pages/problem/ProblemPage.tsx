@@ -27,7 +27,7 @@ const ProblemPage = () => {
         <header>
           <NavbarSolid />
         </header>
-        <main className="grow">
+        <section className="grow">
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel defaultSize={46}>
               <ProblemCodeEditor initialCode={setup?.code ?? ""} />
@@ -48,7 +48,7 @@ const ProblemPage = () => {
               </ResizablePanelGroup>
             </ResizablePanel>
           </ResizablePanelGroup>
-        </main>
+        </section>
         <div className="border-t shadow-sm flex items-center p-5">
           <ul className="ml-auto">
             <li>

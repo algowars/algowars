@@ -1,5 +1,6 @@
 import Editor from "@monaco-editor/react";
 import { useProblemCodeEditor } from "./ProblemCodeEditor.hooks";
+import { useTheme } from "@/context/themeProvider";
 
 type Props = {
   initialCode: string;
@@ -7,13 +8,15 @@ type Props = {
 
 const ProblemCodeEditor = ({ initialCode }: Props) => {
   const { code, changeCode } = useProblemCodeEditor(initialCode);
+  const { theme } = useTheme();
   return (
     <Editor
       height="100%"
       defaultLanguage="javascript"
       value={code}
       onChange={changeCode}
-      theme="vs-dark"
+      theme={`vs-${theme}`}
+      className="border rounded"
     />
   );
 };

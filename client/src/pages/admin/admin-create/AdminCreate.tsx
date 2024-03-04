@@ -1,16 +1,17 @@
 import { Card } from "@/components/ui/card";
-import Layout from "@/layout/Layout";
-import Container from "@/layout/container/Container";
+import ProblemEditor from "@/features/problem/problem-editor/ProblemEditor";
+import LayoutSolid from "@/layout/layout-solid/LayoutSolid";
 
 const AdminCreate = () => {
   return (
-    <Layout>
-      <Container className="py-5">
+    <LayoutSolid>
+      <div className="py-5 flex flex-col gap-5 px-3">
         <Card className="p-5 flex flex-col gap-5">
           <h1 className="text-2xl font-semibold">Admin Create</h1>
         </Card>
-      </Container>
-    </Layout>
+        <ProblemEditor />
+      </div>
+    </LayoutSolid>
   );
 };
 

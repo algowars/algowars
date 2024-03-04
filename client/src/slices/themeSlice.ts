@@ -1,11 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import storage from "../utils/Storage";
 
+interface ThemeState {
+  theme: "dark" | "light" | "system";
+}
+
+const initialState: ThemeState = {
+  theme: storage.get("theme") ?? "dark",
+};
+
 export const themeSlice = createSlice({
   name: "theme",
-  initialState: {
-    theme: storage.get("theme") ?? "dark",
-  },
+  initialState,
   reducers: {
     setDarkMode: (state) => {
       state.theme = "dark";

@@ -5,6 +5,9 @@ export class ProblemInitialInputs {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ nullable: false })
+  label: string;
+
   @Column({ nullable: false, unique: true })
-  inputs: string;
+  input: string;
 }
