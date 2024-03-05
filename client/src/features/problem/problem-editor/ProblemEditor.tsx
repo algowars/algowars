@@ -11,10 +11,10 @@ const ProblemEditor = () => {
     changeTitle,
     slug,
     changeSlug,
-    tests,
-    setTests,
     question,
     changeQuestion,
+    solution,
+    changeSolution,
   } = useProblemEditor();
   return (
     <Card className="grid grid-cols-2 gap-7 p-5">
@@ -36,6 +36,11 @@ const ProblemEditor = () => {
       </section>
       <section className="flex flex-col gap-5">
         <h4 className="text-xl font-semibold">Solution</h4>
+        <ProblemCodeEditor
+          code={solution}
+          changeCode={changeSolution}
+          className="h-96"
+        />
       </section>
       <section className="flex flex-col gap-5">
         <h4 className="text-xl font-semibold">Tests</h4>

@@ -7,6 +7,7 @@ import {
   quotePlugin,
   thematicBreakPlugin,
 } from "@mdxeditor/editor";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProblemEditorQuestionTabs } from "./ProblemEditorQuestionTabs";
 import Markdown from "@/components/markdown/Markdown";
@@ -43,7 +44,7 @@ const ProblemEditorQuestion = ({ question, changeQuestion }: Props) => {
           />
         </TabsContent>
         <TabsContent value={ProblemEditorQuestionTabs.PREVIEW}>
-          <Markdown content={question} className="border p-3" />
+          <Markdown content={question} className="border rounded p-3 h-96" />
         </TabsContent>
       </Tabs>
     </div>

@@ -1,13 +1,13 @@
 import Editor from "@monaco-editor/react";
-import { useProblemCodeEditor } from "./ProblemCodeEditor.hooks";
 import { useTheme } from "@/context/themeProvider";
 
 type Props = {
-  initialCode: string;
+  code: string;
+  changeCode: (value: string | undefined) => void;
+  className?: string;
 };
 
-const ProblemCodeEditor = ({ initialCode }: Props) => {
-  const { code, changeCode } = useProblemCodeEditor(initialCode);
+const ProblemCodeEditor = ({ code, changeCode, className = "" }: Props) => {
   const { theme } = useTheme();
   return (
     <Editor
@@ -16,7 +16,7 @@ const ProblemCodeEditor = ({ initialCode }: Props) => {
       value={code}
       onChange={changeCode}
       theme={`vs-${theme}`}
-      className="border rounded"
+      className={`border rounded ${className}`}
     />
   );
 };

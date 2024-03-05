@@ -26,10 +26,15 @@ export const useProblemEditor = () => {
     setQuestion(value);
   };
 
+  const changeSolution = (value: string | undefined) => {
+    setSolution(value ?? "");
+  };
+
   return {
     title,
     changeTitle,
     solution,
+    changeSolution,
     slug,
     changeSlug,
     tests,
