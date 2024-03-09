@@ -7,7 +7,11 @@ type Props = {
   className?: string;
 };
 
-const ProblemCodeEditor = ({ code, changeCode, className = "" }: Props) => {
+const ProblemCodeEditor = ({
+  code,
+  changeCode,
+  className = "border rounded",
+}: Props) => {
   const { theme } = useTheme();
   return (
     <Editor
@@ -16,7 +20,7 @@ const ProblemCodeEditor = ({ code, changeCode, className = "" }: Props) => {
       value={code}
       onChange={changeCode}
       theme={`vs-${theme}`}
-      className={`border rounded ${className}`}
+      className={className}
     />
   );
 };

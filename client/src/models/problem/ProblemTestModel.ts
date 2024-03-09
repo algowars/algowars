@@ -1,8 +1,8 @@
 import { ProblemSetupModel } from "./problem-setup/ProblemSetupModel";
 
 export interface ProblemTestModel {
-  id: number;
+  id?: number;
   test: string;
-  order: number;
+  order?: number;
   problemSetup?: ProblemSetupModel;
 }

@@ -1,11 +1,18 @@
 import "@mdxeditor/editor/style.css";
 import {
+  BlockTypeSelect,
+  BoldItalicUnderlineToggles,
+  CodeToggle,
+  InsertCodeBlock,
   MDXEditor,
+  codeBlockPlugin,
+  codeMirrorPlugin,
   headingsPlugin,
   listsPlugin,
   markdownShortcutPlugin,
   quotePlugin,
   thematicBreakPlugin,
+  toolbarPlugin,
 } from "@mdxeditor/editor";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -36,15 +43,31 @@ const ProblemEditorQuestion = ({ question, changeQuestion }: Props) => {
               headingsPlugin(),
               listsPlugin(),
               quotePlugin(),
+              codeBlockPlugin(),
+              codeMirrorPlugin(),
               thematicBreakPlugin(),
               markdownShortcutPlugin(),
+              toolbarPlugin({
+                toolbarContents: () => (
+                  <>
+                    {" "}
+                    <BlockTypeSelect />
+                    <BoldItalicUnderlineToggles />
+                    <CodeToggle />
+                    <InsertCodeBlock />
+                  </>
+                ),
+              }),
             ]}
             onChange={changeQuestion}
-            className="border rounded h-96"
+            className="border rounded h-96 overflow-y-scroll overflow-x-scroll"
           />
         </TabsContent>
         <TabsContent value={ProblemEditorQuestionTabs.PREVIEW}>
-          <Markdown content={question} className="border rounded p-3 h-96" />
+          <Markdown
+            content={question}
+            className="border rounded p-3 h-96 overfloy-y-scroll overflow-x-scroll"
+          />
         </TabsContent>
       </Tabs>
     </div>

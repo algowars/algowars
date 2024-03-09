@@ -6,7 +6,6 @@ import { ProblemModule } from './problem/problem.module';
 import { EvaluatorModule } from './evaluator/evaluator.module';
 import { SubmissionModule } from './submission/submission.module';
 import entities from './data-model/entities';
-import { ProblemSetupModule } from './problem-setup/problem-setup.module';
 
 @Module({
   imports: [
@@ -29,7 +28,6 @@ import { ProblemSetupModule } from './problem-setup/problem-setup.module';
     }),
     CommonModule,
     ProblemModule,
-    ProblemSetupModule,
     EvaluatorModule,
     SubmissionModule,
   ],

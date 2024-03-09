@@ -1,9 +1,9 @@
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { useProblemEditor } from "./ProblemEditor.hooks";
 import ProblemCodeEditor from "../problem-code-editor/ProblemCodeEditor";
 import ProblemEditorMetadata from "./problem-editor-metadata/ProblemEditorMetadata";
 import ProblemEditorQuestion from "./problem-editor-question/ProblemEditorQuestion";
+import ProblemEditorTests from "./problem-editor-tests/ProblemEditorTests";
 
 const ProblemEditor = () => {
   const {
@@ -15,6 +15,8 @@ const ProblemEditor = () => {
     changeQuestion,
     solution,
     changeSolution,
+    tests,
+    setTests,
   } = useProblemEditor();
   return (
     <Card className="grid grid-cols-2 gap-7 p-5">
@@ -39,11 +41,12 @@ const ProblemEditor = () => {
         <ProblemCodeEditor
           code={solution}
           changeCode={changeSolution}
-          className="h-96"
+          className="h-96 border rounded"
         />
       </section>
       <section className="flex flex-col gap-5">
         <h4 className="text-xl font-semibold">Tests</h4>
+        <ProblemEditorTests tests={tests} setTests={setTests} />
       </section>
       {/* <div className="flex flex-col gap-3">
         <h4 className="text-xl font-semibold">Metadata</h4>

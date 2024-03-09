@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Problem } from './problem.entity';
+import { Submission } from './submission.entity';
 
 @Entity()
 export class Account {
@@ -20,7 +21,10 @@ export class Account {
   username: string;
 
   @OneToMany(() => Problem, (problem) => problem.createdBy)
-  problems: Promise<Problem>;
+  problems: Promise<Problem[]>;
+
+  @OneToMany(() => Submission, (solution) => solution.createdBy)
+  submissions: Promise<Submission[]>;
 
   @CreateDateColumn()
   createdAt: Date;

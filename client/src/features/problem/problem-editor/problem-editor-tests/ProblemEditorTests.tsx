@@ -13,15 +13,17 @@ const ProblemEditorTests = ({ tests, setTests }: Props) => {
   const { currentTestIndex, changeCurrentTestIndex, changeCurrentTest } =
     useProblemEditorTests(tests, setTests);
   return (
-    <div>
+    <div className="border rounded p-1 flex flex-col gap-3">
       <ProblemEditorTestsNav
         tests={tests}
+        setTests={setTests}
         changeCurrentTestIndex={changeCurrentTestIndex}
         currentTestIndex={currentTestIndex}
       />
       <ProblemCodeEditor
-        code={tests[currentTestIndex].test}
+        code={tests[currentTestIndex]?.test ?? ""}
         changeCode={changeCurrentTest}
+        className="h-96"
       />
     </div>
   );

@@ -1,30 +1,29 @@
 import { Account } from './account.entity';
-import { LanguageSetup } from './language-setup.entity';
-import { ProblemInitialInputs } from './problem-initial-inputs.entity';
-import { ProblemInput } from './problem-input.entity';
-import { ProblemSetup } from './problem-setup.entity';
-import { ProblemSolution } from './problem-solution.entity';
-import { ProblemTest } from './problem-test.entity';
 import { Problem } from './problem.entity';
+import { SubmissionToken } from './submission-token.entity';
+import { Submission } from './submission.entity';
+import { TestInput } from './test-input.entity';
+import { TestSetup } from './test-setup.entity';
+import { Test } from './test.entity';
 
 const entities = [
   Problem,
   Account,
-  LanguageSetup,
-  ProblemInput,
-  ProblemSetup,
-  ProblemSolution,
-  ProblemTest,
+  Submission,
+  SubmissionToken,
+  Test,
+  TestInput,
+  TestSetup,
 ];
 
 export {
   Problem,
   Account,
-  LanguageSetup,
-  ProblemInput,
-  ProblemSetup,
-  ProblemSolution,
-  ProblemTest,
+  Submission,
+  SubmissionToken,
+  Test,
+  TestInput,
+  TestSetup,
 };
 
 export default entities;

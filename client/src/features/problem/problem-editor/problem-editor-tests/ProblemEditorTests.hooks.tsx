@@ -14,8 +14,17 @@ export const useProblemEditorTests = (
   };
 
   const changeCurrentTest = (value: string | undefined) => {
-    setTests((curr) => {
-      return [...curr];
+    if (value === undefined) return;
+
+    setTests((currTests) => {
+      const updatedTests = [...currTests];
+
+      if (currentTestIndex >= 0 && currentTestIndex < updatedTests.length) {
+        const currentTest = updatedTests[currentTestIndex];
+        updatedTests[currentTestIndex] = { ...currentTest, test: value };
+      }
+
+      return updatedTests;
     });
   };
 
