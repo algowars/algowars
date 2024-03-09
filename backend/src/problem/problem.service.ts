@@ -28,7 +28,7 @@ export class ProblemService {
     }
 
     return this.problemRepository.findOneBy({
-      titleSlug,
+      slug: titleSlug,
     });
   }
 
