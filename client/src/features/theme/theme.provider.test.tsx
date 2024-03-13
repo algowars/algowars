@@ -1,8 +1,8 @@
 import { vi } from "vitest";
-import { ThemeProvider, useTheme } from "./theme-provider";
 import { beforeEach } from "node:test";
 import { describe, test, expect } from "vitest";
 import { cleanup, fireEvent, render } from "@testing-library/react";
+import { ThemeProvider, useTheme } from "./theme.provider";
 
 const mockLocalStorage = {
   getItem: vi.fn(),

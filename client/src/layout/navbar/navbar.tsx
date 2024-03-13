@@ -17,7 +17,7 @@ const Navbar = ({ navLinks }: Props) => {
             </Link>
           </li>
         </ul>
-        <ul className="flex items-center gap-3">
+        <ul className="flex items-center gap-5">
           {navLinks.map((link) => (
             <li key={link.name}>
               {link.href ? (

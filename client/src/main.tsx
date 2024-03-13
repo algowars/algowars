@@ -4,8 +4,8 @@ import "./index.css";
 import App from "./app";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "./features/theme/theme-provider";
 import AuthProviderWithNavigate from "./features/auth/context/auth-provider-with-navigate";
+import { ThemeProvider } from "./features/theme/theme.provider";
 
 const queryClient = new QueryClient();
 
