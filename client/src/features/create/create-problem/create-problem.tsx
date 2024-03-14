@@ -3,6 +3,7 @@ import { useCreateProblem } from "./create-problem.provider";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CreateProblemQuestion from "./create-problem-question/create-problem-question";
+import CreateProblemTests from "./create-problem-tests/create-problem-tests";
 
 const CreateProblem = () => {
   const { createProblem, changeCreateProblem } = useCreateProblem();
@@ -29,6 +30,10 @@ const CreateProblem = () => {
       <div className="flex flex-col gap-3">
         <Label htmlFor="question">Question</Label>
         <CreateProblemQuestion />
+      </div>
+      <div className="flex flex-col gap-3">
+        <Label htmlFor="tests">Tests</Label>
+        <CreateProblemTests />
       </div>
 
       <div>

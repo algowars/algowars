@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { CreateProblemDto } from "./dtos/create-problem.dto";
+import { CreateTestDto } from "./dtos/create-test.dto";
 
 type CreateProblemProps = {
   children: ReactNode;
@@ -19,6 +20,8 @@ export type CreateProblemState = {
     key: K,
     value: CreateProblemDto[K]
   ) => void;
+  createTests: CreateTestDto[];
+  addTest: () => void;
 };
 
 const initialState: CreateProblemState = {
@@ -29,6 +32,8 @@ const initialState: CreateProblemState = {
   },
   setCreateProblem: () => null,
   changeCreateProblem: () => null,
+  createTests: [],
+  addTest: () => null,
 };
 
 const CreateProblemProviderContext =
@@ -44,6 +49,8 @@ export function CreateProblemProvider({
     question: "",
   });
 
+  const [createTests, setCreateTests] = useState<CreateTestDto[]>([]);
+
   const changeCreateProblem: CreateProblemState["changeCreateProblem"] = (
     key,
     value
@@ -54,10 +61,19 @@ export function CreateProblemProvider({
     }));
   };
 
+  const addTest = () => {
+    setCreateTests((curr) => [
+      ...curr,
+      { inputs: [], expectedOutput: "", test: "" },
+    ]);
+  };
+
   const value = {
     createProblem,
     setCreateProblem,
     changeCreateProblem,
+    createTests,
+    addTest,
   };
 
   return (
