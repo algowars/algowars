@@ -26,7 +26,7 @@ import { Label } from "@/components/ui/label";
 
 const CreateProblemQuestion = () => {
   const { createProblem, changeCreateProblem } = useCreateProblem();
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(true);
 
   return (
     <div className="flex flex-col gap-3">
