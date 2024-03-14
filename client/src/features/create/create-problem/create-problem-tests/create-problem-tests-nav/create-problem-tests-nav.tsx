@@ -1,7 +1,7 @@
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { useCreateProblem } from "../../create-problem.provider";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 type Props = {
   currentTest: number;
@@ -9,19 +9,35 @@ type Props = {
 };
 
 const CreateProblemTestsNav = ({ currentTest, setCurrentTest }: Props) => {
-  const { createProblem, changeCreateProblem, addTest, createTests } =
-    useCreateProblem();
+  const { addTest, removeTest, createTests } = useCreateProblem();
 
   const createTest = (e: FormEvent) => {
     e.preventDefault();
     addTest();
   };
 
+  const deleteTest = (e: FormEvent, index: number) => {
+    e.preventDefault();
+    removeTest(index);
+  };
+
   return (
     <ul className="flex items-center gap-3">
       {createTests.map((_, index) => (
         <li key={index}>
-          <Button variant="ghost">Test {index}</Button>
+          <Button
+            variant="ghost"
+            className="flex justify-between items-center gap-1.5"
+          >
+            Test {index + 1}{" "}
+            <Button
+              variant="ghost"
+              className="w-6 h-6 p-0 flex justify-center items-center"
+              onClick={(e) => deleteTest(e, index)}
+            >
+              <X size={14} />
+            </Button>
+          </Button>
         </li>
       ))}
       <li>

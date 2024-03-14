@@ -22,6 +22,7 @@ export type CreateProblemState = {
   ) => void;
   createTests: CreateTestDto[];
   addTest: () => void;
+  removeTest: (index: number) => void;
 };
 
 const initialState: CreateProblemState = {
@@ -34,6 +35,7 @@ const initialState: CreateProblemState = {
   changeCreateProblem: () => null,
   createTests: [],
   addTest: () => null,
+  removeTest: () => null,
 };
 
 const CreateProblemProviderContext =
@@ -68,12 +70,17 @@ export function CreateProblemProvider({
     ]);
   };
 
+  const removeTest = (index: number) => {
+    setCreateTests((curr) => curr.filter((_, i) => i !== index));
+  };
+
   const value = {
     createProblem,
     setCreateProblem,
     changeCreateProblem,
     createTests,
     addTest,
+    removeTest,
   };
 
   return (

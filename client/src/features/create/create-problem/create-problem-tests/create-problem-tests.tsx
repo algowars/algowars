@@ -7,7 +7,7 @@ const CreateProblemTests = () => {
   const [currentTest, setCurrentTest] = useState<number>(0);
   const { createTests } = useCreateProblem();
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <CreateProblemTestsNav
         currentTest={currentTest}
         setCurrentTest={setCurrentTest}
