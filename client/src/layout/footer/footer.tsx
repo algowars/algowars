@@ -1,11 +1,12 @@
 import Logo from "@/components/logo/logo";
+import { Input } from "@/components/ui/input";
 
 const Footer = () => {
   return (
     <footer>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Top area: Blocks */}
-        <div className="grid sm:grid-cols-12 gap-8 py-8 md:py-12 border-t border-gray-200">
+        <div className="grid sm:grid-cols-12 gap-8 py-8 md:py-12 border-t">
           {/* 1st block */}
           <div className="sm:col-span-12 lg:col-span-3">
             <div className="mb-2">
@@ -14,14 +15,14 @@ const Footer = () => {
             <div className="text-sm text-gray-600">
               <a
                 href="#0"
-                className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out"
+                className="text-muted-foreground hover:underline transition duration-150 ease-in-out"
               >
                 Terms
               </a>{" "}
               ·{" "}
               <a
                 href="#0"
-                className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out"
+                className="text-muted-foreground hover:underline transition duration-150 ease-in-out"
               >
                 Privacy Policy
               </a>
@@ -30,12 +31,12 @@ const Footer = () => {
 
           {/* 2nd block */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-gray-800 font-medium mb-2">Products</h6>
+            <h6 className="font-medium mb-2">Products</h6>
             <ul className="text-sm">
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Web Studio
                 </a>
@@ -43,7 +44,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   DynamicBox Flex
                 </a>
@@ -51,7 +52,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Programming Forms
                 </a>
@@ -59,7 +60,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Integrations
                 </a>
@@ -67,7 +68,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Command-line
                 </a>
@@ -77,12 +78,12 @@ const Footer = () => {
 
           {/* 3rd block */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-gray-800 font-medium mb-2">Resources</h6>
+            <h6 className="font-medium mb-2">Resources</h6>
             <ul className="text-sm">
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Documentation
                 </a>
@@ -90,7 +91,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Tutorials & Guides
                 </a>
@@ -98,7 +99,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Blog
                 </a>
@@ -106,7 +107,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Support Center
                 </a>
@@ -114,7 +115,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Partners
                 </a>
@@ -124,12 +125,12 @@ const Footer = () => {
 
           {/* 4th block */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-gray-800 font-medium mb-2">Company</h6>
+            <h6 className="font-medium mb-2">Company</h6>
             <ul className="text-sm">
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Home
                 </a>
@@ -137,7 +138,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   About us
                 </a>
@@ -145,7 +146,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Company values
                 </a>
@@ -153,7 +154,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Pricing
                 </a>
@@ -161,7 +162,7 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   href="#0"
-                  className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Privacy Policy
                 </a>
@@ -171,8 +172,8 @@ const Footer = () => {
 
           {/* 5th block */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-3">
-            <h6 className="text-gray-800 font-medium mb-2">Subscribe</h6>
-            <p className="text-sm text-gray-600 mb-4">
+            <h6 className="font-medium mb-2">Subscribe</h6>
+            <p className="text-sm text-muted-foreground mb-4">
               Get the latest news and articles to your inbox every month.
             </p>
             <form>
@@ -182,10 +183,10 @@ const Footer = () => {
                     Email
                   </label>
                   <div className="relative flex items-center max-w-xs">
-                    <input
+                    <Input
                       id="newsletter"
                       type="email"
-                      className="form-input w-full text-gray-800 px-3 py-2 pr-12 text-sm"
+                      className="form-input w-full px-3 py-2 pr-12 text-sm"
                       placeholder="Your email"
                       required
                     />
@@ -195,7 +196,7 @@ const Footer = () => {
                       aria-label="Subscribe"
                     >
                       <span
-                        className="absolute inset-0 right-auto w-px -ml-px my-2 bg-gray-300"
+                        className="absolute inset-0 right-auto w-px -ml-px my-2"
                         aria-hidden="true"
                       ></span>
                       <svg
@@ -219,13 +220,13 @@ const Footer = () => {
         </div>
 
         {/* Bottom area */}
-        <div className="md:flex md:items-center md:justify-between py-4 md:py-8 border-t border-gray-200">
+        <div className="md:flex md:items-center md:justify-between py-4 md:py-8 border-t">
           {/* Social as */}
           <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0">
             <li>
               <a
                 href="#0"
-                className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
+                className="flex justify-center items-center text-muted-foreground rounded-full drop-shadow shadow transition duration-150 ease-in-out"
                 aria-label="Twitter"
               >
                 <svg
@@ -240,7 +241,7 @@ const Footer = () => {
             <li className="ml-4">
               <a
                 href="#0"
-                className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
+                className="flex justify-center items-center text-muted-foreground drop-shadow rounded-full shadow transition duration-150 ease-in-out"
                 aria-label="Github"
               >
                 <svg
@@ -255,7 +256,7 @@ const Footer = () => {
             <li className="ml-4">
               <a
                 href="#0"
-                className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
+                className="flex justify-center items-center text-muted-foreground drop-shadow rounded-full shadow transition duration-150 ease-in-out"
                 aria-label="Facebook"
               >
                 <svg
@@ -270,7 +271,9 @@ const Footer = () => {
           </ul>
 
           {/* Copyrights note */}
-          <div className="text-sm text-gray-600 mr-4">&copy; Algowars 2024</div>
+          <div className="text-sm text-foreground-muted mr-4">
+            &copy; Algowars 2024
+          </div>
         </div>
       </div>
     </footer>
