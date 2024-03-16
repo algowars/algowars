@@ -15,13 +15,19 @@ type Props = {
   children?: ReactNode;
   bgColor?: string;
   mainClassName?: string;
+  className?: string;
   headerColor?: string;
 };
 
-const Layout = ({ children, bgColor = "", mainClassName = "" }: Props) => {
+const Layout = ({
+  children,
+  bgColor = "",
+  mainClassName = "",
+  className = "flex flex-col min-h-screen relative",
+}: Props) => {
   const { links } = useNavbar();
   return (
-    <div className="flex flex-col min-h-screen relative">
+    <div className={className}>
       <header className={`${bgColor}`}>
         <AccountExistBanner />
         <Navbar navLinks={links} />

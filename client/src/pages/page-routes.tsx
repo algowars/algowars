@@ -4,10 +4,15 @@ import NotFoundpage from "./not-found/not-found.page";
 import { AuthenticationGuard } from "../../../client-old/src/guards/AuthenticationGuard";
 import CreatePage from "./create/create.page";
 import CreateProblemPage from "./create/create-problem/create-problem.page";
+import SetupPage from "./account/setup/setup.page";
 
 const PageRoutes = () => {
   return (
     <Routes>
+      <Route
+        path="account/setup"
+        element={<AuthenticationGuard component={SetupPage} />}
+      />
       <Route
         path="create"
         element={<AuthenticationGuard component={CreatePage} />}

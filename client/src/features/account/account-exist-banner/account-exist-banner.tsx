@@ -11,11 +11,11 @@ const AccountExistBanner = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
   return isAuthenticated && !account?.id && isOpen ? (
-    <div className="p-3 bg-primary text-primary-foreground flex items-center justify-between text-sm">
+    <div className="p-1 bg-primary text-primary-foreground flex items-center justify-between text-sm">
       <p></p>
       <p>
         You haven't finished setting up your account. To access features,{" "}
-        <Link to="/account-setup" className="underline underline-offset-2">
+        <Link to="/account/setup" className="underline underline-offset-2">
           click here
         </Link>
       </p>
