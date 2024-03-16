@@ -1,8 +1,8 @@
+import { AppError } from "@/errors/app-error.model";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ErrorModel } from "../models/ErrorModel";
 
 interface ErrorState {
-  error: ErrorModel | null;
+  error: AppError | null;
 }
 
 const initialState: ErrorState = {
@@ -13,7 +13,7 @@ export const errorSlice = createSlice({
   name: "error",
   initialState,
   reducers: {
-    setError: (state, action: PayloadAction<ErrorModel | null>) => {
+    setError: (state, action: PayloadAction<AppError | null>) => {
       state.error = action.payload;
     },
     removeError: (state) => {

@@ -1,8 +1,8 @@
+import { Account } from "@/features/account/account.model";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { AccountModel } from "../models/AccountModel";
 
 interface AccountState {
-  account: AccountModel;
+  account: Account;
 }
 
 const initialState: AccountState = {
@@ -22,7 +22,7 @@ export const accountSlice = createSlice({
     setUsername: (state, action: PayloadAction<string>) => {
       state.account.username = action.payload;
     },
-    setAccount: (state, action: PayloadAction<AccountModel>) => {
+    setAccount: (state, action: PayloadAction<Account>) => {
       state.account = action.payload;
     },
   },

@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import themeReducer from "../slices/themeSlice";
-import accountReducer from "../slices/accountSlice";
-import preferredLanguageSlice from "@/slices/preferredLanguageSlice";
+import themeReducer from "@/slices/theme-slice";
+import accountReducer from "@/slices/account-slice";
+import preferredLanguageSlice from "@/slices/preferred-language-slice";
 
 const rootReducer = combineReducers({
   theme: themeReducer,

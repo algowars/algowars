@@ -1,5 +1,5 @@
+import { storage } from "@/common/storage/storage";
 import { createSlice } from "@reduxjs/toolkit";
-import storage from "../utils/Storage";
 
 interface ThemeState {
   theme: "dark" | "light" | "system";

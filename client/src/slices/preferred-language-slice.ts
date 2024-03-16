@@ -1,8 +1,8 @@
-import { LanguageModel } from "@/models/language/LanguageModel";
+import { Language } from "@/features/language/language.model";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface PreferredLanguageState {
-  preferredLanguage: LanguageModel;
+  preferredLanguage: Language;
 }
 
 const initialState: PreferredLanguageState = {
@@ -20,7 +20,7 @@ export const preferredLanguageSlice = createSlice({
   name: "preferredLanguage",
   initialState,
   reducers: {
-    setPreferredLanguage: (state, action: PayloadAction<LanguageModel>) => {
+    setPreferredLanguage: (state, action: PayloadAction<Language>) => {
       state.preferredLanguage = action.payload;
     },
   },

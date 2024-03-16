@@ -55,14 +55,14 @@ export class ProblemController {
       throw new AccountNotFoundException();
     }
 
-    const testedSolution = new Submission();
+    // const testedSolution = new Submission();
 
-    const createdProblem = await this.problemService.create(
-      createProblemDto.title,
-      createProblemDto.question,
-      createProblemDto.slug,
-      foundAccount,
-    );
+    // const createdProblem = await this.problemService.create(
+    //   createProblemDto.title,
+    //   createProblemDto.question,
+    //   createProblemDto.slug,
+    //   foundAccount,
+    // );
   }
   // @Get('/aggregate')
   // async getProblemAggregate(

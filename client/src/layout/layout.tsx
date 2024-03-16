@@ -9,6 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import AuthLogoutButton from "@/features/auth/auth-logout-button/auth-logout-button";
 import ThemeToggle from "@/features/theme/theme-toggle/theme-toggle";
 import { useNavbar } from "./navbar/use-navbar";
+import AccountExistBanner from "@/features/account/account-exist-banner/account-exist-banner";
 
 type Props = {
   children?: ReactNode;
@@ -22,6 +23,7 @@ const Layout = ({ children, bgColor = "", mainClassName = "" }: Props) => {
   return (
     <div className="flex flex-col min-h-screen relative">
       <header className={`${bgColor}`}>
+        <AccountExistBanner />
         <Navbar navLinks={links} />
       </header>
 
