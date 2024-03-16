@@ -32,7 +32,7 @@ export const useNavbar = () => {
   const loggedInLinks: NavLink[] = [
     {
       name: "Home",
-      href: "/dashboard",
+      href: "/",
       className: buttonVariants({ variant: "ghost" }),
     },
     {
