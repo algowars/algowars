@@ -1,15 +1,24 @@
 import { buttonVariants } from "@/components/ui/button";
 import AuthLoginButton from "@/features/auth/auth-login-button/auth-login-button";
-import AuthLogoutButton from "@/features/auth/auth-logout-button/auth-logout-button";
 import AuthSignupButton from "@/features/auth/auth-signup-button/auth-signup-button";
-import ThemeToggle from "@/features/theme/theme-toggle/theme-toggle";
 import { NavLink } from "./nav-link";
 import { useAuth0 } from "@auth0/auth0-react";
+import NavbarAvatar from "./navbar-avatar/navbar-avatar";
 
 export const useNavbar = () => {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
 
   const notLoggedInLinks: NavLink[] = [
+    {
+      name: "Home",
+      href: "/",
+      className: buttonVariants({ variant: "ghost" }),
+    },
+    {
+      name: "Problems",
+      href: "/problems",
+      className: buttonVariants({ variant: "ghost" }),
+    },
     {
       name: "log in",
       element: <AuthLoginButton variant="outline">Log in</AuthLoginButton>,
@@ -27,17 +36,18 @@ export const useNavbar = () => {
       className: buttonVariants({ variant: "ghost" }),
     },
     {
+      name: "Problems",
+      href: "/problems",
+      className: buttonVariants({ variant: "ghost" }),
+    },
+    {
       name: "Create",
       href: "/create",
       className: buttonVariants({ variant: "ghost" }),
     },
     {
-      name: "Log out",
-      element: <AuthLogoutButton variant="outline">Log out</AuthLogoutButton>,
-    },
-    {
-      name: "Theme toggle",
-      element: <ThemeToggle />,
+      name: "Avatar",
+      element: <NavbarAvatar url={user?.picture} />,
     },
   ];
 

@@ -13,13 +13,13 @@ const Navbar = ({ navLinks }: Props) => {
         <ul className="flex items-center gap-5">
           <li>
             <Link to="/">
-              <h1 className="text-lg font-semibold">Career Quest</h1>
+              <h1 className="text-lg font-semibold">Algowars</h1>
             </Link>
           </li>
         </ul>
         <ul className="flex items-center gap-5">
           {navLinks.map((link) => (
-            <li key={link.name}>
+            <li key={link.name} className="flex items-center justify-center">
               {link.href ? (
                 <Link to={link.href}>{link.name}</Link>
               ) : (

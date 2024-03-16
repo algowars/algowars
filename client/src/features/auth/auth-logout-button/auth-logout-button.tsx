@@ -13,13 +13,18 @@ type Props = {
     | null
     | undefined;
   children?: ReactNode;
+  className?: string;
 };
 
-const AuthLogoutButton = ({ variant = "ghost", children }: Props) => {
+const AuthLogoutButton = ({
+  variant = "ghost",
+  children,
+  className = "",
+}: Props) => {
   const { handleLogout } = useAuthLogoutButton();
 
   return (
-    <Button onClick={handleLogout} variant={variant}>
+    <Button onClick={handleLogout} variant={variant} className={className}>
       {children}
     </Button>
   );
