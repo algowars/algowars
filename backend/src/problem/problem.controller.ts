@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ProblemService } from './problem.service';
 import { RandomProblemDto } from './dto/random-problem.dto';
-import { Problem, Submission } from 'src/data-model/entities';
+import { Problem } from 'src/data-model/entities';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { CreateProblemDto } from './dto/create-problem.dto';
 import { AccountService } from 'src/account/account.service';

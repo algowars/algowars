@@ -6,6 +6,10 @@ export const useCreateNav = () => {
       name: "Create Problem",
       href: "problem",
     },
+    {
+      name: "Test setup",
+      href: "test-setup",
+    },
   ];
 
   return { links };

@@ -5,6 +5,7 @@ import { AuthenticationGuard } from "../../../client-old/src/guards/Authenticati
 import CreatePage from "./create/create.page";
 import CreateProblemPage from "./create/create-problem/create-problem.page";
 import SetupPage from "./account/setup/setup.page";
+import CreateTestSetupPage from "./create/create-test-setup/create-test-setup.page";
 
 const PageRoutes = () => {
   return (
@@ -17,6 +18,10 @@ const PageRoutes = () => {
         path="create"
         element={<AuthenticationGuard component={CreatePage} />}
       >
+        <Route
+          path="test-setup"
+          element={<AuthenticationGuard component={CreateTestSetupPage} />}
+        />
         <Route
           path="problem"
           element={<AuthenticationGuard component={CreateProblemPage} />}

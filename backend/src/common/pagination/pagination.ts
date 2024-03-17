@@ -26,15 +26,9 @@ export class Pagination {
 
   public static async paginateWithQueryBuilder<T>(
     queryBuilder: SelectQueryBuilder<T>,
-    { page, size, timestamp }: PaginationDto,
-    entity: string,
+    { page, size }: PaginationDto,
   ): Promise<PaginationResponse<T>> {
-    queryBuilder
-      .andWhere(`${entity}.createdAt < :timestamp`, {
-        timestamp,
-      })
-      .take(size)
-      .skip((page - 1) * size);
+    queryBuilder.take(size).skip((page - 1) * size);
 
     const [results, count] = await queryBuilder.getManyAndCount();
 

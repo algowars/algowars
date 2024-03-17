@@ -30,6 +30,7 @@ const initialState: CreateProblemState = {
     title: "",
     slug: "",
     question: "",
+    solution: "",
   },
   setCreateProblem: () => null,
   changeCreateProblem: () => null,
@@ -45,11 +46,9 @@ export function CreateProblemProvider({
   children,
   ...props
 }: CreateProblemProps) {
-  const [createProblem, setCreateProblem] = useState<CreateProblemDto>({
-    title: "",
-    slug: "",
-    question: "",
-  });
+  const [createProblem, setCreateProblem] = useState<CreateProblemDto>(
+    initialState.createProblem
+  );
 
   const [createTests, setCreateTests] = useState<CreateTestDto[]>([]);
 
