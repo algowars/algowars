@@ -6,6 +6,7 @@ import {
 import { ProblemProvider } from "./problem-play.provider";
 import ProblemPlayQuestion from "./problem-play-question/problem-play-question";
 import ProblemPlayCodeEditor from "./problem-play-code-editor/problem-play-code-editor";
+import ProblemPlayFooter from "./problem-play-footer/problem-play-footer";
 
 type Props = {
   slug: string;
@@ -32,9 +33,7 @@ const ProblemPlay = ({ slug }: Props) => {
             </ResizablePanelGroup>
           </ResizablePanel>
         </ResizablePanelGroup>
-        <div className="border-t p-5">
-          <p>FOOTER</p>
-        </div>
+        <ProblemPlayFooter />
       </ProblemProvider>
     </div>
   );
