@@ -4,12 +4,17 @@ import Container from "../container/container";
 
 type Props = {
   navLinks: NavLink[];
+  width?: string;
+  className?: string;
 };
 
-const Navbar = ({ navLinks }: Props) => {
+const Navbar = ({ navLinks, width, className }: Props) => {
   return (
-    <nav className="sticky top-0 border-b py-3">
-      <Container className="flex justify-between items-center gap-5">
+    <nav className={`sticky top-0 border-b py-3 ${className}`}>
+      <Container
+        className="flex justify-between items-center gap-5"
+        width={width}
+      >
         <ul className="flex items-center gap-5">
           <li>
             <Link to="/">

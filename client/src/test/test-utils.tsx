@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { RenderOptions, render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { MockThemeProvider } from "./mock/mock-theme-provider";
-import { Theme, ThemeProvider } from "@/features/theme/theme-provider";
+import { Theme, ThemeProvider } from "@/features/theme/theme.provider";
 
 export const renderWithThemeContext = (
   ui: ReactElement,

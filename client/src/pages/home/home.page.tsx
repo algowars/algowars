@@ -1,3 +1,4 @@
+import ProblemRandom from "@/features/problem/problem-random/problem-random";
 import Container from "@/layout/container/container";
 import Landing from "@/layout/landing/landing";
 import Layout from "@/layout/layout";
@@ -12,7 +13,9 @@ const HomePage = () => {
 
   return (
     <Layout>
-      <Container className="py-5"></Container>
+      <Container className="py-5">
+        <ProblemRandom />
+      </Container>
     </Layout>
   );
 };

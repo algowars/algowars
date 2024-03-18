@@ -17,12 +17,19 @@ import { CreateProblemDto } from './dto/create-problem.dto';
 import { AccountService } from 'src/account/account.service';
 import { Request } from 'express';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
+import { GetProblemAggregate } from './dto/get-problem-aggregate';
+import { ProblemNotFoundException } from './exceptions/problem-not-found.exception';
+import { ProblemAggregate } from './problem-aggregate';
+import { TestInputService } from 'src/test-input/test-input.service';
+import { ProblemSetupService } from 'src/problem-setup/problem-setup.service';
 
 @Controller('v1/problem')
 export class ProblemController {
   constructor(
     private readonly problemService: ProblemService,
     private readonly accoutService: AccountService,
+    private readonly testInputService: TestInputService,
+    private readonly problemSetupService: ProblemSetupService,
   ) {}
 
   @Get('random')
@@ -54,40 +61,37 @@ export class ProblemController {
     if (!foundAccount) {
       throw new AccountNotFoundException();
     }
-
-    // const testedSolution = new Submission();
-
-    // const createdProblem = await this.problemService.create(
-    //   createProblemDto.title,
-    //   createProblemDto.question,
-    //   createProblemDto.slug,
-    //   foundAccount,
-    // );
   }
-  // @Get('/aggregate')
-  // async getProblemAggregate(
-  //   @Query()
-  //   getProblemAggregate: GetProblemAggregate,
-  // ): Promise<ProblemAggregate> {
-  //   const foundProblem = await this.problemService.findOneBySlug(
-  //     getProblemAggregate.problemSlug,
-  //   );
-  //   if (!foundProblem) {
-  //     throw new ProblemNotFoundException();
-  //   }
 
-  //   const foundProblemSetup = await this.problemSetupService.findOne(
-  //     foundProblem.id,
-  //     getProblemAggregate.languageId,
-  //     ['initialInputs'],
-  //   );
-  //   if (!foundProblemSetup) {
-  //     throw new ProblemSetupNotFoundException();
-  //   }
+  @Get('aggregate')
+  async getProblemAggregate(
+    @Query()
+    getProblemAggregate: GetProblemAggregate,
+  ): Promise<ProblemAggregate> {
+    const foundProblem = await this.problemService.findOneBySlug(
+      getProblemAggregate.problemSlug,
+    );
+    if (!foundProblem) {
+      throw new ProblemNotFoundException();
+    }
 
-  //   return {
-  //     problem: foundProblem,
-  //     problemSetup: foundProblemSetup,
-  //   };
-  // }
+    const inputs = await this.testInputService.findByProblemId(foundProblem.id);
+
+    const problemSetup = await this.problemSetupService.findProblemSetupByIds(
+      foundProblem.id,
+      ProblemController.LANGUAGE_ID,
+    );
+
+    if (!problemSetup.code) {
+      throw new ProblemNotFoundException();
+    }
+
+    return {
+      problem: foundProblem,
+      exampleInputs: inputs,
+      initialCode: problemSetup.code,
+    };
+  }
+
+  private static LANGUAGE_ID = 93;
 }

@@ -3,7 +3,7 @@ import { useTheme } from "@/features/theme/theme.provider";
 
 type Props = {
   code: string;
-  changeCode: (value: string | undefined) => void;
+  changeCode?: (value: string | undefined) => void;
   className?: string;
 };
 

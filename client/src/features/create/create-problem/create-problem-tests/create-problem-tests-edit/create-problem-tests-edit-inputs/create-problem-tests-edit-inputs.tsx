@@ -17,6 +17,21 @@ const CreateProblemTestsEditInputs = ({ inputs, setInputs }: Props) => {
     setInputs((curr) => [...curr, { label: "", input: "" }]);
   };
 
+  const changeTestInput = (
+    index: number,
+    key: "label" | "input",
+    value: string
+  ) => {
+    setInputs((currentInputs) =>
+      currentInputs.map((item, i) => {
+        if (i === index) {
+          return { ...item, [key]: value };
+        }
+        return item;
+      })
+    );
+  };
+
   const deleteTest = (e: FormEvent, index: number) => {
     e.preventDefault();
 
@@ -29,11 +44,19 @@ const CreateProblemTestsEditInputs = ({ inputs, setInputs }: Props) => {
         <li key={index} className="flex items-center gap-5">
           <div className="grow">
             <Label htmlFor={`label-${index}`}>Label</Label>
-            <Input value={input.label} id={`label-${index}`} />
+            <Input
+              value={input.label}
+              id={`label-${index}`}
+              onChange={(e) => changeTestInput(index, "label", e.target.value)}
+            />
           </div>
           <div className="ml-auto grow">
             <Label htmlFor={`input-${index}`}>input</Label>
-            <Input value={input.input} id={`input-${index}`} />
+            <Input
+              value={input.input}
+              id={`input-${index}`}
+              onChange={(e) => changeTestInput(index, "input", e.target.value)}
+            />
           </div>
           <Button
             variant="destructive"

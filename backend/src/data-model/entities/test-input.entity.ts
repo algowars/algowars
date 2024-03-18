@@ -13,5 +13,5 @@ export class TestInput {
   input: string;
 
   @ManyToOne(() => Test, (test) => test.inputs)
-  test: Test;
+  test: Promise<Test>;
 }

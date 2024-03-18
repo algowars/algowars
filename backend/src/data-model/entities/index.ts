@@ -1,4 +1,5 @@
 import { Account } from './account.entity';
+import { ProblemSetup } from './problem-setup.entity';
 import { Problem } from './problem.entity';
 import { SubmissionToken } from './submission-token.entity';
 import { Submission } from './submission.entity';
@@ -14,6 +15,7 @@ const entities = [
   Test,
   TestInput,
   TestSetup,
+  ProblemSetup,
 ];
 
 export {
@@ -24,6 +26,7 @@ export {
   Test,
   TestInput,
   TestSetup,
+  ProblemSetup,
 };
 
 export default entities;

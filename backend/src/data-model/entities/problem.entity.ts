@@ -21,7 +21,7 @@ export class Problem {
   @Column({ nullable: false, length: 100 })
   title: string;
 
-  @Column({ nullable: false, length: 750 })
+  @Column({ nullable: false, type: 'text' })
   question: string;
 
   @Column({ nullable: false, length: 110, unique: true })
@@ -45,4 +45,8 @@ export class Problem {
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  removePrivateProperties() {
+    this.submissions = null;
+  }
 }

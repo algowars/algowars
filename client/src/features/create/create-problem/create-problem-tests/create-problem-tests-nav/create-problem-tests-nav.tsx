@@ -16,6 +16,11 @@ const CreateProblemTestsNav = ({ currentTest, setCurrentTest }: Props) => {
     addTest();
   };
 
+  const changeTest = (e: FormEvent, index: number) => {
+    e.preventDefault();
+    setCurrentTest(index);
+  };
+
   const deleteTest = (e: FormEvent, index: number) => {
     e.preventDefault();
     removeTest(index);
@@ -28,6 +33,7 @@ const CreateProblemTestsNav = ({ currentTest, setCurrentTest }: Props) => {
           <Button
             variant="ghost"
             className="flex justify-between items-center gap-1.5"
+            onClick={(e) => changeTest(e, index)}
           >
             Test {index + 1}{" "}
             <Button
