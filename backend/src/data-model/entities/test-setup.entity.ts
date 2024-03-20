@@ -7,7 +7,13 @@ export class TestSetup {
   id: number;
 
   @Column({ nullable: false })
-  header: string;
+  languageId: number;
+
+  @Column({ nullable: false })
+  fileName: string;
+
+  @Column({ type: 'text' })
+  file: string;
 
   @OneToMany(() => Test, (test) => test.setup)
   tests: Promise<Test[]>;
