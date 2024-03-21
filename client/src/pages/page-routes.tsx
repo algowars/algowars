@@ -7,10 +7,12 @@ import CreateProblemPage from "./create/create-problem/create-problem.page";
 import SetupPage from "./account/setup/setup.page";
 import CreateTestSetupPage from "./create/create-test-setup/create-test-setup.page";
 import ProblemPage from "./problems/problem/problem.page";
+import ProfilePage from "./profile/profile.page";
 
 const PageRoutes = () => {
   return (
     <Routes>
+      <Route path="profile/:username" element={<ProfilePage />} />
       <Route
         path="account/setup"
         element={<AuthenticationGuard component={SetupPage} />}

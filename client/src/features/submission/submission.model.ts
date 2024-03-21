@@ -1,6 +1,7 @@
 import { SubmissionStatus } from "./submission-status.model";
 
 export interface Submission {
+  id: number;
   stdout: string | null;
   time: null;
   memory: null;
