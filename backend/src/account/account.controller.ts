@@ -32,7 +32,7 @@ export class AccountController {
       );
     }
 
-    return this.accountService.findAccountBySub(userSub);
+    return this.accountService.findBySub(userSub);
   }
 
   @UseGuards(AuthorizationGuard)
@@ -49,7 +49,7 @@ export class AccountController {
       );
     }
 
-    const foundAccount = await this.accountService.findAccountBySub(userSub);
+    const foundAccount = await this.accountService.findBySub(userSub);
 
     if (foundAccount) {
       throw new AccountAlreadyExistException();

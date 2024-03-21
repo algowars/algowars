@@ -1,7 +1,7 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -9,7 +9,6 @@ import {
 } from 'typeorm';
 import { Account } from './account.entity';
 import { SubmissionToken } from './submission-token.entity';
-import { Problem } from './problem.entity';
 
 @Entity()
 export class Submission {
@@ -25,12 +24,11 @@ export class Submission {
   )
   tokens: SubmissionToken[];
 
-  @ManyToOne(() => Problem, (problem) => problem.submissions)
-  problem: Problem;
+  @Column({ nullable: false })
+  code: string;
 
   @ManyToOne(() => Account, (account) => account.submissions)
-  @JoinTable()
-  createdBy: Promise<Account>;
+  createdBy: Account;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

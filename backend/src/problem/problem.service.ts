@@ -10,7 +10,7 @@ export class ProblemService {
     private readonly problemRepository: Repository<Problem>,
   ) {}
 
-  findOneById(id: number) {
+  findOneById(id: number, relations: string[] = []) {
     if (!id) {
       return null;
     }
@@ -19,6 +19,7 @@ export class ProblemService {
       where: {
         id,
       },
+      relations,
     });
   }
 

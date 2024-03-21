@@ -6,12 +6,12 @@ export class TestInput {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ManyToOne(() => Test, (test) => test.inputs)
+  test: Promise<Test>;
+
   @Column({ nullable: false, length: 50 })
   label: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, length: 255 })
   input: string;
-
-  @ManyToOne(() => Test, (test) => test.inputs)
-  test: Promise<Test>;
 }

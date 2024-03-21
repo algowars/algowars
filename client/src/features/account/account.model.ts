@@ -3,5 +3,4 @@ export interface Account {
   username: string;
   createdAt: Date;
   updatedAt: Date;
-  usePg: boolean;
 }

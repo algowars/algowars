@@ -6,7 +6,6 @@ import { ProblemModule } from './problem/problem.module';
 import { EvaluatorModule } from './evaluator/evaluator.module';
 import { SubmissionModule } from './submission/submission.module';
 import { AccountModule } from './account/account.module';
-import { TestSetupModule } from './test-setup/test-setup.module';
 import { TestInputModule } from './test-input/test-input.module';
 import { ProblemSetupModule } from './problem-setup/problem-setup.module';
 import entities from './data-model/entities';
@@ -35,7 +34,6 @@ import entities from './data-model/entities';
     EvaluatorModule,
     SubmissionModule,
     AccountModule,
-    TestSetupModule,
     TestInputModule,
     ProblemSetupModule,
   ],

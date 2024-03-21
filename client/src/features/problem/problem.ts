@@ -1,4 +1,5 @@
 import { Account } from "../account/account.model";
+import { ProblemSetup } from "../problem-setup/problem-setup";
 import { Test } from "../test/test";
 
 export interface Problem {
@@ -6,6 +7,7 @@ export interface Problem {
   title: string;
   question: string;
   slug: string;
-  createdBy: Account;
-  tests: Test[];
+  createdBy?: Account;
+  tests?: Test[];
+  problemSetups?: ProblemSetup[];
 }

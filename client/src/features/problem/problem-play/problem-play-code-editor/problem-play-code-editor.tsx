@@ -2,12 +2,17 @@ import CodeEditor from "@/components/code-editor/code-editor";
 import { useProblemPlay } from "../problem-play.provider";
 
 const ProblemPlayCodeEditor = () => {
-  const { problemAggregate } = useProblemPlay();
+  const { createSubmissionDto, changeCreateSubmissionDto } = useProblemPlay();
+
+  const changeCode = (value: string | undefined) => {
+    changeCreateSubmissionDto("code", value ?? "");
+  };
 
   return (
     <CodeEditor
-      code={problemAggregate?.initialCode ?? ""}
+      code={createSubmissionDto.code}
       className="rounded"
+      changeCode={changeCode}
     />
   );
 };

@@ -11,7 +11,20 @@ export class AccountService {
     private readonly accountRepository: Repository<Account>,
   ) {}
 
-  findAccountBySub(sub: string, relations: string[] = []): Promise<Account> {
+  findById(id: number, relations: string[] = []): Promise<Account> {
+    if (!id) {
+      return null;
+    }
+
+    return this.accountRepository.findOne({
+      where: {
+        id,
+      },
+      relations,
+    });
+  }
+
+  findBySub(sub: string, relations: string[] = []): Promise<Account> {
     if (!sub) {
       return null;
     }

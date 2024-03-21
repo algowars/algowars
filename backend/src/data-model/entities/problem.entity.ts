@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Account } from './account.entity';
+import { ProblemSetup } from './problem-setup.entity';
 import { Test } from './test.entity';
 import { Submission } from './submission.entity';
 
@@ -31,22 +32,20 @@ export class Problem {
   @JoinTable()
   createdBy: Promise<Account>;
 
+  @OneToMany(() => ProblemSetup, (problemSetup) => problemSetup.problem, {
+    cascade: true,
+  })
+  problemSetups: ProblemSetup[];
+
   @OneToMany(() => Test, (test) => test.problem, { cascade: true })
   tests: Promise<Test[]>;
 
   @OneToOne(() => Submission)
   solution: Promise<Submission>;
 
-  @OneToMany(() => Submission, (submission) => submission.problem)
-  submissions: Promise<Submission>;
-
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
-
-  removePrivateProperties() {
-    this.submissions = null;
-  }
 }

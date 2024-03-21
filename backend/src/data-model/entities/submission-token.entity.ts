@@ -1,14 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Submission } from './submission.entity';
 
 @Entity()
 export class SubmissionToken {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn({ nullable: false, unique: true })
+  token: string;
 
   @ManyToOne(() => Submission, (submission) => submission.tokens)
   submission: Submission;
-
-  @Column({ nullable: false, unique: true })
-  token: string;
 }

@@ -6,6 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { ThrottlerTimes } from 'src/common/throttler/throttler-times';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Account, Problem, Submission } from 'src/data-model/entities';
+import { ProblemService } from 'src/problem/problem.service';
+import { AccountService } from 'src/account/account.service';
+import { SubmissionService } from 'src/submission/submission.service';
 
 @Module({
   imports: [
@@ -27,10 +32,14 @@ import { ThrottlerTimes } from 'src/common/throttler/throttler-times';
       }),
       inject: [ConfigService],
     }),
+    TypeOrmModule.forFeature([Problem, Account, Submission]),
   ],
   controllers: [EvaluatorController],
   providers: [
     EvaluatorService,
+    ProblemService,
+    AccountService,
+    SubmissionService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

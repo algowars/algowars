@@ -1,8 +1,8 @@
-import { TestSetup } from "../test-setup/test-setup.model";
+import { TestInput } from "../test/test-input";
 import { Problem } from "./problem";
 
 export interface ProblemAggregate {
   problem: Problem;
-  exampleInputs: TestSetup[];
+  exampleInputs: TestInput[];
   initialCode: string;
 }

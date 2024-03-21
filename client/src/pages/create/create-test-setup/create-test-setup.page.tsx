@@ -1,11 +1,5 @@
-import TestSetupList from "@/features/test-setup/test-setup-list/test-setup-list";
-
 const CreateTestSetupPage = () => {
-  return (
-    <div>
-      <TestSetupList />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default CreateTestSetupPage;

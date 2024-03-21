@@ -23,7 +23,7 @@ export class Account {
   @OneToMany(() => Problem, (problem) => problem.createdBy)
   problems: Promise<Problem[]>;
 
-  @OneToMany(() => Submission, (solution) => solution.createdBy)
+  @OneToMany(() => Submission, (submission) => submission.createdBy)
   submissions: Promise<Submission[]>;
 
   @CreateDateColumn()

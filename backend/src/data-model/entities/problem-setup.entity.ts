@@ -1,13 +1,20 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Problem } from './problem.entity';
 
 @Entity()
 export class ProblemSetup {
-  @PrimaryColumn()
-  problemId: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @PrimaryColumn()
+  @Column({ nullable: false })
   languageId: number;
 
-  @Column({ type: 'text', nullable: false })
-  code: string;
+  @Column({ nullable: false, type: 'text' })
+  initialCode: string;
+
+  @Column({ nullable: false, type: 'text' })
+  testSetup: string;
+
+  @ManyToOne(() => Problem, (problem) => problem.problemSetups)
+  problem: Promise<Problem>;
 }

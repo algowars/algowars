@@ -3,7 +3,9 @@ import { SubmissionService } from './submission.service';
 import { SubmissionController } from './submission.controller';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { SubmissionGateway } from './submission.gateway';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Submission } from 'src/data-model/entities';
+import { EvaluatorService } from 'src/evaluator/evaluator.service';
 
 @Module({
   imports: [
@@ -19,8 +21,9 @@ import { SubmissionGateway } from './submission.gateway';
       }),
       inject: [ConfigService],
     }),
+    TypeOrmModule.forFeature([Submission]),
   ],
   controllers: [SubmissionController],
-  providers: [SubmissionService, SubmissionGateway],
+  providers: [SubmissionService, EvaluatorService],
 })
 export class SubmissionModule {}

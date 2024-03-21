@@ -13,7 +13,9 @@ export class ProblemSetupService {
   findProblemSetupByIds(problemId: number, languageId: number) {
     return this.problemSetupRepository.findOne({
       where: {
-        problemId,
+        problem: {
+          id: problemId,
+        },
         languageId,
       },
     });

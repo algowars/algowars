@@ -56,7 +56,7 @@ export class ProblemController {
       );
     }
 
-    const foundAccount = await this.accoutService.findAccountBySub(userSub);
+    const foundAccount = await this.accoutService.findBySub(userSub);
 
     if (!foundAccount) {
       throw new AccountNotFoundException();
@@ -82,14 +82,14 @@ export class ProblemController {
       ProblemController.LANGUAGE_ID,
     );
 
-    if (!problemSetup.code) {
+    if (!problemSetup) {
       throw new ProblemNotFoundException();
     }
 
     return {
       problem: foundProblem,
       exampleInputs: inputs,
-      initialCode: problemSetup.code,
+      initialCode: problemSetup.initialCode,
     };
   }
 
