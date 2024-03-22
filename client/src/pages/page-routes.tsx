@@ -8,10 +8,12 @@ import CreateTestSetupPage from "./create/create-test-setup/create-test-setup.pa
 import ProblemPage from "./problems/problem/problem.page";
 import ProfilePage from "./profile/profile.page";
 import { AuthenticationGuard } from "@/features/auth/guards/authentication.guard";
+import BattlePage from "./battle/battle.page";
 
 const PageRoutes = () => {
   return (
     <Routes>
+      <Route path="battle" element={<BattlePage />} />
       <Route path="profile/:username" element={<ProfilePage />} />
       <Route
         path="account/setup"

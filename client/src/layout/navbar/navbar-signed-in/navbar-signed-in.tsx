@@ -48,6 +48,18 @@ const NavbarSignedIn = ({ width, className, border = "border-b" }: Props) => {
               Problems
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/battle"
+              className={({ isActive }) =>
+                `transition-colors hover:text-foreground/80 text-foreground${
+                  isActive ? "" : "/60"
+                }`
+              }
+            >
+              Battles
+            </NavLink>
+          </li>
         </ul>
         <ul className="flex items-center gap-1 text-sm">
           <li>

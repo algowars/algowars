@@ -52,6 +52,18 @@ const NavbarLoggedOut = ({ width, className, border = "border-b" }: Props) => {
             </NavLink>
           </li>
           <li>
+            <NavLink
+              to="/battle"
+              className={({ isActive }) =>
+                `transition-colors hover:text-foreground/80 text-foreground${
+                  isActive ? "" : "/60"
+                }`
+              }
+            >
+              Battles
+            </NavLink>
+          </li>
+          <li>
             <button
               className="transition-colors hover:text-foreground/80 text-foreground/60"
               onClick={handleLogin}
