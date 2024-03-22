@@ -11,4 +11,5 @@ export interface JudgeSubmission {
   compile_outpu: null;
   message: null;
   status: SubmissionStatus;
+  expected_output?: string;
 }

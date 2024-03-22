@@ -18,12 +18,11 @@ const Layout = ({
   mainClassName = "",
   className = "flex flex-col min-h-screen relative",
 }: Props) => {
-  const { links } = useNavbar();
   return (
     <div className={className}>
       <header className={`${bgColor}`}>
         <AccountExistBanner />
-        <Navbar navLinks={links} />
+        <Navbar />
       </header>
 
       <main className={`grow ${bgColor} ${mainClassName}`}>{children}</main>

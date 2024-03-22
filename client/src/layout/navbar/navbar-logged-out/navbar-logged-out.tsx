@@ -25,9 +25,7 @@ const NavbarLoggedOut = ({ width, className, border = "border-b" }: Props) => {
       >
         <ul className="flex items-center gap-5">
           <li>
-            <NavLink to="/" className="flex items-center gap-3">
-              <Logo width="w-6" height="h-6" />
-            </NavLink>
+            <Logo width="w-6" height="h-6" />
           </li>
           <li>
             <NavLink

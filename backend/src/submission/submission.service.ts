@@ -22,6 +22,14 @@ export class SubmissionService {
     return this.submissionRepository.save(submission);
   }
 
+  findById(id: number, relations: string[] = []): Promise<Submission> {
+    if (!id) {
+      return null;
+    }
+
+    return this.submissionRepository.findOne({ where: { id }, relations });
+  }
+
   findAccountSubmissionsPageable(
     submissionPaginationDto: SubmissionPaginationDto,
   ): Promise<PaginationResponse<Submission>> {

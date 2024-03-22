@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Account, Submission } from 'src/data-model/entities';
 import { EvaluatorService } from 'src/evaluator/evaluator.service';
 import { AccountService } from 'src/account/account.service';
+import { SubmissionGateway } from './submission.gateway';
 
 @Module({
   imports: [
@@ -25,6 +26,11 @@ import { AccountService } from 'src/account/account.service';
     TypeOrmModule.forFeature([Submission, Account]),
   ],
   controllers: [SubmissionController],
-  providers: [SubmissionService, EvaluatorService, AccountService],
+  providers: [
+    SubmissionService,
+    SubmissionGateway,
+    EvaluatorService,
+    AccountService,
+  ],
 })
 export class SubmissionModule {}

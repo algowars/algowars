@@ -1,7 +1,16 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Base64 } from 'js-base64';
-import { firstValueFrom } from 'rxjs';
+import {
+  catchError,
+  delay,
+  firstValueFrom,
+  map,
+  retryWhen,
+  take,
+  tap,
+  throwError,
+} from 'rxjs';
 import { CreateEvaluatorSubmission } from 'src/data-model/model/create-evaluator-submission';
 import { EvaluatorSubmission } from 'src/data-model/model/evaluator-submission';
 import { EvaluatorSubmissionResponse } from 'src/data-model/model/evaluator-submission-response';
@@ -49,36 +58,67 @@ export class EvaluatorService {
     }
   }
 
-  async evaluate(
-    createSubmission: CreateEvaluatorSubmission,
-  ): Promise<EvaluatorSubmissionResponse> {
-    const data = {
-      language_id: createSubmission.language_id,
-      source_code: this.encode(createSubmission.source_code),
-    };
-
+  async pollSubmission(tokens: string[]) {
     const params = {
       base64_encoded: 'true',
       fields: '*',
-      expected_output: createSubmission.expected_output,
+      tokens: tokens.join(','),
     };
 
     try {
-      const response = await firstValueFrom(
-        this.httpService.post('/submissions', data, { params }),
+      const responseData = await firstValueFrom(
+        this.httpService.get('/submissions/batch', { params }).pipe(
+          map((response) => response.data),
+          tap((data) => {
+            const allSubmissionsFinal = data.submissions.every(
+              (submission) =>
+                submission.status.description !== 'In Queue' &&
+                submission.status.description !== 'Processing',
+            );
+
+            if (!allSubmissionsFinal) {
+              throw new Error('All submissions finalized');
+            }
+          }),
+          retryWhen((errors) =>
+            errors.pipe(
+              delay(5000),
+              catchError((error) => {
+                if (error.message === 'All submissions finalized') {
+                  return throwError(() => new Error('Submissions finalized'));
+                }
+                return throwError(() => error);
+              }),
+            ),
+          ),
+          catchError((error) => {
+            if (error.message === 'Submissions finalized') {
+              return 'Submissions finalized';
+            }
+            return throwError(() => error);
+          }),
+        ),
       );
-      return response.data;
+
+      console.log('FINAL RESPONSE: ', responseData);
+      responseData.submissions.forEach((sub) => {
+        sub.source_code = this.decode(sub.source_code);
+        sub.stdin = this.decode(sub.stdin);
+        sub.stdout = this.decode(sub.stdout);
+        sub.expected_output = this.decode(sub.expected_output);
+      });
+      console.log(responseData.submissions, 'AFTER DECODE');
+      return responseData;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       const message =
-        error.response?.data?.error || 'An unexpected error occurred';
+        error.response?.data?.error ||
+        error.message ||
+        'An unexpected error occurred';
       const statusCode =
         error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR;
       throw new HttpException(
-        {
-          status: statusCode,
-          error: message,
-        },
+        { status: statusCode, error: message },
         statusCode,
       );
     }

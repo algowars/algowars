@@ -3,18 +3,28 @@ import {
   WebSocketServer,
   OnGatewayConnection,
   OnGatewayDisconnect,
+  SubscribeMessage,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { SubmissionService } from './submission.service';
+import { EvaluatorService } from 'src/evaluator/evaluator.service';
+import { SubmissionNotFoundException } from './exceptions/submission-not-found.exception';
+import { TokensNotFoundException } from './exceptions/tokens-not-found.exception';
 
 @WebSocketGateway({
   cors: {
-    origin: process.env.CLIENT_ORIGIN_URL, // Use the environment variable
+    origin: process.env.CLIENT_ORIGIN_URL,
     credentials: true,
   },
 })
 export class SubmissionGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(
+    private readonly submissionService: SubmissionService,
+    private readonly evaluatorService: EvaluatorService,
+  ) {}
+
   @WebSocketServer() server: Server;
 
   handleConnection(client: any, ...args: any[]) {
@@ -25,11 +35,31 @@ export class SubmissionGateway
     console.log(`Client disconnected: ${client.id}`);
   }
 
-  async notifyStatusUpdate(token: string, status: string): Promise<void> {
-    this.server.emit(token, { status });
-  }
+  @SubscribeMessage('startSubmissionPolling')
+  async handleStartPolling(client: any, payload: { submissionId: number }) {
+    console.log('STARTING SUBMISSION POLLING');
+    const submission = await this.submissionService.findById(
+      payload.submissionId,
+      ['tokens'],
+    );
 
-  updateSubmissionStatus(submissionId: string, status: any) {
-    this.server.emit('submissionStatus', { submissionId, status });
+    if (!submission) {
+      throw new SubmissionNotFoundException();
+    }
+
+    if (!submission.tokens) {
+      throw new TokensNotFoundException();
+    }
+
+    console.log(submission);
+
+    try {
+      const response = await this.evaluatorService.pollSubmission(
+        submission.tokens.map((token) => token.token),
+      );
+      this.server.to(client.id).emit('submission-details', response);
+    } catch (error) {
+      this.server.to(client.id).emit('pollingError', error.message);
+    }
   }
 }

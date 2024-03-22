@@ -3,9 +3,12 @@ import { submissionService } from "@/features/submission/services/submission.ser
 import { useMutation } from "@tanstack/react-query";
 import { useProblemPlay } from "../problem-play.provider";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/error-alert-fixed";
+import { useSocket } from "@/common/socket/socket.provider";
 
 const ProblemPlayFooter = () => {
   const { createSubmissionDto } = useProblemPlay();
+  const { socket } = useSocket();
+  const { setSubmission, isSubmissionPending } = useProblemPlay();
   const {
     mutate: submitCode,
     isPending,
@@ -13,7 +16,19 @@ const ProblemPlayFooter = () => {
   } = useMutation({
     mutationKey: ["create-submission"],
     mutationFn: async () => {
-      return submissionService.createSubmission(createSubmissionDto);
+      const submission = await submissionService.createSubmission(
+        createSubmissionDto
+      );
+
+      if (!submission) {
+        throw new Error("Error creating submission");
+      }
+
+      console.log(submission, socket);
+
+      socket?.emit("startSubmissionPolling", { submissionId: submission.id });
+
+      setSubmission(submission);
     },
   });
   return (
@@ -22,18 +37,22 @@ const ProblemPlayFooter = () => {
       <div className="border-t p-3 flex items-center gap-5">
         <ul className="flex gap-3 items-center ml-auto">
           <li>
-            <Button className="w-24" variant="outline">
-              Run
+            <Button
+              className="w-24"
+              variant="outline"
+              disabled={isSubmissionPending}
+            >
+              {isPending || isSubmissionPending ? "Loading..." : "Run"}
             </Button>
           </li>
           <li>
             <Button
-              disabled={isPending}
+              disabled={isPending || isSubmissionPending}
               onClick={() => submitCode()}
               className="w-28"
             >
               {/* <Lock size={17} className="mr-3" /> */}
-              Submit
+              {isPending || isSubmissionPending ? "Loading..." : "Submit"}
             </Button>
           </li>
         </ul>

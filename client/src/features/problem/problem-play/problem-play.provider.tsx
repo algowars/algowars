@@ -14,7 +14,7 @@ import { ProblemAggregate } from "../problem-aggregate";
 import { CreateSubmissionDto } from "@/features/submission/dtos/create-submission.dto";
 import { Submission } from "@/features/submission/sbumission.model";
 import { useSocket } from "@/common/socket/socket.provider";
-import { SubmissionStatus } from "@/features/submission/judge-submission-status.model";
+import { JudgeSubmission } from "@/features/submission/judge-submission.model";
 import { SubmissionStatusDescription } from "@/features/submission/judge-submission-status-description.model";
 
 type ProblemPlayProps = {
@@ -33,6 +33,7 @@ export type ProblemPlayState = {
   ) => void;
   submission: Submission | undefined;
   setSubmission: Dispatch<SetStateAction<Submission | undefined>>;
+  isSubmissionPending: boolean;
 };
 
 const initialState: ProblemPlayState = {
@@ -46,6 +47,7 @@ const initialState: ProblemPlayState = {
   changeCreateSubmissionDto: () => null,
   submission: undefined,
   setSubmission: () => null,
+  isSubmissionPending: false,
 };
 
 const ProblemPlayProviderContext =
@@ -85,6 +87,8 @@ export function ProblemProvider({
   const [submission, setSubmission] = useState<Submission | undefined>(
     undefined
   );
+  const [isSubmissionPending, setIsSubmissionPending] =
+    useState<boolean>(false);
 
   const changeCreateSubmissionDto = <K extends keyof CreateSubmissionDto>(
     key: K,
@@ -95,28 +99,44 @@ export function ProblemProvider({
 
   useEffect(() => {
     if (submission) {
-      const handleStatusUpdate = (data: SubmissionStatus) => {
-        if (data.id === submission.id) {
-          setSubmission((currentSubmission) => {
-            if (currentSubmission && currentSubmission.id === data.id) {
-              return { ...currentSubmission, status: data.description };
-            }
-            return currentSubmission;
-          });
-
+      setIsSubmissionPending(true);
+      const handleStatusUpdate = ({
+        submissions,
+      }: {
+        submissions: JudgeSubmission[];
+      }) => {
+        if (submissions) {
+          const submissionDescriptions = submissions.map(
+            (submission) => submission.status.description
+          );
           if (
-            data.description !== SubmissionStatusDescription.IN_QUEUE &&
-            data.description !== SubmissionStatusDescription.PROCESSING
+            !submissionDescriptions.includes(
+              SubmissionStatusDescription.IN_QUEUE
+            ) &&
+            !submissionDescriptions.includes(
+              SubmissionStatusDescription.PROCESSING
+            )
           ) {
+            setSubmission((curr) => {
+              if (!curr) return undefined;
+              const updatedSubmission: Submission = {
+                ...curr,
+                judgeSubmissions: submissions,
+                id: curr.id,
+              };
+
+              return updatedSubmission;
+            });
+            setIsSubmissionPending(false);
             socket?.off("submissionStatus", handleStatusUpdate);
           }
         }
       };
 
-      socket?.on("submissionStatus", handleStatusUpdate);
+      socket?.on("submission-details", handleStatusUpdate);
 
       return () => {
-        socket?.off("submissionStatus", handleStatusUpdate);
+        socket?.off("submission-details", handleStatusUpdate);
       };
     }
   }, [submission, socket]);
@@ -129,6 +149,7 @@ export function ProblemProvider({
     changeCreateSubmissionDto,
     submission,
     setSubmission,
+    isSubmissionPending,
   };
 
   return (
