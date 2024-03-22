@@ -1,7 +1,5 @@
 import AccountExistBanner from "@/features/account/account-exist-banner/account-exist-banner";
 import Navbar from "../navbar/navbar";
-import Footer from "../footer/footer";
-import { useNavbar } from "../navbar/use-navbar";
 import { ReactNode } from "react";
 
 type Props = {

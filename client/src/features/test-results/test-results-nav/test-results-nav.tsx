@@ -8,11 +8,7 @@ type Props = {
   judgeSubmissions: JudgeSubmission[];
 };
 
-const TestResultsNav = ({
-  currentTest,
-  changeCurrentTest,
-  judgeSubmissions,
-}: Props) => {
+const TestResultsNav = ({ changeCurrentTest, judgeSubmissions }: Props) => {
   return (
     <ul className="flex items-center gap-3">
       {judgeSubmissions.map((submission, index) => (

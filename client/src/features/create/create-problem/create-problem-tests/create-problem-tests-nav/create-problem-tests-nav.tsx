@@ -8,7 +8,7 @@ type Props = {
   setCurrentTest: Dispatch<SetStateAction<number>>;
 };
 
-const CreateProblemTestsNav = ({ currentTest, setCurrentTest }: Props) => {
+const CreateProblemTestsNav = ({ setCurrentTest }: Props) => {
   const { addTest, removeTest, createTests } = useCreateProblem();
 
   const createTest = (e: FormEvent) => {

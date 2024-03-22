@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import Navbar from "./navbar/navbar";
 import Footer from "./footer/footer";
-import { useNavbar } from "./navbar/use-navbar";
 import AccountExistBanner from "@/features/account/account-exist-banner/account-exist-banner";
 
 type Props = {

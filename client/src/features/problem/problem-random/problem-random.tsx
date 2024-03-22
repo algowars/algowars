@@ -10,11 +10,7 @@ import { cn } from "@/lib/utils";
 const ProblemRandom = () => {
   const [disallowedIds, setDisallowedIds] = useState<number[]>([]);
 
-  const {
-    data: problem,
-    error,
-    isLoading,
-  } = useQuery({
+  const { data: problem } = useQuery({
     queryKey: ["random-problem", disallowedIds],
     queryFn: async () => {
       return problemService.getRandomProblem(disallowedIds);
@@ -29,6 +25,7 @@ const ProblemRandom = () => {
 
   return problem ? (
     <Card className="p-5 flex flex-col gap-5">
+      <h3 className="text-xl font-bold">Random Problem</h3>
       <h3 className="font-semibold text-xl">{problem.title}</h3>
       <MarkdownViewer
         markdown={problem.question}

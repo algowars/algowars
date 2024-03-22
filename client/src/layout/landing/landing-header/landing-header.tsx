@@ -2,7 +2,6 @@ import Logo from "@/components/logo/logo";
 import { useAuthLoginButton } from "@/features/auth/auth-login-button/auth-login-button.hooks";
 import { useAuthSignupButton } from "@/features/auth/auth-signup-button/auth-signup-button.hooks";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 const LandingHeader = () => {
   const [top, setTop] = useState<boolean>(true);

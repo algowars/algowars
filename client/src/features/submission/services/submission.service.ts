@@ -1,8 +1,8 @@
 import { AxiosRequestConfig } from "axios";
-import { Submission } from "../submission.model";
 import api from "@/api/api";
 import { CreateSubmissionDto } from "../dtos/create-submission.dto";
 import { PaginationResponse } from "@/common/pagination/pagination-response.model";
+import { Submission } from "../sbumission.model";
 
 const createSubmission = ({
   code,
