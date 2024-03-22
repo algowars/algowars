@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./home/home.page";
 import NotFoundpage from "./not-found/not-found.page";
-import { AuthenticationGuard } from "../../../client-old/src/guards/AuthenticationGuard";
 import CreatePage from "./create/create.page";
 import CreateProblemPage from "./create/create-problem/create-problem.page";
 import SetupPage from "./account/setup/setup.page";
 import CreateTestSetupPage from "./create/create-test-setup/create-test-setup.page";
 import ProblemPage from "./problems/problem/problem.page";
 import ProfilePage from "./profile/profile.page";
+import { AuthenticationGuard } from "@/features/auth/guards/authentication.guard";
 
 const PageRoutes = () => {
   return (
