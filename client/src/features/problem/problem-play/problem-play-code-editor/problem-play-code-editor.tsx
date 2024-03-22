@@ -11,7 +11,7 @@ const ProblemPlayCodeEditor = () => {
   return (
     <CodeEditor
       code={createSubmissionDto.code}
-      className="rounded"
+      className="rounded bg-red-500"
       changeCode={changeCode}
     />
   );

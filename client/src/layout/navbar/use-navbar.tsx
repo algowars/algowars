@@ -21,11 +21,19 @@ export const useNavbar = () => {
     },
     {
       name: "log in",
-      element: <AuthLoginButton variant="outline">Log in</AuthLoginButton>,
+      element: (
+        <AuthLoginButton variant={null} className="font-semibold p-0">
+          Log in
+        </AuthLoginButton>
+      ),
     },
     {
       name: "sign up",
-      element: <AuthSignupButton variant="default">Sign up</AuthSignupButton>,
+      element: (
+        <AuthSignupButton variant={null} className="font-semibold">
+          Sign up
+        </AuthSignupButton>
+      ),
     },
   ];
 

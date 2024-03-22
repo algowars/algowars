@@ -18,12 +18,11 @@ const LayoutFull = ({
   mainClassName = "",
   className = "flex flex-col h-screen relative",
 }: Props) => {
-  const { links } = useNavbar();
   return (
     <div className={className}>
       <header className={`${bgColor}`}>
         <AccountExistBanner />
-        <Navbar navLinks={links} width="100%" className="px-3" />
+        <Navbar width="100%" className="px-3" />
       </header>
 
       <main className={`grow ${bgColor} ${mainClassName}`}>{children}</main>

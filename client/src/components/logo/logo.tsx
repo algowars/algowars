@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 
-export default function Logo() {
+type Props = {
+  width?: string;
+  height?: string;
+};
+
+export default function Logo({ width = "w-8", height = "h-8" }: Props) {
   return (
     <Link to="/" className="flex items-center gap-2" aria-label="Algowars">
       <svg
-        className="w-8 h-8"
+        className={`${width} ${height}`}
         viewBox="0 0 32 32"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -30,7 +35,7 @@ export default function Logo() {
           fillRule="nonzero"
         />
       </svg>
-      <h1 className="font-semibold">Algowars</h1>
+      <h1 className="font-bold">Algowars</h1>
     </Link>
   );
 }

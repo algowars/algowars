@@ -11,6 +11,12 @@ import AuthLogoutButton from "@/features/auth/auth-logout-button/auth-logout-but
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store/use-app-selector";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type Props = {
   url?: string;
@@ -23,55 +29,66 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
   const { account } = useAppSelector((state) => state.account);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="w-11 h-11 rounded-full">
-          <Avatar>
+          <Avatar className="w-8 h-8 p-0">
             <AvatarImage src={url} />
             <AvatarFallback>{fallback}</AvatarFallback>
           </Avatar>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-64 -ml-32 mt-1 flex flex-col px-2 py-1.5">
-        <ul className="border-b pb-1.5">
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start" className="w-64">
+        <DropdownMenuItem asChild>
+          <Link
+            to={`/profile/${account.username}`}
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              "items-start text-start w-full flex flex-col gap-1 items-start block h-fit"
+            )}
+          >
+            <h5 className="font-semibold">{user?.name}</h5>
+            <p className="text-muted-foreground">@{account.username}</p>
+          </Link>
+        </DropdownMenuItem>
+        <ul className="border-t border-b my-1 py-1 flex flex-col  gap-1">
           <li>
-            <Link
-              to={`/profile/${account.username}`}
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "justify-start text-start w-full flex flex-col gap-1 items-start block h-fit hover:underline underline-offset-2"
-              )}
-            >
-              <h5 className="font-semibold">{user?.name}</h5>
-              <p className="text-muted-foreground">@{account.username}</p>
-            </Link>
+            <DropdownMenuItem asChild>
+              <Link
+                to={`/profile/${account.username}`}
+                className={cn(
+                  buttonVariants({ variant: "ghost" }),
+                  "justify-start text-start w-full"
+                )}
+              >
+                Profile
+              </Link>
+            </DropdownMenuItem>
+          </li>
+          <li>
+            <DropdownMenuItem className="p-0" asChild>
+              <Link
+                to={`/profile/${account.username}`}
+                className={cn(
+                  buttonVariants({ variant: "ghost" }),
+                  "justify-start text-start w-full"
+                )}
+              >
+                Profile
+              </Link>
+            </DropdownMenuItem>
           </li>
         </ul>
-        <ul className="border-b py-1.5">
-          <li>
-            <Link
-              to={`/profile/${account.username}`}
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "justify-start text-start w-full hover:underline underline-offset-2"
-              )}
-            >
-              Profile
-            </Link>
-          </li>
-        </ul>
-        <ul className="pt-1.5">
-          <li>
-            <AuthLogoutButton
-              variant="ghost"
-              className="text-start justify-start w-full hover:underline underline-offset-2"
-            >
-              Log out
-            </AuthLogoutButton>
-          </li>
-        </ul>
-      </PopoverContent>
-    </Popover>
+        <DropdownMenuItem asChild>
+          <AuthLogoutButton
+            variant="ghost"
+            className="text-start justify-start w-full"
+          >
+            Log out
+          </AuthLogoutButton>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

@@ -1,10 +1,11 @@
 import Logo from "@/components/logo/logo";
 import { Input } from "@/components/ui/input";
+import Container from "../container/container";
 
 const Footer = () => {
   return (
     <footer>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <Container>
         {/* Top area: Blocks */}
         <div className="grid sm:grid-cols-12 gap-8 py-8 md:py-12 border-t">
           {/* 1st block */}
@@ -275,7 +276,7 @@ const Footer = () => {
             &copy; Algowars 2024
           </div>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 };
