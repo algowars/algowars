@@ -1,9 +1,21 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AppError } from "@/errors/app-error.model";
 import { problemService } from "../services/problem.service";
 import { ProblemAggregate } from "../problem-aggregate";
 import { CreateSubmissionDto } from "@/features/submission/dtos/create-submission.dto";
+import { Submission } from "@/features/submission/sbumission.model";
+import { useSocket } from "@/common/socket/socket.provider";
+import { SubmissionStatus } from "@/features/submission/judge-submission-status.model";
+import { SubmissionStatusDescription } from "@/features/submission/judge-submission-status-description.model";
 
 type ProblemPlayProps = {
   children: ReactNode;
@@ -19,6 +31,8 @@ export type ProblemPlayState = {
     k: K,
     value: CreateSubmissionDto[K]
   ) => void;
+  submission: Submission | undefined;
+  setSubmission: Dispatch<SetStateAction<Submission | undefined>>;
 };
 
 const initialState: ProblemPlayState = {
@@ -30,6 +44,8 @@ const initialState: ProblemPlayState = {
     problemId: null,
   },
   changeCreateSubmissionDto: () => null,
+  submission: undefined,
+  setSubmission: () => null,
 };
 
 const ProblemPlayProviderContext =
@@ -40,6 +56,7 @@ export function ProblemProvider({
   slug,
   ...props
 }: ProblemPlayProps) {
+  const { socket } = useSocket();
   const {
     data: problemAggregate,
     isLoading,
@@ -65,6 +82,9 @@ export function ProblemProvider({
       code: "",
       problemId: null,
     });
+  const [submission, setSubmission] = useState<Submission | undefined>(
+    undefined
+  );
 
   const changeCreateSubmissionDto = <K extends keyof CreateSubmissionDto>(
     key: K,
@@ -73,12 +93,42 @@ export function ProblemProvider({
     setCreateSubmissionDto((curr) => ({ ...curr, [key]: value }));
   };
 
+  useEffect(() => {
+    if (submission) {
+      const handleStatusUpdate = (data: SubmissionStatus) => {
+        if (data.id === submission.id) {
+          setSubmission((currentSubmission) => {
+            if (currentSubmission && currentSubmission.id === data.id) {
+              return { ...currentSubmission, status: data.description };
+            }
+            return currentSubmission;
+          });
+
+          if (
+            data.description !== SubmissionStatusDescription.IN_QUEUE &&
+            data.description !== SubmissionStatusDescription.PROCESSING
+          ) {
+            socket?.off("submissionStatus", handleStatusUpdate);
+          }
+        }
+      };
+
+      socket?.on("submissionStatus", handleStatusUpdate);
+
+      return () => {
+        socket?.off("submissionStatus", handleStatusUpdate);
+      };
+    }
+  }, [submission, socket]);
+
   const value = {
     problemAggregate,
     isLoading,
     error,
     createSubmissionDto,
     changeCreateSubmissionDto,
+    submission,
+    setSubmission,
   };
 
   return (

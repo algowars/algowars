@@ -1,6 +1,6 @@
-import { SubmissionStatus } from "./submission-status.model";
+import { SubmissionStatus } from "./judge-submission-status.model";
 
-export interface Submission {
+export interface JudgeSubmission {
   id: number;
   stdout: string | null;
   time: null;

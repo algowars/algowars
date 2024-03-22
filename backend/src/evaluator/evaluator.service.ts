@@ -27,12 +27,11 @@ export class EvaluatorService {
       base64_encoded: 'true',
     };
 
-    console.log(data, params);
-
     try {
       const response = await firstValueFrom(
         this.httpService.post('/submissions/batch', data, { params }),
       );
+      console.log('DATA:                           ', response.data);
       return response.data;
     } catch (error) {
       console.log('ERROR: ', error);

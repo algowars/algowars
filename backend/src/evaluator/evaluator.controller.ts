@@ -8,7 +8,6 @@ import {
 import { EvaluatorService } from './evaluator.service';
 import {
   Account,
-  Problem,
   ProblemSetup,
   Submission,
   Test,
@@ -75,6 +74,8 @@ export class EvaluatorController {
         await foundProblem.tests,
       ),
     );
+
+    console.log(judgeSubmissions);
 
     console.log(judgeSubmissions.map((sub) => sub.token).join(','));
 
