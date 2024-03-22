@@ -1,5 +1,5 @@
 import Logo from "@/components/logo/logo";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useAuthLoginButton } from "@/features/auth/auth-login-button/auth-login-button.hooks";
 import { useAuthSignupButton } from "@/features/auth/auth-signup-button/auth-signup-button.hooks";
 import ThemeToggle from "@/features/theme/theme-toggle/theme-toggle";
@@ -63,36 +63,17 @@ const NavbarLoggedOut = ({ width, className, border = "border-b" }: Props) => {
               Battles
             </NavLink>
           </li>
-          <li>
-            <button
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-              onClick={handleLogin}
-            >
-              Log in
-            </button>
-          </li>
-          <li>
-            <button
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-              onClick={handleSignUp}
-            >
-              Sign up
-            </button>
-          </li>
         </ul>
-        <ul className="flex items-center gap-1 text-sm">
+        <ul className="flex items-center gap-3 text-sm">
           <li>
-            <a
-              href="https://github.com/algo-wars"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "w-10 h-10 p-0 flex items-center justify-center"
-              )}
-            >
-              <Github size={16} />
-            </a>
+            <Button variant="outline" onClick={handleLogin} className="w-24">
+              Log in
+            </Button>
+          </li>
+          <li>
+            <Button variant="default" className="w-24" onClick={handleSignUp}>
+              Sign up
+            </Button>
           </li>
           <li>
             <ThemeToggle />
