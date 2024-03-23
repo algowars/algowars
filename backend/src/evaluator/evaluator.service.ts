@@ -103,8 +103,8 @@ export class EvaluatorService {
       console.log('FINAL RESPONSE: ', responseData);
       responseData.submissions.forEach((sub) => {
         sub.source_code = this.decode(sub.source_code);
-        sub.stdin = this.decode(sub.stdin);
-        sub.stdout = this.decode(sub.stdout);
+        sub.stdin = sub.stdin ? this.decode(sub.stdin) : sub.stdin;
+        sub.stdout = sub.stdout ? this.decode(sub.stdout) : sub.stdout;
         sub.expected_output = this.decode(sub.expected_output);
       });
       console.log(responseData.submissions, 'AFTER DECODE');

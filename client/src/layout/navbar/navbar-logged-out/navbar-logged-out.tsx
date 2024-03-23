@@ -1,11 +1,10 @@
 import Logo from "@/components/logo/logo";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { useAuthLoginButton } from "@/features/auth/auth-login-button/auth-login-button.hooks";
 import { useAuthSignupButton } from "@/features/auth/auth-signup-button/auth-signup-button.hooks";
 import ThemeToggle from "@/features/theme/theme-toggle/theme-toggle";
 import Container from "@/layout/container/container";
-import { cn } from "@/lib/utils";
-import { Github } from "lucide-react";
+
 import { NavLink } from "react-router-dom";
 
 type Props = {

@@ -40,6 +40,9 @@ export class Problem {
   @OneToMany(() => Test, (test) => test.problem, { cascade: true })
   tests: Promise<Test[]>;
 
+  @Column({ nullable: true })
+  rating: number;
+
   @OneToOne(() => Submission)
   solution: Promise<Submission>;
 
