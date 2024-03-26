@@ -10,15 +10,15 @@ import { Problem } from './problem.entity';
 import { Submission } from './submission.entity';
 
 @Entity()
-export class Account {
-  @PrimaryGeneratedColumn()
+export class Player {
+  @PrimaryGeneratedColumn('uuid')
   id: number;
-
-  @Column({ nullable: false, unique: true })
-  sub: string;
 
   @Column({ nullable: false, unique: true, length: 50 })
   username: string;
+
+  @Column()
+  isGuest: boolean;
 
   @OneToMany(() => Problem, (problem) => problem.createdBy)
   problems: Promise<Problem[]>;
@@ -26,9 +26,9 @@ export class Account {
   @OneToMany(() => Submission, (submission) => submission.createdBy)
   submissions: Promise<Submission[]>;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 }

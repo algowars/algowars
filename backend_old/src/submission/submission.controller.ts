@@ -14,16 +14,16 @@ import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { SubmissionPaginationDto } from './dtos/submission-pagination.dto';
 import { PaginationResponse } from 'src/common/pagination/dtos/pagination-response.dto';
 import { Submission } from 'src/data-model/entities';
-import { AccountService } from 'src/account/account.service';
 import { Request } from 'express';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
+import { PlayerService } from 'src/player/player.service';
 
 @Controller('v1/submission')
 export class SubmissionController {
   constructor(
     private readonly submissionService: SubmissionService,
     private readonly evaluatorService: EvaluatorService,
-    private readonly accountService: AccountService,
+    private readonly playerService: PlayerService,
   ) {}
 
   @UseGuards(AuthorizationGuard)

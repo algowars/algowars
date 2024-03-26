@@ -8,6 +8,8 @@ import { SubmissionModule } from './submission/submission.module';
 import { AccountModule } from './account/account.module';
 import { TestInputModule } from './test-input/test-input.module';
 import { ProblemSetupModule } from './problem-setup/problem-setup.module';
+import { LobbyModule } from './lobby/lobby.module';
+import { PlayerModule } from './player/player.module';
 import entities from './data-model/entities';
 
 @Module({
@@ -36,6 +38,8 @@ import entities from './data-model/entities';
     AccountModule,
     TestInputModule,
     ProblemSetupModule,
+    LobbyModule,
+    PlayerModule,
   ],
   controllers: [],
   providers: [],

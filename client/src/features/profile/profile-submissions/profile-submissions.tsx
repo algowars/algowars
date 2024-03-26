@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import ProfileSubmissionsCard from "./profile-submissions-card/profile-submissions-card";
 
 const ProfileSubmissions = () => {
   const [page] = useState<number>(1);
@@ -27,6 +28,7 @@ const ProfileSubmissions = () => {
       if (!username) {
         throw new Error("A username is required");
       }
+
       return submissionService.getUserSubmissions(
         accessToken,
         username,
@@ -54,9 +56,9 @@ const ProfileSubmissions = () => {
         ) : (
           <ul className="flex flex-col">
             {submissions ? (
-              submissions.results.map((submission, index) => (
+              submissions.results.map((submission) => (
                 <li key={submission.id} className="p-5">
-                  {index}
+                  <ProfileSubmissionsCard submission={submission} />
                 </li>
               ))
             ) : (

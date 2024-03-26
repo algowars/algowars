@@ -35,10 +35,13 @@ export class SubmissionService {
   ): Promise<PaginationResponse<Submission>> {
     const entityName = 'submission';
     const accountName = 'account';
+    const problemName = 'problem';
     const queryBuilder =
       this.submissionRepository.createQueryBuilder(entityName);
 
     queryBuilder.leftJoinAndSelect(`${entityName}.createdBy`, accountName);
+
+    queryBuilder.leftJoinAndSelect(`${entityName}.problem`, problemName);
 
     queryBuilder.where(`${accountName}.username = :username`, {
       username: submissionPaginationDto.username,

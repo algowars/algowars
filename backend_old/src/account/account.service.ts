@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from 'src/data-model/entities';
 import { Repository } from 'typeorm';
 import { CreateAccountDto } from './dtos/create-account.dto';
-import { Profile } from 'src/data-model/model/profile';
 
 @Injectable()
 export class AccountService {
@@ -36,36 +35,6 @@ export class AccountService {
       },
       relations,
     });
-  }
-
-  findByUsername(username: string, relations: string[] = []): Promise<Account> {
-    if (!username) {
-      return null;
-    }
-
-    return this.accountRepository.findOne({
-      where: {
-        username,
-      },
-      relations,
-    });
-  }
-
-  async findProfileByUsername(username: string): Promise<Profile> {
-    if (!username) {
-      return null;
-    }
-
-    const account = await this.accountRepository.findOne({
-      where: {
-        username,
-      },
-    });
-
-    return {
-      username: account.username,
-      joinedOn: account.createdAt,
-    };
   }
 
   create(

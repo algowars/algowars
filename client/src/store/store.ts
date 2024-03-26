@@ -3,11 +3,13 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import themeReducer from "@/slices/theme-slice";
 import accountReducer from "@/slices/account-slice";
 import preferredLanguageSlice from "@/slices/preferred-language-slice";
+import playerReducer from "@/slices/player-slice";
 
 const rootReducer = combineReducers({
   theme: themeReducer,
   account: accountReducer,
   preferredLanguage: preferredLanguageSlice,
+  player: playerReducer,
 });
 
 export function setupStore(preloadedState?: Partial<RootState>) {

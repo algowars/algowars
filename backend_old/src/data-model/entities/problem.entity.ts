@@ -9,10 +9,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Account } from './account.entity';
 import { ProblemSetup } from './problem-setup.entity';
 import { Test } from './test.entity';
 import { Submission } from './submission.entity';
+import { Player } from './player.entity';
 
 @Entity()
 export class Problem {
@@ -28,9 +28,9 @@ export class Problem {
   @Column({ nullable: false, length: 110, unique: true })
   slug: string;
 
-  @ManyToOne(() => Account, (account) => account.problems)
+  @ManyToOne(() => Player, (player) => player.problems)
   @JoinTable()
-  createdBy: Promise<Account>;
+  createdBy: Promise<Player>;
 
   @OneToMany(() => ProblemSetup, (problemSetup) => problemSetup.problem, {
     cascade: true,
@@ -42,6 +42,9 @@ export class Problem {
 
   @Column({ nullable: true })
   rating: number;
+
+  @OneToMany(() => Submission, (submission) => submission.problem)
+  submissions: Promise<Submission>;
 
   @OneToOne(() => Submission)
   solution: Promise<Submission>;

@@ -2,30 +2,22 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Player } from './player.entity';
-import { LobbyStatus } from './lobby-status.entity';
 
 @Entity()
-export class Lobby {
+export class Account {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: number;
 
-  @ManyToOne(() => Player)
-  creator: Player;
+  @Column({ nullable: false, unique: true })
+  sub: string;
 
-  @ManyToMany(() => Player)
-  @JoinTable()
-  players: Player[];
-
-  @OneToMany(() => LobbyStatus, (lobbyStatus) => lobbyStatus.lobbies)
-  status: LobbyStatus;
+  @OneToOne(() => Player, { nullable: false })
+  player: Promise<Player>;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
