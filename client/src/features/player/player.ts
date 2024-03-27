@@ -1,5 +1,7 @@
 export interface Player {
   id: string;
-  name: string;
-  accountId?: number;
+  username: string;
+  isGuest: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
