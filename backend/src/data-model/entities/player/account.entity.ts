@@ -7,13 +7,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Player } from './player.entity';
+import { instanceToPlain } from 'class-transformer';
 
 @Entity()
 export class Account {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ nullable: false, unique: true, select: false })
   sub: string;
 
   @OneToOne(() => Player, { cascade: true, nullable: false })
@@ -24,4 +25,8 @@ export class Account {
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  toJSON() {
+    return instanceToPlain(this);
+  }
 }

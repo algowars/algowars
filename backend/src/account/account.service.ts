@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from 'src/data-model/entities';
 import { Repository } from 'typeorm';
 import { CreateAccountDto } from './dtos/create-account.dto';
+import { QueryOptions } from 'src/common/query/query-options';
 
 @Injectable()
 export class AccountService {
@@ -11,7 +12,10 @@ export class AccountService {
     private readonly accountRepository: Repository<Account>,
   ) {}
 
-  findById(id: number, relations: string[] = []): Promise<Account> {
+  findById(
+    id: string,
+    { relations = [], select }: QueryOptions,
+  ): Promise<Account> {
     if (!id) {
       return null;
     }
@@ -20,11 +24,15 @@ export class AccountService {
       where: {
         id,
       },
+      select,
       relations,
     });
   }
 
-  findBySub(sub: string, relations: string[] = []): Promise<Account> {
+  findBySub(
+    sub: string,
+    { relations = [], select }: QueryOptions,
+  ): Promise<Account> {
     if (!sub) {
       return null;
     }
@@ -33,6 +41,7 @@ export class AccountService {
       where: {
         sub,
       },
+      select,
       relations,
     });
   }

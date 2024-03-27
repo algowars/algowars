@@ -5,4 +5,5 @@ export enum AccountLabel {
   USER_SUB_REQUIRED = 'A user sub is required',
   ACCOUNT_USERNAME_NOT_EMPTY = 'A username is required',
   ACCOUNT_ALREADY_EXIST = 'Account already exists',
+  ACCOUNT_NOT_OWNED = 'You do not own this account',
 }

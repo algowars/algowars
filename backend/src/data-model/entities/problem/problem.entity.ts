@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Player } from '../player/player.entity';
 import { ProblemSetup } from './problem-setup.entity';
+import { Test } from './test.entity';
 
 @Entity()
 export class Problem {
@@ -31,6 +32,9 @@ export class Problem {
 
   @OneToMany(() => ProblemSetup, (setup) => setup.problem)
   setups: Promise<ProblemSetup>;
+
+  @OneToMany(() => Test, (test) => test.problem)
+  tests: Promise<Test[]>;
 
   @Column({ nullable: true })
   rating: number;

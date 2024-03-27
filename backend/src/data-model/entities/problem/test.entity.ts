@@ -5,8 +5,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ProblemSetup } from './problem-setup.entity';
 import { TestInput } from './test-input.entity';
+import { Problem } from './problem.entity';
 
 @Entity()
 export class Test {
@@ -19,8 +19,8 @@ export class Test {
   @Column({ nullable: false })
   order: number;
 
-  @ManyToOne(() => ProblemSetup, (setup) => setup.tests)
-  setup: ProblemSetup;
+  @ManyToOne(() => Problem, (problem) => problem.tests)
+  problem: Problem;
 
   @OneToMany(() => TestInput, (testInput) => testInput.test)
   inputs: TestInput[];

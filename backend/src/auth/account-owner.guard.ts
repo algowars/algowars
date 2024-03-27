@@ -6,7 +6,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { AccountService } from 'src/account/account.service';
-import { AccountAlreadyExistException } from 'src/account/exceptions/account-already-exist.exception';
+import { AccountNotOwnedException } from 'src/account/exceptions/account-not-owned.exception';
 import { AccountLabel } from 'src/account/labels/account.label';
 
 @Injectable()
@@ -24,9 +24,14 @@ export class AccountOwnerGuard implements CanActivate {
       );
     }
 
-    const foundAccount = await this.accountService.findBySub(userSub);
-    if (foundAccount) {
-      throw new AccountAlreadyExistException();
+    const foundAccount = await this.accountService.findBySub(userSub, {
+      select: {
+        sub: true,
+      },
+    });
+    console.log(foundAccount);
+    if (foundAccount.sub !== userSub) {
+      throw new AccountNotOwnedException();
     }
 
     return true;

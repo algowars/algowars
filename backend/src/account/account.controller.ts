@@ -6,21 +6,19 @@ import { Request } from 'express';
 import { Account } from 'src/data-model/entities';
 import { AccountOwnerGuard } from 'src/auth/account-owner.guard';
 
-@Controller('account')
+@Controller('v1/account')
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @UseGuards(AuthorizationGuard)
-  @UseGuards(AccountOwnerGuard)
+  @UseGuards(AuthorizationGuard, AccountOwnerGuard)
   @Get('find/sub')
   findAccountBySub(@Req() request: Request): Promise<Account> {
     const userSub = request.auth.payload.sub;
 
-    return this.accountService.findBySub(userSub);
+    return this.accountService.findBySub(userSub, {});
   }
 
-  @UseGuards(AuthorizationGuard)
-  @UseGuards(AccountOwnerGuard)
+  @UseGuards(AuthorizationGuard, AccountOwnerGuard)
   @Post()
   async createAccount(
     @Body() createAccountDto: CreateAccountDto,

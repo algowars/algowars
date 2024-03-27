@@ -3,6 +3,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountModule } from './account/account.module';
 import { PlayerModule } from './player/player.module';
+import { ProblemModule } from './problem/problem.module';
+import { ProblemSetupModule } from './problem-setup/problem-setup.module';
+import { TestInputModule } from './test-input/test-input.module';
+import { EvaluatorModule } from './evaluator/evaluator.module';
 import entities from './data-model/entities';
 
 @Module({
@@ -26,6 +30,10 @@ import entities from './data-model/entities';
     }),
     AccountModule,
     PlayerModule,
+    ProblemModule,
+    ProblemSetupModule,
+    TestInputModule,
+    EvaluatorModule,
   ],
 })
 export class AppModule {}
