@@ -7,12 +7,10 @@ import { setPlayer } from "@/slices/player-slice";
 import { useAppDispatch } from "@/store/use-app-dispatch";
 import { useAppSelector } from "@/store/use-app-selector";
 import { useMutation } from "@tanstack/react-query";
-import { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 const BattleCreateLobby = () => {
   const { player } = useAppSelector((state) => state.player);
-  const { account } = useAppSelector((state) => state.account);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
@@ -22,7 +20,6 @@ const BattleCreateLobby = () => {
   } = useMutation({
     mutationKey: ["create-lobby"],
     mutationFn: async () => {
-      console.log(player);
       if (!player.id) {
         const newPlayer = await playerService.createPlayer();
         dispatch(setPlayer(newPlayer));

@@ -28,8 +28,6 @@ const ProblemPlayFooter = () => {
         throw new Error("Error creating submission");
       }
 
-      console.log(submission, socket);
-
       socket?.emit("startSubmissionPolling", { submissionId: submission.id });
 
       setSubmission(submission);

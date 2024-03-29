@@ -31,8 +31,6 @@ export class AccountOwnerGuard implements CanActivate {
       throw new AccountNotFoundException();
     }
 
-    console.log(foundAccount, userSub);
-
     if (foundAccount.sub !== userSub) {
       throw new AccountNotOwnedException();
     }

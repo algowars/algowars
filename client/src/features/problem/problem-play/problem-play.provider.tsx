@@ -117,7 +117,6 @@ export function ProblemProvider({
               SubmissionStatusDescription.PROCESSING
             )
           ) {
-            console.log("IN HERE");
             setSubmission((curr) => {
               if (!curr) return undefined;
               const updatedSubmission: Submission = {

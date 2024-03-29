@@ -173,7 +173,6 @@ export class EvaluatorController {
     problemSetup: ProblemSetup,
     tests: Test[],
   ): CreateJudgeSubmission[] {
-    console.log('TESTS: ', tests);
     return tests.map((test) => ({
       language_id: createEvaluationDto.languageId,
       source_code: `${createEvaluationDto.code}

@@ -37,7 +37,6 @@ export class SubmissionGateway
 
   @SubscribeMessage('startSubmissionPolling')
   async handleStartPolling(client: any, payload: { submissionId: string }) {
-    console.log('STARTING SUBMISSION POLLING');
     const submission = await this.submissionService.findById(
       payload.submissionId,
       ['tokens'],
@@ -50,8 +49,6 @@ export class SubmissionGateway
     if (!submission.tokens) {
       throw new TokensNotFoundException();
     }
-
-    console.log(submission);
 
     try {
       const response = await this.evaluatorService.pollSubmission(

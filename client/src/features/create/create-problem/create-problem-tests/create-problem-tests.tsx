@@ -6,7 +6,6 @@ import CreateProblemTestsEdit from "./create-problem-tests-edit/create-problem-t
 const CreateProblemTests = () => {
   const [currentTest, setCurrentTest] = useState<number>(0);
   const { createTests } = useCreateProblem();
-  console.log(createTests);
   return (
     <div className="flex flex-col gap-3">
       <CreateProblemTestsNav

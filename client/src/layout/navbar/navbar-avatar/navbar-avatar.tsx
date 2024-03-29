@@ -22,6 +22,7 @@ type Props = {
 const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
   const { user } = useAuth0();
   const { account } = useAppSelector((state) => state.account);
+  const { player } = useAppSelector((state) => state.player);
 
   return (
     <DropdownMenu>
@@ -39,11 +40,14 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
             to={`/profile/${account.username}`}
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "items-start text-start w-full flex flex-col gap-1 items-start block h-fit"
+              "text-start w-full flex flex-col gap-1 items-start block h-fit"
             )}
+            style={{ alignItems: "start" }}
           >
             <h5 className="font-semibold">{user?.name}</h5>
-            <p className="text-muted-foreground">@{account.username}</p>
+            {player.username ? (
+              <p className="text-muted-foreground">@{player.username}</p>
+            ) : null}
           </Link>
         </DropdownMenuItem>
         <ul className="border-t border-b my-1 py-1 flex flex-col  gap-1">

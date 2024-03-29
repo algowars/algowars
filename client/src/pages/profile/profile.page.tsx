@@ -33,8 +33,6 @@ const ProfilePage = () => {
     return <PageLoader />;
   }
 
-  console.log(account, profile);
-
   return (
     <>
       <ErrorAlertFixed error={error} />

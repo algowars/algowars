@@ -34,7 +34,6 @@ export class EvaluatorService {
 
       return response.data;
     } catch (error) {
-      console.log('ERROR: ', error);
       const message =
         error.response?.data?.error || 'An unexpected error occurred';
       const statusCode =
