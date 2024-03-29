@@ -4,10 +4,12 @@ import { useMutation } from "@tanstack/react-query";
 import { useProblemPlay } from "../problem-play.provider";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/error-alert-fixed";
 import { useSocket } from "@/common/socket/socket.provider";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const ProblemPlayFooter = () => {
   const { createSubmissionDto } = useProblemPlay();
   const { socket } = useSocket();
+  const { getAccessTokenSilently } = useAuth0();
   const { setSubmission, isSubmissionPending } = useProblemPlay();
   const {
     mutate: submitCode,
@@ -16,7 +18,9 @@ const ProblemPlayFooter = () => {
   } = useMutation({
     mutationKey: ["create-submission"],
     mutationFn: async () => {
+      const accessToken = await getAccessTokenSilently();
       const submission = await submissionService.createSubmission(
+        accessToken,
         createSubmissionDto
       );
 

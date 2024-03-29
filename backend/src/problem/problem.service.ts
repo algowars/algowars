@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { QueryOptions } from 'src/common/query/query-options';
 import { Problem } from 'src/data-model/entities';
 import { Repository } from 'typeorm';
 
@@ -10,7 +11,7 @@ export class ProblemService {
     private readonly problemRepository: Repository<Problem>,
   ) {}
 
-  findOneById(id: number, relations: string[] = []) {
+  findOneById(id: number, { relations = [], select = {} }: QueryOptions = {}) {
     if (!id) {
       return null;
     }
@@ -19,11 +20,15 @@ export class ProblemService {
       where: {
         id,
       },
+      select,
       relations,
     });
   }
 
-  findOneBySlug(slug: string, relations: string[] = []) {
+  findOneBySlug(
+    slug: string,
+    { relations = [], select = {} }: QueryOptions = {},
+  ) {
     if (!slug) {
       return null;
     }
@@ -32,6 +37,7 @@ export class ProblemService {
       where: {
         slug,
       },
+      select,
       relations,
     });
   }

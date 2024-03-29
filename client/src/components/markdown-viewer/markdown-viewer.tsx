@@ -43,7 +43,7 @@ const MarkdownViewer = ({ markdown, className = "" }: Props) => {
         ),
         li: ({ children }) => <li className="mb-4">{children}</li>,
         strong: ({ children }) => (
-          <strong className="font-bold text-white">{children}</strong>
+          <strong className="font-bold">{children}</strong>
         ),
       }}
     >

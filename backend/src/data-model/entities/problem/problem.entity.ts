@@ -11,6 +11,7 @@ import {
 import { Player } from '../player/player.entity';
 import { ProblemSetup } from './problem-setup.entity';
 import { Test } from './test.entity';
+import { Submission } from '../submission/submission.entity';
 
 @Entity()
 export class Problem {
@@ -31,13 +32,16 @@ export class Problem {
   createdBy: Promise<Player>;
 
   @OneToMany(() => ProblemSetup, (setup) => setup.problem)
-  setups: Promise<ProblemSetup>;
+  setups: Promise<ProblemSetup[]>;
 
   @OneToMany(() => Test, (test) => test.problem)
   tests: Promise<Test[]>;
 
   @Column({ nullable: true })
   rating: number;
+
+  @OneToMany(() => Submission, (submission) => submission.problem)
+  submissions: Promise<Submission>;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

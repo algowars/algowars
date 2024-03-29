@@ -7,11 +7,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Problem } from '../problem/problem.entity';
+import { Submission } from '../submission/submission.entity';
 
 @Entity()
 export class Player {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({ nullable: false, unique: true, length: 50 })
   username: string;
@@ -21,6 +22,9 @@ export class Player {
 
   @OneToMany(() => Problem, (problem) => problem.createdBy)
   problems: Promise<Problem[]>;
+
+  @OneToMany(() => Submission, (submission) => submission.problem)
+  submissions: Promise<Submission>;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

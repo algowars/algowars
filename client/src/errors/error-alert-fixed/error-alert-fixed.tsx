@@ -6,7 +6,7 @@ type Props = {
   showClose?: boolean;
 };
 
-const ErrorAlertFixed = ({ error, showClose }: Props) => {
+const ErrorAlertFixed = ({ error, showClose = true }: Props) => {
   const [isClosed, setIsClosed] = useState<boolean>(false);
 
   return (

@@ -14,7 +14,7 @@ export class AccountService {
 
   findById(
     id: string,
-    { relations = [], select }: QueryOptions,
+    { relations = [], select = {} }: QueryOptions = {},
   ): Promise<Account> {
     if (!id) {
       return null;
@@ -29,21 +29,17 @@ export class AccountService {
     });
   }
 
-  findBySub(
-    sub: string,
-    { relations = [], select }: QueryOptions,
-  ): Promise<Account> {
+  findBySub(sub: string): Promise<Account> {
     if (!sub) {
       return null;
     }
 
-    return this.accountRepository.findOne({
-      where: {
-        sub,
-      },
-      select,
-      relations,
-    });
+    return this.accountRepository
+      .createQueryBuilder('account')
+      .addSelect('account.sub')
+      .leftJoinAndSelect('account.player', 'player')
+      .where('account.sub = :sub', { sub })
+      .getOne();
   }
 
   create(
@@ -51,8 +47,11 @@ export class AccountService {
     userSub: string,
   ): Promise<Account> {
     const createdAccount = this.accountRepository.create({
-      ...createAccountDto,
       sub: userSub,
+      player: {
+        username: createAccountDto.username,
+        isGuest: false,
+      },
     });
 
     return this.accountRepository.save(createdAccount);

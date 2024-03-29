@@ -2,12 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Player } from './player.entity';
-import { instanceToPlain } from 'class-transformer';
 
 @Entity()
 export class Account {
@@ -18,6 +18,7 @@ export class Account {
   sub: string;
 
   @OneToOne(() => Player, { cascade: true, nullable: false })
+  @JoinColumn()
   player: Player;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
@@ -25,8 +26,4 @@ export class Account {
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
-
-  toJSON() {
-    return instanceToPlain(this);
-  }
 }

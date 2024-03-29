@@ -1,8 +1,8 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ProblemService } from './problem.service';
-import { RandomProblemDto } from './dto/random-problem.dto';
+import { RandomProblemDto } from './dtos/random-problem.dto';
 import { Problem } from 'src/data-model/entities';
-import { ProblemAggregateDto } from './dto/problem-aggregate.dto';
+import { ProblemAggregateDto } from './dtos/problem-aggregate.dto';
 import { ProblemAggregate } from 'src/data-model/entities/problem/problem-aggregate';
 import { ProblemNotFoundException } from './exceptions/problem-not-found.exception';
 import { TestInputService } from 'src/test-input/test-input.service';

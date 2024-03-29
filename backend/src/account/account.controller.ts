@@ -15,10 +15,10 @@ export class AccountController {
   findAccountBySub(@Req() request: Request): Promise<Account> {
     const userSub = request.auth.payload.sub;
 
-    return this.accountService.findBySub(userSub, {});
+    return this.accountService.findBySub(userSub);
   }
 
-  @UseGuards(AuthorizationGuard, AccountOwnerGuard)
+  @UseGuards(AuthorizationGuard)
   @Post()
   async createAccount(
     @Body() createAccountDto: CreateAccountDto,

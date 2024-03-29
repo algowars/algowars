@@ -6,6 +6,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { AccountService } from 'src/account/account.service';
+import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { AccountNotOwnedException } from 'src/account/exceptions/account-not-owned.exception';
 import { AccountLabel } from 'src/account/labels/account.label';
 
@@ -24,16 +25,19 @@ export class AccountOwnerGuard implements CanActivate {
       );
     }
 
-    const foundAccount = await this.accountService.findBySub(userSub, {
-      select: {
-        sub: true,
-      },
-    });
-    console.log(foundAccount);
+    const foundAccount = await this.accountService.findBySub(userSub);
+
+    if (!foundAccount) {
+      throw new AccountNotFoundException();
+    }
+
+    console.log(foundAccount, userSub);
+
     if (foundAccount.sub !== userSub) {
       throw new AccountNotOwnedException();
     }
 
+    request.account = foundAccount;
     return true;
   }
 }

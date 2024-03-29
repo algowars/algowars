@@ -3,4 +3,5 @@ export interface CreateSubmissionDto {
   problemId: number | null;
   accountId?: number;
   sub?: string;
+  languageId?: number;
 }

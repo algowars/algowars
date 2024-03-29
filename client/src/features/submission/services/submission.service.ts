@@ -4,12 +4,18 @@ import { CreateSubmissionDto } from "../dtos/create-submission.dto";
 import { PaginationResponse } from "@/common/pagination/pagination-response.model";
 import { Submission } from "../sbumission.model";
 
-const createSubmission = ({
-  code,
-  problemId,
-  accountId,
-  sub,
-}: CreateSubmissionDto): Promise<Submission> => {
+const JAVASCRIPT_LANGUAGE_ID = 93;
+
+const createSubmission = (
+  accessToken: string,
+  {
+    code,
+    problemId,
+    accountId,
+    sub,
+    languageId = JAVASCRIPT_LANGUAGE_ID,
+  }: CreateSubmissionDto
+): Promise<Submission> => {
   const config: AxiosRequestConfig = {
     url: "/api/v1/evaluator/evaluate/submit",
     method: "POST",
@@ -18,8 +24,12 @@ const createSubmission = ({
       problemId,
       accountId,
       sub,
+      languageId,
     },
-    headers: { "content-type": "application/json" },
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
   };
 
   return api.callExternalApi<Submission>({ config });

@@ -20,10 +20,5 @@ export class CreateEvaluationDto {
   inputs: string[];
 
   @IsNumber()
-  @IsOptional()
-  accountId?: number;
-
-  @IsString()
-  @IsOptional()
-  sub?: string;
+  languageId: number;
 }

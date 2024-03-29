@@ -8,14 +8,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Player } from '../player/player.entity';
+import { Problem } from '../problem/problem.entity';
 import { SubmissionToken } from './submission-token.entity';
-import { Problem } from './problem.entity';
-import { Player } from './player.entity';
 
 @Entity()
 export class Submission {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @OneToMany(
     () => SubmissionToken,
