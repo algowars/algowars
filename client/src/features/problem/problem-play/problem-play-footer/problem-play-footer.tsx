@@ -60,6 +60,9 @@ const ProblemPlayFooter = () => {
             </Button>
           </li>
         </ul>
+        {JSON.stringify(
+          `isPending: ${isPending} isSubmissionPending: ${isSubmissionPending}`
+        )}
       </div>
     </>
   );

@@ -17,7 +17,7 @@ type Props = {
 const ProblemPlay = ({ slug }: Props) => {
   const { isSubmissionPending } = useProblemPlay();
   return (
-    <div className="flex flex-col h-full py-2">
+    <div className="flex flex-col h-full">
       <LoaderAlert
         title="Loading Submission"
         description="Waiting for test cases to finish"
@@ -25,20 +25,17 @@ const ProblemPlay = ({ slug }: Props) => {
       />
       <ProblemProvider slug={slug}>
         <ResizablePanelGroup direction="horizontal" className="w-full grow">
-          <ResizablePanel defaultSize={55} className="rounded overflow-hidden">
+          <ResizablePanel defaultSize={55} className="overflow-hidden">
             <ProblemPlayCodeEditor />
           </ResizablePanel>
-          <ResizableHandle className="w-4 bg-background hover:bg-accent" />
-          <ResizablePanel defaultSize={45} className="rounded overflow-hidden">
+          <ResizableHandle withHandle />
+          <ResizablePanel defaultSize={45} className="overflow-hidden">
             <ResizablePanelGroup direction="vertical">
-              <ResizablePanel defaultSize={70} className="overflow-auto border">
+              <ResizablePanel defaultSize={70} className="overflow-auto">
                 <ProblemPlayQuestion />
               </ResizablePanel>
-              <ResizableHandle className="h-4 bg-background hover:bg-accent" />
-              <ResizablePanel
-                defaultSize={30}
-                className="rounded overflow-y-scroll border"
-              >
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={30} className="overflow-y-scroll">
                 <ProblemPlayTestResults />
               </ResizablePanel>
             </ResizablePanelGroup>
