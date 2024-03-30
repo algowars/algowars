@@ -3,10 +3,10 @@ import { GameStatus } from "./game-status";
 
 export interface Game {
   id: string;
-  lobby: Lobby;
+  lobby?: Lobby;
   sessions: [];
   duration: number;
-  status: GameStatus;
+  status?: GameStatus;
   createdAt: Date;
   updatedAt: Date;
 }

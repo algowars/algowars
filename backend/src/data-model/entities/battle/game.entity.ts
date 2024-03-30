@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -19,6 +20,7 @@ export class Game {
   id: string;
 
   @OneToOne(() => Lobby, { cascade: true, nullable: false })
+  @JoinColumn()
   lobby: Lobby;
 
   @OneToMany(() => GameSession, (gameSession) => gameSession.game)

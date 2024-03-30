@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Player } from '../player/player.entity';
-
 @Entity()
 export class Lobby {
   @PrimaryGeneratedColumn('uuid')

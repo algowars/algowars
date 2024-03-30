@@ -2,12 +2,17 @@ import { AxiosRequestConfig } from "axios";
 import api from "@/api/api";
 import { Game } from "@/features/game/game";
 import { PaginationResponse } from "@/common/pagination/pagination-response.model";
-import { Lobby } from "../lobby";
 
-const createLobby = (accessToken: string): Promise<Game> => {
+const createLobby = (
+  accessToken: string,
+  lobbyName?: string
+): Promise<Game> => {
   const config: AxiosRequestConfig = {
     url: "/api/v1/game",
     method: "POST",
+    data: {
+      lobbyName,
+    },
     headers: {
       "content-type": "application/json",
       Authorization: `Bearer ${accessToken}`,
@@ -21,7 +26,7 @@ const getPublicLobbiesPageable = (
   page: number,
   size: number,
   timestamp: Date
-): Promise<PaginationResponse<Lobby>> => {
+): Promise<PaginationResponse<Game>> => {
   const config: AxiosRequestConfig = {
     url: "/api/v1/lobby",
     params: {
@@ -31,7 +36,7 @@ const getPublicLobbiesPageable = (
     },
   };
 
-  return api.callExternalApi<PaginationResponse<Lobby>>({ config });
+  return api.callExternalApi<PaginationResponse<Game>>({ config });
 };
 
 const lobbyService = {
