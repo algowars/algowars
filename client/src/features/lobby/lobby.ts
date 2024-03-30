@@ -6,4 +6,5 @@ export interface Lobby {
   creator: Player;
   players: Player[];
   status: LobbyStatus;
+  name: string;
 }

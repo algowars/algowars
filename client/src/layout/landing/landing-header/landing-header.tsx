@@ -2,6 +2,7 @@ import Logo from "@/components/logo/logo";
 import { useAuthLoginButton } from "@/features/auth/auth-login-button/auth-login-button.hooks";
 import { useAuthSignupButton } from "@/features/auth/auth-signup-button/auth-signup-button.hooks";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const LandingHeader = () => {
   const [top, setTop] = useState<boolean>(true);
@@ -36,6 +37,22 @@ const LandingHeader = () => {
           <nav className="hidden md:flex md:grow">
             {/* Desktop sign in links */}
             <ul className="flex grow justify-end flex-wrap items-center">
+              <li>
+                <Link
+                  to="/dashboard"
+                  className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/battle"
+                  className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
+                >
+                  Battles
+                </Link>
+              </li>
               <li>
                 <button
                   onClick={handleLogin}

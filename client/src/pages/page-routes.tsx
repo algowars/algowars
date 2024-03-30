@@ -10,6 +10,7 @@ import ProfilePage from "./profile/profile.page";
 import { AuthenticationGuard } from "@/features/auth/guards/authentication.guard";
 import BattlePage from "./battle/battle.page";
 import CreateLobbyPage from "./battle/create-lobby/create-lobby.page";
+import Landing from "@/layout/landing/landing";
 
 const PageRoutes = () => {
   return (
@@ -35,7 +36,8 @@ const PageRoutes = () => {
         />
       </Route>
       <Route path="problems/:slug" element={<ProblemPage />} />
-      <Route index element={<HomePage />} />
+      <Route path="dashboard" element={<HomePage />} />
+      <Route index element={<Landing />} />
       <Route path="*" element={<NotFoundpage />} />
     </Routes>
   );

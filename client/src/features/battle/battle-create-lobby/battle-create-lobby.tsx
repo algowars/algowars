@@ -2,15 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ErrorAlert from "@/errors/error-alert/error-alert";
 import { lobbyService } from "@/features/lobby/services/lobby-service";
-import { playerService } from "@/features/player/services/player-service";
-import { setPlayer } from "@/slices/player-slice";
 import { useAppDispatch } from "@/store/use-app-dispatch";
 import { useAppSelector } from "@/store/use-app-selector";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 const BattleCreateLobby = () => {
   const { player } = useAppSelector((state) => state.player);
+  const { getAccessTokenSilently } = useAuth0();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
@@ -20,20 +20,15 @@ const BattleCreateLobby = () => {
   } = useMutation({
     mutationKey: ["create-lobby"],
     mutationFn: async () => {
-      if (!player.id) {
-        const newPlayer = await playerService.createPlayer();
-        dispatch(setPlayer(newPlayer));
+      const accessToken = await getAccessTokenSilently();
+
+      const game = await lobbyService.createLobby(accessToken);
+
+      if (!game) {
+        throw new Error("Error creating lobby");
       }
 
-      if (player.id) {
-        const lobby = await lobbyService.createLobby(player.id);
-
-        if (!lobby) {
-          throw new Error("Error creating lobby");
-        }
-
-        navigate(`/battle/lobby/${lobby.id}`);
-      }
+      navigate(`/battle/${game.id}/lobby/${game.lobby.id}`);
 
       return null;
     },

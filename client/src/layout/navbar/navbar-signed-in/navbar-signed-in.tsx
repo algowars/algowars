@@ -26,7 +26,7 @@ const NavbarSignedIn = ({ width, className, border = "border-b" }: Props) => {
           </li>
           <li>
             <NavLink
-              to="/"
+              to="/dashboard"
               className={({ isActive }) =>
                 `transition-colors hover:text-foreground/80 text-foreground${
                   isActive ? "" : "/60"

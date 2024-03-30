@@ -8,6 +8,8 @@ import { ProblemSetupModule } from './problem-setup/problem-setup.module';
 import { TestInputModule } from './test-input/test-input.module';
 import { EvaluatorModule } from './evaluator/evaluator.module';
 import { SubmissionModule } from './submission/submission.module';
+import { LobbyModule } from './lobby/lobby.module';
+import { GameModule } from './game/game.module';
 import entities from './data-model/entities';
 
 @Module({
@@ -36,6 +38,8 @@ import entities from './data-model/entities';
     TestInputModule,
     EvaluatorModule,
     SubmissionModule,
+    LobbyModule,
+    GameModule,
   ],
 })
 export class AppModule {}
