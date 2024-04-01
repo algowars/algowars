@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { GameService } from './game.service';
 import { Throttle, seconds } from '@nestjs/throttler';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
@@ -12,6 +20,11 @@ import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.
 @Controller('v1/game')
 export class GameController {
   constructor(private readonly gameService: GameService) {}
+
+  @Get('find')
+  findGameById(@Query() { gameId }): Promise<Game> {
+    return this.gameService.findGameById(gameId, ['lobby']);
+  }
 
   @Throttle({ default: { limit: seconds(15), ttl: 1 } })
   @UseGuards(AuthorizationGuard, AccountOwnerGuard)

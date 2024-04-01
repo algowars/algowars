@@ -14,6 +14,19 @@ export class GameService {
     private readonly gameRepository: Repository<Game>,
   ) {}
 
+  findGameById(id: string, relations: string[] = []) {
+    if (!id) {
+      return null;
+    }
+
+    return this.gameRepository.findOne({
+      where: {
+        id,
+      },
+      relations,
+    });
+  }
+
   createGame(player: Player, lobbyName?: string) {
     return this.gameRepository.save({
       lobby: {

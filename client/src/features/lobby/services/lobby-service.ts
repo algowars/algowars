@@ -34,14 +34,30 @@ const getPublicLobbiesPageable = (
       page,
       size,
     },
+    headers: {
+      "content-type": "application/json",
+    },
   };
 
   return api.callExternalApi<PaginationResponse<Game>>({ config });
 };
 
+const findGameById = (gameId: string): Promise<Game> => {
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/game/find",
+    params: { gameId },
+    headers: {
+      "content-type": "application/json",
+    },
+  };
+
+  return api.callExternalApi<Game>({ config });
+};
+
 const lobbyService = {
   createLobby,
   getPublicLobbiesPageable,
+  findGameById,
 };
 
 Object.freeze(lobbyService);
