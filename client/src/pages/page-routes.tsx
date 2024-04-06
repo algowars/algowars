@@ -18,7 +18,7 @@ const PageRoutes = () => {
   return (
     <Routes>
       <Route path="rush" element={<RushPage />} />
-      <Route path="battle/lobby/:gameId" element={<LobbyPage />} />
+      <Route path="battle/:gameId" element={<LobbyPage />} />
       <Route path="battle/create-lobby" element={<CreateLobbyPage />} />
       <Route path="battle" element={<BattlePage />} />
       <Route path="profile/:username" element={<ProfilePage />} />

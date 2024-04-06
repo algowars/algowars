@@ -1,6 +1,7 @@
 import PageLoader from "@/components/loader/page-loader/page-loader";
 import ErrorAlert from "@/errors/error-alert/error-alert";
 import LobbyCard from "@/features/lobby/lobby-card/lobby-card";
+import LobbyPlayers from "@/features/lobby/players/lobby-players";
 import { lobbyService } from "@/features/lobby/services/lobby-service";
 import Container from "@/layout/container/container";
 import Layout from "@/layout/layout";
@@ -27,9 +28,10 @@ const LobbyPage = () => {
   }
   return (
     <Layout>
-      <Container className="py-6">
+      <Container className="py-6 flex flex-col gap-6">
         <ErrorAlert error={error} />
-        <LobbyCard lobby={game?.lobby} />
+        <LobbyCard game={game} />
+        <LobbyPlayers game={game} />
       </Container>
     </Layout>
   );

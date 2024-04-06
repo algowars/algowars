@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationResponse } from 'src/common/pagination/dtos/pagination-response.dto';
 import { Player } from 'src/data-model/entities';
 import { Game } from 'src/data-model/entities/battle/game.entity';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { GamePaginationDto } from './dtos/game-pagination.dto';
 import { Pagination } from 'src/common/pagination/pagination';
 
@@ -43,11 +43,24 @@ export class GameService {
   ): Promise<PaginationResponse<Game>> {
     const entityName = 'game';
 
-    const queryBuilder = this.gameRepository
+    let queryBuilder = this.gameRepository
       .createQueryBuilder(entityName)
       .leftJoinAndSelect(`${entityName}.lobby`, 'lobby')
       .leftJoinAndSelect(`${entityName}.status`, 'status');
 
+    queryBuilder = this.filterQueryByActiveGames(queryBuilder, entityName);
+
     return Pagination.paginateWithQueryBuilder(queryBuilder, gamePaginationDto);
+  }
+
+  private filterQueryByActiveGames(
+    queryBuilder: SelectQueryBuilder<Game>,
+    entityName: string,
+  ): SelectQueryBuilder<Game> {
+    const twoHoursAgo = new Date(new Date().getTime() - 2 * 60 * 60 * 1000);
+
+    return queryBuilder.andWhere(`${entityName}.updatedAt > :twoHoursAgo`, {
+      twoHoursAgo,
+    });
   }
 }

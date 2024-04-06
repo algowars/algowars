@@ -1,18 +1,23 @@
 import { Card } from "@/components/ui/card";
-import { Lobby } from "../lobby";
+import LobbyActions from "../lobby-actions/lobby-actions";
+import { Game } from "@/features/game/game";
 
 type Props = {
-  lobby?: Lobby | undefined;
+  game?: Game;
 };
 
-const LobbyCard = ({ lobby }: Props) => {
-  if (!lobby) {
+const LobbyCard = ({ game }: Props) => {
+  if (!game || !game?.lobby) {
     return null;
   }
 
   return (
-    <Card className="p-5">
-      <h3 className="text-xl font-semibold">{lobby.name}</h3>
+    <Card className="p-5 flex flex-col gap-5">
+      <div>
+        <h3 className="text-xl font-semibold">Lobby: {game.lobby.name}</h3>
+      </div>
+
+      <LobbyActions game={game} />
     </Card>
   );
 };

@@ -9,7 +9,7 @@ import { Player } from '../player/player.entity';
 @Entity()
 export class Lobby {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({ nullable: false })
   name: string;
