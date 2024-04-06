@@ -17,7 +17,7 @@ const LobbyPlayers = ({ game }: Props) => {
       return;
     }
 
-    const handlePlayersUpdate = (updatedPlayers) => {
+    const handlePlayersUpdate = (updatedPlayers: Player[]) => {
       setPlayers(updatedPlayers);
     };
 
