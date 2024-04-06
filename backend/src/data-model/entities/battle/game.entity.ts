@@ -32,7 +32,7 @@ export class Game {
   @ManyToOne(() => GameStatus, (gameStatus) => gameStatus.games)
   status: GameStatus;
 
-  @ManyToOne(() => Player, (player) => player.lobbies)
+  @ManyToOne(() => Player, (player) => player.games)
   createdBy: Player;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })

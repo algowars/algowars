@@ -8,10 +8,19 @@ import { GameSession } from 'src/data-model/entities/battle/game-session.entity'
 import { Account, Player } from 'src/data-model/entities';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AccountService } from 'src/account/account.service';
+import { GameStatus } from 'src/data-model/entities/battle/game-status.entity';
+import { GameCleanupService } from './game-cleanup.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Lobby, Game, GameSession, Player, Account]),
+    TypeOrmModule.forFeature([
+      Lobby,
+      Game,
+      GameStatus,
+      GameSession,
+      Player,
+      Account,
+    ]),
     ThrottlerModule.forRoot(),
   ],
   controllers: [GameController],

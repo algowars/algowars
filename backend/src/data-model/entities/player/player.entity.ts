@@ -2,14 +2,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Problem } from '../problem/problem.entity';
 import { Submission } from '../submission/submission.entity';
-import { Lobby } from '../battle/lobby.entity';
 import { Game } from '../battle/game.entity';
+import { Lobby } from '../battle/lobby.entity';
 
 @Entity()
 export class Player {
@@ -29,7 +30,10 @@ export class Player {
   submissions: Promise<Submission>;
 
   @OneToMany(() => Game, (game) => game.createdBy)
-  lobbies: Promise<Game>;
+  games: Promise<Game[]>;
+
+  @ManyToOne(() => Lobby, (lobby) => lobby.players)
+  lobbies: Promise<Lobby[]>;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

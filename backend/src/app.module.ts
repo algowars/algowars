@@ -10,13 +10,16 @@ import { EvaluatorModule } from './evaluator/evaluator.module';
 import { SubmissionModule } from './submission/submission.module';
 import { LobbyModule } from './lobby/lobby.module';
 import { GameModule } from './game/game.module';
+import { BattleModule } from './battle/battle.module';
 import entities from './data-model/entities';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -40,6 +43,7 @@ import entities from './data-model/entities';
     SubmissionModule,
     LobbyModule,
     GameModule,
+    BattleModule,
   ],
 })
 export class AppModule {}
