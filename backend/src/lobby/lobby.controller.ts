@@ -4,6 +4,7 @@ import { PaginationResponse } from 'src/common/pagination/dtos/pagination-respon
 import { GameService } from 'src/game/game.service';
 import { GamePaginationDto } from 'src/game/dtos/game-pagination.dto';
 import { Game } from 'src/data-model/entities/battle/game.entity';
+import { Player } from 'src/data-model/entities';
 
 @Controller('v1/lobby')
 export class LobbyController {
@@ -17,5 +18,10 @@ export class LobbyController {
     @Query() gamePaginationDto: GamePaginationDto,
   ): Promise<PaginationResponse<Game>> {
     return this.gameService.findPublicGamesPageable(gamePaginationDto);
+  }
+
+  @Get('players')
+  getLobbyPlayers(@Query() { lobbyId }): Promise<Player[]> {
+    return this.lobbyService.getLobbyPlayers(lobbyId);
   }
 }

@@ -42,6 +42,18 @@ const getPublicLobbiesPageable = (
   return api.callExternalApi<PaginationResponse<Game>>({ config });
 };
 
+const getLobbyPlayers = (lobbyId: string): Promise<Player[]> => {
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/lobby/players",
+    params: {
+      lobbyId,
+    },
+    headers: { "content-type": "application/json" },
+  };
+
+  return api.callExternalApi<Player[]>({ config });
+};
+
 const findGameById = (gameId: string): Promise<Game> => {
   const config: AxiosRequestConfig = {
     url: "/api/v1/game/find",
@@ -57,6 +69,7 @@ const findGameById = (gameId: string): Promise<Game> => {
 const lobbyService = {
   createLobby,
   getPublicLobbiesPageable,
+  getLobbyPlayers,
   findGameById,
 };
 
