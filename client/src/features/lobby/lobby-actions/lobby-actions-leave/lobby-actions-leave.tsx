@@ -8,7 +8,6 @@ type Props = {
 };
 
 const LobbyActionsLeave = ({ game, player }: Props) => {
-  console.log(game, player);
   if (
     !game ||
     !game.lobby ||

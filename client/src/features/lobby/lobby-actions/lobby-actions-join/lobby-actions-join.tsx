@@ -21,7 +21,6 @@ const LobbyActionsJoin = ({ game, player }: Props) => {
   }
 
   const joinLobby = () => {
-    console.log(socket, game, player);
     if (!socket) {
       console.error("Socket connection not established");
       return;

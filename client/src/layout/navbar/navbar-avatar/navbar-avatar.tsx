@@ -36,7 +36,7 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
       <DropdownMenuContent align="start" className="w-64">
         <DropdownMenuItem asChild>
           <Link
-            to={`/profile/${account.player.username}`}
+            to={`/profile/${account?.player?.username}`}
             className={cn(
               buttonVariants({ variant: "ghost" }),
               "text-start w-full flex flex-col gap-1 items-start block h-fit"
@@ -44,9 +44,9 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
             style={{ alignItems: "start" }}
           >
             <h5 className="font-semibold">{user?.name}</h5>
-            {account.player.username ? (
+            {account?.player?.username ? (
               <p className="text-muted-foreground">
-                @{account.player.username}
+                @{account?.player?.username}
               </p>
             ) : null}
           </Link>
@@ -55,7 +55,7 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
           <li>
             <DropdownMenuItem asChild>
               <Link
-                to={`/profile/${account.player.username}`}
+                to={`/profile/${account?.player?.username}`}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   "justify-start text-start w-full"
@@ -68,7 +68,7 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
           <li>
             <DropdownMenuItem className="p-0" asChild>
               <Link
-                to={`/profile/${account.player.username}`}
+                to={`/profile/${account?.player?.username}`}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   "justify-start text-start w-full"

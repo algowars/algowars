@@ -78,6 +78,10 @@ const PublicLobbies = () => {
                 <TableCell className="font-semibold">
                   No Lobbies Available
                 </TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
               </TableRow>
             )}
           </TableBody>

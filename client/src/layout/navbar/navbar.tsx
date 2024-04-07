@@ -10,7 +10,6 @@ type Props = {
 
 const Navbar = (props: Props) => {
   const { isAuthenticated } = useAuth0();
-  console.log(isAuthenticated);
   return isAuthenticated ? (
     <NavbarSignedIn {...props} />
   ) : (

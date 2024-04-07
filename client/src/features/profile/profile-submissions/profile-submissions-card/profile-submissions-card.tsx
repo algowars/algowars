@@ -1,11 +1,10 @@
-import { Submission } from "@/features/submission/sbumission.model";
+// import { Submission } from "@/features/submission/sbumission.model";
 
-type Props = {
-  submission: Submission;
-};
+// type Props = {
+//   submission: Submission;
+// };
 
-const ProfileSubmissionsCard = ({ submission }: Props) => {
-  console.log(submission);
+const ProfileSubmissionsCard = () => {
   return <div>ProfileSubmissionsCard</div>;
 };
 

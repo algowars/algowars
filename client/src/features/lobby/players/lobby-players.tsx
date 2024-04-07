@@ -31,7 +31,7 @@ const LobbyPlayers = ({ game }: Props) => {
     };
   }, [game, socket]);
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["players"],
     queryFn: () => {
       if (game?.lobby?.id) {
@@ -51,8 +51,6 @@ const LobbyPlayers = ({ game }: Props) => {
   if (!game) {
     return null;
   }
-
-  console.log(players);
 
   return (
     <Card>

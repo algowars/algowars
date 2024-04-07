@@ -16,7 +16,8 @@ export const useAccount = () => {
       if (isAuthenticated) {
         const accessToken = await getAccessTokenSilently();
 
-        return accountService.getAccountBySub(accessToken);
+        const account = await accountService.getAccountBySub(accessToken);
+        return account;
       }
 
       return null;
