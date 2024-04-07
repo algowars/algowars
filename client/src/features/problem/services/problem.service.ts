@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from "axios";
-import { Problem } from "../problem";
+import { Problem } from "../problem.model";
 import api from "@/api/api";
-import { ProblemAggregate } from "../problem-aggregate";
+import { ProblemAggregate } from "../problem-aggregate.model";
 
 const getRandomProblem = (disallowedIds: number[]): Promise<Problem> => {
   const config: AxiosRequestConfig = {

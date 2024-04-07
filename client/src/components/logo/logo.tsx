@@ -3,11 +3,16 @@ import { Link } from "react-router-dom";
 type Props = {
   width?: string;
   height?: string;
+  hideLink?: boolean;
 };
 
-export default function Logo({ width = "w-8", height = "h-8" }: Props) {
-  return (
-    <Link to="/" className="flex items-center gap-2" aria-label="Algowars">
+export default function Logo({
+  width = "w-8",
+  height = "h-8",
+  hideLink = false,
+}: Props) {
+  const logo = (
+    <>
       <svg
         className={`${width} ${height}`}
         viewBox="0 0 32 32"
@@ -36,6 +41,13 @@ export default function Logo({ width = "w-8", height = "h-8" }: Props) {
         />
       </svg>
       <h1 className="font-bold">Algowars</h1>
+    </>
+  );
+  return hideLink ? (
+    logo
+  ) : (
+    <Link to="/" className="flex items-center gap-2" aria-label="Algowars">
+      {logo}
     </Link>
   );
 }

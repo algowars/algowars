@@ -41,7 +41,6 @@ export class LobbyGateway {
       'playersUpdate',
       players.map((player) => ({
         username: player.username,
-        isGuest: player.isGuest,
       })),
     );
   }

@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import api from "@/api/api";
-import { Game } from "@/features/game/game";
+import { Game } from "@/features/game/game.model";
 import { PaginationResponse } from "@/common/pagination/pagination-response.model";
 
 const createLobby = (

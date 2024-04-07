@@ -50,7 +50,6 @@ export class AccountService {
       sub: userSub,
       player: {
         username: createAccountDto.username,
-        isGuest: false,
       },
     });
 

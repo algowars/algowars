@@ -20,9 +20,6 @@ export class Player {
   @Column({ nullable: false, unique: true, length: 50 })
   username: string;
 
-  @Column()
-  isGuest: boolean;
-
   @OneToMany(() => Problem, (problem) => problem.createdBy)
   problems: Promise<Problem[]>;
 

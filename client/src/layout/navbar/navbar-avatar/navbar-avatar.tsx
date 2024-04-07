@@ -22,7 +22,6 @@ type Props = {
 const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
   const { user } = useAuth0();
   const { account } = useAppSelector((state) => state.account);
-  const { player } = useAppSelector((state) => state.player);
 
   return (
     <DropdownMenu>
@@ -37,7 +36,7 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
       <DropdownMenuContent align="start" className="w-64">
         <DropdownMenuItem asChild>
           <Link
-            to={`/profile/${account.username}`}
+            to={`/profile/${account.player.username}`}
             className={cn(
               buttonVariants({ variant: "ghost" }),
               "text-start w-full flex flex-col gap-1 items-start block h-fit"
@@ -45,8 +44,10 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
             style={{ alignItems: "start" }}
           >
             <h5 className="font-semibold">{user?.name}</h5>
-            {player.username ? (
-              <p className="text-muted-foreground">@{player.username}</p>
+            {account.player.username ? (
+              <p className="text-muted-foreground">
+                @{account.player.username}
+              </p>
             ) : null}
           </Link>
         </DropdownMenuItem>
@@ -54,7 +55,7 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
           <li>
             <DropdownMenuItem asChild>
               <Link
-                to={`/profile/${account.username}`}
+                to={`/profile/${account.player.username}`}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   "justify-start text-start w-full"
@@ -67,7 +68,7 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
           <li>
             <DropdownMenuItem className="p-0" asChild>
               <Link
-                to={`/profile/${account.username}`}
+                to={`/profile/${account.player.username}`}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   "justify-start text-start w-full"

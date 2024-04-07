@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import LobbyActions from "../lobby-actions/lobby-actions";
-import { Game } from "@/features/game/game";
+import { Game } from "@/features/game/game.model";
 
 type Props = {
   game?: Game;

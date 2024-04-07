@@ -5,7 +5,6 @@ import { useAppDispatch } from "@/store/use-app-dispatch";
 import { setAccount } from "@/slices/account-slice";
 import { setError } from "@/slices/error-slice";
 import { accountService } from "./services/account.service";
-import { setPlayer } from "@/slices/player-slice";
 
 export const useAccount = () => {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
@@ -17,13 +16,7 @@ export const useAccount = () => {
       if (isAuthenticated) {
         const accessToken = await getAccessTokenSilently();
 
-        const account = await accountService.getAccountBySub(accessToken);
-
-        if (account.player) {
-          dispatch(setPlayer(account.player));
-        }
-
-        return account;
+        return accountService.getAccountBySub(accessToken);
       }
 
       return null;
@@ -33,6 +26,10 @@ export const useAccount = () => {
   useEffect(() => {
     if (response.data) {
       dispatch(setAccount(response.data));
+
+      if (!response.data.player) {
+        dispatch(setError({ message: "Unable to get player information." }));
+      }
     }
   }, [response.data, dispatch, response]);
 

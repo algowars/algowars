@@ -1,5 +1,5 @@
-import { TestInput } from "../test/test-input";
-import { Problem } from "./problem";
+import { TestInput } from "../test/test-input.model";
+import { Problem } from "./problem.model";
 
 export interface ProblemAggregate {
   problem: Problem;

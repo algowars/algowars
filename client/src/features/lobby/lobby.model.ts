@@ -1,6 +1,6 @@
-import { Game } from "../game/game";
-import { Player } from "../player/player";
-import { LobbyStatus } from "./lobby-status";
+import { Game } from "../game/game.model";
+import { Player } from "../player/player.model";
+import { LobbyStatus } from "./lobby-status.model";
 
 export interface Lobby {
   id: string;

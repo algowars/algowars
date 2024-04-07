@@ -1,6 +1,6 @@
 import api from "@/api/api";
 import { AxiosRequestConfig } from "axios";
-import { Player } from "../player";
+import { Player } from "../player.model";
 
 const createPlayer = (accountId?: number): Promise<Player> => {
   const config: AxiosRequestConfig = {

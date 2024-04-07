@@ -1,4 +1,4 @@
-import { Game } from "@/features/game/game";
+import { Game } from "@/features/game/game.model";
 import { useAppSelector } from "@/store/use-app-selector";
 import LobbyActionsLeave from "./lobby-actions-leave/lobby-actions-leave";
 import LobbyActionsJoin from "./lobby-actions-join/lobby-actions-join";

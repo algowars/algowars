@@ -1,7 +1,7 @@
 import { useSocket } from "@/common/socket/socket.provider";
 import { Card } from "@/components/ui/card";
-import { Game } from "@/features/game/game";
-import { Player } from "@/features/player/player";
+import { Game } from "@/features/game/game.model";
+import { Player } from "@/features/player/player.model";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { lobbyService } from "../services/lobby-service";

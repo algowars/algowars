@@ -1,9 +1,8 @@
-import { Player } from "../player/player";
+import { Player } from "../player/player.model";
 
 export interface Account {
   id: number | null;
-  username: string;
   createdAt: Date;
   updatedAt: Date;
-  player?: Player;
+  player: Player;
 }

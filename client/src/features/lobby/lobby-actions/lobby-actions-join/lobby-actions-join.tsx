@@ -1,7 +1,7 @@
 import { useSocket } from "@/common/socket/socket.provider";
 import { Button } from "@/components/ui/button";
-import { Game } from "@/features/game/game";
-import { Player } from "@/features/player/player";
+import { Game } from "@/features/game/game.model";
+import { Player } from "@/features/player/player.model";
 import { setError } from "@/slices/error-slice";
 import { useAppDispatch } from "@/store/use-app-dispatch";
 
