@@ -23,7 +23,7 @@ export class GameController {
 
   @Get('find')
   findGameById(@Query() { gameId }): Promise<Game> {
-    return this.gameService.findGameById(gameId, ['lobby']);
+    return this.gameService.findGameById(gameId, ['lobby', 'lobby.players']);
   }
 
   @Throttle({ default: { limit: seconds(15), ttl: 1 } })
