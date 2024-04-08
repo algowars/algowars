@@ -12,6 +12,7 @@ type Props = {
 
 const LobbyActionsJoin = ({ game, player }: Props) => {
   const { socket } = useSocket();
+
   const dispatch = useAppDispatch();
   if (
     !game ||
@@ -20,7 +21,7 @@ const LobbyActionsJoin = ({ game, player }: Props) => {
     return null;
   }
 
-  const joinLobby = () => {
+  const joinLobby = async () => {
     if (!socket) {
       console.error("Socket connection not established");
       return;

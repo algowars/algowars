@@ -16,14 +16,21 @@ import { Game } from 'src/data-model/entities/battle/game.entity';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { Request } from 'express';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
+import { FindGameDto } from './dtos/find-game.dto';
 
 @Controller('v1/game')
 export class GameController {
   constructor(private readonly gameService: GameService) {}
 
   @Get('find')
-  findGameById(@Query() { gameId }): Promise<Game> {
-    return this.gameService.findGameById(gameId, ['lobby', 'lobby.players']);
+  findGameById(@Query() findGameDto: FindGameDto): Promise<Game> {
+    const relations = ['lobby', 'lobby.players'];
+
+    if (findGameDto.sessions) {
+      relations.push('sessions');
+    }
+
+    return this.gameService.findGameById(findGameDto.gameId, relations);
   }
 
   @Throttle({ default: { limit: seconds(15), ttl: 1 } })

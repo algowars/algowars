@@ -7,6 +7,9 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { LobbyService } from './lobby.service';
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
+import { WsAuthorizationGuard } from 'src/auth/ws-authorization.guard';
+import { WsAccountOwnerGuard } from 'src/auth/ws-account-owner.guard';
 
 @WebSocketGateway()
 export class LobbyGateway {
@@ -15,11 +18,18 @@ export class LobbyGateway {
 
   constructor(private readonly lobbyService: LobbyService) {}
 
+  @UseGuards(WsAuthorizationGuard, WsAccountOwnerGuard)
   @SubscribeMessage('joinLobby')
   async handleJoinLobby(
     @ConnectedSocket() client: Socket,
-    @MessageBody() { lobbyId, playerId }: { lobbyId: string; playerId: string },
+    @MessageBody() { lobbyId }: { lobbyId: string },
   ) {
+    const { playerId } = client.data.account;
+
+    if (!playerId) {
+      throw new HttpException('Unable to get player', HttpStatus.BAD_GATEWAY);
+    }
+
     await this.lobbyService.addPlayerToLobby(lobbyId, playerId);
     client.join(lobbyId);
     this.updateLobby(lobbyId);

@@ -29,7 +29,7 @@ const PublicLobbies = () => {
   });
 
   const joinGame = (gameId: string) => {
-    navigate(`/battle/lobby/${gameId}`);
+    navigate(`/battle/${gameId}/lobby`);
   };
 
   return (

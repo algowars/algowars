@@ -30,8 +30,14 @@ const LobbyPage = () => {
     <Layout>
       <Container className="py-6 flex flex-col gap-6">
         <ErrorAlert error={error} />
-        <LobbyCard game={game} />
-        <LobbyPlayers game={game} />
+        {game ? (
+          <>
+            <LobbyCard game={game} />
+            <LobbyPlayers game={game} />
+          </>
+        ) : (
+          <h1>NO BATTLES</h1>
+        )}
       </Container>
     </Layout>
   );

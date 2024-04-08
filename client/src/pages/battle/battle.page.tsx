@@ -1,17 +1,25 @@
-import BattleHeader from "@/features/battle/battle-header/battle-header";
-import PublicLobbies from "@/features/lobby/public-lobbies/public-lobbies";
-import Container from "@/layout/container/container";
-import Layout from "@/layout/layout";
+import BattleNotFound from "@/features/battle/battle-not-found/battle-not-found";
+import { useQuery } from "@tanstack/react-query";
+import { Outlet, useParams } from "react-router-dom";
 
 const BattlePage = () => {
-  return (
-    <Layout>
-      <BattleHeader />
-      <Container className="pb-6">
-        <PublicLobbies />
-      </Container>
-    </Layout>
-  );
+  const { gameId } = useParams();
+  const {
+    data: game,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["game", gameId],
+    queryFn: () => {
+      return null;
+    },
+  });
+
+  if (!game && !isLoading) {
+    return <BattleNotFound />;
+  }
+
+  return <Outlet />;
 };
 
 export default BattlePage;

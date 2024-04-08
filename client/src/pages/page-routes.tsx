@@ -11,14 +11,17 @@ import { AuthenticationGuard } from "@/features/auth/guards/authentication.guard
 import BattlePage from "./battle/battle.page";
 import CreateLobbyPage from "./battle/create-lobby/create-lobby.page";
 import Landing from "@/layout/landing/landing";
+import BattlesPage from "./battles/battles.page";
 import LobbyPage from "./battle/lobby/lobby.page";
 
 const PageRoutes = () => {
   return (
     <Routes>
-      <Route path="battle/lobby/:gameId" element={<LobbyPage />} />
+      <Route path="battle/:gameId" element={<BattlePage />}>
+        <Route path="lobby" element={<LobbyPage />} />
+      </Route>
       <Route path="battle/create-lobby" element={<CreateLobbyPage />} />
-      <Route path="battle" element={<BattlePage />} />
+      <Route path="battle" element={<BattlesPage />} />
       <Route path="profile/:username" element={<ProfilePage />} />
       <Route
         path="account/setup"

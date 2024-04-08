@@ -4,18 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import ErrorAlert from "@/errors/error-alert/error-alert";
 import { lobbyService } from "@/features/lobby/services/lobby-service";
-import { useAppDispatch } from "@/store/use-app-dispatch";
-import { useAppSelector } from "@/store/use-app-selector";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "@tanstack/react-query";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const BattleCreateLobby = () => {
-  const { player } = useAppSelector((state) => state.player);
   const [lobbyName, setLobbyName] = useState<string>("");
   const { getAccessTokenSilently } = useAuth0();
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {
     mutate: createLobby,
@@ -33,7 +29,7 @@ const BattleCreateLobby = () => {
         throw new Error("Error creating lobby");
       }
 
-      navigate(`/battle/${game.id}`);
+      navigate(`/battle/${game.id}/lobby`);
 
       return null;
     },

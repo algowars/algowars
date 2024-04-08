@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   JoinTable,
@@ -21,6 +22,9 @@ export class GameSession {
   @ManyToMany(() => Problem)
   @JoinTable()
   problems: Problem[];
+
+  @Column({ type: 'timestamptz', nullable: true })
+  startTime: Date;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

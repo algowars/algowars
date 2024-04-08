@@ -9,6 +9,7 @@ import { Game } from 'src/data-model/entities/battle/game.entity';
 import { GameSession } from 'src/data-model/entities/battle/game-session.entity';
 import { GameService } from 'src/game/game.service';
 import { LobbyGateway } from './lobby.gateway';
+import { AccountService } from 'src/account/account.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { LobbyGateway } from './lobby.gateway';
     TypeOrmModule.forFeature([Lobby, Account, Player, Game, GameSession]),
   ],
   controllers: [LobbyController],
-  providers: [LobbyService, GameService, LobbyGateway],
+  providers: [LobbyService, GameService, LobbyGateway, AccountService],
 })
 export class LobbyModule {}

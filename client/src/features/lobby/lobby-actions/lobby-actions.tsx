@@ -1,14 +1,14 @@
 import { Game } from "@/features/game/game.model";
-import { useAppSelector } from "@/store/use-app-selector";
 import LobbyActionsLeave from "./lobby-actions-leave/lobby-actions-leave";
 import LobbyActionsJoin from "./lobby-actions-join/lobby-actions-join";
+import { useAppSelector } from "@/store/use-app-selector";
 
 type Props = {
   game?: Game;
 };
 
 const LobbyActions = ({ game }: Props) => {
-  const { player } = useAppSelector((state) => state.player);
+  const { account } = useAppSelector((state) => state.account);
 
   if (!game) {
     return null;
@@ -16,8 +16,8 @@ const LobbyActions = ({ game }: Props) => {
 
   return (
     <ul className="flex gap-3 items-center">
-      <LobbyActionsJoin game={game} player={player} />
-      <LobbyActionsLeave game={game} player={player} />
+      <LobbyActionsJoin game={game} player={account?.player} />
+      <LobbyActionsLeave game={game} player={account?.player} />
     </ul>
   );
 };

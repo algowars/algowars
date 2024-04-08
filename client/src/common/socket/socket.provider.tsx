@@ -1,5 +1,13 @@
 import { Socket, io } from "socket.io-client";
-import { ReactNode, createContext, useContext } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
 const SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
 
 export type SocketState = {
@@ -17,15 +25,37 @@ type SocketProps = {
 };
 
 export function SocketProvider({ children, ...props }: SocketProps) {
-  if (!SERVER_URL) {
-    throw new Error("Socket url is required");
-  }
+  const [socket, setSocket] = useState<Socket | undefined>(undefined);
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-  const socket = io(SERVER_URL);
+  useEffect(() => {
+    const initializeSocket = async () => {
+      if (!SERVER_URL) {
+        throw new Error("Server URL is required for socket connection.");
+      }
 
-  const value = {
-    socket,
-  };
+      let accessToken = "";
+
+      if (isAuthenticated) {
+        accessToken = await getAccessTokenSilently();
+      }
+      const newSocket = io(SERVER_URL, {
+        query: {
+          token: accessToken,
+        },
+      });
+
+      setSocket(newSocket);
+
+      return () => {
+        newSocket.close();
+      };
+    };
+
+    initializeSocket().catch(console.error);
+  }, [getAccessTokenSilently, isAuthenticated]);
+
+  const value = { socket };
 
   return (
     <SocketContext.Provider {...props} value={value}>
