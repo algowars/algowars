@@ -1,9 +1,6 @@
-import { useSocket } from "@/common/socket/socket.provider";
 import { Card } from "@/components/ui/card";
 import { Game } from "@/features/game/game.model";
-import { Player } from "@/features/player/player.model";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import { lobbyService } from "../services/lobby-service";
 import Loader from "@/components/loader/loader";
 
@@ -12,12 +9,7 @@ type Props = {
 };
 
 const LobbyPlayers = ({ game }: Props) => {
-  const { socket } = useSocket();
-  const [players, setPlayers] = useState<Player[]>([]);
-
-  useEffect(() => {}, []);
-
-  const { data, isLoading } = useQuery({
+  const { data: players, isLoading } = useQuery({
     queryKey: ["players"],
     queryFn: () => {
       if (game?.lobby?.id) {
@@ -26,13 +18,8 @@ const LobbyPlayers = ({ game }: Props) => {
 
       return null;
     },
+    refetchInterval: 2_000, //ms
   });
-
-  useEffect(() => {
-    if (data) {
-      setPlayers(data);
-    }
-  }, [data]);
 
   if (!game) {
     return null;
@@ -42,7 +29,7 @@ const LobbyPlayers = ({ game }: Props) => {
     <Card>
       <div className="px-5 p-5">
         <h4 className="text-lg font-semibold">
-          {players.length ?? 0}/ {game?.lobby?.maxPlayers ?? 0} Players
+          {players?.length ?? 0}/ {game?.lobby?.maxPlayers ?? 0} Players
         </h4>
       </div>
 
