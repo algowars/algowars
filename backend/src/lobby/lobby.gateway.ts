@@ -7,9 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { LobbyService } from './lobby.service';
-import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
-import { WsAuthorizationGuard } from 'src/auth/ws-authorization.guard';
-import { WsAccountOwnerGuard } from 'src/auth/ws-account-owner.guard';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 @WebSocketGateway()
 export class LobbyGateway {
@@ -18,7 +16,8 @@ export class LobbyGateway {
 
   constructor(private readonly lobbyService: LobbyService) {}
 
-  @UseGuards(WsAuthorizationGuard, WsAccountOwnerGuard)
+  handleConnection(client: Socket) {}
+
   @SubscribeMessage('joinLobby')
   async handleJoinLobby(
     @ConnectedSocket() client: Socket,

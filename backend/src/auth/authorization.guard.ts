@@ -21,6 +21,8 @@ export class AuthorizationGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<Request>();
     const response = context.switchToHttp().getResponse<Response>();
 
+    console.log('REQ: ', request);
+
     try {
       await this.validateAccessToken(request, response);
 

@@ -26,7 +26,7 @@ function checkEnvironment(configService: ConfigService) {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    // logger: ['verbose'],
+    // logger: ['log'],
   });
 
   const configService = app.get<ConfigService>(ConfigService);

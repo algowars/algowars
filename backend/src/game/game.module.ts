@@ -9,6 +9,7 @@ import { Account, Player } from 'src/data-model/entities';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { AccountService } from 'src/account/account.service';
 import { GameStatus } from 'src/data-model/entities/battle/game-status.entity';
+import { GameGateway } from './game.gateway';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { GameStatus } from 'src/data-model/entities/battle/game-status.entity';
     ThrottlerModule.forRoot(),
   ],
   controllers: [GameController],
-  providers: [GameService, AccountService],
+  providers: [GameService, AccountService, GameGateway],
 })
 export class GameModule {}

@@ -40,8 +40,8 @@ export function SocketProvider({ children, ...props }: SocketProps) {
         accessToken = await getAccessTokenSilently();
       }
       const newSocket = io(SERVER_URL, {
-        query: {
-          token: accessToken,
+        extraHeaders: {
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
