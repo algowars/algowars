@@ -15,21 +15,7 @@ const LobbyPlayers = ({ game }: Props) => {
   const { socket } = useSocket();
   const [players, setPlayers] = useState<Player[]>([]);
 
-  useEffect(() => {
-    if (!game || !socket) {
-      return;
-    }
-
-    const handlePlayersUpdate = (updatedPlayers: Player[]) => {
-      setPlayers(updatedPlayers);
-    };
-
-    socket.on("playersUpdate", handlePlayersUpdate);
-
-    return () => {
-      socket.off("playersUpdate");
-    };
-  }, [game, socket]);
+  useEffect(() => {}, []);
 
   const { data, isLoading } = useQuery({
     queryKey: ["players"],
