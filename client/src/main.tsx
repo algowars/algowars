@@ -8,6 +8,7 @@ import AuthProviderWithNavigate from "./features/auth/context/auth-provider-with
 import { ThemeProvider } from "./features/theme/theme.provider";
 import { Provider } from "react-redux";
 import { setupStore } from "./store/store";
+import { SocketProvider } from "./common/socket/socket.provider";
 
 const queryClient = new QueryClient();
 const store = setupStore();
@@ -19,7 +20,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <AuthProviderWithNavigate>
           <Provider store={store}>
             <QueryClientProvider client={queryClient}>
-              <App />
+              <SocketProvider>
+                <App />
+              </SocketProvider>
             </QueryClientProvider>
           </Provider>
         </AuthProviderWithNavigate>
