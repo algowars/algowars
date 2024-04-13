@@ -1,16 +1,27 @@
-import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import {
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
 import { LobbyService } from './lobby.service';
-import { UseGuards } from '@nestjs/common';
-import { WsAuthorizationGuard } from 'src/auth/ws-authorization.guard';
 
 @WebSocketGateway()
-@UseGuards(WsAuthorizationGuard)
 export class LobbyGateway {
   @WebSocketServer()
   private server: Server;
 
   constructor(private readonly lobbyService: LobbyService) {}
+
+  @SubscribeMessage('joinRoom')
+  handleJoinRoom(client: Socket, { roomId }: { roomId: string }): void {
+    client.join(roomId);
+  }
+
+  @SubscribeMessage('leaveRoom')
+  handleLeaveRoom(client: Socket, { roomId }: { roomId: string }): void {
+    client.leave(roomId);
+  }
 
   async emitLobbyUpdate(lobbyId: string) {
     console.log('LOBBY ID: ', lobbyId);

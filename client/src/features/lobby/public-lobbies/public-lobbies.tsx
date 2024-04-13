@@ -19,7 +19,7 @@ const PublicLobbies = () => {
 
   const {
     data: games,
-    isLoading,
+    isPending,
     error,
   } = useQuery({
     queryKey: ["games"],
@@ -34,7 +34,7 @@ const PublicLobbies = () => {
 
   return (
     <Card>
-      <div className="p-5 border-b">
+      <div className="p-5 border-b flex flex-col gap-5">
         <ErrorAlert error={error} />
         <h3 className="font-semibold text-lg">Public Lobbies</h3>
       </div>
@@ -87,9 +87,9 @@ const PublicLobbies = () => {
           </TableBody>
         </Table>
       ) : (
-        <p>No lobbies available</p>
+        <p className="p-5">No lobbies available</p>
       )}
-      {isLoading ? <p className="font-semibold">Loading...</p> : null}
+      {isPending ? <p className="font-semibold p-5">Loading...</p> : null}
     </Card>
   );
 };

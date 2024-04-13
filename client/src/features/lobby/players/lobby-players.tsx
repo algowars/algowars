@@ -39,6 +39,7 @@ const LobbyPlayers = ({ game }: Props) => {
     }
 
     if (game?.lobby?.id) {
+      socket.emit("joinRoom", { roomId: game.lobby.id });
       socket.on("playersUpdate", (updatedPlayers) => {
         console.log("UPDATED PLAYERS: ", updatedPlayers);
         setPlayers(updatedPlayers);
