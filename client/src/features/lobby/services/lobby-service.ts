@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from "axios";
 import api from "@/api/api";
 import { Game } from "@/features/game/game.model";
 import { PaginationResponse } from "@/common/pagination/pagination-response.model";
+import { Lobby } from "../lobby.model";
 
 const createLobby = (
   accessToken: string,
@@ -66,11 +67,45 @@ const findGameById = (gameId: string): Promise<Game> => {
   return api.callExternalApi<Game>({ config });
 };
 
+const joinLobby = (lobbyId: string, accessToken: string): Promise<Lobby> => {
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/lobby/join",
+    method: "PUT",
+    params: {
+      lobbyId,
+    },
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  return api.callExternalApi<Lobby>({ config });
+};
+
+const leaveLobby = (lobbyId: string, accessToken: string): Promise<Lobby> => {
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/lobby/leave",
+    method: "PUT",
+    params: {
+      lobbyId,
+    },
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  return api.callExternalApi<Lobby>({ config });
+};
+
 const lobbyService = {
   createLobby,
   getPublicLobbiesPageable,
   getLobbyPlayers,
   findGameById,
+  joinLobby,
+  leaveLobby,
 };
 
 Object.freeze(lobbyService);

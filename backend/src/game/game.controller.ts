@@ -17,6 +17,7 @@ import { AccountNotFoundException } from 'src/account/exceptions/account-not-fou
 import { Request } from 'express';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
 import { FindGameDto } from './dtos/find-game.dto';
+import { Account } from 'src/data-model/entities';
 
 @Controller('v1/game')
 export class GameController {
@@ -40,6 +41,16 @@ export class GameController {
     @Body() createGameDto: CreateGameDto,
     @Req() request: Request,
   ): Promise<Game> {
+    this.validatePrivateAccount(request);
+    const account = this.mapPrivateAccount(request);
+
+    return this.gameService.createGame(
+      account.player,
+      createGameDto?.lobbyName,
+    );
+  }
+
+  private validatePrivateAccount(request: Request): void {
     if (!request.account) {
       throw new AccountNotFoundException();
     }
@@ -48,10 +59,9 @@ export class GameController {
     if (!account.player) {
       throw new PlayerNotFoundException();
     }
+  }
 
-    return this.gameService.createGame(
-      account.player,
-      createGameDto?.lobbyName,
-    );
+  private mapPrivateAccount(request: Request): Account {
+    return request.account;
   }
 }

@@ -15,6 +15,19 @@ export class LobbyService {
     @InjectRepository(Player) private playerRepository: Repository<Player>,
   ) {}
 
+  findLobbyById(id: string, relations: string[] = []): Promise<Lobby | null> {
+    if (!id) {
+      return null;
+    }
+
+    return this.lobbyRepository.findOne({
+      where: {
+        id,
+      },
+      relations,
+    });
+  }
+
   findPublicLobbiesPageable(
     lobbyPaginationDto: LobbyPaginationDto,
   ): Promise<PaginationResponse<Lobby>> {

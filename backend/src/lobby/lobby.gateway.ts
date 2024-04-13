@@ -18,44 +18,39 @@ export class LobbyGateway {
 
   constructor(private readonly lobbyService: LobbyService) {}
 
-  onClientConnected(client: Socket) {
-    console.log('ON CLIENT CONNECT');
-    console.log(client);
-  }
+  // @SubscribeMessage('joinLobby')
+  // async handleJoinLobby(
+  //   @ConnectedSocket() client: Socket,
+  //   @MessageBody() { lobbyId }: { lobbyId: string },
+  // ) {
+  //   const { playerId } = client.data.account;
 
-  @SubscribeMessage('joinLobby')
-  async handleJoinLobby(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() { lobbyId }: { lobbyId: string },
-  ) {
-    const { playerId } = client.data.account;
+  //   if (!playerId) {
+  //     throw new HttpException('Unable to get player', HttpStatus.BAD_GATEWAY);
+  //   }
 
-    if (!playerId) {
-      throw new HttpException('Unable to get player', HttpStatus.BAD_GATEWAY);
-    }
+  //   await this.lobbyService.addPlayerToLobby(lobbyId, playerId);
+  //   client.join(lobbyId);
+  //   this.updateLobby(lobbyId);
+  // }
 
-    await this.lobbyService.addPlayerToLobby(lobbyId, playerId);
-    client.join(lobbyId);
-    this.updateLobby(lobbyId);
-  }
+  // @SubscribeMessage('leaveLobby')
+  // async handleLeaveLobby(
+  //   @ConnectedSocket() client: Socket,
+  //   @MessageBody() { lobbyId, playerId }: { lobbyId: string; playerId: string },
+  // ) {
+  //   await this.lobbyService.removePlayerFromLobby(lobbyId, playerId);
+  //   client.leave(lobbyId);
+  //   this.updateLobby(lobbyId);
+  // }
 
-  @SubscribeMessage('leaveLobby')
-  async handleLeaveLobby(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() { lobbyId, playerId }: { lobbyId: string; playerId: string },
-  ) {
-    await this.lobbyService.removePlayerFromLobby(lobbyId, playerId);
-    client.leave(lobbyId);
-    this.updateLobby(lobbyId);
-  }
-
-  private async updateLobby(lobbyId: string) {
-    const players = await this.lobbyService.getLobbyPlayers(lobbyId);
-    this.server.to(lobbyId).emit(
-      'playersUpdate',
-      players.map((player) => ({
-        username: player.username,
-      })),
-    );
-  }
+  // private async updateLobby(lobbyId: string) {
+  //   const players = await this.lobbyService.getLobbyPlayers(lobbyId);
+  //   this.server.to(lobbyId).emit(
+  //     'playersUpdate',
+  //     players.map((player) => ({
+  //       username: player.username,
+  //     })),
+  //   );
+  // }
 }
