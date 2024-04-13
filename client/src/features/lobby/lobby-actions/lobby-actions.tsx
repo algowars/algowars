@@ -10,6 +10,8 @@ type Props = {
 const LobbyActions = ({ game }: Props) => {
   const { account } = useAppSelector((state) => state.account);
 
+  console.log("ACCOUNT: ", account, "GAME: ", game);
+
   if (!game) {
     return null;
   }

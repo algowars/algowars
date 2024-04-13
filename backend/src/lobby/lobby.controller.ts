@@ -23,14 +23,15 @@ import { Throttle, seconds } from '@nestjs/throttler';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
 import { lobbyNotFoundException } from './exceptions/lobby-not-found.exception';
-import { LobbyLimitExceededException } from './exceptions/lobby-limit-exceeded.exception';
 import { LeaveLobbyDto } from './dtos/leave-lobby.dto';
+import { LobbyGateway } from './lobby.gateway';
 
 @Controller('v1/lobby')
 export class LobbyController {
   constructor(
     private readonly lobbyService: LobbyService,
     private readonly gameService: GameService,
+    private readonly lobbyGateway: LobbyGateway,
   ) {}
 
   @Get()
@@ -57,7 +58,14 @@ export class LobbyController {
 
     const lobby = await this.getLobby(leaveLobbyDto.lobbyId);
 
-    return this.removePlayerFromLobby(lobby, account.player);
+    const updatedLobby = await this.removePlayerFromLobby(
+      lobby,
+      account.player,
+    );
+
+    this.emitLobbyUpdate(lobby.id);
+
+    return updatedLobby;
   }
 
   @Throttle({ default: { limit: seconds(5), ttl: 1 } })
@@ -72,7 +80,11 @@ export class LobbyController {
 
     const lobby = await this.getLobby(joinLobbyDto.lobbyId);
 
-    return this.addPlayerToLobby(lobby, account.player);
+    const updatedLobby = await this.addPlayerToLobby(lobby, account.player);
+
+    this.emitLobbyUpdate(lobby.id);
+
+    return updatedLobby;
   }
 
   private async addPlayerToLobby(lobby: Lobby, player: Player): Promise<Lobby> {
@@ -123,5 +135,9 @@ export class LobbyController {
 
   private mapPrivateAccount(request: Request): Account {
     return request.account;
+  }
+
+  private emitLobbyUpdate(lobbyId: string) {
+    this.lobbyGateway.emitLobbyUpdate(lobbyId);
   }
 }

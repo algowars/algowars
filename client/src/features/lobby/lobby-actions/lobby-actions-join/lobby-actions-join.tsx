@@ -14,13 +14,15 @@ type Props = {
 };
 
 const isJoinableGame = (game?: Game, player?: Player): boolean => {
+  if (!player) {
+    return true;
+  }
+
   if (!game) {
     return false;
   }
-  const gameHasPlayer = game.lobby?.players?.find(
-    (p) => p.username === player?.username
-  );
-  if (!gameHasPlayer) {
+  const gameHasPlayer = game.lobby?.players?.find((p) => p.id === player?.id);
+  if (gameHasPlayer) {
     return false;
   }
 
@@ -54,13 +56,13 @@ const LobbyActionsJoin = ({ game, player }: Props) => {
     }
   }, [dispatch, error]);
 
-  if (!isJoinableGame) {
+  if (!isJoinableGame(game, player)) {
     return null;
   }
 
   return (
     <Button onClick={() => joinLobby()} disabled={isPending}>
-      Join Lobby
+      {isPending ? "Loading" : "Join Lobby"}
     </Button>
   );
 };
