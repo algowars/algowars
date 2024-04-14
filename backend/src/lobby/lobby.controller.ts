@@ -24,14 +24,14 @@ import { AccountNotFoundException } from 'src/account/exceptions/account-not-fou
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
 import { lobbyNotFoundException } from './exceptions/lobby-not-found.exception';
 import { LeaveLobbyDto } from './dtos/leave-lobby.dto';
-import { LobbyGateway } from './lobby.gateway';
+import { GameGateway } from 'src/game/game.gateway';
 
 @Controller('v1/lobby')
 export class LobbyController {
   constructor(
     private readonly lobbyService: LobbyService,
     private readonly gameService: GameService,
-    private readonly lobbyGateway: LobbyGateway,
+    private readonly gameGateway: GameGateway,
   ) {}
 
   @Get()
@@ -63,7 +63,7 @@ export class LobbyController {
       account.player,
     );
 
-    this.emitLobbyUpdate(lobby.id);
+    this.emitGameUpdate(lobby.id);
 
     return updatedLobby;
   }
@@ -82,7 +82,7 @@ export class LobbyController {
 
     const updatedLobby = await this.addPlayerToLobby(lobby, account.player);
 
-    this.emitLobbyUpdate(lobby.id);
+    this.emitGameUpdate(lobby.id);
 
     return updatedLobby;
   }
@@ -137,7 +137,8 @@ export class LobbyController {
     return request.account;
   }
 
-  private emitLobbyUpdate(lobbyId: string) {
-    this.lobbyGateway.emitLobbyUpdate(lobbyId);
+  private async emitGameUpdate(lobbyId: string) {
+    const game = await this.gameService.findGameByLobbyId(lobbyId);
+    this.gameGateway.emitGameUpdate(game.id);
   }
 }

@@ -20,9 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <AuthProviderWithNavigate>
           <Provider store={store}>
             <QueryClientProvider client={queryClient}>
-              <SocketProvider>
-                <App />
-              </SocketProvider>
+              <App />
             </QueryClientProvider>
           </Provider>
         </AuthProviderWithNavigate>

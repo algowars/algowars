@@ -24,7 +24,6 @@ export class LobbyGateway {
   }
 
   async emitLobbyUpdate(lobbyId: string) {
-    console.log('LOBBY ID: ', lobbyId);
     const players = await this.lobbyService.getLobbyPlayers(lobbyId);
     this.server.to(lobbyId).emit(
       'playersUpdate',

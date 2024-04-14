@@ -27,6 +27,21 @@ export class GameService {
     });
   }
 
+  findGameByLobbyId(lobbyId: string, relations: string[] = []) {
+    if (!lobbyId) {
+      return null;
+    }
+
+    return this.gameRepository.findOne({
+      where: {
+        lobby: {
+          id: lobbyId,
+        },
+      },
+      relations: [...relations, 'lobby'],
+    });
+  }
+
   createGame(player: Player, lobbyName?: string) {
     return this.gameRepository.save({
       lobby: {
