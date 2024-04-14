@@ -31,6 +31,9 @@ const initialState: CreateProblemState = {
     slug: "",
     question: "",
     solution: "",
+    initialCode: "",
+    testSetup: "",
+    tests: [],
   },
   setCreateProblem: () => null,
   changeCreateProblem: () => null,
@@ -56,6 +59,7 @@ export function CreateProblemProvider({
     key,
     value
   ) => {
+    console.log(key, value);
     setCreateProblem((prev) => ({
       ...prev,
       [key]: value,

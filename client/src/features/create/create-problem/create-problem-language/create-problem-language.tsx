@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/select";
 import { Language } from "@/features/language/language.model";
 import { useEffect, useState } from "react";
+import { useCreateProblem } from "../create-problem.provider";
 
 const CreateProblemLanguage = () => {
+  const { createProblem, changeCreateProblem } = useCreateProblem();
   const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(
     null
   );
@@ -36,6 +38,15 @@ const CreateProblemLanguage = () => {
       setSelectedLanguage(foundDefaultLanguage);
     }
   }, [availableLanguages]);
+
+  useEffect(() => {
+    if (
+      selectedLanguage?.id &&
+      createProblem.languageId !== selectedLanguage.id
+    ) {
+      changeCreateProblem("languageId", selectedLanguage.id);
+    }
+  }, [changeCreateProblem, selectedLanguage?.id]);
 
   const selectLanguage = (id: string) => {
     const foundLanguage = availableLanguages?.find(
