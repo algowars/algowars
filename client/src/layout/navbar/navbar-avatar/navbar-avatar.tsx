@@ -68,13 +68,13 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
           <li>
             <DropdownMenuItem className="p-0" asChild>
               <Link
-                to={`/profile/${account?.player?.username}`}
+                to="/settings"
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   "justify-start text-start w-full"
                 )}
               >
-                Profile
+                Settings
               </Link>
             </DropdownMenuItem>
           </li>

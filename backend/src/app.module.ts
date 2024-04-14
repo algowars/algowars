@@ -13,6 +13,7 @@ import { GameModule } from './game/game.module';
 import { BattleModule } from './battle/battle.module';
 import entities from './data-model/entities';
 import { ScheduleModule } from '@nestjs/schedule';
+import { LanguageModule } from './language/language.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     LobbyModule,
     GameModule,
     BattleModule,
+    LanguageModule,
   ],
 })
 export class AppModule {}

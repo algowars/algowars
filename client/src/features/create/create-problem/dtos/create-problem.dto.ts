@@ -3,4 +3,5 @@ export interface CreateProblemDto {
   slug: string;
   question: string;
   solution: string;
+  languageId?: number;
 }
