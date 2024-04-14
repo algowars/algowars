@@ -4,7 +4,6 @@ import CreateProblemQuestion from "./create-problem-question/create-problem-ques
 import CreateProblemSetup from "./create-problem-setup/create-problem-setup";
 import CreateProblemTest from "./create-problem-test/create-problem-test";
 import { useMutation } from "@tanstack/react-query";
-import ErrorAlert from "@/errors/error-alert/error-alert";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useCreateProblem } from "./create-problem.provider";
 import { problemService } from "@/features/problem/services/problem.service";
