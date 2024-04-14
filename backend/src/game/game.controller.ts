@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Put,
   Query,
   Req,
   UseGuards,
@@ -34,6 +36,17 @@ export class GameController {
     return this.gameService.findGameById(findGameDto.gameId, relations);
   }
 
+  // @Throttle({ default: { limit: seconds(15), ttl: 10 } })
+  // @UseGuards(AuthorizationGuard, AccountOwnerGuard)
+  // @Put(':gameId/start')
+  // startGame(
+  //   @Param() startGameDto: StartGameDto,
+  //   @Req() request: Request,
+  // ): Promise<Game> {
+  //   this.validatePrivateAccount(request);
+  //   const account = this.mapPrivateAccount(request);
+  // }
+
   @Throttle({ default: { limit: seconds(15), ttl: 1 } })
   @UseGuards(AuthorizationGuard, AccountOwnerGuard)
   @Post()
@@ -64,4 +77,8 @@ export class GameController {
   private mapPrivateAccount(request: Request): Account {
     return request.account;
   }
+
+  private generateProblemSet(game: Game) {}
+
+  static GAME_STATUS_START_ID = 2;
 }
