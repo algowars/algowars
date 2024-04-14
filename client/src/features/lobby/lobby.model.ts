@@ -10,4 +10,5 @@ export interface Lobby {
   name: string;
   game?: Game;
   maxPlayers: number;
+  totalPlayers?: number;
 }

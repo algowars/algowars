@@ -59,7 +59,7 @@ const PublicLobbies = () => {
                       {game.lobby.name}
                     </TableCell>
                     <TableCell className="text-muted-foreground">{`${
-                      game.lobby.players?.length ?? 0
+                      game.lobby.totalPlayers ?? 0
                     }/ ${game.lobby.maxPlayers}`}</TableCell>
                     <TableCell className="text-muted-foreground">
                       {game.duration} Minutes

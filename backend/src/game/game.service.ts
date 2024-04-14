@@ -61,7 +61,8 @@ export class GameService {
     let queryBuilder = this.gameRepository
       .createQueryBuilder(entityName)
       .leftJoinAndSelect(`${entityName}.lobby`, 'lobby')
-      .leftJoinAndSelect(`${entityName}.status`, 'status');
+      .leftJoinAndSelect(`${entityName}.status`, 'status')
+      .loadRelationCountAndMap('lobby.totalPlayers', 'lobby.players');
 
     queryBuilder = this.filterQueryByActiveGames(queryBuilder, entityName);
 
