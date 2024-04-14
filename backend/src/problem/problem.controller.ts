@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ProblemService } from './problem.service';
 import { RandomProblemDto } from './dtos/random-problem.dto';
 import { Problem } from 'src/data-model/entities';
@@ -7,6 +7,11 @@ import { ProblemAggregate } from 'src/data-model/entities/problem/problem-aggreg
 import { ProblemNotFoundException } from './exceptions/problem-not-found.exception';
 import { TestInputService } from 'src/test-input/test-input.service';
 import { ProblemSetupService } from 'src/problem-setup/problem-setup.service';
+import { CreateProblemDto } from './dtos/create-problem.dto';
+import { AuthorizationGuard } from 'src/auth/authorization.guard';
+import { AccountOwnerGuard } from 'src/auth/account-owner.guard';
+import { PermissionsGuard } from 'src/auth/permissions.guard';
+import { ProblemPermissions } from './permissions/problem.permissions';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -15,6 +20,19 @@ export class ProblemController {
     private readonly testInputService: TestInputService,
     private readonly problemSetupService: ProblemSetupService,
   ) {}
+
+  @UseGuards(
+    AuthorizationGuard,
+    PermissionsGuard([ProblemPermissions.CREATE_PROBLEM]),
+    AccountOwnerGuard,
+  )
+  @Post()
+  async createProblem(
+    @Body()
+    createProblemDto: CreateProblemDto,
+  ) {
+    console.log(createProblemDto);
+  }
 
   @Get('random')
   getRandomProblem(

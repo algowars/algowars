@@ -1,4 +1,4 @@
 export interface CreateProblemTestDto {
-  inputs: string[];
+  inputs: string;
   expectedOutput: string;
 }

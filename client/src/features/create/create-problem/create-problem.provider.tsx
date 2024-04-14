@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { CreateProblemDto } from "./dtos/create-problem.dto";
-import { CreateTestDto } from "./dtos/create-test.dto";
+import { CreateProblemTestDto } from "./dtos/create-problem-test.dto";
 
 type CreateProblemProps = {
   children: ReactNode;
@@ -20,7 +20,7 @@ export type CreateProblemState = {
     key: K,
     value: CreateProblemDto[K]
   ) => void;
-  createTests: CreateTestDto[];
+  changeTest: (index: number, value: CreateProblemTestDto) => void;
   addTest: () => void;
   removeTest: (index: number) => void;
 };
@@ -31,13 +31,18 @@ const initialState: CreateProblemState = {
     slug: "",
     question: "",
     solution: "",
-    initialCode: "",
-    testSetup: "",
+    initialCode: `function example(num) {
+  // Code goes here
+}`,
+    testSetup: `process.stdin.on("data", data => {
+  const num = parseInt(data.toString().trim(), 10);
+  console.log(isEven(num));
+});`,
     tests: [],
   },
   setCreateProblem: () => null,
+  changeTest: () => null,
   changeCreateProblem: () => null,
-  createTests: [],
   addTest: () => null,
   removeTest: () => null,
 };
@@ -53,8 +58,6 @@ export function CreateProblemProvider({
     initialState.createProblem
   );
 
-  const [createTests, setCreateTests] = useState<CreateTestDto[]>([]);
-
   const changeCreateProblem: CreateProblemState["changeCreateProblem"] = (
     key,
     value
@@ -66,24 +69,40 @@ export function CreateProblemProvider({
     }));
   };
 
+  const changeTest = (index: number, value: CreateProblemTestDto) => {
+    setCreateProblem((prev) => {
+      const updatedTests = [...prev.tests];
+      updatedTests[index] = value;
+
+      return {
+        ...prev,
+        tests: updatedTests,
+      };
+    });
+  };
+
   const addTest = () => {
-    setCreateTests((curr) => [
-      ...curr,
-      { inputs: [], expectedOutput: "", test: "" },
-    ]);
+    setCreateProblem((curr) => {
+      return {
+        ...curr,
+        tests: [...curr.tests, { inputs: "", expectedOutput: "" }],
+      };
+    });
   };
 
   const removeTest = (index: number) => {
-    setCreateTests((curr) => curr.filter((_, i) => i !== index));
+    setCreateProblem((curr) => {
+      return { ...curr, tests: [...curr.tests.filter((_, i) => i !== index)] };
+    });
   };
 
   const value = {
     createProblem,
     setCreateProblem,
     changeCreateProblem,
-    createTests,
     addTest,
     removeTest,
+    changeTest,
   };
 
   return (

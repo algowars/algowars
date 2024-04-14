@@ -1,4 +1,3 @@
-import { Label } from "@/components/ui/label";
 import CreateProblemLanguage from "../create-problem-language/create-problem-language";
 import CreateProblemSetupTestSetup from "./create-problem-setup-test-setup/create-problem-setup-test-setup";
 import CreateProblemSetupInitialCode from "./create-problem-setup-initial-code/create-problem-setup-initial-code";

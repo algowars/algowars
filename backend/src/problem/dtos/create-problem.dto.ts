@@ -1,6 +1,6 @@
-import { IsNumber, IsString, MaxLength } from 'class-validator';
+import { IsString, MaxLength } from 'class-validator';
 import { ProblemLabel } from '../labels/problem.label';
-import { Test } from 'src/data-model/entities';
+import { ProblemSetup, Test } from 'src/data-model/entities';
 
 export class CreateProblemDto {
   @IsString({ message: ProblemLabel.PROBLEM_TITLE_IS_STRING })
@@ -15,11 +15,7 @@ export class CreateProblemDto {
   @MaxLength(110, { message: ProblemLabel.PROBLEM_SLUG_MAX_LENGTH })
   slug: string;
 
-  @IsNumber()
-  createdById: number;
-
   tests: Test[];
 
-  @IsString()
-  solution: string;
+  problemSetup: ProblemSetup;
 }

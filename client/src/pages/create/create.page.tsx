@@ -4,7 +4,7 @@ import LayoutFull from "@/layout/layout-full/layout-full";
 
 const CreatePage = () => {
   return (
-    <LayoutFull>
+    <LayoutFull className="flex flex-col min-h-screen relative">
       <CreateProblemProvider>
         <CreateProblem />
       </CreateProblemProvider>
