@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Language } from "@/features/language/language.model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CreateProblemLanguage = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(
@@ -27,6 +27,16 @@ const CreateProblemLanguage = () => {
     },
   });
 
+  useEffect(() => {
+    const JAVASCRIPT_ID = 93;
+    const foundDefaultLanguage = availableLanguages?.find(
+      (language) => language.id === JAVASCRIPT_ID
+    );
+    if (foundDefaultLanguage) {
+      setSelectedLanguage(foundDefaultLanguage);
+    }
+  }, [availableLanguages]);
+
   const selectLanguage = (id: string) => {
     const foundLanguage = availableLanguages?.find(
       (language) => language.id === +id
@@ -41,7 +51,7 @@ const CreateProblemLanguage = () => {
     <>
       <ErrorAlertFixed error={error} showClose />
       <Select
-        disabled={isPending}
+        disabled={isPending || true}
         value={`${selectedLanguage?.id ?? ""}`}
         onValueChange={selectLanguage}
       >
