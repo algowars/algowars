@@ -8,7 +8,6 @@ interface AccountState {
 const initialState: AccountState = {
   account: {
     id: null,
-    username: "",
     createdAt: new Date(),
     updatedAt: new Date(),
   },

@@ -4,5 +4,5 @@ export interface Account {
   id: number | null;
   createdAt: Date;
   updatedAt: Date;
-  player: Player;
+  player?: Player;
 }

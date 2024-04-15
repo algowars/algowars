@@ -8,4 +8,5 @@ export enum ProblemLabel {
   PROBLEM_SLUG_IS_STRING = 'Problem slug needs to be a string.',
   PROBLEM_SLUG_MAX_LENGTH = 'Problem slug needs to be at most 110 characters.',
   PROBLEM_CREATED_BY_REQUIRED = 'A problem needs a creator.',
+  PROBLEM_TESTS_LENGTHS_INVALID = 'There needs to be a minimum of 6 tests',
 }

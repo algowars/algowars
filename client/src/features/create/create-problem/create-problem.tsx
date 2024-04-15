@@ -8,6 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useCreateProblem } from "./create-problem.provider";
 import { problemService } from "@/features/problem/services/problem.service";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/error-alert-fixed";
+import CreateProblemSolution from "./create-problem-solution/create-problem-solution";
 
 const CreateProblem = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -50,6 +51,10 @@ const CreateProblem = () => {
               </p>
             </div>
             <CreateProblemTest />
+          </div>
+          <div className="col-span-6">
+            <h4 className="font-semibold mb-3">Problem Solution</h4>
+            <CreateProblemSolution />
           </div>
         </section>
       </div>

@@ -3,6 +3,8 @@ import Container from "@/layout/container/container";
 import { NavLink } from "react-router-dom";
 import NavbarAvatar from "../navbar-avatar/navbar-avatar";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useAppSelector } from "@/store/use-app-selector";
+import { Role } from "@/features/auth/auth-roles/role";
 
 type Props = {
   width?: string;
@@ -12,6 +14,11 @@ type Props = {
 
 const NavbarSignedIn = ({ width, className, border = "border-b" }: Props) => {
   const { user } = useAuth0();
+
+  const { roles } = useAppSelector((state) => state.roles);
+
+  const isAdmin = roles.includes(Role.ADMIN);
+
   return (
     <nav className={`sticky top-0 ${border} h-14 ${className}`}>
       <Container
@@ -60,18 +67,20 @@ const NavbarSignedIn = ({ width, className, border = "border-b" }: Props) => {
               Battles
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/create"
-              className={({ isActive }) =>
-                `transition-colors hover:text-foreground/80 text-foreground${
-                  isActive ? "" : "/60"
-                }`
-              }
-            >
-              Create
-            </NavLink>
-          </li>
+          {isAdmin ? (
+            <li>
+              <NavLink
+                to="/create"
+                className={({ isActive }) =>
+                  `transition-colors hover:text-foreground/80 text-foreground${
+                    isActive ? "" : "/60"
+                  }`
+                }
+              >
+                Create
+              </NavLink>
+            </li>
+          ) : null}
         </ul>
         <ul className="flex items-center gap-1 text-sm">
           <li>

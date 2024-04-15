@@ -11,10 +11,26 @@ import {
 import { ProblemSetupService } from 'src/problem-setup/problem-setup.service';
 import { TestInputService } from 'src/test-input/test-input.service';
 import { AccountService } from 'src/account/account.service';
+import { ProblemValidator } from './validators/problem.validator';
+import { EvaluatorService } from 'src/evaluator/evaluator.service';
+import { HttpModule } from '@nestjs/axios';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Problem, Account, TestInput, ProblemSetup]),
+    ConfigModule.forRoot(),
+    HttpModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        baseURL: configService.get<string>('EVALUATOR_URL'),
+        headers: {
+          'X-RapidAPI-Key': configService.get<string>('EVALUATOR_API_KEY'),
+          'X-RapidAPI-Host': configService.get<string>('EVALUATOR_HOST'),
+        },
+      }),
+      inject: [ConfigService],
+    }),
   ],
 
   controllers: [ProblemController],
@@ -23,6 +39,8 @@ import { AccountService } from 'src/account/account.service';
     ProblemSetupService,
     TestInputService,
     AccountService,
+    ProblemValidator,
+    EvaluatorService,
   ],
 })
 export class ProblemModule {}

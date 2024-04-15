@@ -32,11 +32,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
   }
 
   private isValidationError(exception: HttpException): boolean {
+    const response = exception.getResponse();
     return (
-      'response' in exception &&
-      exception['response'] &&
-      'message' in exception['response'] &&
-      Array.isArray(exception['response'].message)
+      response &&
+      typeof response === 'object' &&
+      'message' in response &&
+      Array.isArray(response.message)
     );
   }
 
