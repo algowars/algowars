@@ -18,7 +18,7 @@ import { Account, Player } from 'src/data-model/entities';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { AccountOwnerGuard } from 'src/auth/account-owner.guard';
 import { JoinLobbyDto } from './dtos/join-lobby.dto';
-import { Lobby } from 'src/data-model/entities/battle/lobby.entity';
+import { Lobby } from 'src/data-model/entities/game/lobby.entity';
 import { Throttle, seconds } from '@nestjs/throttler';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';

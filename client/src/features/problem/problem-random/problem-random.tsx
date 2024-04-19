@@ -25,12 +25,14 @@ const ProblemRandom = () => {
 
   return problem ? (
     <Card className="p-5 flex flex-col gap-5">
-      <h3 className="text-xl font-bold">Random Problem</h3>
-      <h3 className="font-semibold text-xl">{problem.title}</h3>
-      <MarkdownViewer
-        markdown={problem.question}
-        className="max-h-[10rem] overflow-auto"
-      />
+      <h3 className="text-2xl font-bold">Random Problem</h3>
+      <div>
+        <h4 className="font-semibold text-xl mb-3">{problem.title}</h4>
+        <MarkdownViewer
+          markdown={problem.question}
+          className="max-h-[10rem] overflow-auto"
+        />
+      </div>
       <div className="flex gap-5 items-center">
         <Link
           to={`/problems/${problem.slug}`}

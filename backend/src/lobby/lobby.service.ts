@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Lobby } from 'src/data-model/entities/battle/lobby.entity';
+import { Lobby } from 'src/data-model/entities/game/lobby.entity';
 import { Repository } from 'typeorm';
 import { LobbyPaginationDto } from './dtos/lobby-pagination.dto';
 import { PaginationResponse } from 'src/common/pagination/dtos/pagination-response.dto';

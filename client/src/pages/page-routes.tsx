@@ -11,10 +11,12 @@ import CreateLobbyPage from "./battle/create-lobby/create-lobby.page";
 import Landing from "@/layout/landing/landing";
 import BattlesPage from "./battles/battles.page";
 import LobbyPage from "./battle/lobby/lobby.page";
+import CodeRushPage from "./code-rush/code-rush.page";
 
 const PageRoutes = () => {
   return (
     <Routes>
+      <Route path="rush" element={<CodeRushPage />} />
       <Route path="battle/:gameId" element={<BattlePage />}>
         <Route path="lobby" element={<LobbyPage />} />
       </Route>
