@@ -8,9 +8,6 @@ import { ProblemSetupModule } from './problem-setup/problem-setup.module';
 import { TestInputModule } from './test-input/test-input.module';
 import { EvaluatorModule } from './evaluator/evaluator.module';
 import { SubmissionModule } from './submission/submission.module';
-import { LobbyModule } from './lobby/lobby.module';
-import { GameModule } from './game/game.module';
-import { BattleModule } from './battle/battle.module';
 import entities from './data-model/entities';
 import { ScheduleModule } from '@nestjs/schedule';
 import { LanguageModule } from './language/language.module';
@@ -43,9 +40,6 @@ import { CodeRushModule } from './code-rush/code-rush.module';
     TestInputModule,
     EvaluatorModule,
     SubmissionModule,
-    LobbyModule,
-    GameModule,
-    BattleModule,
     LanguageModule,
     CodeRushModule,
   ],
