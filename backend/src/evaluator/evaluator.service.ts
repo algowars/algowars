@@ -10,6 +10,7 @@ import {
   tap,
   throwError,
 } from 'rxjs';
+import { Test } from 'src/data-model/entities';
 import { CreateJudgeSubmission } from 'src/data-model/models/create-judge-submission';
 import { JudgeSubmission } from 'src/data-model/models/judge-submission';
 import { JudgeSubmissionResponse } from 'src/data-model/models/judge-submission-response';
@@ -43,70 +44,6 @@ export class EvaluatorService {
           status: statusCode,
           error: message,
         },
-        statusCode,
-      );
-    }
-  }
-
-  async pollSubmission(tokens: string[]) {
-    const params = {
-      base64_encoded: 'true',
-      fields: '*',
-      tokens: tokens.join(','),
-    };
-
-    try {
-      const responseData = await firstValueFrom(
-        this.httpService.get('/submissions/batch', { params }).pipe(
-          map((response) => response.data),
-          tap((data) => {
-            const allSubmissionsFinal = data.submissions.every(
-              (submission) =>
-                submission.status.description !== 'In Queue' &&
-                submission.status.description !== 'Processing',
-            );
-
-            if (!allSubmissionsFinal) {
-              throw new Error('All submissions finalized');
-            }
-          }),
-          retryWhen((errors) =>
-            errors.pipe(
-              delay(5000),
-              catchError((error) => {
-                if (error.message === 'All submissions finalized') {
-                  return throwError(() => new Error('Submissions finalized'));
-                }
-                return throwError(() => error);
-              }),
-            ),
-          ),
-          catchError((error) => {
-            if (error.message === 'Submissions finalized') {
-              return 'Submissions finalized';
-            }
-            return throwError(() => error);
-          }),
-        ),
-      );
-
-      responseData.submissions.forEach((sub) => {
-        sub.source_code = this.decode(sub.source_code);
-        sub.stdin = sub.stdin ? this.decode(sub.stdin) : sub.stdin;
-        sub.stdout = sub.stdout ? this.decode(sub.stdout) : sub.stdout;
-        sub.expected_output = this.decode(sub.expected_output);
-      });
-
-      return responseData;
-    } catch (error) {
-      const message =
-        error.response?.data?.error ||
-        error.message ||
-        'An unexpected error occurred';
-      const statusCode =
-        error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR;
-      throw new HttpException(
-        { status: statusCode, error: message },
         statusCode,
       );
     }
@@ -176,6 +113,19 @@ export class EvaluatorService {
         stdin: this.encode(submission.stdin),
       })),
     };
+  }
+
+  public static createJudgeSubmissionTests(
+    source_code: string,
+    language_id: number,
+    tests: Test[],
+  ): CreateJudgeSubmission[] {
+    return tests.map((test) => ({
+      language_id,
+      source_code,
+      expected_output: test.expectedOutput,
+      stdin: test.inputs.map((input) => input.input).join(','),
+    }));
   }
 
   private encode(str: string) {

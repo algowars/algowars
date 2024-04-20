@@ -36,9 +36,7 @@ export class Submission {
   @Column({ nullable: false })
   languageId: number;
 
-  @ManyToOne(() => Problem, (problem) => problem.submissions, {
-    nullable: false,
-  })
+  @ManyToOne(() => Problem, (problem) => problem.submissions)
   problem: Problem;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })

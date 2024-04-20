@@ -5,24 +5,21 @@ import { SubmissionService } from 'src/submission/submission.service';
 import { CreateEvaluationDto } from './dto/create-evaluation.dto';
 import {
   Account,
-  Player,
+  Problem,
   ProblemSetup,
   Submission,
-  Test,
 } from 'src/data-model/entities';
 import { ProblemNotFoundException } from 'src/problem/exceptions/problem-not-found.exception';
 import { Throttle, seconds } from '@nestjs/throttler';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { AccountOwnerGuard } from 'src/auth/account-owner.guard';
-import { CreateJudgeSubmission } from 'src/data-model/models/create-judge-submission';
-import { JudgeSubmissionResponse } from 'src/data-model/models/judge-submission-response';
-import { CreateSubmissionDto } from 'src/submission/dtos/create-submission.dto';
 import { ProblemSetupService } from 'src/problem-setup/problem-setup.service';
 import { ProblemSetupRequiredException } from 'src/problem-setup/exceptions/problem-setup-required.exception';
 import { JudgeSubmissionException } from './exceptions/judge-submission.exception';
 import { Request } from 'express';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
+import { CodeEvaluation } from './code-evaluation';
 
 @Controller('v1/evaluator')
 export class EvaluatorController {
@@ -33,59 +30,46 @@ export class EvaluatorController {
     private readonly submissionService: SubmissionService,
   ) {}
 
-  @Throttle({ default: { limit: seconds(5), ttl: 1 } })
-  @Post('evaluate/guest/test')
-  async evaluateGuestTest(): Promise<void> {}
-
-  @Throttle({ default: { limit: seconds(7), ttl: 1 } })
-  @Post('evaluate/guest/submit')
-  async evaluateGuestSubmit(): Promise<void> {}
-
-  @Throttle({ default: { limit: seconds(3), ttl: 1 } })
+  @Throttle({ default: { limit: seconds(4), ttl: 1 } })
   @UseGuards(AuthorizationGuard, AccountOwnerGuard)
-  @Post('evaluate/test')
-  async evaluateTest(
+  @Post('evaluate/submit')
+  async createEvaluationSubmission(
     @Body() createEvaluationDto: CreateEvaluationDto,
     @Req() request: Request,
-  ): Promise<JudgeSubmissionResponse[]> {
-    if (!request.account) {
-      throw new AccountNotFoundException();
-    }
-    const account = request.account;
+  ): Promise<Submission> {
+    this.validatePrivateAccount(request);
+    const account = this.mapPrivateAccount(request);
 
-    if (!account) {
-      throw new AccountNotFoundException();
-    }
-
-    if (!account.player) {
-      throw new PlayerNotFoundException();
-    }
-
-    const foundProblem = await this.problemService.findOneById(
+    const problem = await this.getProblem(createEvaluationDto.problemId);
+    const setup = await this.getSetup(
       createEvaluationDto.problemId,
-      {
-        relations: ['tests'],
-      },
-    );
-
-    if (!foundProblem) {
-      throw new ProblemNotFoundException();
-    }
-
-    const setup = await this.problemSetupService.findProblemSetupByIds(
-      foundProblem.id,
       createEvaluationDto.languageId,
     );
 
-    if (!setup) {
-      throw new ProblemSetupRequiredException();
-    }
+    const codeEvaluation = new CodeEvaluation();
 
+    codeEvaluation.code = createEvaluationDto.code;
+    codeEvaluation.testSetup = setup.testSetup;
+
+    const judgeSubmissions = await this.createSubmission(
+      codeEvaluation.build(),
+      createEvaluationDto.languageId,
+      problem,
+    );
+
+    console.log(judgeSubmissions);
+  }
+
+  private async createSubmission(
+    code: string,
+    languageId: number,
+    problem: Problem,
+  ) {
     const judgeSubmissions = await this.evaluatorService.batchEvaluate(
-      this.mapCreateSubmissions(
-        createEvaluationDto,
-        setup,
-        (await foundProblem.tests).slice(0, 3),
+      EvaluatorService.createJudgeSubmissionTests(
+        code,
+        languageId,
+        await problem.tests,
       ),
     );
 
@@ -96,89 +80,32 @@ export class EvaluatorController {
     return judgeSubmissions;
   }
 
-  @Throttle({ default: { limit: seconds(4), ttl: 1 } })
-  @UseGuards(AuthorizationGuard, AccountOwnerGuard)
-  @Post('evaluate/submit')
-  async evaluateSubmit(
-    @Body() createEvaluationDto: CreateEvaluationDto,
-    @Req() request: Request,
-  ): Promise<Submission> {
-    this.validatePrivateAccount(request);
-    const account = this.mapPrivateAccount(request);
+  private async getProblem(problemId: number): Promise<Problem> {
+    const problem = await this.problemService.findOneById(problemId, {
+      relations: ['tests', 'tests.inputs'],
+    });
 
-    const foundProblem = await this.problemService.findOneById(
-      createEvaluationDto.problemId,
-      {
-        relations: ['tests', 'tests.inputs'],
-      },
-    );
-
-    if (!foundProblem) {
+    if (!problem) {
       throw new ProblemNotFoundException();
     }
 
+    return problem;
+  }
+
+  private async getSetup(
+    problemId: number,
+    languageId: number,
+  ): Promise<ProblemSetup> {
     const setup = await this.problemSetupService.findProblemSetupByIds(
-      foundProblem.id,
-      createEvaluationDto.languageId,
+      problemId,
+      languageId,
     );
 
     if (!setup) {
       throw new ProblemSetupRequiredException();
     }
 
-    const judgeSubmissions = await this.evaluatorService.batchEvaluate(
-      this.mapCreateSubmissions(
-        createEvaluationDto,
-        setup,
-        await foundProblem.tests,
-      ),
-    );
-
-    console.log(
-      'JUDGE SUBMISSION: ',
-      judgeSubmissions,
-      createEvaluationDto,
-      account,
-    );
-
-    if (!judgeSubmissions || !judgeSubmissions?.length) {
-      throw new JudgeSubmissionException();
-    }
-
-    return this.submissionService.createSubmission(
-      this.mapCreateSubmission(
-        createEvaluationDto.code,
-        judgeSubmissions.slice(0, 1),
-        account.player,
-      ),
-      foundProblem,
-    );
-  }
-
-  private mapCreateSubmission(
-    code: string,
-    tokens: JudgeSubmissionResponse[],
-    createdBy?: Player,
-  ): CreateSubmissionDto {
-    return {
-      code,
-      tokens,
-      createdBy,
-    };
-  }
-
-  private mapCreateSubmissions(
-    createEvaluationDto: CreateEvaluationDto,
-    problemSetup: ProblemSetup,
-    tests: Test[],
-  ): CreateJudgeSubmission[] {
-    return tests.map((test) => ({
-      language_id: createEvaluationDto.languageId,
-      source_code: `${createEvaluationDto.code}
-      ${problemSetup.testSetup}`,
-      expected_output: test.expectedOutput,
-      stdin: test.inputs.map((input) => input.input).join(','),
-    }));
+    return setup;
   }
 
   private mapPrivateAccount(request: Request): Account {
@@ -195,4 +122,6 @@ export class EvaluatorController {
       throw new PlayerNotFoundException();
     }
   }
+
+  static JAVASCRIPT_LANGUAGE_ID = 93;
 }

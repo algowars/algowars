@@ -21,6 +21,8 @@ export class SubmissionService {
       problem,
     });
 
+    console.log('AFTER CREATION', submission);
+
     return this.submissionRepository.save(submission);
   }
 
