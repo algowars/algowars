@@ -1,11 +1,11 @@
 import Logo from "@/components/logo/logo";
 import { Button } from "@/components/ui/button";
+import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { useAuthLoginButton } from "@/features/auth/auth-login-button/auth-login-button.hooks";
 import { useAuthSignupButton } from "@/features/auth/auth-signup-button/auth-signup-button.hooks";
 import ThemeToggle from "@/features/theme/theme-toggle/theme-toggle";
 import Container from "@/layout/container/container";
-
-import { NavLink } from "react-router-dom";
+import { createLink, signedOutLinks } from "../nav-links";
 
 type Props = {
   width?: string;
@@ -27,40 +27,9 @@ const NavbarLoggedOut = ({ width, className, border = "border-b" }: Props) => {
             <Logo width="w-6" height="h-6" />
           </li>
           <li>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `transition-colors hover:text-foreground/80 text-foreground${
-                  isActive ? "" : "/60"
-                }`
-              }
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/problems"
-              className={({ isActive }) =>
-                `transition-colors hover:text-foreground/80 text-foreground${
-                  isActive ? "" : "/60"
-                }`
-              }
-            >
-              Problems
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/battle"
-              className={({ isActive }) =>
-                `transition-colors hover:text-foreground/80 text-foreground${
-                  isActive ? "" : "/60"
-                }`
-              }
-            >
-              Battles
-            </NavLink>
+            <NavigationMenu>
+              {signedOutLinks.map((link: NavLink) => createLink(link))}
+            </NavigationMenu>
           </li>
         </ul>
         <ul className="flex items-center gap-3 text-sm">

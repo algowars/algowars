@@ -1,10 +1,15 @@
-import Logo from "@/components/logo/logo";
 import Container from "@/layout/container/container";
-import { NavLink } from "react-router-dom";
 import NavbarAvatar from "../navbar-avatar/navbar-avatar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAppSelector } from "@/store/use-app-selector";
 import { Role } from "@/features/auth/auth-roles/role";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+} from "@/components/ui/navigation-menu";
+import { NavLink } from "../nav-link";
+import { adminLinks, createLink, signedInLinks } from "../nav-links";
+import Logo from "@/components/logo/logo";
 
 type Props = {
   width?: string;
@@ -19,6 +24,8 @@ const NavbarSignedIn = ({ width, className, border = "border-b" }: Props) => {
 
   const isAdmin = roles.includes(Role.ADMIN);
 
+  const links = isAdmin ? adminLinks : signedInLinks;
+
   return (
     <nav className={`sticky top-0 ${border} h-14 ${className}`}>
       <Container
@@ -27,61 +34,17 @@ const NavbarSignedIn = ({ width, className, border = "border-b" }: Props) => {
       >
         <ul className="flex items-center gap-5">
           <li>
-            <NavLink to="/" className="flex items-center gap-3">
-              <Logo width="w-6" height="h-6" hideLink />
-            </NavLink>
+            <Logo width="w-6" height="h-6" />
           </li>
           <li>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `transition-colors hover:text-foreground/80 text-foreground${
-                  isActive ? "" : "/60"
-                }`
-              }
-            >
-              Home
-            </NavLink>
+            <NavigationMenu>
+              <NavigationMenuList>
+                {links.map((link: NavLink) => createLink(link))}
+              </NavigationMenuList>
+            </NavigationMenu>
           </li>
-          <li>
-            <NavLink
-              to="/problems"
-              className={({ isActive }) =>
-                `transition-colors hover:text-foreground/80 text-foreground${
-                  isActive ? "" : "/60"
-                }`
-              }
-            >
-              Problems
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/battle"
-              className={({ isActive }) =>
-                `transition-colors hover:text-foreground/80 text-foreground${
-                  isActive ? "" : "/60"
-                }`
-              }
-            >
-              Battles
-            </NavLink>
-          </li>
-          {isAdmin ? (
-            <li>
-              <NavLink
-                to="/create"
-                className={({ isActive }) =>
-                  `transition-colors hover:text-foreground/80 text-foreground${
-                    isActive ? "" : "/60"
-                  }`
-                }
-              >
-                Create
-              </NavLink>
-            </li>
-          ) : null}
         </ul>
+
         <ul className="flex items-center gap-1 text-sm">
           <li>
             <NavbarAvatar url={user?.picture} />
