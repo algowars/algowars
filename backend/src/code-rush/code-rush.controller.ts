@@ -3,7 +3,7 @@ import { CodeRushService } from './code-rush.service';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { AccountOwnerGuard } from 'src/auth/account-owner.guard';
 import { Request } from 'express';
-import { Rush } from 'src/data-model/entities';
+import { Problem, Rush } from 'src/data-model/entities';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
 
@@ -19,6 +19,8 @@ export class CodeRushController {
 
     return this.codeRushService.createRush();
   }
+
+  private createProblemSet(): Promise<Problem[]> {}
 
   private validatePrivateAccount(request: Request): void {
     if (!request.account) {
