@@ -4,16 +4,16 @@ import {
   SetStateAction,
   createContext,
   useContext,
-  useEffect,
   useState,
 } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AppError } from "@/errors/app-error.model";
 import { problemService } from "../services/problem.service";
 import { ProblemAggregate } from "../problem-aggregate.model";
 import { CreateSubmissionDto } from "@/features/submission/dtos/create-submission.dto";
 import { Submission } from "@/features/submission/sbumission.model";
-import { useSocket } from "@/common/socket/socket.provider";
+import { useAuth0 } from "@auth0/auth0-react";
+import { submissionService } from "@/features/submission/services/submission.service";
 import { JudgeSubmission } from "@/features/submission/judge-submission.model";
 import { SubmissionStatusDescription } from "@/features/submission/judge-submission-status-description.model";
 
@@ -33,6 +33,8 @@ export type ProblemPlayState = {
   ) => void;
   submission: Submission | undefined;
   setSubmission: Dispatch<SetStateAction<Submission | undefined>>;
+  runTests: () => void;
+  submitCode: () => void;
   isSubmissionPending: boolean;
 };
 
@@ -47,6 +49,8 @@ const initialState: ProblemPlayState = {
   changeCreateSubmissionDto: () => null,
   submission: undefined,
   setSubmission: () => null,
+  runTests: () => null,
+  submitCode: () => null,
   isSubmissionPending: false,
 };
 
@@ -58,7 +62,7 @@ export function ProblemProvider({
   slug,
   ...props
 }: ProblemPlayProps) {
-  const { socket } = useSocket();
+  const { getAccessTokenSilently } = useAuth0();
   const {
     data: problemAggregate,
     isLoading,
@@ -71,6 +75,7 @@ export function ProblemProvider({
       }
 
       const problemAggregate = await problemService.getProblemBySlug(slug);
+
       if (problemAggregate) {
         changeCreateSubmissionDto("problemId", problemAggregate.problem.id);
         changeCreateSubmissionDto("code", problemAggregate.initialCode);
@@ -84,11 +89,7 @@ export function ProblemProvider({
       code: "",
       problemId: null,
     });
-  const [submission, setSubmission] = useState<Submission | undefined>(
-    undefined
-  );
-  const [isSubmissionPending, setIsSubmissionPending] =
-    useState<boolean>(false);
+  const [submissionId, setIsSubmissionId] = useState<string>("");
 
   const changeCreateSubmissionDto = <K extends keyof CreateSubmissionDto>(
     key: K,
@@ -97,49 +98,60 @@ export function ProblemProvider({
     setCreateSubmissionDto((curr) => ({ ...curr, [key]: value }));
   };
 
-  useEffect(() => {
-    if (submission) {
-      setIsSubmissionPending(true);
-      const handleStatusUpdate = ({
-        submissions,
-      }: {
-        submissions: JudgeSubmission[];
-      }) => {
-        if (submissions) {
-          const submissionDescriptions = submissions.map(
-            (submission) => submission.status.description
-          );
-          if (
-            !submissionDescriptions.includes(
-              SubmissionStatusDescription.IN_QUEUE
-            ) &&
-            !submissionDescriptions.includes(
-              SubmissionStatusDescription.PROCESSING
-            )
-          ) {
-            setSubmission((curr) => {
-              if (!curr) return undefined;
-              const updatedSubmission: Submission = {
-                ...curr,
-                judgeSubmissions: submissions,
-                id: curr.id,
-              };
+  const { mutate: runTests } = useMutation({
+    mutationKey: ["run-tests"],
+    mutationFn: async () => {
+      const accessToken = await getAccessTokenSilently();
+      const createdSubmission = await submissionService.runTests(
+        accessToken,
+        createSubmissionDto
+      );
 
-              return updatedSubmission;
-            });
-            setIsSubmissionPending(false);
-            socket?.off("submissionStatus", handleStatusUpdate);
-          }
-        }
-      };
+      if (!createdSubmission) {
+        throw new Error("Error creating submission");
+      }
 
-      socket?.on("submission-details", handleStatusUpdate);
+      setIsSubmissionId(createdSubmission.id);
+    },
+  });
 
-      return () => {
-        socket?.off("submission-details", handleStatusUpdate);
-      };
-    }
-  }, [submission, socket]);
+  const { mutate: submitCode } = useMutation({
+    mutationKey: ["submit-code"],
+    mutationFn: async () => {
+      console.log("SUBMITTING CODE");
+      const accessToken = await getAccessTokenSilently();
+      const createdSubmission = await submissionService.createSubmission(
+        accessToken,
+        createSubmissionDto
+      );
+
+      if (!createdSubmission) {
+        throw new Error("Error creating submission");
+      }
+
+      setIsSubmissionId(createdSubmission.id);
+    },
+  });
+
+  const {
+    data: submission,
+    isPending,
+    error: pollingError,
+  } = useQuery({
+    queryKey: ["poll-submission", submissionId],
+    queryFn: async () => {
+      if (!submissionId) {
+        return null;
+      }
+
+      const accessToken = await getAccessTokenSilently();
+
+      const submission = await submissionService.getSubmissionById(
+        accessToken,
+        submissionId
+      );
+    },
+  });
 
   const value = {
     problemAggregate,
@@ -149,7 +161,8 @@ export function ProblemProvider({
     changeCreateSubmissionDto,
     submission,
     setSubmission,
-    isSubmissionPending,
+    runTests,
+    submitCode,
   };
 
   return (

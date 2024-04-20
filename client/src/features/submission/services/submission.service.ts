@@ -35,6 +35,35 @@ const createSubmission = (
   return api.callExternalApi<Submission>({ config });
 };
 
+const runTests = (
+  accessToken: string,
+  {
+    code,
+    problemId,
+    accountId,
+    sub,
+    languageId = JAVASCRIPT_LANGUAGE_ID,
+  }: CreateSubmissionDto
+): Promise<Submission> => {
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/evaluator/evaluate",
+    method: "POST",
+    data: {
+      code,
+      problemId,
+      accountId,
+      sub,
+      languageId,
+    },
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  return api.callExternalApi<Submission>({ config });
+};
+
 const getUserSubmissions = (
   accessToken: string,
   username: string,
@@ -59,9 +88,29 @@ const getUserSubmissions = (
   return api.callExternalApi<PaginationResponse<Submission>>({ config });
 };
 
+const getSubmissionById = (
+  accessToken: string,
+  submissionId: string
+): Promise<PaginationResponse<Submission>> => {
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/submission/find",
+    params: {
+      submissionId,
+    },
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  return api.callExternalApi<PaginationResponse<Submission>>({ config });
+};
+
 const submissionService = {
   createSubmission,
   getUserSubmissions,
+  runTests,
+  getSubmissionById,
 };
 
 Object.freeze(submissionService);
