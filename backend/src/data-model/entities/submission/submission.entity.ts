@@ -33,7 +33,12 @@ export class Submission {
   @JoinTable()
   createdBy: Player;
 
-  @ManyToOne(() => Problem, (problem) => problem.submissions)
+  @Column({ nullable: false })
+  languageId: number;
+
+  @ManyToOne(() => Problem, (problem) => problem.submissions, {
+    nullable: false,
+  })
   problem: Problem;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
@@ -41,4 +46,8 @@ export class Submission {
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  public getTokens(): string[] {
+    return this.tokens.map((token) => token.token);
+  }
 }

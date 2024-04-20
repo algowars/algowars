@@ -28,6 +28,10 @@ import { CodeRushModule } from './code-rush/code-rush.module';
         username: configService.get('POSTGRESQL_USERNAME'),
         password: configService.get('POSTGRESQL_PASSWORD'),
         database: configService.get('POSTGRESQL_NAME'),
+        ssl: {
+          rejectUnauthorized: true,
+          ca: configService.get('POSTGRESQL_CERT'),
+        },
         synchronize: true,
         entities: entities,
       }),

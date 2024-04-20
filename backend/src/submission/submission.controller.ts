@@ -9,10 +9,14 @@ import { AccountNotFoundException } from 'src/account/exceptions/account-not-fou
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
 import { SubmissionNotFoundException } from './exceptions/submission-not-found.exception';
 import { SubmissionNotOwnedException } from './exceptions/submission-not-owned.exception';
+import { EvaluatorService } from 'src/evaluator/evaluator.service';
 
 @Controller('v1/submission')
 export class SubmissionController {
-  constructor(private readonly submissionService: SubmissionService) {}
+  constructor(
+    private readonly submissionService: SubmissionService,
+    private readonly evaluatorService: EvaluatorService,
+  ) {}
 
   @UseGuards(AuthorizationGuard, AccountOwnerGuard)
   @Get('find')
@@ -23,19 +27,30 @@ export class SubmissionController {
     this.validatePrivateAccount(request);
     const account = this.mapPrivateAccount(request);
 
+    console.log(findSubmissionDto);
+
     const foundSubmission = await this.submissionService.findById(
       findSubmissionDto.submissionId,
+      ['tokens', 'createdBy'],
     );
+
+    console.log(foundSubmission);
 
     if (!foundSubmission) {
       throw new SubmissionNotFoundException();
     }
 
-    if (foundSubmission.createdBy.id !== account.player.id) {
+    if (foundSubmission?.createdBy?.id !== account.player.id) {
       throw new SubmissionNotOwnedException();
     }
 
-    return this.submissionService.findById(findSubmissionDto.submissionId);
+    const foundJudgeSubmissions = this.evaluatorService.getBatchSubmissions(
+      foundSubmission.getTokens(),
+    );
+
+    console.log(foundJudgeSubmissions);
+
+    return foundSubmission;
   }
 
   private mapPrivateAccount(request: Request): Account {

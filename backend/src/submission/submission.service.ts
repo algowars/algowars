@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Submission } from 'src/data-model/entities';
+import { Problem, Submission } from 'src/data-model/entities';
 import { Repository } from 'typeorm';
 import { CreateSubmissionDto } from './dtos/create-submission.dto';
 
@@ -13,8 +13,13 @@ export class SubmissionService {
 
   createSubmission(
     createSubmissionDto: CreateSubmissionDto,
+    problem: Problem,
   ): Promise<Submission> {
-    const submission = this.submissionRepository.create(createSubmissionDto);
+    console.log('CREATE SUBMISSION DTO: ', createSubmissionDto);
+    const submission = this.submissionRepository.create({
+      ...createSubmissionDto,
+      problem,
+    });
 
     return this.submissionRepository.save(submission);
   }

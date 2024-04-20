@@ -4,6 +4,7 @@ import {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -16,6 +17,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { submissionService } from "@/features/submission/services/submission.service";
 import { JudgeSubmission } from "@/features/submission/judge-submission.model";
 import { SubmissionStatusDescription } from "@/features/submission/judge-submission-status-description.model";
+import ErrorAlertFixed from "@/errors/error-alert-fixed/error-alert-fixed";
 
 type ProblemPlayProps = {
   children: ReactNode;
@@ -32,7 +34,6 @@ export type ProblemPlayState = {
     value: CreateSubmissionDto[K]
   ) => void;
   submission: Submission | undefined;
-  setSubmission: Dispatch<SetStateAction<Submission | undefined>>;
   runTests: () => void;
   submitCode: () => void;
   isSubmissionPending: boolean;
@@ -48,7 +49,6 @@ const initialState: ProblemPlayState = {
   },
   changeCreateSubmissionDto: () => null,
   submission: undefined,
-  setSubmission: () => null,
   runTests: () => null,
   submitCode: () => null,
   isSubmissionPending: false,
@@ -62,6 +62,8 @@ export function ProblemProvider({
   slug,
   ...props
 }: ProblemPlayProps) {
+  const [isSubmissionPending, setIsSubmissionPending] =
+    useState<boolean>(false);
   const { getAccessTokenSilently } = useAuth0();
   const {
     data: problemAggregate,
@@ -115,7 +117,11 @@ export function ProblemProvider({
     },
   });
 
-  const { mutate: submitCode } = useMutation({
+  const {
+    mutate: submitCode,
+    error: submissionError,
+    isPending: isSubmissionSubmitPending,
+  } = useMutation({
     mutationKey: ["submit-code"],
     mutationFn: async () => {
       console.log("SUBMITTING CODE");
@@ -135,7 +141,7 @@ export function ProblemProvider({
 
   const {
     data: submission,
-    isPending,
+    isPending: isPollingPending,
     error: pollingError,
   } = useQuery({
     queryKey: ["poll-submission", submissionId],
@@ -150,8 +156,16 @@ export function ProblemProvider({
         accessToken,
         submissionId
       );
+
+      console.log(submission);
     },
   });
+
+  useEffect(() => {
+    if (isPollingPending || isSubmissionSubmitPending) {
+      setIsSubmissionPending(true);
+    }
+  }, [isPollingPending, isSubmissionSubmitPending]);
 
   const value = {
     problemAggregate,
@@ -160,13 +174,15 @@ export function ProblemProvider({
     createSubmissionDto,
     changeCreateSubmissionDto,
     submission,
-    setSubmission,
     runTests,
     submitCode,
   };
 
+  console.log(submissionError);
+
   return (
     <ProblemPlayProviderContext.Provider {...props} value={value}>
+      <ErrorAlertFixed error={pollingError || submissionError} />
       {children}
     </ProblemPlayProviderContext.Provider>
   );

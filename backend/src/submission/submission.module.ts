@@ -25,6 +25,11 @@ import { AccountService } from 'src/account/account.service';
     TypeOrmModule.forFeature([Submission, Account]),
   ],
   controllers: [SubmissionController],
-  providers: [SubmissionService, EvaluatorService, AccountService],
+  providers: [
+    SubmissionService,
+    EvaluatorService,
+    AccountService,
+    EvaluatorService,
+  ],
 })
 export class SubmissionModule {}

@@ -112,6 +112,35 @@ export class EvaluatorService {
     }
   }
 
+  async getBatchSubmissions(
+    submissionIds: string[],
+  ): Promise<JudgeSubmission[]> {
+    const params = {
+      base64_encoded: 'false',
+      fields: '*',
+      tokens: submissionIds.join(','),
+    };
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get('/submissions/batch', { params }),
+      );
+      return response.data;
+    } catch (error) {
+      const message =
+        error.response?.data?.error || 'An unexpected error occurred';
+      const statusCode =
+        error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR;
+      throw new HttpException(
+        {
+          status: statusCode,
+          error: message,
+        },
+        statusCode,
+      );
+    }
+  }
+
   async getSubmission(submissionId: string): Promise<JudgeSubmission> {
     const params = {
       base64_encoded: 'true',

@@ -4,6 +4,7 @@ import { ProblemService } from 'src/problem/problem.service';
 import { SubmissionService } from 'src/submission/submission.service';
 import { CreateEvaluationDto } from './dto/create-evaluation.dto';
 import {
+  Account,
   Player,
   ProblemSetup,
   Submission,
@@ -102,18 +103,8 @@ export class EvaluatorController {
     @Body() createEvaluationDto: CreateEvaluationDto,
     @Req() request: Request,
   ): Promise<Submission> {
-    if (!request.account) {
-      throw new AccountNotFoundException();
-    }
-    const account = request.account;
-
-    if (!account) {
-      throw new AccountNotFoundException();
-    }
-
-    if (!account.player) {
-      throw new PlayerNotFoundException();
-    }
+    this.validatePrivateAccount(request);
+    const account = this.mapPrivateAccount(request);
 
     const foundProblem = await this.problemService.findOneById(
       createEvaluationDto.problemId,
@@ -143,6 +134,13 @@ export class EvaluatorController {
       ),
     );
 
+    console.log(
+      'JUDGE SUBMISSION: ',
+      judgeSubmissions,
+      createEvaluationDto,
+      account,
+    );
+
     if (!judgeSubmissions || !judgeSubmissions?.length) {
       throw new JudgeSubmissionException();
     }
@@ -151,8 +149,9 @@ export class EvaluatorController {
       this.mapCreateSubmission(
         createEvaluationDto.code,
         judgeSubmissions.slice(0, 1),
-        account.palyer,
+        account.player,
       ),
+      foundProblem,
     );
   }
 
@@ -180,5 +179,20 @@ export class EvaluatorController {
       expected_output: test.expectedOutput,
       stdin: test.inputs.map((input) => input.input).join(','),
     }));
+  }
+
+  private mapPrivateAccount(request: Request): Account {
+    return request.account;
+  }
+
+  private validatePrivateAccount(request: Request): void {
+    if (!request.account) {
+      throw new AccountNotFoundException();
+    }
+    const account = request.account;
+
+    if (!account.player) {
+      throw new PlayerNotFoundException();
+    }
   }
 }
