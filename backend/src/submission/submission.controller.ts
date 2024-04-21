@@ -4,12 +4,14 @@ import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { AccountOwnerGuard } from 'src/auth/account-owner.guard';
 import { FindSubmissionDto } from './dtos/find-submission.dto';
 import { Request } from 'express';
-import { Account, Submission } from 'src/data-model/entities';
+import { Account } from 'src/data-model/entities';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
 import { SubmissionNotFoundException } from './exceptions/submission-not-found.exception';
 import { SubmissionNotOwnedException } from './exceptions/submission-not-owned.exception';
 import { EvaluatorService } from 'src/evaluator/evaluator.service';
+import { JudgeSubmission } from 'src/data-model/models/judge-submission';
+import { SubmissionAggregateDto } from './dtos/submission-aggregate.dto';
 
 @Controller('v1/submission')
 export class SubmissionController {
@@ -23,18 +25,14 @@ export class SubmissionController {
   async findSubmissionById(
     @Query() findSubmissionDto: FindSubmissionDto,
     @Req() request: Request,
-  ): Promise<Submission> {
+  ): Promise<SubmissionAggregateDto> {
     this.validatePrivateAccount(request);
     const account = this.mapPrivateAccount(request);
-
-    console.log(findSubmissionDto);
 
     const foundSubmission = await this.submissionService.findById(
       findSubmissionDto.submissionId,
       ['tokens', 'createdBy'],
     );
-
-    console.log(foundSubmission);
 
     if (!foundSubmission) {
       throw new SubmissionNotFoundException();
@@ -44,13 +42,23 @@ export class SubmissionController {
       throw new SubmissionNotOwnedException();
     }
 
-    const foundJudgeSubmissions = this.evaluatorService.getBatchSubmissions(
+    const judgeSubmissions = await this.getJudgeSubmissions(
       foundSubmission.getTokens(),
     );
 
-    console.log(foundJudgeSubmissions);
+    return {
+      submission: foundSubmission,
+      judgeSubmissions,
+    };
+  }
 
-    return foundSubmission;
+  private async getJudgeSubmissions(
+    tokens: string[],
+  ): Promise<JudgeSubmission[]> {
+    const foundJudgeSubmissions =
+      await this.evaluatorService.getBatchSubmissions(tokens);
+
+    return foundJudgeSubmissions;
   }
 
   private mapPrivateAccount(request: Request): Account {

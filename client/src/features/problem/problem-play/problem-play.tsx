@@ -35,7 +35,7 @@ const ProblemPlay = ({ slug }: Props) => {
                 <ProblemPlayQuestion />
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={30} className="overflow-y-scroll">
+              <ResizablePanel defaultSize={30} className="overflow-auto">
                 <ProblemPlayTestResults />
               </ResizablePanel>
             </ResizablePanelGroup>

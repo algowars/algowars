@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Problem, Submission } from 'src/data-model/entities';
+import { Player, Problem, Submission } from 'src/data-model/entities';
 import { Repository } from 'typeorm';
-import { CreateSubmissionDto } from './dtos/create-submission.dto';
+import { JudgeSubmissionResponse } from 'src/data-model/models/judge-submission-response';
 
 @Injectable()
 export class SubmissionService {
@@ -12,18 +12,19 @@ export class SubmissionService {
   ) {}
 
   createSubmission(
-    createSubmissionDto: CreateSubmissionDto,
+    code: string,
+    judgeSubmissions: JudgeSubmissionResponse[],
     problem: Problem,
+    languageId: number,
+    player: Player,
   ): Promise<Submission> {
-    console.log('CREATE SUBMISSION DTO: ', createSubmissionDto);
-    const submission = this.submissionRepository.create({
-      ...createSubmissionDto,
+    return this.submissionRepository.save({
+      code,
+      tokens: judgeSubmissions,
       problem,
+      languageId,
+      createdBy: player,
     });
-
-    console.log('AFTER CREATION', submission);
-
-    return this.submissionRepository.save(submission);
   }
 
   findById(id: string, relations: string[] = []): Promise<Submission> {

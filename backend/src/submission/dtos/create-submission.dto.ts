@@ -1,5 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Player } from 'src/data-model/entities';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateSubmissionDto {
   @IsString()
@@ -7,9 +6,4 @@ export class CreateSubmissionDto {
   code: string;
 
   tokens: { token: string }[];
-
-  @IsNumber()
-  languageId: number;
-
-  createdBy: Player;
 }

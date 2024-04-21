@@ -3,6 +3,7 @@ import api from "@/api/api";
 import { CreateSubmissionDto } from "../dtos/create-submission.dto";
 import { PaginationResponse } from "@/common/pagination/pagination-response.model";
 import { Submission } from "../sbumission.model";
+import { SubmissionAggregate } from "../submission-aggregate.model";
 
 const JAVASCRIPT_LANGUAGE_ID = 93;
 
@@ -91,7 +92,7 @@ const getUserSubmissions = (
 const getSubmissionById = (
   accessToken: string,
   submissionId: string
-): Promise<PaginationResponse<Submission>> => {
+): Promise<SubmissionAggregate> => {
   const config: AxiosRequestConfig = {
     url: "/api/v1/submission/find",
     params: {
@@ -103,7 +104,7 @@ const getSubmissionById = (
     },
   };
 
-  return api.callExternalApi<PaginationResponse<Submission>>({ config });
+  return api.callExternalApi<SubmissionAggregate>({ config });
 };
 
 const submissionService = {

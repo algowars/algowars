@@ -1,7 +1,5 @@
 import {
-  Dispatch,
   ReactNode,
-  SetStateAction,
   createContext,
   useContext,
   useEffect,
@@ -12,12 +10,12 @@ import { AppError } from "@/errors/app-error.model";
 import { problemService } from "../services/problem.service";
 import { ProblemAggregate } from "../problem-aggregate.model";
 import { CreateSubmissionDto } from "@/features/submission/dtos/create-submission.dto";
-import { Submission } from "@/features/submission/sbumission.model";
 import { useAuth0 } from "@auth0/auth0-react";
 import { submissionService } from "@/features/submission/services/submission.service";
-import { JudgeSubmission } from "@/features/submission/judge-submission.model";
-import { SubmissionStatusDescription } from "@/features/submission/judge-submission-status-description.model";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/error-alert-fixed";
+import { SubmissionStatus } from "@/features/submission/judge-submission-status.model";
+import { SubmissionStatusDescription } from "@/features/submission/judge-submission-status-description.model";
+import { SubmissionAggregate } from "@/features/submission/submission-aggregate.model";
 
 type ProblemPlayProps = {
   children: ReactNode;
@@ -33,7 +31,7 @@ export type ProblemPlayState = {
     k: K,
     value: CreateSubmissionDto[K]
   ) => void;
-  submission: Submission | undefined;
+  submissionAggregate: SubmissionAggregate | null | undefined;
   runTests: () => void;
   submitCode: () => void;
   isSubmissionPending: boolean;
@@ -48,10 +46,23 @@ const initialState: ProblemPlayState = {
     problemId: null,
   },
   changeCreateSubmissionDto: () => null,
-  submission: undefined,
+  submissionAggregate: undefined,
   runTests: () => null,
   submitCode: () => null,
   isSubmissionPending: false,
+};
+
+const isSubmissionFinished = (statuses: SubmissionStatus[]): boolean => {
+  for (const status of statuses) {
+    if (
+      status.description === SubmissionStatusDescription.IN_QUEUE ||
+      status.description === SubmissionStatusDescription.PROCESSING
+    ) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
 const ProblemPlayProviderContext =
@@ -124,7 +135,6 @@ export function ProblemProvider({
   } = useMutation({
     mutationKey: ["submit-code"],
     mutationFn: async () => {
-      console.log("SUBMITTING CODE");
       const accessToken = await getAccessTokenSilently();
       const createdSubmission = await submissionService.createSubmission(
         accessToken,
@@ -139,46 +149,58 @@ export function ProblemProvider({
     },
   });
 
-  const {
-    data: submission,
-    isPending: isPollingPending,
-    error: pollingError,
-  } = useQuery({
+  const { data: submissionAggregate, error: pollingError } = useQuery({
     queryKey: ["poll-submission", submissionId],
+    refetchInterval: () => (isSubmissionPending ? 2_000 : false),
     queryFn: async () => {
-      if (!submissionId) {
+      if (!submissionId || !isSubmissionPending) {
         return null;
       }
 
       const accessToken = await getAccessTokenSilently();
 
-      const submission = await submissionService.getSubmissionById(
+      const submissionAggregate = await submissionService.getSubmissionById(
         accessToken,
         submissionId
       );
 
-      console.log(submission);
+      if (submissionAggregate) {
+        const statuses = submissionAggregate.judgeSubmissions.map(
+          (sub) => sub.status
+        );
+
+        if (isSubmissionFinished(statuses)) {
+          setIsSubmissionPending(false);
+
+          return submissionAggregate;
+        }
+      }
+
+      return null;
     },
   });
 
   useEffect(() => {
-    if (isPollingPending || isSubmissionSubmitPending) {
+    if (isSubmissionSubmitPending) {
       setIsSubmissionPending(true);
     }
-  }, [isPollingPending, isSubmissionSubmitPending]);
+
+    if (pollingError || submissionError) {
+      setIsSubmissionPending(false);
+    }
+  }, [isSubmissionSubmitPending, pollingError, submissionError]);
 
   const value = {
     problemAggregate,
     isLoading,
+    isSubmissionPending,
     error,
     createSubmissionDto,
     changeCreateSubmissionDto,
-    submission,
+    submissionAggregate,
     runTests,
     submitCode,
   };
-
-  console.log(submissionError);
 
   return (
     <ProblemPlayProviderContext.Provider {...props} value={value}>

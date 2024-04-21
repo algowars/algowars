@@ -57,7 +57,13 @@ export class EvaluatorController {
       problem,
     );
 
-    console.log(judgeSubmissions);
+    return this.submissionService.createSubmission(
+      createEvaluationDto.code,
+      judgeSubmissions,
+      problem,
+      createEvaluationDto.languageId,
+      account.player,
+    );
   }
 
   private async createSubmission(
@@ -81,9 +87,7 @@ export class EvaluatorController {
   }
 
   private async getProblem(problemId: number): Promise<Problem> {
-    const problem = await this.problemService.findOneById(problemId, {
-      relations: ['tests', 'tests.inputs'],
-    });
+    const problem = await this.problemService.findProblemWithTests(problemId);
 
     if (!problem) {
       throw new ProblemNotFoundException();

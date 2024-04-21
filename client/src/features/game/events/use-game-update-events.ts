@@ -14,7 +14,6 @@ const useGameUpdateEvents = (gameId?: string) => {
       socket.emit("joinRoom", { gameId });
 
       socket.on("gameUpdate", (updatedGame) => {
-        console.log("UPDATED GAME: ", updatedGame);
         setGame(updatedGame);
       });
     }

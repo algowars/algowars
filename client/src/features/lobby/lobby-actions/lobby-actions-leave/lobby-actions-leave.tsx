@@ -47,7 +47,6 @@ const LobbyActionsLeave = ({ game, player }: Props) => {
   });
 
   useEffect(() => {
-    console.log("ERROR: ", error);
     if (error) {
       dispatch(setError(error));
     }

@@ -10,7 +10,7 @@ const TestResultsCard = ({ submission }: Props) => {
     return null;
   }
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 h-full overflow-y-auto">
       <div className="flex items-center gap-5 rounded">
         <TestResultsStatus submission={submission} />
         <p className="text-muted-foreground">Runtime: {submission.time} ms</p>

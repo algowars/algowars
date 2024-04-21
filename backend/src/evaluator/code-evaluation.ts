@@ -7,13 +7,13 @@ export class CodeEvaluation {
   }
 
   public set code(code: string) {
-    this._testSetup = code;
+    this._code = code;
   }
 
   build(): string {
     return `
-    ${this._testSetup}
     ${this._code}
+    ${this._testSetup}
     `;
   }
 }

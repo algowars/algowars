@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToOne,
   OneToMany,
@@ -30,7 +31,6 @@ export class Submission {
   code: string;
 
   @ManyToOne(() => Player, (player) => player.submissions)
-  @JoinTable()
   createdBy: Player;
 
   @Column({ nullable: false })

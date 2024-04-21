@@ -1,15 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Base64 } from 'js-base64';
-import {
-  catchError,
-  delay,
-  firstValueFrom,
-  map,
-  retryWhen,
-  tap,
-  throwError,
-} from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { Test } from 'src/data-model/entities';
 import { CreateJudgeSubmission } from 'src/data-model/models/create-judge-submission';
 import { JudgeSubmission } from 'src/data-model/models/judge-submission';
@@ -62,7 +54,7 @@ export class EvaluatorService {
       const response = await firstValueFrom(
         this.httpService.get('/submissions/batch', { params }),
       );
-      return response.data;
+      return response.data.submissions;
     } catch (error) {
       const message =
         error.response?.data?.error || 'An unexpected error occurred';
@@ -120,12 +112,14 @@ export class EvaluatorService {
     language_id: number,
     tests: Test[],
   ): CreateJudgeSubmission[] {
-    return tests.map((test) => ({
-      language_id,
-      source_code,
-      expected_output: test.expectedOutput,
-      stdin: test.inputs.map((input) => input.input).join(','),
-    }));
+    return tests.map((test) => {
+      return {
+        language_id,
+        source_code,
+        expected_output: test.expectedOutput,
+        stdin: test.inputs.map((input) => input.input).join(','),
+      };
+    });
   }
 
   private encode(str: string) {

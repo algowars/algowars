@@ -18,10 +18,8 @@ export class WsAuthorizationGuard implements CanActivate {
   private validateAccessToken = promisify(auth());
 
   async canActivate(context: ExecutionContext) {
-    console.log('IN HERE');
     const request = context.switchToHttp().getRequest<Request>();
     const response = context.switchToHttp().getResponse<Response>();
-    console.log('ON WS AUTHORIZARTION');
     try {
       await this.validateAccessToken(request, response);
 

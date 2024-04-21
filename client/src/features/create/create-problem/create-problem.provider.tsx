@@ -62,7 +62,6 @@ export function CreateProblemProvider({
     key,
     value
   ) => {
-    console.log(key, value);
     setCreateProblem((prev) => ({
       ...prev,
       [key]: value,

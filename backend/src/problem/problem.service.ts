@@ -64,6 +64,15 @@ export class ProblemService {
     });
   }
 
+  findProblemWithTests(problemId: number): Promise<Problem> {
+    return this.problemRepository
+      .createQueryBuilder('problem')
+      .leftJoinAndSelect('problem.tests', 'test')
+      .leftJoinAndSelect('test.inputs', 'input')
+      .where('problem.id = :problemId', { problemId })
+      .getOne();
+  }
+
   findOneBySlug(
     slug: string,
     { relations = [], select = {} }: QueryOptions = {},

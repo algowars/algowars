@@ -10,7 +10,7 @@ type Props = {
 
 const TestResultsNav = ({ changeCurrentTest, judgeSubmissions }: Props) => {
   return (
-    <ul className="flex items-center gap-3">
+    <ul className="flex items-center gap-3 overflow-x-auto w-full">
       {judgeSubmissions.map((submission, index) => (
         <li key={index}>
           <Button
