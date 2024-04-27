@@ -13,35 +13,35 @@ const MarkdownViewer = ({ markdown, className = "" }: Props) => {
       className={className}
       components={{
         h1({ children }) {
-          return <h1 className="mb-4 text-2xl font-semibold">{children}</h1>;
+          return <h1 className="mb-2 text-2xl font-semibold">{children}</h1>;
         },
         h2({ children }) {
-          return <h2 className="mb-4 text-xl font-semibold">{children}</h2>;
+          return <h2 className="mb-2 text-xl font-semibold">{children}</h2>;
         },
         h3({ children }) {
-          return <h3 className="mb-4 text-lg font-semibold">{children}</h3>;
+          return <h3 className="mb-2 text-lg font-semibold">{children}</h3>;
         },
         h4({ children }) {
-          return <h4 className="mb-4 text-lg font-semibold">{children}</h4>;
+          return <h4 className="mb-2 text-lg font-semibold">{children}</h4>;
         },
         h5({ children }) {
-          return <h5 className="mb-4 font-semibold">{children}</h5>;
+          return <h5 className="mb-2 font-semibold">{children}</h5>;
         },
         h6({ children }) {
-          return <h6 className="mb-4 font-semibold">{children}</h6>;
+          return <h6 className="mb-2 font-semibold">{children}</h6>;
         },
         code({ children }) {
           return (
-            <code className="px-1.5 border border rounded inline-block mb-4">
+            <code className="px-1.5 border border rounded inline-block bg-muted">
               {children}
             </code>
           );
         },
-        p: ({ children }) => <p className="mb-4">{children}</p>,
+        p: ({ children }) => <p className="mb-2">{children}</p>,
         ul: ({ children }) => (
-          <ul className="list-disc ml-5 mb-4">{children}</ul>
+          <ul className="list-disc ml-5 mb-2">{children}</ul>
         ),
-        li: ({ children }) => <li className="mb-4">{children}</li>,
+        li: ({ children }) => <li className="mb-2">{children}</li>,
         strong: ({ children }) => (
           <strong className="font-bold">{children}</strong>
         ),

@@ -24,18 +24,41 @@ const ProblemPlay = ({ slug }: Props) => {
         isLoading={isSubmissionPending}
       />
       <ProblemProvider slug={slug}>
-        <ResizablePanelGroup direction="horizontal" className="w-full grow">
-          <ResizablePanel defaultSize={55} className="overflow-hidden">
-            <ProblemPlayCodeEditor />
+        <ResizablePanelGroup
+          direction="horizontal"
+          className="w-full grow p-5 gap-3"
+        >
+          <ResizablePanel
+            defaultSize={55}
+            className="overflow-hidden border flex flex-col rounded"
+          >
+            <div className="p-3 border-b">
+              <h4 className="font-semibold">Solution</h4>
+            </div>
+            <div className="grow">
+              <ProblemPlayCodeEditor />
+            </div>
           </ResizablePanel>
-          <ResizableHandle withHandle />
+          <ResizableHandle className="bg-background" />
           <ResizablePanel defaultSize={45} className="overflow-hidden">
-            <ResizablePanelGroup direction="vertical">
-              <ResizablePanel defaultSize={70} className="overflow-auto">
+            <ResizablePanelGroup direction="vertical" className="gap-3">
+              <ResizablePanel
+                defaultSize={70}
+                className="overflow-auto border rounded flex flex-col"
+              >
+                <div className="p-3 border-b">
+                  <h4 className="font-semibold">Question</h4>
+                </div>
                 <ProblemPlayQuestion />
               </ResizablePanel>
-              <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={30} className="overflow-auto">
+              <ResizableHandle className="bg-background" />
+              <ResizablePanel
+                defaultSize={30}
+                className="overflow-auto border rounded flex flex-col"
+              >
+                <div className="p-3 border-b">
+                  <h4 className="font-semibold">Submission</h4>
+                </div>
                 <ProblemPlayTestResults />
               </ResizablePanel>
             </ResizablePanelGroup>
