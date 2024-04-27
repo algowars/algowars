@@ -16,6 +16,8 @@ const CreateProblemTest = () => {
       ...createProblem.tests[index],
       [field]: value,
     };
+
+    console.log(updatedTest);
     changeTest(index, updatedTest);
   };
 
@@ -30,7 +32,7 @@ const CreateProblemTest = () => {
           {createProblem.tests.map(
             (test: CreateProblemTestDto, index: number) => (
               <li
-                key={test.inputs + index}
+                key={`test: ${index}`}
                 className="border rounded p-3 col-span-3 flex flex-col gap-3"
               >
                 <div className="flex flex-col gap-2">
