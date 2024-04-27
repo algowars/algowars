@@ -24,16 +24,19 @@ const ProblemRandom = () => {
   };
 
   return problem ? (
-    <Card className="p-5 flex flex-col gap-5">
-      <h3 className="text-2xl font-bold">Random Problem</h3>
-      <div>
+    <Card className="flex flex-col gap-5">
+      <div className="border-b p-5">
+        <h3 className="text-2xl font-bold">Random Problem</h3>
+      </div>
+
+      <div className="px-5">
         <h4 className="font-semibold text-xl mb-3">{problem.title}</h4>
         <MarkdownViewer
           markdown={problem.question}
           className="max-h-[10rem] overflow-auto"
         />
       </div>
-      <div className="flex gap-5 items-center">
+      <div className="flex gap-5 items-center border-t p-5">
         <Link
           to={`/problems/${problem.slug}`}
           className={cn(buttonVariants({ variant: "default" }), "w-24")}
