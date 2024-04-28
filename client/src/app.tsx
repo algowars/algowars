@@ -3,6 +3,7 @@ import PageLoader from "./components/loader/page-loader/page-loader";
 import PageRoutes from "./pages/page-routes";
 import { useAccount } from "./features/account/use-account";
 import { useAuthRoles } from "./features/auth/auth-roles/use-auth-roles";
+import { Toaster } from "./components/ui/sonner";
 
 const App = () => {
   const { isLoading } = useAuth0();
@@ -18,7 +19,12 @@ const App = () => {
       </div>
     );
   }
-  return <PageRoutes />;
+  return (
+    <>
+      <PageRoutes />
+      <Toaster />
+    </>
+  );
 };
 
 export default App;

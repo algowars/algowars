@@ -18,6 +18,18 @@ export class Player {
   @Column({ nullable: false, unique: true, length: 50 })
   username: string;
 
+  @Column({ type: 'timestamptz', nullable: true })
+  usernameLastChanged: Date | null;
+
+  @Column({ nullable: true, length: 200 })
+  bio?: string;
+
+  @Column({ nullable: true, length: 100 })
+  websiteUrl?: string;
+
+  @Column({ nullable: true, length: 100 })
+  location?: string;
+
   @OneToMany(() => Problem, (problem) => problem.createdBy)
   problems: Promise<Problem[]>;
 
@@ -32,4 +44,32 @@ export class Player {
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  updateUsername(newUsername: string): void {
+    if (!this.isAfterAllowedUsernameTime()) {
+      throw new Error('Username can only be updated after 30 days.');
+    }
+    this.username = newUsername;
+    this.usernameLastChanged = new Date();
+  }
+
+  private isAfterAllowedUsernameTime(): boolean {
+    const currentDate = new Date();
+    const lastChangedDate =
+      this.usernameLastChanged || new Date(this.createdAt);
+
+    const daysInMilliseconds =
+      Player.USERNAME_DAYS_REQUIRED * 24 * 60 * 60 * 1000;
+
+    if (
+      currentDate.getTime() - lastChangedDate.getTime() >
+      daysInMilliseconds
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  static USERNAME_DAYS_REQUIRED = 30; // days;
 }

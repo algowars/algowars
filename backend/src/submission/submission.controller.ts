@@ -46,9 +46,21 @@ export class SubmissionController {
       foundSubmission.getTokens(),
     );
 
+    let outSubmissions = [];
+
+    if (
+      judgeSubmissions.find((sub) => sub.status.description === 'Wrong Answer')
+    ) {
+      outSubmissions = judgeSubmissions
+        .filter((sub) => sub.status.description === 'Wrong Answer')
+        .slice(0, 1);
+    } else {
+      outSubmissions = judgeSubmissions.slice(0, 2);
+    }
+
     return {
       submission: foundSubmission,
-      judgeSubmissions,
+      judgeSubmissions: outSubmissions,
     };
   }
 

@@ -8,7 +8,6 @@ import AuthProviderWithNavigate from "./features/auth/context/auth-provider-with
 import { ThemeProvider } from "./features/theme/theme.provider";
 import { Provider } from "react-redux";
 import { setupStore } from "./store/store";
-import { SocketProvider } from "./common/socket/socket.provider";
 
 const queryClient = new QueryClient();
 const store = setupStore();

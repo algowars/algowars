@@ -22,12 +22,9 @@ const TestResultsNav = ({ changeCurrentTest, judgeSubmissions }: Props) => {
             <span
               className={`w-2 h-2 rounded-full ${
                 submission.status.description ===
-                SubmissionStatusDescription.WRONG_ANSWER
-                  ? "bg-red-600 dark:bg-red-400"
-                  : submission.status.description ===
-                    SubmissionStatusDescription.ACCEPTED
+                SubmissionStatusDescription.ACCEPTED
                   ? "bg-green-600 dark:bg-green-400"
-                  : "bg-primary"
+                  : "bg-red-600 dark:bg-red-400"
               }`}
             ></span>
           </Button>{" "}

@@ -13,10 +13,38 @@ import BattlesPage from "./battles/battles.page";
 import LobbyPage from "./battle/lobby/lobby.page";
 import CodeRushPage from "./code-rush/code-rush.page";
 import ProblemsPage from "./problems/problems.page";
+import SettingsPage from "./settings/settings.page";
+import SettingsProfilePage from "./settings/settings-profile/settings-profile.page";
+import SettingsAccountPage from "./settings/settings-account/settings-account.page";
+import SettingsAppearancePage from "./settings/settings-appearance/settings-appearance.page";
+import SettingsNotificationsPage from "./settings/settings-notifications/settings-notifications.page";
 
 const PageRoutes = () => {
   return (
     <Routes>
+      <Route
+        path="settings"
+        element={<AuthenticationGuard component={SettingsPage} />}
+      >
+        <Route
+          index
+          element={<AuthenticationGuard component={SettingsProfilePage} />}
+        />
+        <Route
+          path="account"
+          element={<AuthenticationGuard component={SettingsAccountPage} />}
+        />
+        <Route
+          path="appearance"
+          element={<AuthenticationGuard component={SettingsAppearancePage} />}
+        />
+        <Route
+          path="notifications"
+          element={
+            <AuthenticationGuard component={SettingsNotificationsPage} />
+          }
+        />
+      </Route>
       <Route path="rush" element={<CodeRushPage />} />
       <Route path="battle/:gameId" element={<BattlePage />}>
         <Route path="lobby" element={<LobbyPage />} />

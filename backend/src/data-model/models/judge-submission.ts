@@ -1,3 +1,5 @@
+import { JudgeSubmissionStatus } from './judge-submission-status';
+
 export interface JudgeSubmission {
   stdout: null;
   time: null;
@@ -6,8 +8,5 @@ export interface JudgeSubmission {
   token: string;
   compile_outpu: null;
   message: null;
-  status: {
-    id: number;
-    description: string;
-  };
+  status: JudgeSubmissionStatus;
 }

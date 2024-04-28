@@ -3,6 +3,8 @@ import { Account } from "../account.model";
 import api from "@/api/api";
 import { CreateAccountDto } from "../dtos/create-account.dto";
 import { Profile } from "@/features/profile/profile.model";
+import { ProfileInfo } from "@/features/profile/profile-info/profile-info.model";
+import { UpdateProfileDto } from "@/features/profile/dtos/update-profie.dto";
 
 const getAccountBySub = (accessToken: string): Promise<Account> => {
   const config: AxiosRequestConfig = {
@@ -30,6 +32,18 @@ const getProfileByUsername = (username: string): Promise<Profile> => {
   return api.callExternalApi<Profile>({ config });
 };
 
+const getProfileInformation = (accessToken: string): Promise<ProfileInfo> => {
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/account/profile/info",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  return api.callExternalApi<ProfileInfo>({ config });
+};
+
 const create = (
   accessToken: string,
   data: CreateAccountDto
@@ -47,9 +61,28 @@ const create = (
   return api.callExternalApi<Account>({ config });
 };
 
+const updateProfile = (
+  accessToken: string,
+  updateProfileDto: UpdateProfileDto
+): Promise<ProfileInfo> => {
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/account/profile/info",
+    method: "PUT",
+    data: updateProfileDto,
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  return api.callExternalApi<ProfileInfo>({ config });
+};
+
 const accountService = {
   getAccountBySub,
   getProfileByUsername,
+  getProfileInformation,
+  updateProfile,
   create,
 };
 

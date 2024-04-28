@@ -32,18 +32,24 @@ const MarkdownViewer = ({ markdown, className = "" }: Props) => {
         },
         code({ children }) {
           return (
-            <code className="px-1.5 border border rounded inline-block bg-muted">
+            <code className="px-1.5 border border rounded inline-block bg-muted text-primary">
               {children}
             </code>
           );
         },
-        p: ({ children }) => <p className="mb-2">{children}</p>,
+        p: ({ children }) => (
+          <p className="mb-2 text-muted-foreground">{children}</p>
+        ),
         ul: ({ children }) => (
           <ul className="list-disc ml-5 mb-2">{children}</ul>
         ),
-        li: ({ children }) => <li className="mb-2">{children}</li>,
+        li: ({ children }) => (
+          <li className="mb-2 text-muted-foreground">{children}</li>
+        ),
         strong: ({ children }) => (
-          <strong className="font-bold">{children}</strong>
+          <strong className="font-bold text-muted-foreground">
+            {children}
+          </strong>
         ),
       }}
     >

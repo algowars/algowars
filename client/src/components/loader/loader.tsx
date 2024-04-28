@@ -1,6 +1,12 @@
-const Loader = () => {
+import { cn } from "@/lib/utils";
+
+type Props = {
+  className?: string;
+};
+
+const Loader = ({ className = "" }: Props) => {
   return (
-    <div className="flex justify-center items-center">
+    <div className={cn("flex justify-center items-center", className)}>
       <div role="status">
         <svg
           aria-hidden="true"
