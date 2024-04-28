@@ -6,6 +6,10 @@ body {
   overflow-y: scroll;
 }
 
+.prose :not(pre) > code.language-text {
+  white-space: pre-line;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

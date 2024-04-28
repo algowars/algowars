@@ -18,10 +18,15 @@ const ProblemPlayQuestion = () => {
   return (
     <>
       <ErrorAlertFixed error={error} />
-      <div className="p-3 overflow-y-auto flex flex-col gap-5 h-full">
-        <h1 className="text-xl font-semibold">
+      <div className="p-3 overflow-y-auto h-full">
+        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
           {problemAggregate.problem.id}. {problemAggregate.problem.title}
-        </h1>
+        </h3>
+        <div
+          data-orientation="horizontal"
+          role="none"
+          className="shrink-0 bg-border h-[1px] w-full my-6"
+        ></div>
         <div>
           <MarkdownViewer markdown={problemAggregate.problem.question} />
         </div>
