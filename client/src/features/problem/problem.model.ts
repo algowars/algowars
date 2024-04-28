@@ -10,4 +10,5 @@ export interface Problem {
   createdBy?: Account;
   tests?: Test[];
   problemSetups?: ProblemSetup[];
+  rating?: number;
 }

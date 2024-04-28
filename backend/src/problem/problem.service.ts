@@ -4,6 +4,9 @@ import { QueryOptions } from 'src/common/query/query-options';
 import { Player, Problem, ProblemSetup, Test } from 'src/data-model/entities';
 import { DataSource, Repository } from 'typeorm';
 import { CreateProblemDto } from './dtos/create-problem.dto';
+import { ProblemPaginationDto } from './dtos/problem-pagination.dto';
+import { PaginationResponse } from 'src/common/pagination/dtos/pagination-response.dto';
+import { Pagination } from 'src/common/pagination/pagination';
 
 @Injectable()
 export class ProblemService {
@@ -12,6 +15,19 @@ export class ProblemService {
     private readonly problemRepository: Repository<Problem>,
     private readonly dataSource: DataSource,
   ) {}
+
+  getProblemsPageable(
+    problemPaginationDto: ProblemPaginationDto,
+  ): Promise<PaginationResponse<Problem>> {
+    const entityName = 'Problem';
+    const queryBuilder = this.problemRepository.createQueryBuilder(entityName);
+
+    return Pagination.paginateWithQueryBuilder<Problem>(
+      queryBuilder,
+      problemPaginationDto,
+      entityName,
+    );
+  }
 
   async create(
     createProblemDto: CreateProblemDto,

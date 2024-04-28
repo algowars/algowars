@@ -25,6 +25,8 @@ import { EvaluatorService } from 'src/evaluator/evaluator.service';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
 import { Request } from 'express';
+import { ProblemPaginationDto } from './dtos/problem-pagination.dto';
+import { PaginationResponse } from 'src/common/pagination/dtos/pagination-response.dto';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -35,6 +37,14 @@ export class ProblemController {
     private readonly evaluatorService: EvaluatorService,
     private readonly problemValidator: ProblemValidator,
   ) {}
+
+  @Get()
+  getProblemsPageable(
+    @Query()
+    problemPaginationDto: ProblemPaginationDto,
+  ): Promise<PaginationResponse<Problem>> {
+    return this.problemService.getProblemsPageable(problemPaginationDto);
+  }
 
   @UseGuards(
     AuthorizationGuard,

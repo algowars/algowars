@@ -12,6 +12,7 @@ import Landing from "@/layout/landing/landing";
 import BattlesPage from "./battles/battles.page";
 import LobbyPage from "./battle/lobby/lobby.page";
 import CodeRushPage from "./code-rush/code-rush.page";
+import ProblemsPage from "./problems/problems.page";
 
 const PageRoutes = () => {
   return (
@@ -31,6 +32,7 @@ const PageRoutes = () => {
         path="create"
         element={<AuthenticationGuard component={CreatePage} />}
       />
+      <Route path="problems" element={<ProblemsPage />} />
       <Route path="problems/:slug" element={<ProblemPage />} />
       <Route path="dashboard" element={<HomePage />} />
       <Route index element={<Landing />} />

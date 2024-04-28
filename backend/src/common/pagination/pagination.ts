@@ -26,15 +26,28 @@ export class Pagination {
 
   public static async paginateWithQueryBuilder<T>(
     queryBuilder: SelectQueryBuilder<T>,
-    { page, size }: PaginationDto,
+    { page, size, timestamp }: PaginationDto,
+    entityName?: string,
   ): Promise<PaginationResponse<T>> {
+    if (timestamp) {
+      if (!entityName) {
+        throw new Error(
+          'Entity Name is required to paginate the query with a timestamp',
+        );
+      }
+
+      queryBuilder.andWhere(`${entityName}.createdAt < :timestamp`, {
+        timestamp,
+      });
+    }
+
     queryBuilder.take(size).skip((page - 1) * size);
 
     const [results, count] = await queryBuilder.getManyAndCount();
 
     return {
       results,
-      page,
+      page: +page,
       size,
       totalPages: this.calculatePageTotal(size, count),
     };
