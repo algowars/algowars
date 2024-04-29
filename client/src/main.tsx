@@ -15,7 +15,7 @@ const store = setupStore();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ThemeProvider defaultMode="dark" modeStorageKey="vite-ui-theme">
         <AuthProviderWithNavigate>
           <Provider store={store}>
             <QueryClientProvider client={queryClient}>

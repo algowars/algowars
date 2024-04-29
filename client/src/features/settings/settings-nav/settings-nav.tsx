@@ -31,7 +31,12 @@ const SettingsNav = () => {
             className={({ isActive }) =>
               cn(
                 buttonVariants({
-                  variant: isActive ? "secondary" : "ghost",
+                  variant:
+                    isActive && link.href === "/settings"
+                      ? "ghost"
+                      : isActive
+                      ? "secondary"
+                      : "ghost",
                 }),
                 "w-full justify-start text-left"
               )

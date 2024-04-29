@@ -1,33 +1,46 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
-export type Theme = "dark" | "light" | "system";
+import { Theme } from "./theme.model";
+import { Mode } from "./mode.model";
+import { themes } from "./themes";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
-  storageKey?: string;
+  defaultMode?: Mode;
+  themeStorageKey?: string;
+  modeStorageKey?: string;
 };
 
 export type ThemeProviderState = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  mode: Mode;
+  setMode: (mode: Mode) => void;
 };
 
 const initialState: ThemeProviderState = {
-  theme: "system",
+  theme: themes[0],
   setTheme: () => null,
+  mode: "dark",
+  setMode: () => null,
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
-  storageKey = "vite-ui-theme",
+  defaultTheme = themes["zinc"],
+  defaultMode = "system",
+  themeStorageKey = "vite-ui-theme",
+  modeStorageKey = "vite-ui-mode",
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+    () =>
+      themes[localStorage.getItem(themeStorageKey) ?? "zinc"] || defaultTheme
+  );
+  const [mode, setMode] = useState<Mode>(
+    () => (localStorage.getItem(modeStorageKey) as Mode) || defaultMode
   );
 
   useEffect(() => {
@@ -35,26 +48,62 @@ export function ThemeProvider({
 
     root.classList.remove("light", "dark");
 
-    if (theme === "system") {
+    if (mode === "system") {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
         .matches
         ? "dark"
         : "light";
 
       root.classList.add(systemTheme);
+
+      if (theme && theme.style.root) {
+        const root = document.body;
+
+        if (systemTheme === "light") {
+          Object.entries(theme.style.root).forEach(([key, value]) => {
+            root.style.setProperty(`--${key}`, value);
+          });
+        } else {
+          Object.entries(theme.style.dark).forEach(([key, value]) => {
+            root.style.setProperty(`--${key}`, value);
+          });
+        }
+      }
+
       return;
     }
 
-    root.classList.add(theme);
-  }, [theme]);
+    if (theme && theme.style.root) {
+      const root = document.body;
+
+      if (mode === "light") {
+        Object.entries(theme.style.root).forEach(([key, value]) => {
+          root.style.setProperty(`--${key}`, value);
+        });
+      } else {
+        Object.entries(theme.style.dark).forEach(([key, value]) => {
+          root.style.setProperty(`--${key}`, value);
+        });
+      }
+    }
+
+    root.classList.add(mode);
+  }, [mode, theme]);
 
   const value = {
     theme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
+      localStorage.setItem(themeStorageKey, theme.name);
       setTheme(theme);
     },
+    mode,
+    setMode: (mode: Mode) => {
+      localStorage.setItem(modeStorageKey, mode);
+      setMode(mode);
+    },
   };
+
+  console.log(mode);
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
