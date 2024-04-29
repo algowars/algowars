@@ -56,36 +56,36 @@ export function ThemeProvider({
 
       root.classList.add(systemTheme);
 
-      if (theme && theme.style.root) {
-        const root = document.body;
+      // if (theme && theme?.style?.root) {
+      //   const root = document.body;
 
-        if (systemTheme === "light") {
-          Object.entries(theme.style.root).forEach(([key, value]) => {
-            root.style.setProperty(`--${key}`, value);
-          });
-        } else {
-          Object.entries(theme.style.dark).forEach(([key, value]) => {
-            root.style.setProperty(`--${key}`, value);
-          });
-        }
-      }
+      //   if (systemTheme === "light") {
+      //     Object.entries(theme.style.root).forEach(([key, value]) => {
+      //       root.style.setProperty(`--${key}`, value);
+      //     });
+      //   } else {
+      //     Object.entries(theme.style.dark).forEach(([key, value]) => {
+      //       root.style.setProperty(`--${key}`, value);
+      //     });
+      //   }
+      // }
 
       return;
     }
 
-    if (theme && theme.style.root) {
-      const root = document.body;
+    // if (theme && theme?.style?.root) {
+    //   const root = document.body;
 
-      if (mode === "light") {
-        Object.entries(theme.style.root).forEach(([key, value]) => {
-          root.style.setProperty(`--${key}`, value);
-        });
-      } else {
-        Object.entries(theme.style.dark).forEach(([key, value]) => {
-          root.style.setProperty(`--${key}`, value);
-        });
-      }
-    }
+    //   if (mode === "light") {
+    //     Object.entries(theme.style.root).forEach(([key, value]) => {
+    //       root.style.setProperty(`--${key}`, value);
+    //     });
+    //   } else {
+    //     Object.entries(theme.style.dark).forEach(([key, value]) => {
+    //       root.style.setProperty(`--${key}`, value);
+    //     });
+    //   }
+    // }
 
     root.classList.add(mode);
   }, [mode, theme]);
