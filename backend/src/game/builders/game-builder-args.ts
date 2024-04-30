@@ -1,1 +1,1 @@
-export class GameBuilderArgs {}
+export abstract class GameBuilderArgs {}
