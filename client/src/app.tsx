@@ -20,7 +20,6 @@ const App = () => {
     );
   }
 
-  console.log(allCSS);
   return (
     <>
       <PageRoutes />
