@@ -11,7 +11,6 @@ import { SubmissionModule } from './submission/submission.module';
 import entities from './data-model/entities';
 import { ScheduleModule } from '@nestjs/schedule';
 import { LanguageModule } from './language/language.module';
-import { CodeRushModule } from './code-rush/code-rush.module';
 import { GameModule } from './game/game.module';
 
 @Module({
@@ -46,7 +45,6 @@ import { GameModule } from './game/game.module';
     EvaluatorModule,
     SubmissionModule,
     LanguageModule,
-    CodeRushModule,
     GameModule,
   ],
 })

@@ -12,7 +12,14 @@ const CodeEditor = ({
   changeCode,
   className = "border rounded",
 }: Props) => {
-  const { theme } = useTheme();
+  const { mode } = useTheme();
+  let theme = mode;
+
+  if (mode === "system") {
+    theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
 
   return (
     <Editor
