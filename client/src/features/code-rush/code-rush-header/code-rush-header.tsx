@@ -4,6 +4,8 @@ import ErrorAlert from "@/errors/error-alert/error-alert";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "@tanstack/react-query";
 import { codeRushService } from "../services/code-rush.service";
+import TypographyH3 from "@/components/ui/typography/typography-h3";
+import TypographyMuted from "@/components/ui/typography/typography-muted";
 
 const CodeRushHeader = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -25,13 +27,13 @@ const CodeRushHeader = () => {
     <Card className="p-5 flex flex-col gap-5">
       <ErrorAlert error={error} />
       <header>
-        <h3 className="text-2xl font-bold">Code Rush</h3>
+        <TypographyH3>Code Rush</TypographyH3>
       </header>
-      <p className="text-muted-foreground">
+      <TypographyMuted>
         Dive into the Code Rush Challenge and solve as many algorithm puzzles as
         you can! Enhance your coding skills, speed up your problem-solving, and
         aim for the top of the leaderboard. Ready to prove your prowess?
-      </p>
+      </TypographyMuted>
       <div>
         <Button onClick={() => createGame()} disabled={isPending}>
           Create Game

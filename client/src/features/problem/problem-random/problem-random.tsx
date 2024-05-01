@@ -6,6 +6,8 @@ import MarkdownViewer from "@/components/markdown-viewer/markdown-viewer";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import TypographyH3 from "@/components/ui/typography/typography-h3";
+import TypographyH4 from "@/components/ui/typography/typography-h4";
 
 const ProblemRandom = () => {
   const [disallowedIds, setDisallowedIds] = useState<number[]>([]);
@@ -26,11 +28,11 @@ const ProblemRandom = () => {
   return problem ? (
     <Card className="flex flex-col gap-5">
       <div className="border-b p-5">
-        <h3 className="text-2xl font-bold">Random Problem</h3>
+        <TypographyH3>Random Problem</TypographyH3>
       </div>
 
       <div className="px-5">
-        <h4 className="font-semibold text-xl mb-3">{problem.title}</h4>
+        <TypographyH4>{problem.title}</TypographyH4>
         <MarkdownViewer
           markdown={problem.question}
           className="max-h-[10rem] overflow-auto w-full"
