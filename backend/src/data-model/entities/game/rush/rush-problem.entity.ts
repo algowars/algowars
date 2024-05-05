@@ -13,7 +13,7 @@ import { Rush } from './rush.entity';
 @Entity()
 export class RushProblem {
   @PrimaryColumn()
-  problemId: string;
+  problemId: number;
 
   @PrimaryColumn()
   rushId: string;

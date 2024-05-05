@@ -15,7 +15,29 @@ function checkEnvironment(configService: ConfigService) {
     'POSTGRESQL_USERNAME',
     'POSTGRESQL_PASSWORD',
     'POSTGRESQL_NAME',
+    'POSTGRESQL_CERT',
+    'SYNCHRONIZE_DATABASE',
+    'GAME_CLEANUP_SCHEDULE_TIME',
+    'AUDIENCE',
+    'ISSUER_BASE_URL',
+    'EVALUATOR_HOST',
+    'EVALUATOR_URL',
+    'EVALUATOR_API_KEY',
   ];
+
+  console.log({
+    type: 'postgres',
+    host: configService.get('POSTGRESQL_HOST'),
+    port: +configService.get<number>('POSTGRESQL_PORT'),
+    username: configService.get('POSTGRESQL_USERNAME'),
+    password: configService.get('POSTGRESQL_PASSWORD'),
+    database: configService.get('POSTGRESQL_NAME'),
+    ssl: {
+      rejectUnauthorized: true,
+      ca: configService.get('POSTGRESQL_CERT'),
+    },
+    synchronize: true,
+  });
 
   requiredEnvVars.forEach((envVar) => {
     if (!configService.get<string>(envVar)) {
@@ -26,7 +48,7 @@ function checkEnvironment(configService: ConfigService) {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    // logger: ['log'],
+    logger: ['log'],
   });
 
   const configService = app.get<ConfigService>(ConfigService);

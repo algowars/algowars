@@ -12,6 +12,7 @@ import entities from './data-model/entities';
 import { ScheduleModule } from '@nestjs/schedule';
 import { LanguageModule } from './language/language.module';
 import { GameModule } from './game/game.module';
+import { RushModule } from './rush/rush.module';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { GameModule } from './game/game.module';
           rejectUnauthorized: true,
           ca: configService.get('POSTGRESQL_CERT'),
         },
-        synchronize: true,
+        synchronize: configService.get('SYNCHRONIZE_DATABASE') === 'true',
         entities: entities,
       }),
       inject: [ConfigService],
@@ -46,6 +47,7 @@ import { GameModule } from './game/game.module';
     SubmissionModule,
     LanguageModule,
     GameModule,
+    RushModule,
   ],
 })
 export class AppModule {}

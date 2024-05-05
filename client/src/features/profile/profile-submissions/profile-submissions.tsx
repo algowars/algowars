@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ProfileSubmissionsCard from "./profile-submissions-card/profile-submissions-card";
+import { Submission } from "@/features/submission/sbumission.model";
 
 const ProfileSubmissions = () => {
   const [page] = useState<number>(1);
@@ -52,18 +53,18 @@ const ProfileSubmissions = () => {
           </Link>
         </div>
         {isLoading ? (
-          <Loader />
+          <Loader className="p-4" />
         ) : (
           <ul className="flex flex-col">
             {submissions ? (
-              submissions.results.map((submission) => (
+              submissions.results.map((submission: Submission) => (
                 <li key={submission.id} className="p-5">
-                  <ProfileSubmissionsCard submission={submission} />
+                  <ProfileSubmissionsCard />
                 </li>
               ))
             ) : (
               <li>
-                <p className="font-semibold">No Submissions Found</p>
+                <p className="font-semibold p-5">No Submissions Found</p>
               </li>
             )}
           </ul>

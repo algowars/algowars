@@ -29,6 +29,23 @@ export class PlayerService {
     });
   }
 
+  findByUsername(
+    username: string,
+    { relations = [], select = {} }: QueryOptions = {},
+  ): Promise<Player | null> {
+    if (!username) {
+      return null;
+    }
+
+    return this.playerRepository.findOne({
+      where: {
+        username,
+      },
+      relations,
+      select,
+    });
+  }
+
   updatePlayer(
     updatePlayerDto: UpdatePlayerDto,
     player: Player,

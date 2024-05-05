@@ -15,6 +15,18 @@ const createPlayer = (accountId?: number): Promise<Player> => {
   return api.callExternalApi<Player>({ config });
 };
 
+const getPlayerByUsername = (username: string): Promise<Player> => {
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/player/find/username",
+    params: {
+      username,
+    },
+    headers: { "content-type": "application/json" },
+  };
+
+  return api.callExternalApi<Player>({ config });
+};
+
 const getPlayerById = (playerId: string): Promise<Player> => {
   const config: AxiosRequestConfig = {
     url: "/api/v1/player/find",
@@ -30,6 +42,7 @@ const getPlayerById = (playerId: string): Promise<Player> => {
 const playerService = {
   createPlayer,
   getPlayerById,
+  getPlayerByUsername,
 };
 
 Object.freeze(playerService);

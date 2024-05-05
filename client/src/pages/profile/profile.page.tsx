@@ -2,7 +2,7 @@ import { formatDateAlt } from "@/common/date-format/format-date";
 import PageLoader from "@/components/loader/page-loader/page-loader";
 import { Card } from "@/components/ui/card";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/error-alert-fixed";
-import { accountService } from "@/features/account/services/account.service";
+import { playerService } from "@/features/player/services/player-service";
 import ProfileSubmissions from "@/features/profile/profile-submissions/profile-submissions";
 import Container from "@/layout/container/container";
 import Layout from "@/layout/layout";
@@ -25,7 +25,7 @@ const ProfilePage = () => {
         throw new Error("Profile requires a username");
       }
 
-      return accountService.getProfileByUsername(username);
+      return playerService.getPlayerByUsername(username);
     },
   });
 

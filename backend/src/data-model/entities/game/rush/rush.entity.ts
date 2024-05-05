@@ -23,7 +23,7 @@ export class Rush extends Game {
   @Column({ default: false })
   hasStarted: boolean;
 
-  @OneToMany(() => RushProblem, (problem) => problem.rush)
+  @OneToMany(() => RushProblem, (problem) => problem.rush, { cascade: true })
   problems: RushProblem[];
 
   @ManyToOne(() => RushDuration, (duration) => duration.rushes, {
