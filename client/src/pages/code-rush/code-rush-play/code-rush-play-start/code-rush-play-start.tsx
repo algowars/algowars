@@ -17,7 +17,6 @@ const CodeRushPlayStart = () => {
   } = useQuery({
     queryKey: ["get-game"],
     queryFn: async () => {
-      console.log("IN HERE");
       if (rushId) {
         const accessToken = await getAccessTokenSilently();
         const rush = await codeRushService.getGameById(accessToken, rushId);

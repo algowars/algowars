@@ -103,8 +103,6 @@ export function ThemeProvider({
     },
   };
 
-  console.log(mode);
-
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
       {children}

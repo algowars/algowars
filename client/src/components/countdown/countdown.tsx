@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import TypographyH2 from "../ui/typography/typography-h2";
 
 type Props = {
   startTime: Date;
 };
 
 const Countdown = ({ startTime }: Props) => {
-  console.log("HERE: ", startTime);
   const [countdown, setCountDown] = useState<number>(0);
 
   useEffect(() => {

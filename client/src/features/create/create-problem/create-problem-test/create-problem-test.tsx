@@ -17,7 +17,6 @@ const CreateProblemTest = () => {
       [field]: value,
     };
 
-    console.log(updatedTest);
     changeTest(index, updatedTest);
   };
 

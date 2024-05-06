@@ -25,20 +25,6 @@ function checkEnvironment(configService: ConfigService) {
     'EVALUATOR_API_KEY',
   ];
 
-  console.log({
-    type: 'postgres',
-    host: configService.get('POSTGRESQL_HOST'),
-    port: +configService.get<number>('POSTGRESQL_PORT'),
-    username: configService.get('POSTGRESQL_USERNAME'),
-    password: configService.get('POSTGRESQL_PASSWORD'),
-    database: configService.get('POSTGRESQL_NAME'),
-    ssl: {
-      rejectUnauthorized: true,
-      ca: configService.get('POSTGRESQL_CERT'),
-    },
-    synchronize: true,
-  });
-
   requiredEnvVars.forEach((envVar) => {
     if (!configService.get<string>(envVar)) {
       throw Error(`Undefined environment variable: ${envVar}`);

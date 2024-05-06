@@ -27,8 +27,6 @@ export class RushService {
 
     foundRush.startGame(offsetSeconds);
 
-    console.log(foundRush);
-
     return this.rushRepository.save(foundRush);
   }
 

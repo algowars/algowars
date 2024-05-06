@@ -13,7 +13,6 @@ const ProblemsTablePagination = ({ isEnd, totalPages }: Props) => {
   const page = +(searchParams.get("page") ?? 1);
 
   const changePage = (newPage: number) => {
-    console.log(newPage);
     if (newPage >= 1 && newPage <= totalPages) {
       setSearchParams({ page: `${newPage}` });
     }
