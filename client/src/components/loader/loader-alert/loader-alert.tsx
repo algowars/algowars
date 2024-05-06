@@ -18,7 +18,7 @@ const LoaderAlert = ({
   }
   return (
     <Alert
-      className={`fixed z-[100] top-10 left-1/2 -translate-x-1/2 max-w-fit ${className}`}
+      className={`fixed z-50 top-10 left-1/2 -translate-x-1/2 max-w-fit ${className}`}
     >
       <AlertTitle className="font-semibold">{title}</AlertTitle>
       <AlertDescription>{description}</AlertDescription>

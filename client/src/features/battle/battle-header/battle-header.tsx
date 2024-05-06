@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const BattleHeader = () => {
   return (
     <div className="relative overflow-hidden">
-      <Container className="py-6 z-[100]">
+      <Container className="py-6">
         <Card className="p-5 flex flex-col gap-5">
           <div>
             <h2 className="text-3xl font-bold">Code Battle</h2>

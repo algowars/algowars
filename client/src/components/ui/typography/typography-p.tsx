@@ -4,8 +4,8 @@ type Props = {
   children?: ReactNode;
 };
 
-const TypographyH1 = ({ children }: Props) => {
+const TypographyP = ({ children }: Props) => {
   return <p className="leading-7 [&:not(:first-child)]:mt-6">{children}</p>;
 };
 
-export default TypographyH1;
+export default TypographyP;

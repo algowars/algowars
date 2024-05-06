@@ -19,8 +19,4 @@ export class CodeRushBuilder extends GameBuilder {
   public startGame(): void {
     this._game.startGame();
   }
-
-  public endGame(): void {
-    this._game.endGame();
-  }
 }

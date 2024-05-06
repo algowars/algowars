@@ -6,9 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 import { codeRushService } from "../services/code-rush.service";
 import TypographyH3 from "@/components/ui/typography/typography-h3";
 import TypographyMuted from "@/components/ui/typography/typography-muted";
+import { useNavigate } from "react-router-dom";
 
 const CodeRushHeader = () => {
   const { getAccessTokenSilently } = useAuth0();
+  const navigate = useNavigate();
 
   const {
     mutate: createGame,
@@ -19,7 +21,13 @@ const CodeRushHeader = () => {
     mutationFn: async () => {
       const accessToken = await getAccessTokenSilently();
 
-      return codeRushService.createRush(accessToken);
+      const rush = await codeRushService.createRush(accessToken);
+
+      if (!rush) {
+        throw new Error("Error Creating a Code Rush Game");
+      }
+
+      navigate(`/rush/${encodeURIComponent(rush.id)}`);
     },
   });
 

@@ -18,6 +18,8 @@ import SettingsProfilePage from "./settings/settings-profile/settings-profile.pa
 import SettingsAccountPage from "./settings/settings-account/settings-account.page";
 import SettingsAppearancePage from "./settings/settings-appearance/settings-appearance.page";
 import SettingsNotificationsPage from "./settings/settings-notifications/settings-notifications.page";
+import CodeRushPlayPage from "./code-rush/code-rush-play/code-rush-play.page";
+import CodeRushPlayStart from "./code-rush/code-rush-play/code-rush-play-start/code-rush-play-start";
 
 const PageRoutes = () => {
   return (
@@ -44,6 +46,12 @@ const PageRoutes = () => {
             <AuthenticationGuard component={SettingsNotificationsPage} />
           }
         />
+      </Route>
+      <Route
+        path="rush/:rushId"
+        element={<AuthenticationGuard component={CodeRushPlayPage} />}
+      >
+        <Route path="play" element={<CodeRushPlayStart />} />
       </Route>
       <Route path="rush" element={<CodeRushPage />} />
       <Route path="battle/:gameId" element={<BattlePage />}>

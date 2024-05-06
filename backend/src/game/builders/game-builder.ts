@@ -4,7 +4,6 @@ export abstract class GameBuilder {
 
   abstract setupGame(): void;
   abstract startGame(): void;
-  abstract endGame(): void;
 
   public get game() {
     return this.game;

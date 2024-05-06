@@ -118,4 +118,13 @@ export class ProblemService {
 
     return queryBuilder.orderBy('RANDOM()').getOne();
   }
+
+  findProblemsByRating(problemLimit: number): Promise<Problem[]> {
+    return this.problemRepository.find({
+      order: {
+        rating: 'ASC',
+      },
+      take: problemLimit,
+    });
+  }
 }

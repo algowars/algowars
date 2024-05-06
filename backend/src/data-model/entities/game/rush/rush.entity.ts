@@ -11,6 +11,7 @@ import { Game } from '../game';
 import { Player } from '../../player/player.entity';
 import { RushProblem } from './rush-problem.entity';
 import { RushDuration } from './rush-duration.entity';
+import { Problem } from '../../problem/problem.entity';
 
 @Entity()
 export class Rush extends Game {
@@ -20,9 +21,6 @@ export class Rush extends Game {
   @ManyToOne(() => Player, (player) => player.rushes)
   player: Player;
 
-  @Column({ default: false })
-  hasStarted: boolean;
-
   @OneToMany(() => RushProblem, (problem) => problem.rush, { cascade: true })
   problems: RushProblem[];
 
@@ -31,17 +29,29 @@ export class Rush extends Game {
   })
   duration: RushDuration;
 
+  @Column({ type: 'timestamptz', nullable: true })
+  startedAt?: Date;
+
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  startGame(): void {
-    this.hasStarted = true;
+  setProblems(problems: Problem[]): void {
+    this.problems = problems.map((problem, index) => ({
+      problemId: problem.id,
+      problem,
+      rushId: this.id,
+      rush: this,
+      order: index,
+      submission: null,
+    }));
   }
 
-  endGame(): void {
-    this.hasStarted = false;
+  startGame(offsetSeconds?: number): void {
+    const currentDate = new Date();
+    const millisecondsOffset = offsetSeconds * 1000; // Convert seconds to milliseconds
+    this.startedAt = new Date(currentDate.getTime() + millisecondsOffset);
   }
 }
