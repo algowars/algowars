@@ -3,36 +3,37 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Player } from '../player/player.entity';
 import { Problem } from '../problem/problem.entity';
-import { SubmissionToken } from './submission-token.entity';
+import { Language } from '../language.entity';
+import { Status } from './status.entity';
 
 @Entity()
 export class Submission {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToMany(
-    () => SubmissionToken,
-    (submissionToken) => submissionToken.submission,
-    {
-      cascade: true,
-    },
-  )
-  tokens: SubmissionToken[];
+  @Column('text', { nullable: false })
+  sourceCode: string;
 
-  @Column({ nullable: false })
-  code: string;
+  @ManyToOne(() => Language, { nullable: false })
+  language: Language;
+
+  @Column('text', { nullable: true })
+  stdout: string;
+
+  @Column({
+    type: 'enum',
+    enum: Status,
+    default: Status.IN_QUEUE,
+  })
+  status: Status;
 
   @ManyToOne(() => Player, (player) => player.submissions)
   createdBy: Player;
-
-  @Column({ nullable: false })
-  languageId: number;
 
   @ManyToOne(() => Problem, (problem) => problem.submissions)
   problem: Problem;
@@ -42,8 +43,4 @@ export class Submission {
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
-
-  public getTokens(): string[] {
-    return this.tokens.map((token) => token.token);
-  }
 }
