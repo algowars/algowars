@@ -1,14 +1,13 @@
 import { RushDuration } from './game/rush/rush-duration.entity';
 import { RushProblem } from './game/rush/rush-problem.entity';
 import { Rush } from './game/rush/rush.entity';
-import { Language } from './language.entity';
 import { Account } from './player/account.entity';
 import { Player } from './player/player.entity';
 import { ProblemSetup } from './problem/problem-setup.entity';
 import { Problem } from './problem/problem.entity';
 import { TestInput } from './problem/test-input.entity';
 import { Test } from './problem/test.entity';
-import { Status } from './submission/status.entity';
+import { SubmissionToken } from './submission/submission-token.entity';
 import { Submission } from './submission/submission.entity';
 
 const entities = [
@@ -18,9 +17,8 @@ const entities = [
   ProblemSetup,
   Test,
   TestInput,
-  Language,
   Submission,
-  Status,
+  SubmissionToken,
   Rush,
   RushProblem,
   RushDuration,
@@ -34,8 +32,7 @@ export {
   Test,
   TestInput,
   Submission,
-  Language,
-  Status,
+  SubmissionToken,
   Rush,
   RushProblem,
   RushDuration,
