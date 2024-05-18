@@ -66,6 +66,19 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
             </DropdownMenuItem>
           </li>
           <li>
+            <DropdownMenuItem asChild>
+              <Link
+                to="/documentation"
+                className={cn(
+                  buttonVariants({ variant: "ghost" }),
+                  "justify-start text-start w-full"
+                )}
+              >
+                Docs
+              </Link>
+            </DropdownMenuItem>
+          </li>
+          <li>
             <DropdownMenuItem className="p-0" asChild>
               <Link
                 to="/settings"
