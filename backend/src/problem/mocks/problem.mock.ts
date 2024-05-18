@@ -2,7 +2,6 @@ import { PaginationResponse } from 'src/common/pagination/dtos/pagination-respon
 import { ProblemPaginationDto } from '../dtos/problem-pagination.dto';
 import { Player, Problem } from 'src/data-model/entities';
 import { CreateProblemDto } from '../dtos/create-problem.dto';
-import { QueryOptions } from 'src/common/query/query-options';
 
 export class ProblemMock {
   static mockProblemService(problems: Problem[], totalPages = 1) {
@@ -39,9 +38,15 @@ export class ProblemMock {
       findProblemWithTests: jest.fn((id: number) => {
         return problems.find((p) => p.id === id);
       }),
-      findOneBySlug: jest.fn((slug: string) => {}),
-      findRandomProblem: jest.fn(() => {}),
-      findProblemsByRating: jest.fn(() => {}),
+      findOneBySlug: jest.fn((slug: string) => {
+        return problems.find((p) => p.slug === slug) ?? null;
+      }),
+      findRandomProblem: jest.fn(() => {
+        return problems[0] ?? null;
+      }),
+      findProblemsByRating: jest.fn(() => {
+        return problems;
+      }),
     };
   }
 }

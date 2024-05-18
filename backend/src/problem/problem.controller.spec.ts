@@ -12,7 +12,7 @@ describe('ProblemController', () => {
       providers: [
         {
           provide: ProblemService,
-          useValue: ProblemMock.mockProblemService(),
+          useValue: ProblemMock.mockProblemService([]),
         },
       ],
     }).compile();

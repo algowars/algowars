@@ -21,7 +21,6 @@ import { AccountOwnerGuard } from 'src/auth/account-owner.guard';
 import { PermissionsGuard } from 'src/auth/permissions.guard';
 import { ProblemPermissions } from './permissions/problem.permissions';
 import { ProblemValidator } from './validators/problem.validator';
-import { EvaluatorService } from 'src/evaluator/evaluator.service';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
 import { Request } from 'express';
@@ -34,7 +33,6 @@ export class ProblemController {
     private readonly problemService: ProblemService,
     private readonly testInputService: TestInputService,
     private readonly problemSetupService: ProblemSetupService,
-    private readonly evaluatorService: EvaluatorService,
     private readonly problemValidator: ProblemValidator,
   ) {}
 

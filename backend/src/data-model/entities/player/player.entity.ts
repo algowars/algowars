@@ -19,7 +19,7 @@ export class Player {
   username: string;
 
   @Column({ type: 'timestamptz', nullable: true })
-  usernameLastChanged: Date | null;
+  usernameLastChanged?: Date | null;
 
   @Column({ nullable: true, length: 200 })
   bio?: string;
@@ -31,13 +31,13 @@ export class Player {
   location?: string;
 
   @OneToMany(() => Problem, (problem) => problem.createdBy)
-  problems: Promise<Problem[]>;
+  problems?: Promise<Problem[]>;
 
   @OneToMany(() => Submission, (submission) => submission.problem)
-  submissions: Promise<Submission>;
+  submissions?: Promise<Submission>;
 
   @OneToMany(() => Rush, (rush) => rush.player)
-  rushes: Promise<Rush[]>;
+  rushes?: Promise<Rush[]>;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
