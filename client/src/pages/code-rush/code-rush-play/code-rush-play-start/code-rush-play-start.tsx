@@ -3,8 +3,6 @@ import PageLoader from "@/components/loader/page-loader/page-loader";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/error-alert-fixed";
 import CodeRushPlay from "@/features/code-rush/code-rush-play/code-rush-play";
 import { codeRushService } from "@/features/code-rush/services/code-rush.service";
-import ProblemPlay from "@/features/problem/problem-play/problem-play";
-import { ProblemPlayProvider } from "@/features/problem/problem-play/problem-play.provider";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -39,7 +37,9 @@ const CodeRushPlayStart = () => {
     <>
       <ErrorAlertFixed error={error} />
       {startTime ? <Countdown startTime={startTime} /> : null}
-      {game?.currentProblemSlug ? <CodeRushPlay /> : null}
+      {game?.currentProblemSlug ? (
+        <CodeRushPlay slug={game.currentProblemSlug} />
+      ) : null}
     </>
   );
 };

@@ -1,6 +1,8 @@
 import ErrorAlertFixed from "@/errors/error-alert-fixed/error-alert-fixed";
 import { useProblemPlay } from "../problem-play.provider";
 import MarkdownViewer from "@/components/markdown-viewer/markdown-viewer";
+import TypographyH4 from "@/components/ui/typography/typography-h4";
+import ProblemPlayQuestionMetadata from "./problem-play-question-metadata/problem-play-question-metadata";
 
 const ProblemPlayQuestion = () => {
   const { problemAggregate, error } = useProblemPlay();
@@ -19,9 +21,10 @@ const ProblemPlayQuestion = () => {
     <>
       <ErrorAlertFixed error={error} />
       <div className="p-3 overflow-y-auto h-full">
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          {problemAggregate.problem.id}. {problemAggregate.problem.title}
-        </h3>
+        {problemAggregate ? (
+          <ProblemPlayQuestionMetadata problemAggregate={problemAggregate} />
+        ) : null}
+
         <div
           data-orientation="horizontal"
           role="none"

@@ -30,7 +30,7 @@ const Countdown = ({ startTime }: Props) => {
   }
 
   return (
-    <div className="h-screen bg-background/60 fixed top-0 left-0 right-0 flex justify-center items-center">
+    <div className="h-screen bg-background/60 fixed top-0 left-0 right-0 flex justify-center items-center z-50">
       <h2 className="text-3xl font-semibold">
         Game starts in {countdown} seconds...
       </h2>

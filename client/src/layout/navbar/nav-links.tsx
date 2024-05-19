@@ -49,9 +49,15 @@ const signedInLinks: NavLink[] = [...universalLinks];
 const adminLinks: NavLink[] = [
   ...signedInLinks,
   {
-    title: "Create",
-    href: "/create",
-    description: "Create problems, tests, and code setup.",
+    title: "Admin",
+    href: "",
+    children: [
+      {
+        title: "Create",
+        href: "/create",
+        description: "Create problems, tests, and code setup.",
+      },
+    ],
   },
 ];
 

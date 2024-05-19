@@ -6,10 +6,12 @@ import {
 import CodeRushPlayProgress from "./code-rush-play-progress/code-rush-play-progress";
 import TypographyH4 from "@/components/ui/typography/typography-h4";
 import CodeEditor from "@/components/code-editor/code-editor";
-import ProblemPlayQuestion from "@/features/problem/problem-play/problem-play-question/problem-play-question";
-import ProblemPlayTestResults from "@/features/problem/problem-play/problem-play-test-results/problem-play-test-results";
 
-const CodeRushPlay = () => {
+type Props = {
+  slug: string;
+};
+
+const CodeRushPlay = ({ slug }: Props) => {
   return (
     <div className="flex flex-col h-full">
       <ResizablePanelGroup
