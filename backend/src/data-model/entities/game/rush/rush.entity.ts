@@ -54,4 +54,8 @@ export class Rush extends Game {
     const millisecondsOffset = offsetSeconds * 1000; // Convert seconds to milliseconds
     this.startedAt = new Date(currentDate.getTime() + millisecondsOffset);
   }
+
+  getProblemsOrdered(): RushProblem[] {
+    return this.problems.sort((a, b) => a.order - b.order);
+  }
 }

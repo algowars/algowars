@@ -26,6 +26,7 @@ export class RushProblem {
   rush: Rush;
 
   @OneToOne(() => Submission, { nullable: true })
+  @JoinColumn()
   submission: Submission;
 
   @Column({ nullable: false })

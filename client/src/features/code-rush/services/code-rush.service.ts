@@ -17,7 +17,11 @@ const createRush = (accessToken: string) => {
 const getGameById = (
   accessToken: string,
   rushId: string
-): Promise<CodeRush> => {
+): Promise<{
+  id: string;
+  startedAt: Date;
+  currentProblemSlug: string;
+}> => {
   const config: AxiosRequestConfig = {
     url: "/api/v1/rush/find",
     params: {
@@ -28,7 +32,11 @@ const getGameById = (
       Authorization: `Bearer ${accessToken}`,
     },
   };
-  return api.callExternalApi<CodeRush>({
+  return api.callExternalApi<{
+    id: string;
+    startedAt: Date;
+    currentProblemSlug: string;
+  }>({
     config,
   });
 };

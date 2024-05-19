@@ -13,7 +13,7 @@ import { RushService } from './rush.service';
 import { Request } from 'express';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { AccountOwnerGuard } from 'src/auth/account-owner.guard';
-import { Account } from 'src/data-model/entities';
+import { Account, Rush, RushProblem } from 'src/data-model/entities';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { ProblemService } from 'src/problem/problem.service';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
@@ -37,12 +37,19 @@ export class RushController {
   ): Promise<{
     id: string;
     startedAt: Date | null;
+    currentProblemSlug: string;
   }> {
     this.validatePrivateAccount(request);
     const { player } = this.mapPrivateAccount(request);
 
     const foundRush = await this.rushService.findById(getRushDto.rushId, {
-      relations: ['player'],
+      relations: [
+        'player',
+        'problems',
+        'duration',
+        'problems.submission',
+        'problems.problem',
+      ],
     });
 
     if (!foundRush) {
@@ -59,6 +66,7 @@ export class RushController {
     return {
       id: foundRush.id,
       startedAt: new Date(foundRush.startedAt),
+      currentProblemSlug: this.getCurrentProblem(foundRush).problem.slug,
     };
   }
 
@@ -159,5 +167,19 @@ export class RushController {
     if (!account.player) {
       throw new PlayerNotFoundException();
     }
+  }
+
+  private getCurrentProblem(rush: Rush): RushProblem | null {
+    const orderedProblems = rush.getProblemsOrdered();
+
+    console.log('ORDERED: ', orderedProblems);
+
+    for (const problem of orderedProblems) {
+      if (!problem.submission) {
+        return problem;
+      }
+    }
+
+    return null;
   }
 }
