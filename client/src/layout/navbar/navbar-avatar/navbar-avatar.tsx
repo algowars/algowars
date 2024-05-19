@@ -9,9 +9,12 @@ import { useAppSelector } from "@/store/use-app-selector";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuthLogoutButton } from "@/features/auth/auth-logout-button/auth-logout-button.hooks";
 
 type Props = {
   url?: string;
@@ -22,6 +25,8 @@ type Props = {
 const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
   const { user } = useAuth0();
   const { account } = useAppSelector((state) => state.account);
+
+  const { handleLogout } = useAuthLogoutButton();
 
   return (
     <DropdownMenu>
@@ -34,72 +39,75 @@ const NavbarAvatar = ({ url, fallback = defaultAvatar }: Props) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-64">
-        <DropdownMenuItem asChild>
-          <Link
-            to={`/profile/${account?.player?.username}`}
-            className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "text-start w-full flex flex-col gap-1 items-start block h-fit"
-            )}
-            style={{ alignItems: "start" }}
-          >
-            <h5 className="font-semibold">{user?.name}</h5>
-            {account?.player?.username ? (
-              <p className="text-muted-foreground">
-                @{account?.player?.username}
-              </p>
-            ) : null}
-          </Link>
-        </DropdownMenuItem>
-        <ul className="border-t border-b my-1 py-1 flex flex-col  gap-1">
-          <li>
-            <DropdownMenuItem asChild>
-              <Link
-                to={`/profile/${account?.player?.username}`}
-                className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "justify-start text-start w-full"
-                )}
-              >
-                Profile
-              </Link>
-            </DropdownMenuItem>
-          </li>
-          <li>
-            <DropdownMenuItem asChild>
-              <Link
-                to="/documentation"
-                className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "justify-start text-start w-full"
-                )}
-              >
-                Docs
-              </Link>
-            </DropdownMenuItem>
-          </li>
-          <li>
-            <DropdownMenuItem className="p-0" asChild>
-              <Link
-                to="/settings"
-                className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "justify-start text-start w-full"
-                )}
-              >
-                Settings
-              </Link>
-            </DropdownMenuItem>
-          </li>
-        </ul>
-        <DropdownMenuItem asChild>
-          <AuthLogoutButton
-            variant="ghost"
-            className="text-start justify-start w-full"
-          >
-            Log out
-          </AuthLogoutButton>
-        </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link
+              to={`/profile/${account?.player?.username}`}
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "text-start w-full flex flex-col gap-1 items-start block h-fit"
+              )}
+              style={{ alignItems: "start" }}
+            >
+              <h5 className="font-semibold">{user?.name}</h5>
+              {account?.player?.username ? (
+                <p className="text-muted-foreground">
+                  @{account?.player?.username}
+                </p>
+              ) : null}
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link
+              to={`/profile/${account?.player?.username}`}
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "justify-start text-start w-full"
+              )}
+            >
+              Profile
+            </Link>
+          </DropdownMenuItem>{" "}
+          <DropdownMenuItem asChild>
+            <Link
+              to="/documentation"
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "justify-start text-start w-full"
+              )}
+            >
+              Docs
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link
+              to="/settings"
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "justify-start text-start w-full"
+              )}
+            >
+              Settings
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link
+              to="/logout"
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "justify-start text-start w-full"
+              )}
+            >
+              Log out
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );

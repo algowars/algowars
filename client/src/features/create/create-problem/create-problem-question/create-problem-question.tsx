@@ -31,6 +31,7 @@ const CreateProblemQuestion = () => {
       {isEditing ? (
         <MDXEditor
           className="border rounded-md text-sm"
+          contentEditableClassName="prose"
           placeholder="Question"
           markdown={createProblem.question}
           plugins={[

@@ -21,6 +21,7 @@ import SettingsNotificationsPage from "./settings/settings-notifications/setting
 import CodeRushPlayPage from "./code-rush/code-rush-play/code-rush-play.page";
 import CodeRushPlayStart from "./code-rush/code-rush-play/code-rush-play-start/code-rush-play-start";
 import DocumentationPage from "./documentation/documentation.page";
+import LogoutPage from "./logout/logout.page";
 
 const PageRoutes = () => {
   return (
@@ -61,6 +62,10 @@ const PageRoutes = () => {
       <Route
         path="documentation"
         element={<AuthenticationGuard component={DocumentationPage} />}
+      />
+      <Route
+        path="logout"
+        element={<AuthenticationGuard component={LogoutPage} />}
       />
       <Route path="battle/create-lobby" element={<CreateLobbyPage />} />
       <Route path="battle" element={<BattlesPage />} />
