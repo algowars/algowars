@@ -68,7 +68,7 @@ const isSubmissionFinished = (statuses: SubmissionStatus[]): boolean => {
 const ProblemPlayProviderContext =
   createContext<ProblemPlayState>(initialState);
 
-export function ProblemProvider({
+export function ProblemPlayProvider({
   children,
   slug,
   ...props

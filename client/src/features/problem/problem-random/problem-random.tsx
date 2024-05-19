@@ -32,7 +32,7 @@ const ProblemRandom = () => {
       </div>
 
       <div className="px-5">
-        <TypographyH4>{problem.title}</TypographyH4>
+        <TypographyH4 className="mb-3">{problem.title}</TypographyH4>
         <MarkdownViewer
           markdown={problem.question}
           className="max-h-[10rem] overflow-auto w-full"
