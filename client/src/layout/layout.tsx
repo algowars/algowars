@@ -13,18 +13,17 @@ type Props = {
 
 const Layout = ({
   children,
-  bgColor = "",
   mainClassName = "",
   className = "flex flex-col min-h-screen relative",
 }: Props) => {
   return (
     <div className={className}>
-      <header className={`${bgColor}`}>
+      <header className="z-50">
         <AccountExistBanner />
         <Navbar />
       </header>
 
-      <main className={`grow ${bgColor} ${mainClassName}`}>{children}</main>
+      <main className={`grow ${mainClassName}`}>{children}</main>
       <Footer />
     </div>
   );
