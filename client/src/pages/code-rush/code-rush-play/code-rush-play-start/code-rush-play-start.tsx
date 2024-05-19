@@ -1,6 +1,7 @@
 import Countdown from "@/components/countdown/countdown";
 import PageLoader from "@/components/loader/page-loader/page-loader";
 import ErrorAlertFixed from "@/errors/error-alert-fixed/error-alert-fixed";
+import CodeRushPlay from "@/features/code-rush/code-rush-play/code-rush-play";
 import { codeRushService } from "@/features/code-rush/services/code-rush.service";
 import ProblemPlay from "@/features/problem/problem-play/problem-play";
 import { ProblemPlayProvider } from "@/features/problem/problem-play/problem-play.provider";
@@ -38,11 +39,7 @@ const CodeRushPlayStart = () => {
     <>
       <ErrorAlertFixed error={error} />
       {startTime ? <Countdown startTime={startTime} /> : null}
-      {game?.currentProblemSlug ? (
-        <ProblemPlayProvider slug={game.currentProblemSlug}>
-          <ProblemPlay />
-        </ProblemPlayProvider>
-      ) : null}
+      {game?.currentProblemSlug ? <CodeRushPlay /> : null}
     </>
   );
 };

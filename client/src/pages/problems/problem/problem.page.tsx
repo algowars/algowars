@@ -1,4 +1,5 @@
 import ProblemPlay from "@/features/problem/problem-play/problem-play";
+import { ProblemPlayProvider } from "@/features/problem/problem-play/problem-play.provider";
 import LayoutFull from "@/layout/layout-full/layout-full";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,7 +20,9 @@ const ProblemPage = () => {
 
   return (
     <LayoutFull>
-      <ProblemPlay slug={slug} />
+      <ProblemPlayProvider slug={slug}>
+        <ProblemPlay />
+      </ProblemPlayProvider>
     </LayoutFull>
   );
 };
