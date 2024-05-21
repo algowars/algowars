@@ -22,6 +22,8 @@ import CodeRushPlayPage from "./code-rush/code-rush-play/code-rush-play.page";
 import CodeRushPlayStart from "./code-rush/code-rush-play/code-rush-play-start/code-rush-play-start";
 import DocumentationPage from "./documentation/documentation.page";
 import LogoutPage from "./logout/logout.page";
+import AdminPage from "./admin/admin.page";
+import AdminEditProblem from "./admin/edit/problem/admin-edit-problem";
 
 const PageRoutes = () => {
   return (
@@ -47,6 +49,15 @@ const PageRoutes = () => {
           element={
             <AuthenticationGuard component={SettingsNotificationsPage} />
           }
+        />
+      </Route>
+      <Route
+        path="admin"
+        element={<AuthenticationGuard component={AdminPage} />}
+      >
+        <Route
+          path="edit/problem/:problemSlug"
+          element={<AdminEditProblem />}
         />
       </Route>
       <Route
