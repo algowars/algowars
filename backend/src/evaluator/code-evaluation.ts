@@ -16,4 +16,9 @@ export class CodeEvaluation {
     ${this._testSetup}
     `;
   }
+
+  static buildWithSetup(sourceCode: string, testSetup: string): string {
+    return `${sourceCode}
+    ${testSetup}`;
+  }
 }

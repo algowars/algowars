@@ -11,6 +11,8 @@ import { JudgeSubmissionResponse } from 'src/data-model/models/judge-submission-
 export class EvaluatorService {
   constructor(private readonly httpService: HttpService) {}
 
+  saveSubmission();
+
   async batchEvaluate(
     createSubmissions: CreateJudgeSubmission[],
   ): Promise<JudgeSubmissionResponse[]> {

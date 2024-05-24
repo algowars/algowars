@@ -3,7 +3,12 @@ import { EvaluationService } from './evaluation.service';
 import { Throttle, seconds } from '@nestjs/throttler';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { AccountOwnerGuard } from 'src/auth/account-owner.guard';
-import { Problem, ProblemSetup, Submission } from 'src/data-model/entities';
+import {
+  Account,
+  Problem,
+  ProblemSetup,
+  Submission,
+} from 'src/data-model/entities';
 import { Request } from 'express';
 import { AccountNotFoundException } from 'src/account/exceptions/account-not-found.exception';
 import { PlayerNotFoundException } from 'src/player/exceptions/player-not-found.exception';
@@ -12,11 +17,15 @@ import { ProblemNotFoundException } from 'src/problem/exceptions/problem-not-fou
 import { ProblemSetupService } from 'src/problem-setup/problem-setup.service';
 import { ProblemSetupNotFoundException } from 'src/problem/exceptions/problem-setup-not-found.exception';
 import { CreateSubmissionDto } from './dtos/create-submission.dto';
+import { CreateSubmissionParams } from './dtos/create-submission-params';
+import { JudgeSubmissionException } from 'src/evaluator/exceptions/judge-submission.exception';
+import { SubmissionService } from 'src/submission/submission.service';
 
 @Controller('v1/evaluation')
 export class EvaluationController {
   constructor(
     private readonly evaluationService: EvaluationService,
+    private readonly submissionService: SubmissionService,
     private readonly problemService: ProblemService,
     private readonly problemSetupService: ProblemSetupService,
   ) {}
@@ -38,9 +47,24 @@ export class EvaluationController {
       createSubmissionDto.languageId,
     );
 
-    // evaluate submission
+    const createSubmissionParams = new CreateSubmissionParams();
 
-    // return submission
+    createSubmissionParams.problem = problem;
+    createSubmissionParams.problemSetup = problemSetup;
+    createSubmissionParams.languageId = createSubmissionDto.languageId;
+    createSubmissionParams.sourceCode = createSubmissionDto.sourceCode;
+    createSubmissionParams.tests = (await problem.tests) ?? [];
+
+    // evaluate submission tokens
+    const tokens = await this.evaluationService.createSubmission(
+      createSubmissionParams,
+    );
+
+    if (!tokens) {
+      throw new JudgeSubmissionException();
+    }
+
+    return this.evaluationService.createSubmission(c);
   }
 
   private async findProblemSetup(
