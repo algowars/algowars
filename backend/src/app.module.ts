@@ -12,6 +12,7 @@ import entities from './data-model/entities';
 import { ScheduleModule } from '@nestjs/schedule';
 import { LanguageModule } from './language/language.module';
 import { RushModule } from './rush/rush.module';
+import { EvaluationModule } from './evaluation/evaluation.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { RushModule } from './rush/rush.module';
     SubmissionModule,
     LanguageModule,
     RushModule,
+    EvaluationModule,
   ],
 })
 export class AppModule {}
