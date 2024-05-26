@@ -12,7 +12,6 @@ import { ProblemSetupService } from 'src/problem-setup/problem-setup.service';
 import { TestInputService } from 'src/test-input/test-input.service';
 import { AccountService } from 'src/account/account.service';
 import { ProblemValidator } from './validators/problem.validator';
-import { EvaluatorService } from 'src/evaluator/evaluator.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -40,7 +39,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     TestInputService,
     AccountService,
     ProblemValidator,
-    EvaluatorService,
   ],
 })
 export class ProblemModule {}

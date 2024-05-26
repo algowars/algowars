@@ -18,7 +18,7 @@ import { ProblemSetupService } from 'src/problem-setup/problem-setup.service';
 import { ProblemSetupNotFoundException } from 'src/problem/exceptions/problem-setup-not-found.exception';
 import { CreateSubmissionDto } from './dtos/create-submission.dto';
 import { CreateSubmissionParams } from './dtos/create-submission-params';
-import { JudgeSubmissionException } from 'src/evaluator/exceptions/judge-submission.exception';
+import { JudgeSubmissionException } from 'src/evaluation/exceptions/judge-submission.exception';
 import { SubmissionService } from 'src/submission/submission.service';
 
 @Controller('v1/evaluation')
@@ -37,11 +37,9 @@ export class EvaluationController {
     @Req() request: Request,
   ): Promise<Submission> {
     this.validatePrivateAccount(request);
-    const account = this.mapPrivateAccount(request);
+    const { player } = this.mapPrivateAccount(request);
 
-    // get the problems with tests
     const problem = await this.findProblem(createSubmissionDto.problemId);
-    // get the problem setup
     const problemSetup = await this.findProblemSetup(
       createSubmissionDto.problemId,
       createSubmissionDto.languageId,
@@ -55,7 +53,6 @@ export class EvaluationController {
     createSubmissionParams.sourceCode = createSubmissionDto.sourceCode;
     createSubmissionParams.tests = (await problem.tests) ?? [];
 
-    // evaluate submission tokens
     const tokens = await this.evaluationService.createSubmission(
       createSubmissionParams,
     );
@@ -64,7 +61,13 @@ export class EvaluationController {
       throw new JudgeSubmissionException();
     }
 
-    return this.evaluationService.createSubmission(c);
+    return this.submissionService.createSubmission(
+      createSubmissionDto.sourceCode,
+      tokens,
+      problem,
+      createSubmissionDto.languageId,
+      player,
+    );
   }
 
   private async findProblemSetup(

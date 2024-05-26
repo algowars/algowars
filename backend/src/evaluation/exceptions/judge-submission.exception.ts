@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { EvaluatorLabel } from '../labels/evaluator.label';
+import { EvaluatorLabel } from '../labels/evaluation.label';
 
 export class JudgeSubmissionException extends HttpException {
   constructor() {

@@ -2,7 +2,6 @@ import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateSubmissionParams } from './dtos/create-submission-params';
 import { firstValueFrom } from 'rxjs';
-import { CodeEvaluation } from 'src/evaluator/code-evaluation';
 import { CreateJudgeSubmission } from 'src/data-model/models/create-judge-submission';
 import { JudgeSubmission } from 'src/data-model/models/judge-submission';
 import { Base64 } from 'js-base64';

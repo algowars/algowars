@@ -5,7 +5,6 @@ import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Account, Submission } from 'src/data-model/entities';
-import { EvaluatorService } from 'src/evaluator/evaluator.service';
 import { AccountService } from 'src/account/account.service';
 
 @Module({
@@ -25,11 +24,6 @@ import { AccountService } from 'src/account/account.service';
     TypeOrmModule.forFeature([Submission, Account]),
   ],
   controllers: [SubmissionController],
-  providers: [
-    SubmissionService,
-    EvaluatorService,
-    AccountService,
-    EvaluatorService,
-  ],
+  providers: [SubmissionService, AccountService],
 })
 export class SubmissionModule {}

@@ -6,7 +6,6 @@ import { PlayerModule } from './player/player.module';
 import { ProblemModule } from './problem/problem.module';
 import { ProblemSetupModule } from './problem-setup/problem-setup.module';
 import { TestInputModule } from './test-input/test-input.module';
-import { EvaluatorModule } from './evaluator/evaluator.module';
 import { SubmissionModule } from './submission/submission.module';
 import entities from './data-model/entities';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -43,7 +42,6 @@ import { EvaluationModule } from './evaluation/evaluation.module';
     ProblemModule,
     ProblemSetupModule,
     TestInputModule,
-    EvaluatorModule,
     SubmissionModule,
     LanguageModule,
     RushModule,
