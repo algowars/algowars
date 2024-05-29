@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { EntitySchemaFactory } from '../entity-schema.factory';
 import { ProblemSchema } from './problem.schema';
 import { Problem } from 'src/problem/entities/problem.entity';
+import { EntitySchemaFactory } from 'src/db/entity-schema.factory';
 
 @Injectable()
 export class ProblemSchemaFactory

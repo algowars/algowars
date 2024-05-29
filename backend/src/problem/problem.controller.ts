@@ -1,34 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ProblemService } from './problem.service';
-import { CreateProblemDto } from './dto/create-problem.dto';
-import { UpdateProblemDto } from './dto/update-problem.dto';
+import { CreateProblemRequest } from './dto/request/create-problem-request.dto';
+import { CommandBus } from '@nestjs/cqrs';
+import { CreateProblemCommand } from './commands/create-problem.command';
 
 @Controller('problem')
 export class ProblemController {
-  constructor(private readonly problemService: ProblemService) {}
-
-  @Post()
-  create(@Body() createProblemDto: CreateProblemDto) {
-    return this.problemService.create(createProblemDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.problemService.findAll();
-  }
+  constructor(private readonly commandBus: CommandBus) {}
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.problemService.findOne(+id);
-  }
+  async getProblem(@Param('id') problemId: string): Promise<void> {}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProblemDto: UpdateProblemDto) {
-    return this.problemService.update(+id, updateProblemDto);
-  }
+  @Get()
+  async getProblems(): Promise<void> {}
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.problemService.remove(+id);
+  @Post()
+  async createProblem(
+    @Body() createProblemRequest: CreateProblemRequest,
+  ): Promise<void> {
+    await this.commandBus.execute<CreateProblemCommand, void>(
+      new CreateProblemCommand(createProblemRequest),
+    );
   }
 }

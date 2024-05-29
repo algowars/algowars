@@ -1,5 +1,5 @@
+import { IdentifiableEntitySchema } from 'src/db/identifiable-entity.schema';
 import { Entity, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { IdentifiableEntitySchema } from '../identifiable-entity.schema';
 
 @Entity({ name: 'problem' })
 export class ProblemSchema extends IdentifiableEntitySchema {
