@@ -1,4 +1,5 @@
 name: Build and Test Client Application
+
 on: push
 jobs:
   build:
@@ -10,7 +11,7 @@ jobs:
         run: cd client
 
       - name: Install modules
-        run: npm i
+        run: npm ci
         working-directory: ./client
 
       - name: Run tests
