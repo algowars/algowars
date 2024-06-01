@@ -1,27 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ProblemSchema } from './problem.schema';
-import { Repository } from 'typeorm';
 import { ProblemDto } from '../dto/problem.dto';
 import { Pageable } from 'src/common/pagination/dto/pageable';
 import { PaginationResponse } from 'src/common/pagination/dto/response/pagination-response.dto';
+import { PageableRepository } from 'src/common/pagination/db/pageable.repository';
+import { DataSource } from 'typeorm';
 
 @Injectable()
-export class ProblemDtoRepository {
-  constructor(
-    @InjectRepository(ProblemSchema)
-    private readonly problemRepository: PageableRepository<ProblemSchema>,
-  ) {}
+export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
+  constructor(private readonly dataSource: DataSource) {
+    super(ProblemSchema, dataSource);
+  }
 
   async findAll(): Promise<ProblemDto[]> {
-    const problems = await this.problemRepository.find({});
+    const problems = await this.find({});
     return problems.map((problem) => this.toProblemDto(problem));
   }
 
   async findProblemsPageable(
     problemPageable: Pageable,
   ): Promise<PaginationResponse<ProblemDto>> {
-    const paginationResponse = await this.
+    const paginationResponse = await this.findPageable(problemPageable);
+
+    paginationResponse.results = paginationResponse.results.map((result) =>
+      this.toProblemDto(result),
+    );
+
+    return paginationResponse;
   }
 
   private toProblemDto(problem: ProblemSchema): ProblemDto {

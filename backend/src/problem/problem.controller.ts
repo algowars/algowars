@@ -1,12 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { CreateProblemRequest } from './dto/request/create-problem-request.dto';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateProblemCommand } from './commands/create-problem/create-problem.command';
 import { UpdateTitleCommand } from './commands/update-title/update-title.command';
 import { UpdateTitleRequest } from './dto/request/update-title-request.dto';
-import { ProblemsQuery } from './queries/problems.query';
 import { ProblemDto } from './dto/problem.dto';
 import { ProblemPagination } from './dto/request/problem-pagination.dto';
+import { ProblemsPaginationQuery } from './queries/problems-pagination/problems-pagination.query';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -20,10 +28,10 @@ export class ProblemController {
 
   @Get()
   async getProblems(
-    @Body() problemPagination: ProblemPagination,
+    @Query() problemPagination: ProblemPagination,
   ): Promise<ProblemDto[]> {
-    return this.queryBus.execute<ProblemsQuery, ProblemDto[]>(
-      new ProblemsQuery(problemPagination),
+    return this.queryBus.execute<ProblemsPaginationQuery, ProblemDto[]>(
+      new ProblemsPaginationQuery(problemPagination),
     );
   }
 

@@ -1,3 +1,3 @@
-import { ProblemsHandler } from './problems.handler';
+import { ProblemsPaginationHandler } from './problems-pagination/problems-pagination.handler';
 
-export const ProblemQueryHandlers = [ProblemsHandler];
+export const ProblemQueryHandlers = [ProblemsPaginationHandler];

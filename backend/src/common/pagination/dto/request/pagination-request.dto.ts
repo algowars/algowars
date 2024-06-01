@@ -1,7 +1,8 @@
 import { IsDate, IsInt, Max, Min } from 'class-validator';
 import { PaginationLabel } from '../../label/pagination.label';
+import { Pageable } from '../pageable';
 
-export class PaginationRequest {
+export class PaginationRequest implements Pageable {
   @IsInt({ message: PaginationLabel.PAGE_MUST_BE_INT })
   @Min(1, { message: PaginationLabel.PAGE_MUST_MEET_MINIMUM })
   page: number;
@@ -12,5 +13,5 @@ export class PaginationRequest {
   size: number;
 
   @IsDate()
-  timestamp?: Date;
+  timestamp: Date;
 }
