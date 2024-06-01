@@ -1,4 +1,4 @@
-name: Build and Test Backend Application
+name: Build and Run Backend Test Coverage
 
 on:
   push:
@@ -28,6 +28,7 @@ jobs:
         run: npm ci
         working-directory: ./backend
 
-      - name: Run tests
-        run: npm test
-        working-directory: ./backend
+      - name: Test coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          test-script: npm run test:cov
