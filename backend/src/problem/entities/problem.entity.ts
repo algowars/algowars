@@ -1,9 +1,10 @@
+import { BadRequestException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 export class Problem extends AggregateRoot {
   constructor(
     private readonly id: string,
-    private readonly title: string,
+    private title: string,
     private readonly question: string,
     private readonly slug: string,
     private readonly rating: number,
@@ -39,5 +40,13 @@ export class Problem extends AggregateRoot {
 
   getUpdatedAt() {
     return this.updatedAt;
+  }
+
+  updateTitle(title: string): void {
+    if (!title) {
+      throw new BadRequestException('A title must be defined');
+    }
+
+    this.title = title;
   }
 }

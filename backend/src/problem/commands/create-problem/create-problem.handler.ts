@@ -1,6 +1,6 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { ProblemFactory } from '../../problem.factory';
 import { CreateProblemCommand } from './create-problem.command';
-import { ProblemFactory } from '../problem.factory';
 
 @CommandHandler(CreateProblemCommand)
 export class CreateProblemHandler
