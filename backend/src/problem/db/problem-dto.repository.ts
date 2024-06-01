@@ -3,14 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProblemSchema } from './problem.schema';
 import { Repository } from 'typeorm';
 import { ProblemDto } from '../dto/problem.dto';
-import { ProblemPagination } from '../dto/request/problem-pagination.dto';
-import { PaginationResponse } from 'src/common/pagination/response/pagination-response.dto';
+import { Pageable } from 'src/common/pagination/dto/pageable';
+import { PaginationResponse } from 'src/common/pagination/dto/response/pagination-response.dto';
 
 @Injectable()
 export class ProblemDtoRepository {
   constructor(
     @InjectRepository(ProblemSchema)
-    private readonly problemRepository: Repository<ProblemSchema>,
+    private readonly problemRepository: PageableRepository<ProblemSchema>,
   ) {}
 
   async findAll(): Promise<ProblemDto[]> {
@@ -18,11 +18,10 @@ export class ProblemDtoRepository {
     return problems.map((problem) => this.toProblemDto(problem));
   }
 
-  async findAllPageable(
-    problemPagination: ProblemPagination,
+  async findProblemsPageable(
+    problemPageable: Pageable,
   ): Promise<PaginationResponse<ProblemDto>> {
-    const entityName = 'Problem';
-    const queryBuilder = this.problemRepository.createQueryBuilder(entityName);
+    const paginationResponse = await this.
   }
 
   private toProblemDto(problem: ProblemSchema): ProblemDto {

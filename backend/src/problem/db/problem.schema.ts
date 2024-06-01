@@ -1,8 +1,12 @@
+import { PageableEntitySchema } from 'src/common/pagination/db/pageable-entity.schema';
 import { IdentifiableEntitySchema } from 'src/db/identifiable-entity.schema';
 import { Entity, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'problem' })
-export class ProblemSchema extends IdentifiableEntitySchema {
+export class ProblemSchema
+  extends IdentifiableEntitySchema
+  implements PageableEntitySchema
+{
   @Column({ nullable: false, length: 100 })
   readonly title: string;
 
