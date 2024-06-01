@@ -11,7 +11,7 @@ jobs:
         run: cd client
 
       - name: Install modules
-        run: npm ci
+        run: npm i
         working-directory: ./client
 
       - name: Run tests
