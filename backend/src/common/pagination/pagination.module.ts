@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { PaginationRequest } from './dto/request/pagination-request.dto';
 
-@Module({})
+@Module({
+  providers: [PaginationRequest],
+})
 export class PaginationModule {}
