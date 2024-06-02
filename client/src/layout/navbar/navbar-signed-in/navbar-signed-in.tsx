@@ -34,7 +34,7 @@ const NavbarSignedIn = ({ width, className, border = "border-b" }: Props) => {
       >
         <ul className="flex items-center gap-5">
           <li>
-            <Logo width="w-6" height="h-6" />
+            <Logo />
           </li>
           <li>
             <NavigationMenu>

@@ -18,7 +18,7 @@ const Layout = ({
 }: Props) => {
   return (
     <div className={className}>
-      <header className="z-50">
+      <header className="z-50 sticky top-0">
         <AccountExistBanner />
         <Navbar />
       </header>

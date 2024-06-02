@@ -3,8 +3,7 @@ import { ProblemModule } from './problem/problem.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import schemas from './db';
-import { PaginationModule } from './common/pagination/pagination.module';
-
+import { CommonModule } from './common/common.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,7 +28,7 @@ import { PaginationModule } from './common/pagination/pagination.module';
       inject: [ConfigService],
     }),
     ProblemModule,
-    PaginationModule,
+    CommonModule,
   ],
 })
 export class AppModule {}
