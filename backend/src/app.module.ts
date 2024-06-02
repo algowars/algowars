@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import schemas from './db';
 import { CommonModule } from './common/common.module';
+import { AccountModule } from './account/account.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,6 +30,7 @@ import { CommonModule } from './common/common.module';
     }),
     ProblemModule,
     CommonModule,
+    AccountModule,
   ],
 })
 export class AppModule {}
