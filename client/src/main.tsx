@@ -3,11 +3,11 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./app";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { setupStore } from "./store/store";
 import { BrowserRouter } from "react-router-dom";
 import AuthProviderWithNavigate from "./features/auth/context/auth-provider-with-navigate";
-import { ThemeProvider } from "./features/theme/theme.provider";
 import { Provider } from "react-redux";
-import { setupStore } from "./store/store";
+import { ThemeProvider } from "./features/theme/theme.provider";
 
 const queryClient = new QueryClient();
 const store = setupStore();

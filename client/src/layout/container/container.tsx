@@ -7,7 +7,7 @@ type Props = {
 const Container = ({
   children,
   className = "",
-  width = "max-w-5xl",
+  width = "container",
 }: Props) => {
   return (
     <div className={`${className && className + " "}${width} mx-auto`}>

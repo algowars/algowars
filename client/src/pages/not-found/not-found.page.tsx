@@ -1,25 +1,23 @@
-import { Link } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
-import Layout from "@/layout/layout";
-import Container from "@/layout/container/container";
+import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
-const NotFoundpage = () => {
+const NotFoundPage = () => {
   return (
-    <Layout>
-      <Container className="py-10">
-        <div className="flex items-center flex-col gap-5 max-w-3xl mx-auto">
-          <h1 className="text-3xl font-semibold">Page Not Found</h1>
-          <p className="dark:text-stone-400 text-stone-500 max-w-xl text-center">
-            Uh oh, we can't seem to find the page you're looking for. Try going
-            back to the previous page or to the home page.
-          </p>
-          <Link className={buttonVariants()} to="/">
-            Go Home
-          </Link>
-        </div>
-      </Container>
-    </Layout>
+    <section className="h-screen flex justify-center items-center">
+      <div className="flex flex-col items-center gap-8">
+        <h1 className="scroll-m-20 text-3xl md:text-5xl lg:text-7xl font-bold tracking-tight lg:text-7xl mb-4 md:mb-7">
+          Looks like you&apos;re lost.
+        </h1>
+        <Link
+          to="/"
+          className={cn(buttonVariants({ variant: "default" }), "w-28")}
+        >
+          Back Home
+        </Link>
+      </div>
+    </section>
   );
 };
 
-export default NotFoundpage;
+export default NotFoundPage;

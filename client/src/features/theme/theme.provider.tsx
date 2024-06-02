@@ -30,7 +30,7 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 export function ThemeProvider({
   children,
   defaultTheme = themes["zinc"],
-  defaultMode = "system",
+  defaultMode = "dark",
   themeStorageKey = "vite-ui-theme",
   modeStorageKey = "vite-ui-mode",
   ...props
@@ -39,9 +39,7 @@ export function ThemeProvider({
     () =>
       themes[localStorage.getItem(themeStorageKey) ?? "zinc"] || defaultTheme
   );
-  const [mode, setMode] = useState<Mode>(
-    () => (localStorage.getItem(modeStorageKey) as Mode) || defaultMode
-  );
+  const [mode, setMode] = useState<Mode>(defaultMode);
 
   useEffect(() => {
     const root = window.document.documentElement;
