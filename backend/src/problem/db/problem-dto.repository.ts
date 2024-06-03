@@ -17,6 +17,16 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
     return problems.map((problem) => this.toProblemDto(problem));
   }
 
+  async findById(id: string): Promise<ProblemDto> {
+    const problem = await this.dataSource.getRepository(ProblemSchema).findOne({
+      where: {
+        id,
+      },
+    });
+
+    return this.toProblemDto(problem);
+  }
+
   async findProblemsPageable(
     problemPageable: Pageable,
   ): Promise<PaginationResponse<ProblemDto>> {

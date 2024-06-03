@@ -15,6 +15,9 @@ import { UpdateTitleRequest } from './dto/request/update-title-request.dto';
 import { ProblemDto } from './dto/problem.dto';
 import { ProblemPagination } from './dto/request/problem-pagination.dto';
 import { ProblemsPaginationQuery } from './queries/problems-pagination/problems-pagination.query';
+import { FindProblemByIdQuery } from './queries/find-problem-by-id/find-problem-by-id.query';
+import { PaginationResponse } from 'src/common/pagination/dto/response/pagination-response.dto';
+import { FindProblemDto } from './dto/request/find-problem.dto';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -24,15 +27,22 @@ export class ProblemController {
   ) {}
 
   @Get(':id')
-  async getProblem(): Promise<void> {}
+  async getProblem(
+    @Param() findProblemDto: FindProblemDto,
+  ): Promise<ProblemDto> {
+    return this.queryBus.execute<FindProblemByIdQuery, ProblemDto>(
+      new FindProblemByIdQuery(findProblemDto.id),
+    );
+  }
 
   @Get()
   async getProblems(
     @Query() problemPagination: ProblemPagination,
-  ): Promise<ProblemDto[]> {
-    return this.queryBus.execute<ProblemsPaginationQuery, ProblemDto[]>(
-      new ProblemsPaginationQuery(problemPagination),
-    );
+  ): Promise<PaginationResponse<ProblemDto>> {
+    return this.queryBus.execute<
+      ProblemsPaginationQuery,
+      PaginationResponse<ProblemDto>
+    >(new ProblemsPaginationQuery(problemPagination));
   }
 
   @Post()

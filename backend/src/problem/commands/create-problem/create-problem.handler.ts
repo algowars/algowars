@@ -13,9 +13,11 @@ export class CreateProblemHandler
 
   async execute({ createProblemRequest }: CreateProblemCommand): Promise<void> {
     const { title, question, slug, rating } = createProblemRequest;
+
     const problem = this.eventPublisher.mergeObjectContext(
       await this.problemFactory.create(title, question, slug, rating),
     );
+
     problem.commit();
   }
 }

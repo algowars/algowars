@@ -26,6 +26,7 @@ export class ProblemFactory implements EntityFactory<Problem> {
       new Date(),
       new Date(),
     );
+
     await this.problemEntityRepository.create(problem);
     problem.apply(new ProblemCreatedEvent(problem.getId()));
     return problem;

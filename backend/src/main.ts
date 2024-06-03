@@ -17,6 +17,11 @@ function checkEnvironment(configService: ConfigService) {
     'POSTGRESQL_NAME',
     'POSTGRESQL_CERT',
     'SYNCHRONIZE_DATABASE',
+    'AUDIENCE',
+    'ISSUER_BASE_URL',
+    'EVALUATOR_HOST',
+    'EVALUATOR_URL',
+    'EVALUATOR_API_KEY',
   ];
 
   requiredEnvVars.forEach((envVar) => {
