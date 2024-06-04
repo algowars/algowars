@@ -27,16 +27,14 @@ export class ProblemController {
   ) {}
 
   @Get(':id')
-  async getProblem(
-    @Param() findProblemDto: FindProblemDto,
-  ): Promise<ProblemDto> {
+  getProblem(@Param() findProblemDto: FindProblemDto): Promise<ProblemDto> {
     return this.queryBus.execute<FindProblemByIdQuery, ProblemDto>(
       new FindProblemByIdQuery(findProblemDto.id),
     );
   }
 
   @Get()
-  async getProblems(
+  getProblems(
     @Query() problemPagination: ProblemPagination,
   ): Promise<PaginationResponse<ProblemDto>> {
     return this.queryBus.execute<
@@ -59,7 +57,7 @@ export class ProblemController {
     @Param('id') problemId: string,
     @Body() updateTitleRequest: UpdateTitleRequest,
   ): Promise<void> {
-    await this.commandBus.execute<UpdateTitleCommand, void>(
+    this.commandBus.execute<UpdateTitleCommand, void>(
       new UpdateTitleCommand(problemId, updateTitleRequest.title),
     );
   }
