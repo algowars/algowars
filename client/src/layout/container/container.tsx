@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 type Props = {
   children?: React.ReactNode;
   className?: string;
@@ -9,11 +11,7 @@ const Container = ({
   className = "",
   width = "container",
 }: Props) => {
-  return (
-    <div className={`${className && className + " "}${width} mx-auto`}>
-      {children}
-    </div>
-  );
+  return <div className={cn(`${width} mx-auto`, className)}>{children}</div>;
 };
 
 export default Container;

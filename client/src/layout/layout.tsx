@@ -14,7 +14,7 @@ type Props = {
 const Layout = ({
   children,
   mainClassName = "",
-  className = "flex flex-col min-h-screen relative bg-slate-800",
+  className = "flex flex-col min-h-screen relative",
 }: Props) => {
   return (
     <div className={className}>
