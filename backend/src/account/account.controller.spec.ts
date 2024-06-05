@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountController } from './account.controller';
-import { AccountService } from './account.service';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 describe('AccountController', () => {
   let controller: AccountController;
@@ -8,7 +8,16 @@ describe('AccountController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AccountController],
-      providers: [AccountService],
+      providers: [
+        {
+          provide: CommandBus,
+          useValue: { execute: jest.fn() },
+        },
+        {
+          provide: QueryBus,
+          useValue: { execute: jest.fn() },
+        },
+      ],
     }).compile();
 
     controller = module.get<AccountController>(AccountController);

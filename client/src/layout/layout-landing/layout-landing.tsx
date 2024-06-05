@@ -18,7 +18,7 @@ const LayoutLanding = ({
 }: Props) => {
   return (
     <div className={className}>
-      <header className="z-50">
+      <header className="z-50 sticky top-0 bg-background">
         <AccountExistBanner />
         <Navbar />
       </header>
