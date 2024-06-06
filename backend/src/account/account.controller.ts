@@ -15,6 +15,7 @@ import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { FindAccountDto } from './dto/request/find-account.dto';
 import { AccountDto } from './dto/account.dto';
 import { FindAccountByIdQuery } from './queries/find-account-by-id/find-account-by-id.query';
+import { FindAccountBySubQuery } from './queries/find-account-by-sub/find-account-by-sub.query';
 
 @Controller('v1/account')
 export class AccountController {
@@ -25,9 +26,21 @@ export class AccountController {
 
   @UseGuards(AuthorizationGuard)
   @Get(':id')
-  findProblem(@Param() findAccountDto: FindAccountDto): Promise<AccountDto> {
+  findAccountById(
+    @Param() findAccountDto: FindAccountDto,
+  ): Promise<AccountDto> {
     return this.queryBus.execute<FindAccountByIdQuery, AccountDto>(
       new FindAccountByIdQuery(findAccountDto.id),
+    );
+  }
+
+  @UseGuards(AuthorizationGuard)
+  @Get('find/sub')
+  findAccountBySub(@Req() request: Request): Promise<AccountDto> {
+    const sub = request.auth.payload.sub;
+
+    return this.queryBus.execute<FindAccountBySubQuery, AccountDto>(
+      new FindAccountBySubQuery(sub),
     );
   }
 

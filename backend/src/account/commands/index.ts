@@ -1,3 +1,3 @@
-import { CreateAccountCommand } from './create-account/create-account.command';
+import { CreateAccountHandler } from './create-account/create-account.handler';
 
-export const AccountCommandHandlers = [CreateAccountCommand];
+export const AccountCommandHandlers = [CreateAccountHandler];

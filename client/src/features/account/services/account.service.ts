@@ -1,91 +1,48 @@
+import { Api } from "@/api/api";
 import { AxiosRequestConfig } from "axios";
-import { Account } from "../account.model";
-import api from "@/api/api";
 import { CreateAccountDto } from "../dtos/create-account.dto";
-import { Profile } from "@/features/profile/profile.model";
-import { ProfileInfo } from "@/features/profile/profile-info/profile-info.model";
-import { UpdateProfileDto } from "@/features/profile/dtos/update-profie.dto";
+import { Account } from "../account.model";
 
-const getAccountBySub = (accessToken: string): Promise<Account> => {
-  const config: AxiosRequestConfig = {
-    url: "/api/v1/account/find/sub",
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
+export class AccountService extends Api {
+  private static instance: AccountService;
 
-  return api.callExternalApi<Account>({ config });
-};
+  constructor() {
+    super();
+  }
 
-const getProfileByUsername = (username: string): Promise<Profile> => {
-  const config: AxiosRequestConfig = {
-    url: "/api/v1/account/profile",
-    params: {
-      username,
-    },
-    headers: {
-      "content-type": "application/json",
-    },
-  };
+  public static getInstance(): AccountService {
+    if (!AccountService.instance) {
+      AccountService.instance = new AccountService();
+    }
+    return AccountService.instance;
+  }
 
-  return api.callExternalApi<Profile>({ config });
-};
+  public create(
+    accessToken: string,
+    createAccountDto: CreateAccountDto
+  ): Promise<string> {
+    const config: AxiosRequestConfig = {
+      url: "/api/v1/account",
+      method: "POST",
+      data: createAccountDto,
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
 
-const getProfileInformation = (accessToken: string): Promise<ProfileInfo> => {
-  const config: AxiosRequestConfig = {
-    url: "/api/v1/account/profile/info",
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
+    return this.callExternalApi<string>({ config });
+  }
 
-  return api.callExternalApi<ProfileInfo>({ config });
-};
+  public getBySub(accessToken: string): Promise<Account> {
+    const config: AxiosRequestConfig = {
+      url: "/api/v1/accont/find/sub",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
 
-const create = (
-  accessToken: string,
-  data: CreateAccountDto
-): Promise<Account> => {
-  const config: AxiosRequestConfig = {
-    url: "/api/v1/account",
-    method: "POST",
-    data,
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  return api.callExternalApi<Account>({ config });
-};
-
-const updateProfile = (
-  accessToken: string,
-  updateProfileDto: UpdateProfileDto
-): Promise<ProfileInfo> => {
-  const config: AxiosRequestConfig = {
-    url: "/api/v1/account/profile/info",
-    method: "PUT",
-    data: updateProfileDto,
-    headers: {
-      "content-type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  return api.callExternalApi<ProfileInfo>({ config });
-};
-
-const accountService = {
-  getAccountBySub,
-  getProfileByUsername,
-  getProfileInformation,
-  updateProfile,
-  create,
-};
-
-Object.freeze(accountService);
-
-export { accountService };
+    return this.callExternalApi<Account>({ config });
+  }
+}
