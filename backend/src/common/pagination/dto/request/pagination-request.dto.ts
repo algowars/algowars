@@ -1,7 +1,6 @@
-import { IsDate, IsInt, IsNotEmpty, Max, MaxDate, Min } from 'class-validator';
+import { IsDate, IsInt, IsNotEmpty, Max, Min } from 'class-validator';
 import { PaginationLabel } from '../../label/pagination.label';
 import { Pageable } from '../pageable';
-import { Transform } from 'class-transformer';
 
 export class PaginationRequest implements Pageable {
   @IsInt({ message: PaginationLabel.PAGE_MUST_BE_INT })
@@ -14,8 +13,6 @@ export class PaginationRequest implements Pageable {
   size: number;
 
   @IsNotEmpty()
-  @Transform(({ value }) => new Date(value))
   @IsDate()
-  @MaxDate(new Date())
   timestamp: Date;
 }
