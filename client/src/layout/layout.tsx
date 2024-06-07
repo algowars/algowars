@@ -9,7 +9,7 @@ type Props = {
   mainClassName?: string;
   className?: string;
   headerColor?: string;
-  hideAccountExistBanner: boolean;
+  hideAccountExistBanner?: boolean;
 };
 
 const Layout = ({

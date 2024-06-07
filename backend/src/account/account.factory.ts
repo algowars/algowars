@@ -3,7 +3,9 @@ import { Account } from './entities/account.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { AccountEntityRepository } from './db/account-entity.repository';
 import { AccountCreatedEvent } from './events/account-created.event';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class AccountFactory implements EntityFactory<Account> {
   constructor(
     private readonly accountEntityRepository: AccountEntityRepository,
