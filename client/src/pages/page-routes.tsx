@@ -6,6 +6,7 @@ import { AuthenticationGuard } from "@/features/auth/guards/authentication.guard
 import AccountSetupPage from "./account/setup/account-setup.page";
 import DashboardPage from "./dashboard/dashboard.page";
 import ProblemPage from "./problem/problem.page";
+import CreatePage from "./create/create.page";
 
 const PageRoutes = () => {
   return (
@@ -13,6 +14,10 @@ const PageRoutes = () => {
       <Route
         path="account/setup"
         element={<AuthenticationGuard component={AccountSetupPage} />}
+      />
+      <Route
+        path="create"
+        element={<AuthenticationGuard component={CreatePage} />}
       />
       <Route path="dashboard" element={<DashboardPage />} />
       <Route path="problem/:slug" element={<ProblemPage />} />
