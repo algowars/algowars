@@ -1,11 +1,7 @@
 import { useTheme } from "@/features/theme/theme.provider";
+import { cn } from "@/lib/utils";
 import {
-  BlockTypeSelect,
-  BoldItalicUnderlineToggles,
-  CodeToggle,
-  InsertCodeBlock,
   MDXEditor,
-  UndoRedo,
   linkPlugin,
   listsPlugin,
   markdownShortcutPlugin,
@@ -13,11 +9,28 @@ import {
   thematicBreakPlugin,
   toolbarPlugin,
   headingsPlugin,
+  KitchenSinkToolbar,
+  linkDialogPlugin,
+  imagePlugin,
+  tablePlugin,
+  frontmatterPlugin,
+  codeBlockPlugin,
+  codeMirrorPlugin,
+  diffSourcePlugin,
 } from "@mdxeditor/editor";
 
 import "@mdxeditor/editor/style.css";
+import { materialDark } from "@uiw/codemirror-theme-material";
 
-const MarkdownEditor = () => {
+type Props = {
+  className?: string;
+  id?: string;
+};
+
+const MarkdownEditor = ({
+  className = "rounded  overflow-hidden",
+  ...props
+}: Props) => {
   const { mode } = useTheme();
 
   let editorTheme = mode;
@@ -30,28 +43,43 @@ const MarkdownEditor = () => {
 
   return (
     <MDXEditor
+      {...props}
       markdown="# Hello world"
-      className={`${editorTheme}-theme`}
+      className={cn(`${editorTheme}-theme`, className)}
       plugins={[
-        toolbarPlugin({
-          toolbarContents: () => (
-            <>
-              {" "}
-              <UndoRedo />
-              <BlockTypeSelect />
-              <BoldItalicUnderlineToggles />
-              <CodeToggle />
-              <InsertCodeBlock />
-            </>
-          ),
-        }),
-        quotePlugin(),
-        headingsPlugin(),
+        toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar /> }),
         listsPlugin(),
-        thematicBreakPlugin(),
+        quotePlugin(),
+        headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
         linkPlugin(),
+        linkDialogPlugin(),
+        imagePlugin({
+          imageAutocompleteSuggestions: [
+            "https://via.placeholder.com/150",
+            "https://via.placeholder.com/150",
+          ],
+        }),
+        tablePlugin(),
+        thematicBreakPlugin(),
+        frontmatterPlugin(),
+        codeBlockPlugin({ defaultCodeBlockLanguage: "txt" }),
+        codeMirrorPlugin({
+          codeBlockLanguages: {
+            js: "JavaScript",
+            css: "CSS",
+            txt: "text",
+            tsx: "TypeScript",
+          },
+          codeMirrorExtensions: [materialDark],
+        }),
+        diffSourcePlugin({
+          viewMode: "rich-text",
+          diffMarkdown: "boo",
+          codeMirrorExtensions: [materialDark],
+        }),
         markdownShortcutPlugin(),
       ]}
+      contentEditableClassName="prose"
     />
   );
 };

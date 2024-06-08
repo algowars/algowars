@@ -17,10 +17,12 @@ const CreateProblem = () => {
         <TypographyMuted>Create a problem for users to play.</TypographyMuted>
       </header>
       <CreateProblemProvider>
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 border-b pb-3">
           <CreateProblemTitle />
           <CreateProblemSlug />
           <CreateProblemQuestion />
+        </div>
+        <div className="flex flex-col gap-8">
           <CreateProblemInitialCode />
           <CreateProblemSolution />
         </div>

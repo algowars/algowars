@@ -13,8 +13,8 @@ const CreateProblemSolution = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      <Label>Solution</Label>
-      <CodeEditor code={code} changeCode={changeCode} />
+      <Label htmlFor="id">Solution</Label>
+      <CodeEditor code={code} changeCode={changeCode} id="solution" />
     </div>
   );
 };
