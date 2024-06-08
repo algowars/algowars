@@ -5,6 +5,9 @@ import CreateProblemTitle from "./create-problem-title/create-problem-title";
 import CreateProblemSlug from "./create-problem-slug/create-problem-slug";
 import { Button } from "@/components/ui/button";
 import TypographyMuted from "@/components/ui/typography/typography-muted";
+import CreateProblemInitialCode from "./create-problem-initial-code/create-problem-initial-code";
+import CreateProblemSolution from "./create-problem-solution/create-problem-solution";
+import CreateProblemQuestion from "./create-problem-question/create-problem-question";
 
 const CreateProblem = () => {
   return (
@@ -17,6 +20,9 @@ const CreateProblem = () => {
         <div className="flex flex-col gap-8">
           <CreateProblemTitle />
           <CreateProblemSlug />
+          <CreateProblemQuestion />
+          <CreateProblemInitialCode />
+          <CreateProblemSolution />
         </div>
         <div>
           <Button>Create Problem</Button>
