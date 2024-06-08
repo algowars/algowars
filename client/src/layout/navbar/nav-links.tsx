@@ -53,7 +53,7 @@ const adminLinks: NavLink[] = [
     href: "",
     children: [
       {
-        title: "Create",
+        title: "Create Problem",
         href: "/create",
         description: "Create problems, tests, and code setup.",
       },

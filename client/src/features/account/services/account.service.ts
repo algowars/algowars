@@ -36,7 +36,7 @@ export class AccountService extends Api {
 
   public getBySub(accessToken: string): Promise<Account> {
     const config: AxiosRequestConfig = {
-      url: "/api/v1/accont/find/sub",
+      url: "/api/v1/account/find/sub",
       headers: {
         "content-type": "application/json",
         Authorization: `Bearer ${accessToken}`,

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PageableRepository } from 'src/common/pagination/db/pageable.repository';
 import { AccountSchema } from './account.schema';
 import { DataSource } from 'typeorm';
@@ -25,11 +25,16 @@ export class AccountDtoRepository extends PageableRepository<AccountSchema> {
   }
 
   async findBySub(sub: string): Promise<AccountDto> {
+    console.log(sub);
     const account = await this.findOne({
       where: {
         sub,
       },
     });
+
+    if (!account) {
+      throw new NotFoundException('Account not found.');
+    }
 
     return this.accountDtoFactory.createFromSchema(account);
   }

@@ -20,8 +20,6 @@ export class AccountFactory implements EntityFactory<Account> {
       new Date(),
     );
 
-    console.log('ACCOUNT: ', account);
-
     await this.accountEntityRepository.create(account);
     account.apply(new AccountCreatedEvent(account.getId()));
     return account;

@@ -15,7 +15,6 @@ function checkEnvironment(configService: ConfigService) {
     'POSTGRESQL_USERNAME',
     'POSTGRESQL_PASSWORD',
     'POSTGRESQL_NAME',
-    'POSTGRESQL_CERT',
     'SYNCHRONIZE_DATABASE',
     'AUDIENCE',
     'ISSUER_BASE_URL',

@@ -19,10 +19,6 @@ import { AccountModule } from './account/account.module';
         username: configService.get('POSTGRESQL_USERNAME'),
         password: configService.get('POSTGRESQL_PASSWORD'),
         database: configService.get('POSTGRESQL_NAME'),
-        ssl: {
-          rejectUnauthorized: true,
-          ca: configService.get('POSTGRESQL_CERT'),
-        },
         synchronize: configService.get('SYNCHRONIZE_DATABASE') === 'true',
         entities: schemas,
       }),
