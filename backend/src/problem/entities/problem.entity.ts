@@ -1,5 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
+import { ProblemSetup } from './problem-setup.entity';
+import { Test } from './test.entity';
 
 export class Problem extends AggregateRoot {
   constructor(
@@ -10,6 +12,8 @@ export class Problem extends AggregateRoot {
     private readonly rating: number,
     private readonly createdAt: Date,
     private readonly updatedAt: Date,
+    private readonly setups?: ProblemSetup[],
+    private readonly tests?: Test[],
   ) {
     super();
   }
@@ -32,6 +36,14 @@ export class Problem extends AggregateRoot {
 
   getRating() {
     return this.rating;
+  }
+
+  getSetups() {
+    return [...this.setups];
+  }
+
+  getTests() {
+    return [...this.tests];
   }
 
   getCreatedAt() {

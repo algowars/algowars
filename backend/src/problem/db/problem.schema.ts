@@ -1,6 +1,14 @@
 import { PageableEntitySchema } from 'src/common/pagination/db/pageable-entity.schema';
 import { IdentifiableEntitySchema } from 'src/db/identifiable-entity.schema';
-import { Entity, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { ProblemSetupSchema } from './problem-setup.schema';
+import { TestSchema } from './test.schema';
 
 @Entity({ name: 'problem' })
 export class ProblemSchema
@@ -18,6 +26,12 @@ export class ProblemSchema
 
   @Column({ nullable: true })
   readonly rating: number;
+
+  @OneToMany(() => ProblemSetupSchema, (setup) => setup.problem)
+  readonly setups?: ProblemSetupSchema;
+
+  @OneToMany(() => TestSchema, (test) => test.problem)
+  readonly tests?: Promise<TestSchema[]>;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   readonly createdAt: Date;

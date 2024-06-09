@@ -6,6 +6,7 @@ type Props = {
   code: string;
   changeCode: (code: string) => void;
   id?: string;
+  className?: string;
 };
 
 const CodeEditor = ({ code, changeCode, ...props }: Props) => {

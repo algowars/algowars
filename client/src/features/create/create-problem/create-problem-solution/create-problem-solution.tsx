@@ -14,7 +14,12 @@ const CreateProblemSolution = () => {
   return (
     <div className="flex flex-col gap-3">
       <Label htmlFor="id">Solution</Label>
-      <CodeEditor code={code} changeCode={changeCode} id="solution" />
+      <CodeEditor
+        code={code}
+        changeCode={changeCode}
+        id="solution"
+        className="rounded overflow-hidden border"
+      />
     </div>
   );
 };

@@ -32,11 +32,14 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
   ): Promise<PaginationResponse<ProblemDto>> {
     const paginationResponse = await this.findPageable(problemPageable);
 
-    paginationResponse.results = paginationResponse.results.map((result) =>
+    const results = paginationResponse.results.map((result) =>
       this.toProblemDto(result),
     );
 
-    return paginationResponse;
+    return {
+      ...paginationResponse,
+      results,
+    };
   }
 
   private toProblemDto(problem: ProblemSchema): ProblemDto {
