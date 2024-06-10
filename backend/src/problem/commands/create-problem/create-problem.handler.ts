@@ -11,7 +11,9 @@ export class CreateProblemHandler
     private readonly eventPublisher: EventPublisher,
   ) {}
 
-  async execute({ createProblemRequest }: CreateProblemCommand): Promise<void> {
+  async execute({
+    createProblemRequest,
+  }: CreateProblemCommand): Promise<string> {
     const { title, question, slug, rating } = createProblemRequest;
 
     const problem = this.eventPublisher.mergeObjectContext(
@@ -19,5 +21,7 @@ export class CreateProblemHandler
     );
 
     problem.commit();
+
+    return problem.getId();
   }
 }

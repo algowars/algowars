@@ -46,10 +46,13 @@ export class ProblemController {
   @Post()
   async createProblem(
     @Body() createProblemRequest: CreateProblemRequest,
-  ): Promise<void> {
-    await this.commandBus.execute<CreateProblemCommand, void>(
-      new CreateProblemCommand(createProblemRequest),
-    );
+  ): Promise<string> {
+    const problemId = await this.commandBus.execute<
+      CreateProblemCommand,
+      string
+    >(new CreateProblemCommand(createProblemRequest));
+
+    return problemId;
   }
 
   @Patch(':id/title')
