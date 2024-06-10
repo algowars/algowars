@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/table";
 import { ProblemService } from "@/features/problem/services/problem.service";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ProblemsTableFooter from "./problems-table-footer/problems-table-footer";
-import ErrorAlert from "@/errors/error-alert/error-alert";
+import { toast } from "sonner";
 const ProblemsTable = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -33,9 +33,16 @@ const ProblemsTable = () => {
 
   const isEnd = problemPagination?.totalPages === problemPagination?.page;
 
+  useEffect(() => {
+    if (error?.message) {
+      toast("Error getting problems", {
+        description: error.message,
+      });
+    }
+  }, [error?.message]);
+
   return (
     <div className="flex flex-col gap-5">
-      <ErrorAlert error={error} />
       <Table>
         <TableHeader>
           <TableRow>

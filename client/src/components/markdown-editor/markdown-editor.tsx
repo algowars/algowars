@@ -25,10 +25,15 @@ import { materialDark } from "@uiw/codemirror-theme-material";
 type Props = {
   className?: string;
   id?: string;
+  markdown?: string;
+  changeMarkdown?: (value: string) => void;
 };
 
 const MarkdownEditor = ({
   className = "rounded  overflow-hidden",
+  markdown = "",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  changeMarkdown = (_) => null,
   ...props
 }: Props) => {
   const { mode } = useTheme();
@@ -44,7 +49,8 @@ const MarkdownEditor = ({
   return (
     <MDXEditor
       {...props}
-      markdown="# Hello world"
+      markdown={markdown}
+      onChange={changeMarkdown}
       className={cn(`${editorTheme}-theme`, className)}
       plugins={[
         toolbarPlugin({ toolbarContents: () => <KitchenSinkToolbar /> }),

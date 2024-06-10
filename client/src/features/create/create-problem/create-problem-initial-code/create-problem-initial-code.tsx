@@ -1,21 +1,19 @@
 import CodeEditor from "@/components/code-editor/code-editor";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useCreateProblem } from "../create-problem.provider";
 
 const CreateProblemInitialCode = () => {
-  const [code, setCode] = useState<string>(`const test = () => {
-    //code goes here
-}`);
+  const { createProblem, changeCreateProblem } = useCreateProblem();
 
   const changeCode = (value: string) => {
-    setCode(value);
+    changeCreateProblem("initialCode", value);
   };
 
   return (
     <div className="flex flex-col gap-3">
       <Label htmlFor="initial-code">Initial Code</Label>
       <CodeEditor
-        code={code}
+        code={createProblem.initialCode ?? ""}
         changeCode={changeCode}
         id="initial-code"
         className="rounded overflow-hidden border"

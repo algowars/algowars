@@ -20,7 +20,7 @@ const Layout = ({
 }: Props) => {
   return (
     <div className={className}>
-      <header className="z-50 sticky top-0">
+      <header className="z-50 sticky top-0 bg-background">
         {!hideAccountExistBanner ? <AccountExistBanner /> : null}
         <Navbar />
       </header>

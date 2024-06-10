@@ -17,7 +17,8 @@ import { z } from "zod";
 import { AccountService } from "../../services/account.service";
 import { CreateAccountDto } from "../../dtos/create-account.dto";
 import { useNavigate } from "react-router-dom";
-import ErrorAlert from "@/errors/error-alert/error-alert";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   username: z.string().max(50, {
@@ -60,9 +61,16 @@ const AccountSetupForm = () => {
     createAccount(values);
   };
 
+  useEffect(() => {
+    if (error?.message) {
+      toast.error("Error Setting up account", {
+        description: error.message,
+      });
+    }
+  }, [error?.message]);
+
   return (
     <Form {...form}>
-      <ErrorAlert error={error} />
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}

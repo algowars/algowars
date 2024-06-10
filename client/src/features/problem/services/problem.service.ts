@@ -2,6 +2,7 @@ import { PaginationResponse } from "@/common/pagination/pagination-response.mode
 import { Problem } from "../models/problem.model";
 import { AxiosRequestConfig } from "axios";
 import { Api } from "@/api/api";
+import { CreateProblemDto } from "../dtos/create-problem.dto";
 
 export class ProblemService extends Api {
   private static instance: ProblemService;
@@ -33,5 +34,21 @@ export class ProblemService extends Api {
     };
 
     return this.callExternalApi<PaginationResponse<Problem>>({ config });
+  }
+
+  public createProblem(
+    accessToken: string,
+    createProblemDto: CreateProblemDto
+  ): Promise<string> {
+    const config: AxiosRequestConfig = {
+      url: "/api/v1/problem",
+      method: "POST",
+      data: createProblemDto,
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+    return this.callExternalApi<string>({ config });
   }
 }
