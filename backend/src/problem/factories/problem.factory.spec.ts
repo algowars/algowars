@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ProblemEntityRepository } from './db/problem-entity.repository';
+import { ProblemEntityRepository } from '../db/problem-entity.repository';
 import { ProblemFactory } from './problem.factory';
-import { ProblemEntityRepositoryMock } from './db/problem-entity.repository.mock';
-import { ProblemCreatedEvent } from './events/problem-created.event';
+import { ProblemEntityRepositoryMock } from '../db/problem-entity.repository.mock';
+import { ProblemCreatedEvent } from '../events/problem-created.event';
 
 describe('ProblemFactory', () => {
   let problemFactory: ProblemFactory;

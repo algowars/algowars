@@ -3,7 +3,7 @@ import { ProblemController } from './problem.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ProblemEntityRepository } from './db/problem-entity.repository';
 import { ProblemSchemaFactory } from './db/problem-schema.factory';
-import { ProblemFactory } from './problem.factory';
+import { ProblemFactory } from './factories/problem.factory';
 import { ProblemCommandHandlers } from './commands';
 import { ProblemEventHandlers } from './events';
 import { TypeOrmModule } from '@nestjs/typeorm';

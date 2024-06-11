@@ -5,7 +5,7 @@ import { TestSchema } from './test.schema';
 @Entity({ name: 'test-input' })
 export class TestInputSchema extends IdentifiableEntitySchema {
   @ManyToOne(() => TestSchema, (test) => test.inputs)
-  readonly test: Promise<TestSchema>;
+  readonly test?: Promise<TestSchema>;
 
   @Column({ nullable: false, length: 50 })
   readonly label: string;

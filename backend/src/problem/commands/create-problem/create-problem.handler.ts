@@ -1,5 +1,5 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { ProblemFactory } from '../../problem.factory';
+import { ProblemFactory } from '../../factories/problem.factory';
 import { CreateProblemCommand } from './create-problem.command';
 
 @CommandHandler(CreateProblemCommand)
