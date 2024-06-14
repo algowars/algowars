@@ -12,8 +12,8 @@ export class Problem extends AggregateRoot {
     private readonly rating: number,
     private readonly createdAt: Date,
     private readonly updatedAt: Date,
-    private readonly setups?: ProblemSetup[],
-    private readonly tests?: Test[],
+    private setups: ProblemSetup[] = [],
+    private tests: Test[] = [],
   ) {
     super();
   }
@@ -42,8 +42,16 @@ export class Problem extends AggregateRoot {
     return [...this.setups];
   }
 
+  addSetup(setup: ProblemSetup): void {
+    this.setups.push(setup);
+  }
+
   getTests() {
     return [...this.tests];
+  }
+
+  setTests(tests: Test[]) {
+    this.tests = tests;
   }
 
   getCreatedAt() {

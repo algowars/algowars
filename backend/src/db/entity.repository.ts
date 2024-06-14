@@ -52,7 +52,9 @@ export abstract class EntityRepository<
     });
   }
   async create(entity: Entity): Promise<void> {
-    this.entityRepository.save(this.entitySchemaFactory.create(entity));
+    const schema = this.entitySchemaFactory.create(entity);
+    console.log('ENTITY: ', schema);
+    this.entityRepository.save(schema);
   }
 
   async upsert(entity: Entity): Promise<void> {

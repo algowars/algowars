@@ -8,7 +8,9 @@ import { TestInputSchemaFactory } from './test-input.schema.factory';
 export class TestSchemaFactory
   implements EntitySchemaFactory<TestSchema, Test>
 {
-  constructor(testInputSchemaFactory: TestInputSchemaFactory) {}
+  constructor(
+    private readonly testInputSchemaFactory: TestInputSchemaFactory,
+  ) {}
 
   create(test: Test): TestSchema {
     return {
@@ -21,7 +23,14 @@ export class TestSchemaFactory
     };
   }
 
-  createFromSchema(entitySchema: TestSchema): Test {
-    throw new Error('Method not implemented.');
+  createFromSchema(testSchema: TestSchema): Test {
+    throw new Test(
+      testSchema.id,
+      testSchema.expectedOutput,
+      testSchema.order,
+      testSchema.inputs.map((input) =>
+        this.testInputSchemaFactory.createFromSchema(input),
+      ),
+    );
   }
 }

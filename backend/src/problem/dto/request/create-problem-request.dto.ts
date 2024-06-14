@@ -31,4 +31,7 @@ export class CreateProblemRequest {
   @IsString()
   @IsNotEmpty()
   testSetup: string;
+
+  @IsNumber()
+  languageId: number;
 }

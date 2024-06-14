@@ -27,11 +27,15 @@ export class ProblemSchema
   @Column({ nullable: true })
   readonly rating: number;
 
-  @OneToMany(() => ProblemSetupSchema, (setup) => setup.problem)
+  @OneToMany(() => ProblemSetupSchema, (setup) => setup.problem, {
+    cascade: true,
+  })
   readonly setups?: ProblemSetupSchema;
 
-  @OneToMany(() => TestSchema, (test) => test.problem)
-  readonly tests?: Promise<TestSchema[]>;
+  @OneToMany(() => TestSchema, (test) => test.problem, {
+    cascade: true,
+  })
+  readonly tests?: TestSchema[];
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   readonly createdAt: Date;

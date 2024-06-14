@@ -12,8 +12,10 @@ export class TestSchema extends IdentifiableEntitySchema {
   readonly order: number;
 
   @ManyToOne(() => ProblemSchema, (problem) => problem.tests)
-  readonly problem: ProblemSchema;
+  readonly problem?: ProblemSchema;
 
-  @OneToMany(() => TestInputSchema, (testInput) => testInput.test)
+  @OneToMany(() => TestInputSchema, (testInput) => testInput.test, {
+    cascade: true,
+  })
   readonly inputs: TestInputSchema[];
 }

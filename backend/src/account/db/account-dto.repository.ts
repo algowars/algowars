@@ -25,7 +25,6 @@ export class AccountDtoRepository extends PageableRepository<AccountSchema> {
   }
 
   async findBySub(sub: string): Promise<AccountDto> {
-    console.log(sub);
     const account = await this.findOne({
       where: {
         sub,

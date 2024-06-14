@@ -49,6 +49,10 @@ export class ProblemService extends Api {
         Authorization: `Bearer ${accessToken}`,
       },
     };
+
+    // javaScript language id
+    config.data.languageId = 93;
+
     return this.callExternalApi<string>({ config });
   }
 }

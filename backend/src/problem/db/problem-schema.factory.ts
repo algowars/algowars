@@ -8,6 +8,7 @@ export class ProblemSchemaFactory
   implements EntitySchemaFactory<ProblemSchema, Problem>
 {
   create(problem: Problem): ProblemSchema {
+    console.log('PROBLEM TO CREATE: ', problem);
     return {
       id: problem.getId(),
       title: problem.getTitle(),
@@ -16,6 +17,8 @@ export class ProblemSchemaFactory
       rating: problem.getRating(),
       createdAt: problem.getCreatedAt(),
       updatedAt: problem.getUpdatedAt(),
+      setups: problem.getSetups() as any,
+      tests: problem.getTests() as any,
     };
   }
 
