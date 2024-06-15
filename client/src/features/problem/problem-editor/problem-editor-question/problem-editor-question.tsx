@@ -9,7 +9,7 @@ type Props = {
 
 const ProblemEditorQuestion = ({ problem }: Props) => {
   return (
-    <Card className="p-5 flex flex-col gap-5 h-full">
+    <Card className="p-5 flex flex-col gap-5 h-full overflow-auto">
       <header className="pb-5 border-b">
         <TypographyH4>{problem.title}</TypographyH4>
       </header>

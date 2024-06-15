@@ -15,7 +15,7 @@ const ProblemEditorTestcases = ({ tests }: Props) => {
 
   const currentTest = tests[currentTestIndex] ?? null;
   return (
-    <Card className="h-full">
+    <Card className="h-full overflow-auto">
       <ProblemEditorTestcasesNav tests={tests} />
       {currentTest ? (
         <div className="p-5 flex flex-col gap-5">

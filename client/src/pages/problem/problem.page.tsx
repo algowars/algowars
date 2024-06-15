@@ -1,5 +1,6 @@
 import PageLoader from "@/components/loader/page-loader/page-loader";
 import ProblemEditor from "@/features/problem/problem-editor/problem-editor";
+import ProblemEditorFooter from "@/features/problem/problem-editor/problem-editor-footer/problem-editor-footer";
 import { ProblemEditorProvider } from "@/features/problem/problem-editor/problem-editor.provider";
 import { ProblemService } from "@/features/problem/services/problem.service";
 import LayoutProblem from "@/layout/layout-problem/layout-problem";
@@ -39,9 +40,15 @@ const ProblemPage = () => {
   return (
     <LayoutProblem>
       {problemAggregate ? (
-        <ProblemEditorProvider>
-          <ProblemEditor problemAggregate={problemAggregate} />
-        </ProblemEditorProvider>
+        <div className="flex flex-col h-full">
+          <ProblemEditorProvider>
+            <div className="grow pb-5">
+              <ProblemEditor problemAggregate={problemAggregate} />
+            </div>
+
+            <ProblemEditorFooter />
+          </ProblemEditorProvider>
+        </div>
       ) : null}
     </LayoutProblem>
   );

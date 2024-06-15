@@ -14,7 +14,10 @@ type Props = {
 };
 
 const ProblemEditor = ({ problemAggregate }: Props) => {
-  const changeCode = (value: string) => {};
+  const changeCode = (value: string) => {
+    console.log(value);
+  };
+
   return (
     <ResizablePanelGroup direction="horizontal" className="w-full">
       <ResizablePanel defaultSize={55}>
