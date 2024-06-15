@@ -1,10 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ProblemSchema } from './problem.schema';
 import { ProblemDto } from '../dto/problem.dto';
 import { Pageable } from 'src/common/pagination/dto/pageable';
 import { PaginationResponse } from 'src/common/pagination/dto/response/pagination-response.dto';
 import { PageableRepository } from 'src/common/pagination/db/pageable.repository';
 import { DataSource } from 'typeorm';
+import { ProblemAggregateDto } from '../dto/problem-aggregate.dto';
+import { ProblemSetupSchema } from './problem-setup.schema';
+import { TestSchema } from './test.schema';
+import { TestDto } from '../dto/test.dto';
+import { TestInputDto } from '../dto/test-input.dto';
+import { TestInputSchema } from './test-input.schema';
 
 @Injectable()
 export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
@@ -25,6 +31,43 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
     });
 
     return this.toProblemDto(problem);
+  }
+
+  async findAggregateBySlug(
+    slug: string,
+    languageId: number,
+  ): Promise<ProblemAggregateDto> {
+    const problem = await this.dataSource.getRepository(ProblemSchema).findOne({
+      where: {
+        slug,
+      },
+      relations: ['tests', 'tests.inputs'],
+    });
+
+    if (!problem) {
+      throw new NotFoundException(`Problem by the slug: ${slug} not found`);
+    }
+
+    const setup = await this.dataSource
+      .getRepository(ProblemSetupSchema)
+      .findOne({
+        where: {
+          problemId: problem.id,
+          languageId,
+        },
+      });
+
+    if (!setup) {
+      throw new NotFoundException(
+        'Problem is not compatible with the given language',
+      );
+    }
+
+    return {
+      problem: this.toProblemDto(problem),
+      initialCode: setup.initialCode,
+      testCases: problem?.tests?.map((test) => this.toTestDto(test)),
+    };
   }
 
   async findProblemsPageable(
@@ -51,6 +94,19 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
       rating: problem.rating,
       createdAt: problem.createdAt,
       updatedAt: problem.updatedAt,
+    };
+  }
+
+  private toTestDto(test: TestSchema): TestDto {
+    return {
+      inputs: test?.inputs?.map((input) => this.toTestInputDto(input)) ?? [],
+    };
+  }
+
+  private toTestInputDto(testInput: TestInputSchema): TestInputDto {
+    return {
+      label: testInput.label,
+      input: testInput.input,
     };
   }
 }

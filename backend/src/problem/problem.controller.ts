@@ -18,6 +18,9 @@ import { ProblemsPaginationQuery } from './queries/problems-pagination/problems-
 import { FindProblemByIdQuery } from './queries/find-problem-by-id/find-problem-by-id.query';
 import { PaginationResponse } from 'src/common/pagination/dto/response/pagination-response.dto';
 import { FindProblemDto } from './dto/request/find-problem.dto';
+import { FindProblemSlugDto } from './dto/request/find-problem-slug.dto';
+import { ProblemAggregateDto } from './dto/problem-aggregate.dto';
+import { FindProblemAggregateBySlugQuery } from './queries/find-problem-aggregate-by-slug/find-problem-aggregate-by-slug.query';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -26,11 +29,21 @@ export class ProblemController {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @Get(':id')
+  @Get('find/:id')
   getProblem(@Param() findProblemDto: FindProblemDto): Promise<ProblemDto> {
     return this.queryBus.execute<FindProblemByIdQuery, ProblemDto>(
       new FindProblemByIdQuery(findProblemDto.id),
     );
+  }
+
+  @Get('slug')
+  getProblemAggregateBySlug(
+    @Query() findProblemSlug: FindProblemSlugDto,
+  ): Promise<ProblemAggregateDto> {
+    return this.queryBus.execute<
+      FindProblemAggregateBySlugQuery,
+      ProblemAggregateDto
+    >(new FindProblemAggregateBySlugQuery(findProblemSlug));
   }
 
   @Get()

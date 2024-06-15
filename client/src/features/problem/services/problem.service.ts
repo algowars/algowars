@@ -3,9 +3,11 @@ import { Problem } from "../models/problem.model";
 import { AxiosRequestConfig } from "axios";
 import { Api } from "@/api/api";
 import { CreateProblemDto } from "../dtos/create-problem.dto";
+import { ProblemAggregate } from "../models/problem-aggregate.model";
 
 export class ProblemService extends Api {
   private static instance: ProblemService;
+  private JAVASCRIPT_LANGUAGE_ID = 93;
 
   private constructor() {
     super();
@@ -51,8 +53,23 @@ export class ProblemService extends Api {
     };
 
     // javaScript language id
-    config.data.languageId = 93;
+    config.data.languageId = this.JAVASCRIPT_LANGUAGE_ID;
 
     return this.callExternalApi<string>({ config });
+  }
+
+  public findProblemAggregateBySlug(slug: string): Promise<ProblemAggregate> {
+    const config: AxiosRequestConfig = {
+      url: "/api/v1/problem/slug",
+      params: {
+        slug,
+        languageId: this.JAVASCRIPT_LANGUAGE_ID,
+      },
+      headers: {
+        "content-type": "application/json",
+      },
+    };
+
+    return this.callExternalApi<ProblemAggregate>({ config });
   }
 }
