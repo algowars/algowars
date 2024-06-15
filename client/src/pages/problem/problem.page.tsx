@@ -1,5 +1,6 @@
 import PageLoader from "@/components/loader/page-loader/page-loader";
 import ProblemEditor from "@/features/problem/problem-editor/problem-editor";
+import { ProblemEditorProvider } from "@/features/problem/problem-editor/problem-editor.provider";
 import { ProblemService } from "@/features/problem/services/problem.service";
 import LayoutProblem from "@/layout/layout-problem/layout-problem";
 import { useQuery } from "@tanstack/react-query";
@@ -38,7 +39,9 @@ const ProblemPage = () => {
   return (
     <LayoutProblem>
       {problemAggregate ? (
-        <ProblemEditor problemAggregate={problemAggregate} />
+        <ProblemEditorProvider>
+          <ProblemEditor problemAggregate={problemAggregate} />
+        </ProblemEditorProvider>
       ) : null}
     </LayoutProblem>
   );

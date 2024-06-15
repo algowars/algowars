@@ -113,7 +113,9 @@ export const useCreateProblem = () => {
   const context = useContext(CreateProblemProviderContext);
 
   if (context === undefined)
-    throw new Error("useTheme must be used within a ThemeProvider");
+    throw new Error(
+      "useCreateProblem must be used within CreateProblemProvider"
+    );
 
   return context;
 };
