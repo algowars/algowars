@@ -42,7 +42,7 @@ const ProblemPage = () => {
       {problemAggregate ? (
         <div className="flex flex-col h-full">
           <ProblemEditorProvider>
-            <div className="grow pb-5">
+            <div className="grow pb-5 px-5">
               <ProblemEditor problemAggregate={problemAggregate} />
             </div>
 

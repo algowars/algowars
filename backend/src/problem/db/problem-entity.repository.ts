@@ -19,15 +19,13 @@ export class ProblemEntityRepository extends BaseEntityRepository<
     super(problemRepository, problemSchemaFactory);
   }
 
-  async findBySlug(slug: string): Promise<Problem[]> {
-    const problemDocuments = await this.entityRepository.find({
+  async findBySlug(slug: string): Promise<Problem> {
+    const foundProblem = await this.entityRepository.findOne({
       where: {
         slug,
       },
     });
 
-    return problemDocuments.map((problemDocument) =>
-      this.entitySchemaFactory.createFromSchema(problemDocument),
-    );
+    return this.entitySchemaFactory.createFromSchema(foundProblem);
   }
 }
