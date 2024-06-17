@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { IdentifiableEntitySchema } from 'src/db/identifiable-entity.schema';
-import { ProblemSchema } from './problem.schema';
 import { TestInputSchema } from './test-input.schema';
+import { ProblemSchema } from '../problem/problem.schema';
 
 @Entity({ name: 'test' })
 export class TestSchema extends IdentifiableEntitySchema {

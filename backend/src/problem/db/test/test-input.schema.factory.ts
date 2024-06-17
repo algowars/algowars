@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EntitySchemaFactory } from 'src/db/entity-schema.factory';
 import { TestInputSchema } from './test-input.schema';
-import { TestInput } from '../entities/test-input.entity';
+import { TestInput } from 'src/problem/entities/test-input.entity';
 
 @Injectable()
 export class TestInputSchemaFactory

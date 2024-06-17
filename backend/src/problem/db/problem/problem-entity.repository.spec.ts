@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProblemEntityRepository } from './problem-entity.repository';
 import { Repository } from 'typeorm';
-import { ProblemSchema } from './problem.schema';
-import { Problem } from '../entities/problem.entity';
+import { ProblemSchema } from '../problem.schema';
+import { Problem } from '../../entities/problem.entity';
 import { ProblemSchemaFactory } from './problem-schema.factory';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { BaseEntityRepository } from 'src/db/base-entity.repository';

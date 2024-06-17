@@ -3,28 +3,26 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { ProblemAggregate } from "../models/problem-aggregate.model";
 import ProblemEditorQuestion from "./problem-editor-question/problem-editor-question";
 import CodeEditor from "@/components/code-editor/code-editor";
 import { Card } from "@/components/ui/card";
 import ProblemEditorTestcases from "./problem-editor-testcases/problem-editor-testcases";
+import { ProblemAggregate } from "../models/problem-aggregate.model";
+import { useProblemEditor } from "./problem-editor.provider";
 
 type Props = {
   problemAggregate: ProblemAggregate;
 };
 
 const ProblemEditor = ({ problemAggregate }: Props) => {
-  const changeCode = (value: string) => {
-    console.log(value);
-  };
-
+  const { sourceCode, changeSourceCode } = useProblemEditor();
   return (
     <ResizablePanelGroup direction="horizontal" className="w-full">
       <ResizablePanel defaultSize={55}>
         <Card className="overflow-hidden h-full">
           <CodeEditor
-            code={problemAggregate.initialCode}
-            changeCode={changeCode}
+            code={sourceCode}
+            changeCode={changeSourceCode}
             className="h-full"
           />
         </Card>

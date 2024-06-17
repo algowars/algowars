@@ -13,7 +13,7 @@ export class EvaluationService {
     }[]
   > {
     const data = {
-      submissions: createJudgeSubmission,
+      submissions: this.encodeJudgeSubmissions(createJudgeSubmission),
     };
 
     try {
@@ -54,11 +54,29 @@ export class EvaluationService {
     );
   }
 
-  encode(str) {
+  private encodeJudgeSubmissions(
+    judgeSubmission: CreateJudgeSubmission[],
+  ): CreateJudgeSubmission[] {
+    return judgeSubmission.map((submission) => {
+      const encodedSubmission: CreateJudgeSubmission = submission;
+
+      for (const [key, value] of Object.entries(submission)) {
+        if (typeof value === 'string') {
+          encodedSubmission[key] = this.encode(value);
+        } else {
+          encodedSubmission[key] = value;
+        }
+      }
+
+      return encodedSubmission;
+    });
+  }
+
+  private encode(str: string) {
     return btoa(unescape(encodeURIComponent(str || '')));
   }
 
-  decode(bytes) {
+  private decode(bytes: string) {
     const escaped = escape(atob(bytes || ''));
     try {
       return decodeURIComponent(escaped);

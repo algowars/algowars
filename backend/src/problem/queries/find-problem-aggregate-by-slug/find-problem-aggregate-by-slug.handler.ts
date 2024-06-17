@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { FindProblemAggregateBySlugQuery } from './find-problem-aggregate-by-slug.query';
-import { ProblemDtoRepository } from 'src/problem/db/problem-dto.repository';
 import { ProblemAggregateDto } from 'src/problem/dto/problem-aggregate.dto';
+import { ProblemDtoRepository } from 'src/problem/db/problem/problem-dto.repository';
 
 @QueryHandler(FindProblemAggregateBySlugQuery)
 export class FindProblemAggregateBySlugHandler

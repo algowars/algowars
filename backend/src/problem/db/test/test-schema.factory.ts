@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { EntitySchemaFactory } from 'src/db/entity-schema.factory';
 import { TestSchema } from './test.schema';
-import { Test } from '../entities/test.entity';
 import { TestInputSchemaFactory } from './test-input.schema.factory';
+import { Test } from 'src/problem/entities/test.entity';
 
 @Injectable()
 export class TestSchemaFactory
@@ -24,13 +24,19 @@ export class TestSchemaFactory
   }
 
   createFromSchema(testSchema: TestSchema): Test {
-    throw new Test(
+    let inputs = [];
+
+    if (testSchema.inputs) {
+      inputs = testSchema.inputs.map((input) =>
+        this.testInputSchemaFactory.createFromSchema(input),
+      );
+    }
+
+    return new Test(
       testSchema.id,
       testSchema.expectedOutput,
       testSchema.order,
-      testSchema.inputs.map((input) =>
-        this.testInputSchemaFactory.createFromSchema(input),
-      ),
+      inputs,
     );
   }
 }

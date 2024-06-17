@@ -1,6 +1,6 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateTitleCommand } from './update-title.command';
-import { ProblemEntityRepository } from 'src/problem/db/problem-entity.repository';
+import { ProblemEntityRepository } from 'src/problem/db/problem/problem-entity.repository';
 
 @CommandHandler(UpdateTitleCommand)
 export class UpdateTitleHandler implements ICommandHandler<UpdateTitleCommand> {

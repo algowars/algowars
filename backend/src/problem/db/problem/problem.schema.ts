@@ -7,8 +7,8 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { ProblemSetupSchema } from './problem-setup.schema';
-import { TestSchema } from './test.schema';
+import { ProblemSetupSchema } from '../problem-setup/problem-setup.schema';
+import { TestSchema } from '../test/test.schema';
 
 @Entity({ name: 'problem' })
 export class ProblemSchema
@@ -30,7 +30,7 @@ export class ProblemSchema
   @OneToMany(() => ProblemSetupSchema, (setup) => setup.problem, {
     cascade: true,
   })
-  readonly setups?: ProblemSetupSchema;
+  readonly setups?: ProblemSetupSchema[];
 
   @OneToMany(() => TestSchema, (test) => test.problem, {
     cascade: true,

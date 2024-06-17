@@ -1,6 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateJudgeSubmission } from '../dto/judge0/create-judge0-submission.dto';
-import { Problem } from 'src/problem/entities/problem.entity';
 import { ProblemSetup } from 'src/problem/entities/problem-setup.entity';
 import { Test } from 'src/problem/entities/test.entity';
 
@@ -18,12 +17,18 @@ export class Judge0SubmissionFactory {
       );
     }
 
-    return tests.map((test) => ({
-      language_id,
-      source_code: `
+    console.log(
+      'CODE: ',
+      `
         ${source_code}
         ${problemSetup.getTestSetup()}
         `,
+    );
+
+    return tests.map((test) => ({
+      language_id,
+      source_code: `${source_code}
+${problemSetup.getTestSetup()}`,
       expected_output: test.getExpectedOutput(),
       stdin: test
         .getInputs()

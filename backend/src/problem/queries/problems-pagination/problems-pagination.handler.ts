@@ -1,8 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { ProblemsPaginationQuery } from './problems-pagination.query';
-import { ProblemDtoRepository } from 'src/problem/db/problem-dto.repository';
 import { PaginationResponse } from 'src/common/pagination/dto/response/pagination-response.dto';
 import { ProblemDto } from 'src/problem/dto/problem.dto';
+import { ProblemDtoRepository } from 'src/problem/db/problem/problem-dto.repository';
 
 @QueryHandler(ProblemsPaginationQuery)
 export class ProblemsPaginationHandler

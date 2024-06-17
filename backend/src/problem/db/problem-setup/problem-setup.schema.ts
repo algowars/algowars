@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
-import { ProblemSchema } from './problem.schema';
+import { ProblemSchema } from '../problem/problem.schema';
 
 @Entity({ name: 'problem_setup' })
 export class ProblemSetupSchema {

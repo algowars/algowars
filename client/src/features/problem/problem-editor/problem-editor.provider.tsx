@@ -2,16 +2,25 @@ import { createContext, useContext, useState } from "react";
 
 type ProblemEditorProviderProps = {
   children: React.ReactNode;
+  runExecutable: () => void;
+  sourceCode: string;
+  changeSourceCode: (val: string) => void;
 };
 
 export type ProblemEditorProviderState = {
   currentTestIndex: number;
   changeCurrentTestIndex: (val: number) => void;
+  runExecutable: () => void;
+  sourceCode: string;
+  changeSourceCode: (val: string) => void;
 };
 
 const initialState: ProblemEditorProviderState = {
   currentTestIndex: 0,
   changeCurrentTestIndex: () => null,
+  runExecutable: () => null,
+  sourceCode: "",
+  changeSourceCode: () => null,
 };
 
 const ProblemEditorProviderContext =
@@ -19,6 +28,9 @@ const ProblemEditorProviderContext =
 
 export function ProblemEditorProvider({
   children,
+  runExecutable,
+  sourceCode,
+  changeSourceCode,
   ...props
 }: ProblemEditorProviderProps) {
   const [currentTestIndex, setCurrentTestIndex] = useState<number>(0);
@@ -30,6 +42,9 @@ export function ProblemEditorProvider({
   const value = {
     currentTestIndex,
     changeCurrentTestIndex,
+    runExecutable,
+    sourceCode,
+    changeSourceCode,
   };
 
   return (

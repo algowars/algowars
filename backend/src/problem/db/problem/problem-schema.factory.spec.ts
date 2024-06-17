@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProblemSchemaFactory } from './problem-schema.factory';
-import { ProblemSchema } from './problem.schema';
 import { Problem } from 'src/problem/entities/problem.entity';
+import { ProblemSchema } from './problem.schema';
 
 describe('ProblemSchemaFactory', () => {
   let factory: ProblemSchemaFactory;

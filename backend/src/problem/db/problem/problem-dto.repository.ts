@@ -1,16 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ProblemSchema } from './problem.schema';
-import { ProblemDto } from '../dto/problem.dto';
 import { Pageable } from 'src/common/pagination/dto/pageable';
 import { PaginationResponse } from 'src/common/pagination/dto/response/pagination-response.dto';
 import { PageableRepository } from 'src/common/pagination/db/pageable.repository';
 import { DataSource } from 'typeorm';
-import { ProblemAggregateDto } from '../dto/problem-aggregate.dto';
-import { ProblemSetupSchema } from './problem-setup.schema';
-import { TestSchema } from './test.schema';
-import { TestDto } from '../dto/test.dto';
-import { TestInputDto } from '../dto/test-input.dto';
-import { TestInputSchema } from './test-input.schema';
+import { ProblemSchema } from './problem.schema';
+import { ProblemDto } from 'src/problem/dto/problem.dto';
+import { ProblemAggregateDto } from 'src/problem/dto/problem-aggregate.dto';
+import { ProblemSetupSchema } from '../problem-setup/problem-setup.schema';
+import { TestSchema } from '../test/test.schema';
+import { TestDto } from 'src/problem/dto/test.dto';
+import { TestInputSchema } from '../test/test-input.schema';
+import { TestInputDto } from 'src/problem/dto/test-input.dto';
 
 @Injectable()
 export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {

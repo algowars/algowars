@@ -1,12 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { ProblemSchema } from './problem.schema';
 import { Problem } from 'src/problem/entities/problem.entity';
 import { EntitySchemaFactory } from 'src/db/entity-schema.factory';
+import { ProblemSchema } from './problem.schema';
+import { TestSchemaFactory } from '../test/test-schema.factory';
+import { ProblemSetupSchemaFactory } from '../problem-setup/problem-setup-schema.factory';
 
 @Injectable()
 export class ProblemSchemaFactory
   implements EntitySchemaFactory<ProblemSchema, Problem>
 {
+  constructor(
+    private readonly testSchemaFactory: TestSchemaFactory,
+    private readonly problemSetupSchemaFactory: ProblemSetupSchemaFactory,
+  ) {}
+
   create(problem: Problem): ProblemSchema {
     return {
       id: problem.getId(),
@@ -22,6 +29,20 @@ export class ProblemSchemaFactory
   }
 
   createFromSchema(problemSchema: ProblemSchema): Problem {
+    let setups = [];
+    let tests = [];
+
+    if (problemSchema.setups) {
+      setups = problemSchema.setups.map((setup) =>
+        this.problemSetupSchemaFactory.createFromSchema(setup),
+      );
+    }
+
+    if (problemSchema.tests) {
+      tests = problemSchema.tests.map((test) =>
+        this.testSchemaFactory.createFromSchema(test),
+      );
+    }
     return new Problem(
       problemSchema.id,
       problemSchema.title,
@@ -30,6 +51,8 @@ export class ProblemSchemaFactory
       problemSchema.rating,
       problemSchema.createdAt,
       problemSchema.updatedAt,
+      setups,
+      tests,
     );
   }
 }
