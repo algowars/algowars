@@ -5,17 +5,24 @@ import { useProblemEditor } from "../problem-editor.provider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import TypographyH4 from "@/components/ui/typography/typography-h4";
+import { cn } from "@/lib/utils";
 
 type Props = {
   tests: Test[];
+  className?: string;
+  inputClassName?: string;
 };
 
-const ProblemEditorTestcases = ({ tests }: Props) => {
+const ProblemEditorTestcases = ({
+  tests,
+  className,
+  inputClassName,
+}: Props) => {
   const { currentTestIndex } = useProblemEditor();
 
   const currentTest = tests[currentTestIndex] ?? null;
   return (
-    <Card className="h-full overflow-auto">
+    <Card className={cn("h-full overflow-auto", className)}>
       <ProblemEditorTestcasesNav tests={tests} />
       {currentTest ? (
         <div className="p-5 flex flex-col gap-5">
@@ -24,7 +31,11 @@ const ProblemEditorTestcases = ({ tests }: Props) => {
             {currentTest.inputs.map((input) => (
               <li key={input.label} className="flex flex-col gap-3">
                 <Label htmlFor={input.label}>{input.label}</Label>
-                <Input id={input.label} value={input.input} />
+                <Input
+                  id={input.label}
+                  value={input.input}
+                  className={inputClassName}
+                />
               </li>
             ))}
           </ul>

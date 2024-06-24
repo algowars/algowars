@@ -31,11 +31,18 @@ const ProblemEditor = ({ problemAggregate }: Props) => {
       <ResizablePanel defaultSize={45}>
         <ResizablePanelGroup direction="vertical">
           <ResizablePanel defaultSize={75}>
-            <ProblemEditorQuestion problem={problemAggregate.problem} />
+            <ProblemEditorQuestion
+              problem={problemAggregate.problem}
+              className="bg-muted/40"
+            />
           </ResizablePanel>
           <ResizableHandle className="py-2 bg-inherit" />
           <ResizablePanel defaultSize={25}>
-            <ProblemEditorTestcases tests={problemAggregate.testCases} />
+            <ProblemEditorTestcases
+              tests={problemAggregate.testCases}
+              className="bg-muted/40"
+              inputClassName="bg-muted/50"
+            />
           </ResizablePanel>
         </ResizablePanelGroup>
       </ResizablePanel>
