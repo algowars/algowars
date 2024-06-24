@@ -1,9 +1,10 @@
 import Logo from "@/components/logo/logo";
-import NavbarAvatar from "@/layout/navbar/navbar-avatar/navbar-avatar";
 import { useAuth0 } from "@auth0/auth0-react";
+import LayoutProblemNavbarSignedIn from "./layout-problem-navbar-signed-in/layout-problem-navbar-signed-in";
+import LayoutProblemNavbarLoggedOut from "./layout-problem-navbar-logged-out/layout-problem-navbar-logged-out";
 
 const LayoutProblemNavbar = () => {
-  const { user } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   return (
     <nav className="h-14">
@@ -13,11 +14,11 @@ const LayoutProblemNavbar = () => {
             <Logo />
           </li>
         </ul>
-        <ul className="flex items-center gap-1 text-sm">
-          <li>
-            <NavbarAvatar url={user?.picture} />
-          </li>
-        </ul>
+        {isAuthenticated ? (
+          <LayoutProblemNavbarSignedIn />
+        ) : (
+          <LayoutProblemNavbarLoggedOut />
+        )}
       </div>
     </nav>
   );
