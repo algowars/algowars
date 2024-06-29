@@ -41,7 +41,7 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
       where: {
         slug,
       },
-      relations: ['tests', 'tests.inputs'],
+      relations: ['tests', 'tests.inputs', 'tags'],
     });
 
     if (!problem) {

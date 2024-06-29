@@ -18,6 +18,7 @@ import { TestInputSchemaFactory } from './db/test/test-input.schema.factory';
 import { ProblemSetupSchema } from './db/problem-setup/problem-setup.schema';
 import { TestSchema } from './db/test/test.schema';
 import { TestInputSchema } from './db/test/test-input.schema';
+import { TagSchema } from './db/tag/tag.schema';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { TestInputSchema } from './db/test/test-input.schema';
     TypeOrmModule.forFeature([
       ProblemSchema,
       ProblemSetupSchema,
+      TagSchema,
       TestSchema,
       TestInputSchema,
     ]),

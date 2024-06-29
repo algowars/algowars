@@ -1,3 +1,5 @@
+import { Tag } from '../entities/tag.entity';
+
 export class ProblemDto {
   readonly id: string;
   readonly title: string;
@@ -6,4 +8,5 @@ export class ProblemDto {
   readonly rating: number;
   readonly createdAt: Date;
   readonly updatedAt: Date;
+  readonly tags: Tag[];
 }

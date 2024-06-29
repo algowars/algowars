@@ -6,9 +6,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { ProblemSetupSchema } from '../problem-setup/problem-setup.schema';
 import { TestSchema } from '../test/test.schema';
+import { TagSchema } from '../tag/tag.schema';
 
 @Entity({ name: 'problem' })
 export class ProblemSchema
@@ -36,6 +39,10 @@ export class ProblemSchema
     cascade: true,
   })
   readonly tests?: TestSchema[];
+
+  @ManyToMany(() => TagSchema, { nullable: false })
+  @JoinTable({ name: 'problem_tags' })
+  readonly tags: TagSchema[];
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   readonly createdAt: Date;

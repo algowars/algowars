@@ -25,6 +25,7 @@ export class ProblemSchemaFactory
       updatedAt: problem.getUpdatedAt(),
       setups: problem.getSetups() as any,
       tests: problem.getTests() as any,
+      tags: problem.getTags() as any,
     };
   }
 

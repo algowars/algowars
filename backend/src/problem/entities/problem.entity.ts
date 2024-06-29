@@ -2,6 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ProblemSetup } from './problem-setup.entity';
 import { Test } from './test.entity';
+import { Tag } from './tag.entity';
 
 export class Problem extends AggregateRoot {
   constructor(
@@ -14,6 +15,7 @@ export class Problem extends AggregateRoot {
     private readonly updatedAt: Date,
     private setups: ProblemSetup[] = [],
     private tests: Test[] = [],
+    private tags: Tag[] = [],
   ) {
     super();
   }
@@ -68,5 +70,9 @@ export class Problem extends AggregateRoot {
     }
 
     this.title = title;
+  }
+
+  getTags() {
+    return [...this.tags];
   }
 }
