@@ -1,7 +1,7 @@
 import { AppError } from "@/errors/app-error.model";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
-export class Api {
+export abstract class Api {
   constructor(
     private readonly axiosApi = axios.create({
       baseURL: import.meta.env.VITE_API_SERVER_URL ?? "",

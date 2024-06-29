@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateJudgeSubmission } from '../dto/judge0/create-judge0-submission.dto';
 import { firstValueFrom } from 'rxjs';
+import { Judge0Submission } from '../dto/judge0/judge0-submission.dto';
 
 @Injectable()
 export class EvaluationService {
@@ -18,6 +19,23 @@ export class EvaluationService {
 
     try {
       return this.sendBatchSubmission(data);
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  async getSubmissionByTokens(tokens: string[]): Promise<Judge0Submission[]> {
+    const params = {
+      base64_encode: 'true',
+      fields: '*',
+      tokens: tokens.join(','),
+    };
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get('/submissions/batch', { params }),
+      );
+      return response.data.submissions;
     } catch (error) {
       this.handleError(error);
     }

@@ -20,7 +20,7 @@ export class EvaluationService extends Api {
     accessToken: string,
     problemSlug: string,
     sourceCode: string
-  ): Promise<{ token: string }[]> {
+  ): Promise<string> {
     const config: AxiosRequestConfig = {
       url: "/api/v1/evaluation/anonymous",
       method: "POST",
@@ -35,6 +35,6 @@ export class EvaluationService extends Api {
       },
     };
 
-    return this.callExternalApi<{ token: string }[]>({ config });
+    return this.callExternalApi<string>({ config });
   }
 }

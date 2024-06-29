@@ -5,7 +5,7 @@ export class CreateSubmissionResultTestcase {
   @IsNotEmpty()
   token: string;
 
-  order?: number;
+  order: number;
 
   isRandomTestcase?: boolean;
 

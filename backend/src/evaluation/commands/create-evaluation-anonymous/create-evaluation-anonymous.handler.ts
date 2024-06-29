@@ -71,8 +71,12 @@ export class CreateEvaluationAnonymousHandler
     }
 
     const testcases = await Promise.all(
-      tokens.map(({ token }) =>
-        this.submissionResultTestcaseFactory.create({ token }),
+      tokens.map(({ token }, index) =>
+        this.submissionResultTestcaseFactory.create({
+          token,
+          order: index,
+          isRandomTestcase: false,
+        }),
       ),
     );
 

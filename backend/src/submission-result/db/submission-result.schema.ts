@@ -19,6 +19,9 @@ export class SubmissionResultSchema
   @OneToMany(
     () => SubmissionResultTestcaseSchema,
     (result) => result.submissionResult,
+    {
+      cascade: true,
+    },
   )
   testcases: SubmissionResultTestcaseSchema[];
 

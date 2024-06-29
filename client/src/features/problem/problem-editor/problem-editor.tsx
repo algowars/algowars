@@ -9,13 +9,14 @@ import { Card } from "@/components/ui/card";
 import ProblemEditorTestcases from "./problem-editor-testcases/problem-editor-testcases";
 import { ProblemAggregate } from "../models/problem-aggregate.model";
 import { useProblemEditor } from "./problem-editor.provider";
+import ProblemEditorSubmissionResult from "./problem-editor-submission-result/problem-editor-submission-result";
 
 type Props = {
   problemAggregate: ProblemAggregate;
 };
 
 const ProblemEditor = ({ problemAggregate }: Props) => {
-  const { sourceCode, changeSourceCode } = useProblemEditor();
+  const { sourceCode, changeSourceCode, submissionResult } = useProblemEditor();
   return (
     <ResizablePanelGroup direction="horizontal" className="w-full">
       <ResizablePanel defaultSize={55}>
@@ -38,11 +39,17 @@ const ProblemEditor = ({ problemAggregate }: Props) => {
           </ResizablePanel>
           <ResizableHandle className="py-2 bg-inherit" />
           <ResizablePanel defaultSize={25}>
-            <ProblemEditorTestcases
-              tests={problemAggregate.testCases}
-              className="bg-muted/40"
-              inputClassName="bg-muted/50"
-            />
+            {submissionResult ? (
+              <ProblemEditorSubmissionResult
+                submissionResult={submissionResult}
+              />
+            ) : (
+              <ProblemEditorTestcases
+                tests={problemAggregate.testCases}
+                className="bg-muted/40"
+                inputClassName="bg-muted/50"
+              />
+            )}
           </ResizablePanel>
         </ResizablePanelGroup>
       </ResizablePanel>

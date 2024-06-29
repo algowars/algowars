@@ -9,7 +9,6 @@ type Props = {
 const ProblemEditorTestcasesNav = ({ tests }: Props) => {
   const { currentTestIndex, changeCurrentTestIndex } = useProblemEditor();
 
-  console.log(tests);
   return (
     <ul className="flex gap-1 items-center p-3">
       {tests.map((test, index) => (

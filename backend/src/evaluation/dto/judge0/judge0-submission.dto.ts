@@ -10,4 +10,5 @@ export interface Judge0Submission {
   finished_at: string;
   time: string;
   memory: number;
+  stderr: string;
 }

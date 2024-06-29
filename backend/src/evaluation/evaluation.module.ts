@@ -26,6 +26,11 @@ import { AccountSchemaFactory } from 'src/account/db/account-schema.factory';
 import { SubmissionResultSchema } from 'src/submission-result/db/submission-result.schema';
 import { SubmissionResultTestcaseSchema } from 'src/submission-result/db/submission-result-testcase/submission-result-testcase.schema';
 import { SubmissionResultTestcaseFactory } from 'src/submission-result/factories/submission-result-testcase/submission-result-testcase.factory';
+import { EvaluationQueryHandlers } from './queries';
+import { SubmissionResultTestcaseEntityRepository } from 'src/submission-result/db/submission-result-testcase/submission-result-testcase-entity.repository';
+import { SubmissionResultEntityRepository } from 'src/submission-result/db/submission-result-entity.repository';
+import { SubmissionResultSchemaFactory } from 'src/submission-result/db/submission-result-schema.factory';
+import { SubmissionResultTestcaseSchemaFactory } from 'src/submission-result/db/submission-result-testcase/submission-result-testcase-schema.factory';
 
 @Module({
   imports: [
@@ -63,10 +68,15 @@ import { SubmissionResultTestcaseFactory } from 'src/submission-result/factories
     AccountEntityRepository,
     AccountSchemaFactory,
     SubmissionResultTestcaseFactory,
+    SubmissionResultEntityRepository,
+    SubmissionResultTestcaseEntityRepository,
+    SubmissionResultSchemaFactory,
+    SubmissionResultTestcaseSchemaFactory,
     ...EvaluationCommandHandlers,
     ...EvaluationFactories,
     ...ProblemFactories,
     ...SubmissionResultFactories,
+    ...EvaluationQueryHandlers,
   ],
 })
 export class EvaluationModule {}

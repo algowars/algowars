@@ -3,17 +3,20 @@ import { EntityFactory } from 'src/db/entity.factory';
 import { v4 as uuidv4 } from 'uuid';
 import { SubmissionResult } from '../entities/submission-result.entity';
 import { CreateSubmissionResult } from '../dto/create-submission-result.dto';
+import { SubmissionResultEntityRepository } from '../db/submission-result-entity.repository';
 
 @Injectable()
 export class SubmissionResultFactory
   implements EntityFactory<SubmissionResult>
 {
-  constructor() {}
+  constructor(
+    private readonly submissionResultEntityRepository: SubmissionResultEntityRepository,
+  ) {}
 
   async create(
     createSubmissionResult: CreateSubmissionResult,
   ): Promise<SubmissionResult> {
-    return new SubmissionResult(
+    const submissionResult = new SubmissionResult(
       uuidv4(),
       createSubmissionResult.languageId,
       createSubmissionResult.createdAt,
@@ -21,5 +24,9 @@ export class SubmissionResultFactory
       createSubmissionResult.createdBy,
       createSubmissionResult.testcases,
     );
+
+    await this.submissionResultEntityRepository.create(submissionResult);
+
+    return submissionResult;
   }
 }

@@ -6,12 +6,12 @@ export class SubmissionResultTestcase extends AggregateRoot {
     private readonly token: string,
     private readonly order: number,
     private readonly isRandomTestcase: boolean,
-    private readonly sourceCode: string,
-    private readonly stdin: string,
-    private readonly stdout: string,
-    private readonly expectedOutput: string,
-    private readonly statusId: number,
-    private readonly stderr: string,
+    private sourceCode: string,
+    private stdin: string,
+    private stdout: string,
+    private expectedOutput: string,
+    private statusId: number,
+    private stderr: string,
   ) {
     super();
   }
@@ -31,27 +31,52 @@ export class SubmissionResultTestcase extends AggregateRoot {
   getIsRandomTestcase() {
     return this.isRandomTestcase;
   }
+
   getSourceCode() {
     return this.sourceCode;
+  }
+
+  setSourceCode(code: string): void {
+    this.sourceCode = code;
   }
 
   getStdin() {
     return this.stdin;
   }
 
+  setStdin(stdin: string): void {
+    this.stdin = stdin;
+  }
+
   getStdout() {
     return this.stdout;
+  }
+
+  setStdout(stdout: string): void {
+    this.stdout = stdout;
   }
 
   getExpectedOutput() {
     return this.expectedOutput;
   }
 
+  setExpectedOutput(expectedOutput: string): void {
+    this.expectedOutput = expectedOutput;
+  }
+
   getStatusId() {
     return this.statusId;
   }
 
+  setStatusId(statusId: number) {
+    this.statusId = statusId;
+  }
+
   getStderr() {
     return this.stderr;
+  }
+
+  setStderr(stderr: string): void {
+    this.stderr = stderr;
   }
 }

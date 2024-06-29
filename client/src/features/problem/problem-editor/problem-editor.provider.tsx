@@ -1,3 +1,4 @@
+import { SubmissionResult } from "@/features/submission-result/models/submission-result.model";
 import { createContext, useContext, useState } from "react";
 
 type ProblemEditorProviderProps = {
@@ -5,6 +6,8 @@ type ProblemEditorProviderProps = {
   runExecutable: () => void;
   sourceCode: string;
   changeSourceCode: (val: string) => void;
+  submissionResult: SubmissionResult | null;
+  pollingId: string;
 };
 
 export type ProblemEditorProviderState = {
@@ -13,6 +16,8 @@ export type ProblemEditorProviderState = {
   runExecutable: () => void;
   sourceCode: string;
   changeSourceCode: (val: string) => void;
+  submissionResult: SubmissionResult | null;
+  pollingId: string;
 };
 
 const initialState: ProblemEditorProviderState = {
@@ -21,6 +26,8 @@ const initialState: ProblemEditorProviderState = {
   runExecutable: () => null,
   sourceCode: "",
   changeSourceCode: () => null,
+  submissionResult: null,
+  pollingId: "",
 };
 
 const ProblemEditorProviderContext =
@@ -31,6 +38,8 @@ export function ProblemEditorProvider({
   runExecutable,
   sourceCode,
   changeSourceCode,
+  submissionResult,
+  pollingId,
   ...props
 }: ProblemEditorProviderProps) {
   const [currentTestIndex, setCurrentTestIndex] = useState<number>(0);
@@ -45,6 +54,8 @@ export function ProblemEditorProvider({
     runExecutable,
     sourceCode,
     changeSourceCode,
+    submissionResult,
+    pollingId,
   };
 
   return (

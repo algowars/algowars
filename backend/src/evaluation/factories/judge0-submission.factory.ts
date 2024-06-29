@@ -17,14 +17,6 @@ export class Judge0SubmissionFactory {
       );
     }
 
-    console.log(
-      'CODE: ',
-      `
-        ${source_code}
-        ${problemSetup.getTestSetup()}
-        `,
-    );
-
     return tests.map((test) => ({
       language_id,
       source_code: `${source_code}
