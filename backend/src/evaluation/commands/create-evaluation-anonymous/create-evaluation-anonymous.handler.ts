@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { SubmissionResultFactory } from 'src/submission-result/factories/submission-result.factory';
 
 @CommandHandler(CreateEvaluationAnonymousCommand)
 export class CreateEvaluationAnonymousHandler
@@ -16,6 +17,7 @@ export class CreateEvaluationAnonymousHandler
     private readonly evaluationService: EvaluationService,
     private readonly problemEntityRepository: ProblemEntityRepository,
     private readonly judgeSubmissionFactory: Judge0SubmissionFactory,
+    private readonly submissionResultFactory: SubmissionResultFactory,
   ) {}
 
   async execute({
