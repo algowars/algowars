@@ -8,6 +8,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { SubmissionResultFactory } from 'src/submission-result/factories/submission-result.factory';
+import { SubmissionResultTestcaseFactory } from 'src/submission-result/factories/submission-result-testcase/submission-result-testcase.factory';
+import { AccountEntityRepository } from 'src/account/db/account-entity.repository';
 
 @CommandHandler(CreateEvaluationAnonymousCommand)
 export class CreateEvaluationAnonymousHandler
@@ -16,13 +18,22 @@ export class CreateEvaluationAnonymousHandler
   constructor(
     private readonly evaluationService: EvaluationService,
     private readonly problemEntityRepository: ProblemEntityRepository,
+    private readonly accountEntityRepository: AccountEntityRepository,
     private readonly judgeSubmissionFactory: Judge0SubmissionFactory,
     private readonly submissionResultFactory: SubmissionResultFactory,
+    private readonly submissionResultTestcaseFactory: SubmissionResultTestcaseFactory,
   ) {}
 
   async execute({
     createEvaluationAnonymous,
-  }: CreateEvaluationAnonymousCommand): Promise<{ token: string }[]> {
+    sub,
+  }: CreateEvaluationAnonymousCommand): Promise<string> {
+    const account = await this.accountEntityRepository.findBySub(sub);
+
+    if (!account) {
+      throw new NotFoundException('Account not found');
+    }
+
     const problem = await this.problemEntityRepository.findBySlugWithRelations(
       createEvaluationAnonymous.problemSlug,
     );
@@ -59,6 +70,20 @@ export class CreateEvaluationAnonymousHandler
       throw new InternalServerErrorException('Error creating submission');
     }
 
-    return tokens;
+    const testcases = await Promise.all(
+      tokens.map(({ token }) =>
+        this.submissionResultTestcaseFactory.create({ token }),
+      ),
+    );
+
+    const result = await this.submissionResultFactory.create({
+      languageId: createEvaluationAnonymous.languageId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: account,
+      testcases: testcases,
+    });
+
+    return result.getId();
   }
 }

@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { SubmissionResultTestcase } from './submission-result-testcase.entity';
+import { Account } from 'src/account/entities/account.entity';
 
 export class SubmissionResult extends AggregateRoot {
   constructor(
@@ -7,7 +8,8 @@ export class SubmissionResult extends AggregateRoot {
     private readonly languageId: number,
     private readonly createdAt: Date,
     private readonly updatedAt: Date,
-    private readonly testcases: SubmissionResultTestcase,
+    private readonly createdBy: Account,
+    private readonly testcases: SubmissionResultTestcase[],
   ) {
     super();
   }
@@ -18,6 +20,10 @@ export class SubmissionResult extends AggregateRoot {
 
   getLanguageId() {
     return this.languageId;
+  }
+
+  getCreatedBy() {
+    return this.createdBy;
   }
 
   getCreatedAt() {

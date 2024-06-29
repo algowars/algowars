@@ -13,6 +13,13 @@ export class SubmissionResultFactory
   async create(
     createSubmissionResult: CreateSubmissionResult,
   ): Promise<SubmissionResult> {
-    return new SubmissionResult(uuidv4(), createSub);
+    return new SubmissionResult(
+      uuidv4(),
+      createSubmissionResult.languageId,
+      createSubmissionResult.createdAt,
+      createSubmissionResult.updatedAt,
+      createSubmissionResult.createdBy,
+      createSubmissionResult.testcases,
+    );
   }
 }

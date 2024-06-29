@@ -4,10 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   UpdateDateColumn,
 } from 'typeorm';
 import { SubmissionResultTestcaseSchema } from './submission-result-testcase/submission-result-testcase.schema';
+import { AccountSchema } from 'src/db';
 
 @Entity({ name: 'submission_result' })
 export class SubmissionResultSchema
@@ -18,10 +20,15 @@ export class SubmissionResultSchema
     () => SubmissionResultTestcaseSchema,
     (result) => result.submissionResult,
   )
-  testcases: SubmissionResultTestcaseSchema;
+  testcases: SubmissionResultTestcaseSchema[];
 
   @Column({ nullable: false })
   langaugeId: number;
+
+  @ManyToOne(() => AccountSchema, (account) => account.submissions, {
+    nullable: false,
+  })
+  createdBy: AccountSchema;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   readonly createdAt: Date;

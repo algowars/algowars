@@ -1,4 +1,6 @@
-export class SubmissionResultTestcase {
+import { AggregateRoot } from '@nestjs/cqrs';
+
+export class SubmissionResultTestcase extends AggregateRoot {
   constructor(
     private readonly id: string,
     private readonly token: string,
@@ -10,7 +12,9 @@ export class SubmissionResultTestcase {
     private readonly expectedOutput: string,
     private readonly statusId: number,
     private readonly stderr: string,
-  ) {}
+  ) {
+    super();
+  }
 
   getId() {
     return this.id;

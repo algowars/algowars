@@ -19,6 +19,7 @@ import { ProblemSetupSchema } from './db/problem-setup/problem-setup.schema';
 import { TestSchema } from './db/test/test.schema';
 import { TestInputSchema } from './db/test/test-input.schema';
 import { TagSchema } from './db/tag/tag.schema';
+import { Account } from 'src/account/entities/account.entity';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TagSchema } from './db/tag/tag.schema';
       TagSchema,
       TestSchema,
       TestInputSchema,
+      Account,
     ]),
   ],
   controllers: [ProblemController],

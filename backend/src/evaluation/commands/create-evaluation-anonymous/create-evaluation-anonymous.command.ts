@@ -3,5 +3,6 @@ import { CreateEvaluationAnonymous } from 'src/evaluation/dto/request/create-eva
 export class CreateEvaluationAnonymousCommand {
   constructor(
     public readonly createEvaluationAnonymous: CreateEvaluationAnonymous,
+    public readonly sub: string,
   ) {}
 }

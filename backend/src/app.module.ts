@@ -6,7 +6,6 @@ import schemas from './db';
 import { CommonModule } from './common/common.module';
 import { AccountModule } from './account/account.module';
 import { EvaluationModule } from './evaluation/evaluation.module';
-import { SubmissionModule } from './submission/submission.module';
 import { SubmissionResultModule } from './submission-result/submission-result.module';
 @Module({
   imports: [
@@ -31,7 +30,6 @@ import { SubmissionResultModule } from './submission-result/submission-result.mo
     CommonModule,
     AccountModule,
     EvaluationModule,
-    SubmissionModule,
     SubmissionResultModule,
   ],
 })

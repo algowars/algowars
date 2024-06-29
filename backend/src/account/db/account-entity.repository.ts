@@ -18,4 +18,14 @@ export class AccountEntityRepository extends BaseEntityRepository<
   ) {
     super(accountRepository, accountSchemaFactory);
   }
+
+  async findBySub(sub: string): Promise<Account> {
+    const account = await this.entityRepository.findOne({
+      where: {
+        sub,
+      },
+    });
+
+    return this.entitySchemaFactory.createFromSchema(account);
+  }
 }

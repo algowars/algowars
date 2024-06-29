@@ -31,9 +31,17 @@ export class SubmissionResultTestcaseSchemaFactory
   createFromSchema(
     submissionResultTestcaseSchema: SubmissionResultTestcaseSchema,
   ): SubmissionResultTestcase {
-    return new SubmissionResultTestcaseSchema(
+    return new SubmissionResultTestcase(
       submissionResultTestcaseSchema.id,
+      submissionResultTestcaseSchema.token,
+      submissionResultTestcaseSchema.order,
+      submissionResultTestcaseSchema.isRandomTestcase,
+      submissionResultTestcaseSchema.sourceCode,
+      submissionResultTestcaseSchema.stdin,
+      submissionResultTestcaseSchema.stdout,
       submissionResultTestcaseSchema.expectedOutput,
+      submissionResultTestcaseSchema.statusId,
+      submissionResultTestcaseSchema.stderr,
     );
   }
 }

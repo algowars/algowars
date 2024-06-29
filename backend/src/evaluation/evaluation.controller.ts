@@ -1,8 +1,9 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { CreateEvaluationAnonymousCommand } from './commands/create-evaluation-anonymous/create-evaluation-anonymous.command';
 import { CreateEvaluationAnonymous } from './dto/request/create-evaluation-anonymous.dto';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
+import { Request } from 'express';
 
 @Controller('v1/evaluation')
 export class EvaluationController {
@@ -16,11 +17,12 @@ export class EvaluationController {
   async evaluateAnonymous(
     @Body()
     createEvaluationAnonymous: CreateEvaluationAnonymous,
-  ): Promise<{ token: string }[]> {
-    return this.commandBus.execute<
-      CreateEvaluationAnonymousCommand,
-      { token: string }[]
-    >(new CreateEvaluationAnonymousCommand(createEvaluationAnonymous));
+    @Req() request: Request,
+  ): Promise<string> {
+    const sub = request.auth.payload.sub;
+    return this.commandBus.execute<CreateEvaluationAnonymousCommand, string>(
+      new CreateEvaluationAnonymousCommand(createEvaluationAnonymous, sub),
+    );
   }
 
   @Post()
