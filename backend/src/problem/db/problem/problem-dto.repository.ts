@@ -11,6 +11,8 @@ import { TestSchema } from '../test/test.schema';
 import { TestDto } from 'src/problem/dto/test.dto';
 import { TestInputSchema } from '../test/test-input.schema';
 import { TestInputDto } from 'src/problem/dto/test-input.dto';
+import { TagSchema } from '../tag/tag.schema';
+import { TagDto } from 'src/problem/dto/tag.dto';
 
 @Injectable()
 export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
@@ -94,6 +96,7 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
       rating: problem.rating,
       createdAt: problem.createdAt,
       updatedAt: problem.updatedAt,
+      tags: this.toTagDto(problem.tags ?? []),
     };
   }
 
@@ -101,6 +104,10 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
     return {
       inputs: test?.inputs?.map((input) => this.toTestInputDto(input)) ?? [],
     };
+  }
+
+  private toTagDto(tags: TagSchema[]): TagDto[] {
+    return tags.map((tag) => ({ name: tag.name }));
   }
 
   private toTestInputDto(testInput: TestInputSchema): TestInputDto {
