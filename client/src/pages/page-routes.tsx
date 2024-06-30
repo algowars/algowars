@@ -7,6 +7,7 @@ import AccountSetupPage from "./account/setup/account-setup.page";
 import DashboardPage from "./dashboard/dashboard.page";
 import ProblemPage from "./problem/problem.page";
 import CreatePage from "./create/create.page";
+import ProblemResultPage from "./problem/problem-result/problem-result.page";
 
 const PageRoutes = () => {
   return (
@@ -20,6 +21,10 @@ const PageRoutes = () => {
         element={<AuthenticationGuard component={CreatePage} />}
       />
       <Route path="dashboard" element={<DashboardPage />} />
+      <Route
+        path="problem/:slug/result"
+        element={<AuthenticationGuard component={ProblemResultPage} />}
+      />
       <Route path="problem/:slug" element={<ProblemPage />} />
       <Route path="problems" element={<ProblemsPage />} />
       <Route index element={<LandingPage />} />
