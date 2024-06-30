@@ -26,6 +26,7 @@ const ProblemEditor = ({ problemAggregate }: Props) => {
       toast("Loading...");
     }
   }, [isPending]);
+
   return (
     <ResizablePanelGroup direction="horizontal" className="w-full">
       <ResizablePanel defaultSize={55}>

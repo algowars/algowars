@@ -24,13 +24,7 @@ export class EvaluationCreatedHandler
     );
   }
 
-  async handle({ submissionResultId }: EvaluationCreatedEvent): Promise<void> {
-    console.log('SUBMISSIONSRESULTS ID: ', submissionResultId);
-    const submissionResult =
-      await this.submissionResultEntityRepository.findByIdWithTestcases(
-        submissionResultId,
-      );
-
+  async handle({ submissionResult }: EvaluationCreatedEvent): Promise<void> {
     const invalidStatuses = [1, 2, 3];
     const tokens = submissionResult
       .getTestcases()

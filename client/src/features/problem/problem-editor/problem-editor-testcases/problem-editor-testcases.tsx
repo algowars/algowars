@@ -18,9 +18,18 @@ const ProblemEditorTestcases = ({
   className,
   inputClassName,
 }: Props) => {
-  const { currentTestIndex } = useProblemEditor();
+  const { currentTestIndex, isPending } = useProblemEditor();
 
   const currentTest = tests[currentTestIndex] ?? null;
+
+  if (isPending) {
+    return (
+      <Card className={cn("h-full overflow-auto", className)}>
+        <p className="p-5 text-2xl font-semibold">Loading...</p>
+      </Card>
+    );
+  }
+
   return (
     <Card className={cn("h-full overflow-auto", className)}>
       <ProblemEditorTestcasesNav tests={tests} />

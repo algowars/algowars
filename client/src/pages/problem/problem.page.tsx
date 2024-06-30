@@ -10,25 +10,29 @@ import LayoutProblem from "@/layout/layout-problem/layout-problem";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const isSubmissionFinished = (submissionResult: SubmissionResult): boolean => {
   const IN_QUEUE_STATUS = 1;
   const PROCESSING_STATUS = 2;
 
+  if (!submissionResult?.testcases) {
+    return true;
+  }
+
   let isFinished = true;
 
-  submissionResult.testcases.forEach(({ statusId }) => {
-    if (!statusId) {
+  submissionResult.testcases.forEach((testcase) => {
+    if (!testcase?.statusId) {
       isFinished = false;
     }
 
-    if (statusId === IN_QUEUE_STATUS) {
+    if (testcase?.statusId === IN_QUEUE_STATUS) {
       isFinished = false;
     }
 
-    if (statusId === PROCESSING_STATUS) {
+    if (testcase?.statusId === PROCESSING_STATUS) {
       isFinished = false;
     }
   });
@@ -38,6 +42,7 @@ const isSubmissionFinished = (submissionResult: SubmissionResult): boolean => {
 
 const ProblemPage = () => {
   const { getAccessTokenSilently } = useAuth0();
+  const navigate = useNavigate();
 
   const { slug } = useParams();
 
@@ -136,8 +141,10 @@ const ProblemPage = () => {
           pollingId
         );
 
-      // status id to see if submission is finished
-      console.log("IS SUBMISSION FINISHED: ", isSubmissionFinished(result));
+      if (result?.isSubmission && result?.isAccepted) {
+        navigate("result");
+      }
+
       if (isSubmissionFinished(result)) {
         setSubmissionResult(result);
         setPollingId("");
@@ -178,7 +185,7 @@ const ProblemPage = () => {
     testError?.message,
   ]);
 
-  const isAllPending = isPollingPending || isSubmitPending;
+  const isAllPending = isPollingPending || isTestPending || isSubmitPending;
 
   if (isPending) {
     return <PageLoader />;

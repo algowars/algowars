@@ -13,7 +13,6 @@ export class SubmissionResultDtoRepository extends PageableRepository<Submission
   }
 
   async findById(id: string): Promise<SubmissionResultDto> {
-    console.log('ID: ', id);
     const submissionResult = await this.dataSource
       .getRepository(SubmissionResultSchema)
       .findOne({

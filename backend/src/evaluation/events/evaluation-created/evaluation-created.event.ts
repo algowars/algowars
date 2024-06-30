@@ -1,3 +1,5 @@
+import { SubmissionResult } from 'src/submission-result/entities/submission-result.entity';
+
 export class EvaluationCreatedEvent {
-  constructor(public readonly submissionResultId: string) {}
+  constructor(public readonly submissionResult: SubmissionResult) {}
 }

@@ -5,5 +5,6 @@ export class SubmissionResultDto {
   readonly id: string;
   readonly createdBy: AccountDto;
   readonly isSubmission?: boolean;
+  readonly isAccepted?: boolean;
   readonly testcases: SubmissionResultTestcaseDto[];
 }

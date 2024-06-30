@@ -8,6 +8,7 @@ import DashboardPage from "./dashboard/dashboard.page";
 import ProblemPage from "./problem/problem.page";
 import CreatePage from "./create/create.page";
 import ProblemResultPage from "./problem/problem-result/problem-result.page";
+import ProfilePage from "./profile/profile.page";
 
 const PageRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const PageRoutes = () => {
       />
       <Route path="problem/:slug" element={<ProblemPage />} />
       <Route path="problems" element={<ProblemsPage />} />
+      <Route path="profile/:username" element={<ProfilePage />} />
       <Route index element={<LandingPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

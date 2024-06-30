@@ -28,10 +28,7 @@ export class SubmissionResultFactory
     );
 
     await this.submissionResultEntityRepository.create(submissionResult);
-    console.log('BEING CRATED: ', submissionResult);
-    submissionResult.apply(
-      new EvaluationCreatedEvent(submissionResult.getId()),
-    );
+    submissionResult.apply(new EvaluationCreatedEvent(submissionResult));
     return submissionResult;
   }
 }
