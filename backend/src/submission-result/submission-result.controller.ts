@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  Query,
   Req,
   UnauthorizedException,
   UseGuards,
@@ -16,6 +17,8 @@ import { AccountDto } from 'src/account/dto/account.dto';
 import { FindAccountBySubQuery } from 'src/account/queries/find-account-by-sub/find-account-by-sub.query';
 import { UpdateSubmissionResultTestcase } from './dto/update-submission-result-testcase.dto';
 import { Judge0Submission } from 'src/evaluation/dto/judge0/judge0-submission.dto';
+import { FindSubmissionResult } from './dto/request/find-submission-result.dto';
+import { SubmissionResultFilter } from './dto/request/sumission-result-filter.dto';
 
 @Controller('v1/submission-result')
 export class SubmissionResultController {
@@ -26,6 +29,15 @@ export class SubmissionResultController {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
+
+  @UseGuards(AuthorizationGuard)
+  @Get('solutions')
+  getSolutions(
+    @Param() findSubmissionResult: FindSubmissionResult,
+    @Query() submissionResultFilter: SubmissionResultFilter,
+  ): void {
+    console.log(findSubmissionResult, submissionResultFilter);
+  }
 
   @UseGuards(AuthorizationGuard)
   @Get('/poll/:id')
