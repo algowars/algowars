@@ -23,7 +23,7 @@ const App = () => {
   return (
     <>
       <PageRoutes />
-      <Toaster />
+      <Toaster position="top-right" />
     </>
   );
 };

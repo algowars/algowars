@@ -84,11 +84,35 @@ const ProblemPage = () => {
       setSubmissionResult(null);
 
       const submissionId =
-        await EvaluationService.getInstance().createAnonymouse(
+        await EvaluationService.getInstance().createAnonymous(
           accessToken,
           slug ?? "",
           sourceCode
         );
+
+      if (submissionId) {
+        setPollingId(submissionId);
+      }
+    },
+  });
+
+  const {
+    mutate: submitCode,
+    error: submitError,
+    isPending: isSubmitPending,
+  } = useMutation({
+    mutationKey: ["submit"],
+    mutationFn: async () => {
+      const accessToken = await getAccessTokenSilently();
+
+      setPollingId("");
+      setSubmissionResult(null);
+
+      const submissionId = await EvaluationService.getInstance().create(
+        accessToken,
+        slug ?? "",
+        sourceCode
+      );
 
       if (submissionId) {
         setPollingId(submissionId);
@@ -132,7 +156,27 @@ const ProblemPage = () => {
         description: testError.message,
       });
     }
-  }, [error?.message, slug, testError?.message]);
+
+    if (pollingError?.message) {
+      toast.error("Error submitting solution", {
+        description: pollingError.message,
+      });
+    }
+
+    if (submitError?.message) {
+      toast.error("Error submitting solution", {
+        description: submitError.message,
+      });
+    }
+  }, [
+    error?.message,
+    slug,
+    pollingError?.message,
+    submitError?.message,
+    testError?.message,
+  ]);
+
+  const isAllPending = isPollingPending || isPending || isSubmitPending;
 
   if (isPending) {
     return <PageLoader />;
@@ -144,10 +188,12 @@ const ProblemPage = () => {
         <div className="flex flex-col h-full">
           <ProblemEditorProvider
             runExecutable={testCode}
+            submitExecutable={submitCode}
             sourceCode={sourceCode}
             changeSourceCode={changeSourceCode}
             submissionResult={submissionResult}
             pollingId={pollingId}
+            isPending={isAllPending}
           >
             <div className="grow pb-5 px-5">
               <ProblemEditor problemAggregate={problemAggregate} />

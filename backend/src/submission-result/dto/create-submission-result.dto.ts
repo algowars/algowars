@@ -13,4 +13,6 @@ export class CreateSubmissionResult {
   testcases: SubmissionResultTestcase[];
 
   createdBy: Account;
+
+  isSubmission: boolean;
 }

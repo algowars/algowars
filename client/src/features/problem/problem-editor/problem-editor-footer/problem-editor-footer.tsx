@@ -3,10 +3,10 @@ import { useProblemEditor } from "../problem-editor.provider";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const ProblemEditorFooter = () => {
-  const { runExecutable } = useProblemEditor();
+  const { runExecutable, isPending, submitExecutable } = useProblemEditor();
   const { isAuthenticated } = useAuth0();
-  const isRunDisabled = !isAuthenticated;
-  const isSubmitDisabled = true;
+  const isRunDisabled = !isAuthenticated || isPending;
+  const isSubmitDisabled = !isAuthenticated || isPending;
   return (
     <footer className="p-3 flex items-center border-t">
       <ul className="flex items-center gap-5 ml-auto">
@@ -21,7 +21,11 @@ const ProblemEditorFooter = () => {
           </Button>
         </li>
         <li>
-          <Button className="w-24" disabled={isSubmitDisabled}>
+          <Button
+            className="w-24"
+            disabled={isSubmitDisabled}
+            onClick={submitExecutable}
+          >
             Submit
           </Button>
         </li>

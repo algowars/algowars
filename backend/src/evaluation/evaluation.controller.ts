@@ -4,6 +4,8 @@ import { CreateEvaluationAnonymous } from './dto/request/create-evaluation-anony
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { Request } from 'express';
+import { CreateEvaluation } from './dto/request/create-evaluation.dto';
+import { CreateEvaluationCommand } from './commands/create-evaluation/create-evaluation.command';
 
 @Controller('v1/evaluation')
 export class EvaluationController {
@@ -25,6 +27,16 @@ export class EvaluationController {
     );
   }
 
+  @UseGuards(AuthorizationGuard)
   @Post()
-  async evaluate(): Promise<void> {}
+  async evaluate(
+    @Body()
+    createEvaluation: CreateEvaluation,
+    @Req() request: Request,
+  ): Promise<string> {
+    const sub = request.auth.payload.sub;
+    return this.commandBus.execute<CreateEvaluationCommand, string>(
+      new CreateEvaluationCommand(createEvaluation, sub),
+    );
+  }
 }

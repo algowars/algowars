@@ -4,30 +4,36 @@ import { createContext, useContext, useState } from "react";
 type ProblemEditorProviderProps = {
   children: React.ReactNode;
   runExecutable: () => void;
+  submitExecutable: () => void;
   sourceCode: string;
   changeSourceCode: (val: string) => void;
   submissionResult: SubmissionResult | null;
   pollingId: string;
+  isPending: boolean;
 };
 
 export type ProblemEditorProviderState = {
   currentTestIndex: number;
   changeCurrentTestIndex: (val: number) => void;
   runExecutable: () => void;
+  submitExecutable: () => void;
   sourceCode: string;
   changeSourceCode: (val: string) => void;
   submissionResult: SubmissionResult | null;
   pollingId: string;
+  isPending: boolean;
 };
 
 const initialState: ProblemEditorProviderState = {
   currentTestIndex: 0,
   changeCurrentTestIndex: () => null,
   runExecutable: () => null,
+  submitExecutable: () => null,
   sourceCode: "",
   changeSourceCode: () => null,
   submissionResult: null,
   pollingId: "",
+  isPending: false,
 };
 
 const ProblemEditorProviderContext =
@@ -36,10 +42,12 @@ const ProblemEditorProviderContext =
 export function ProblemEditorProvider({
   children,
   runExecutable,
+  submitExecutable,
   sourceCode,
   changeSourceCode,
   submissionResult,
   pollingId,
+  isPending,
   ...props
 }: ProblemEditorProviderProps) {
   const [currentTestIndex, setCurrentTestIndex] = useState<number>(0);
@@ -52,10 +60,12 @@ export function ProblemEditorProvider({
     currentTestIndex,
     changeCurrentTestIndex,
     runExecutable,
+    submitExecutable,
     sourceCode,
     changeSourceCode,
     submissionResult,
     pollingId,
+    isPending,
   };
 
   return (

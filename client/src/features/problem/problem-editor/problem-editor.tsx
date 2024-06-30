@@ -10,13 +10,22 @@ import ProblemEditorTestcases from "./problem-editor-testcases/problem-editor-te
 import { ProblemAggregate } from "../models/problem-aggregate.model";
 import { useProblemEditor } from "./problem-editor.provider";
 import ProblemEditorSubmissionResult from "./problem-editor-submission-result/problem-editor-submission-result";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 type Props = {
   problemAggregate: ProblemAggregate;
 };
 
 const ProblemEditor = ({ problemAggregate }: Props) => {
-  const { sourceCode, changeSourceCode, submissionResult } = useProblemEditor();
+  const { sourceCode, changeSourceCode, submissionResult, isPending } =
+    useProblemEditor();
+
+  useEffect(() => {
+    if (isPending) {
+      toast("Loading...");
+    }
+  }, [isPending]);
   return (
     <ResizablePanelGroup direction="horizontal" className="w-full">
       <ResizablePanel defaultSize={55}>

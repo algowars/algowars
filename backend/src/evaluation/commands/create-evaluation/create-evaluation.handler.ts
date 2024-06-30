@@ -1,19 +1,19 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { CreateEvaluationAnonymousCommand } from './create-evaluation-anonymous.command';
-import { EvaluationService } from 'src/evaluation/services/evaluation.service';
-import { ProblemEntityRepository } from 'src/problem/db/problem/problem-entity.repository';
-import { Judge0SubmissionFactory } from 'src/evaluation/factories/judge0-submission.factory';
+import { CreateEvaluationCommand } from './create-evaluation.command';
+import { AccountEntityRepository } from 'src/account/db/account-entity.repository';
 import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { SubmissionResultFactory } from 'src/submission-result/factories/submission-result.factory';
+import { Judge0SubmissionFactory } from 'src/evaluation/factories/judge0-submission.factory';
+import { EvaluationService } from 'src/evaluation/services/evaluation.service';
+import { ProblemEntityRepository } from 'src/problem/db/problem/problem-entity.repository';
 import { SubmissionResultTestcaseFactory } from 'src/submission-result/factories/submission-result-testcase/submission-result-testcase.factory';
-import { AccountEntityRepository } from 'src/account/db/account-entity.repository';
+import { SubmissionResultFactory } from 'src/submission-result/factories/submission-result.factory';
 
-@CommandHandler(CreateEvaluationAnonymousCommand)
-export class CreateEvaluationAnonymousHandler
-  implements ICommandHandler<CreateEvaluationAnonymousCommand>
+@CommandHandler(CreateEvaluationCommand)
+export class CreateEvaluationHandler
+  implements ICommandHandler<CreateEvaluationCommand>
 {
   constructor(
     private readonly evaluationService: EvaluationService,
@@ -25,9 +25,9 @@ export class CreateEvaluationAnonymousHandler
   ) {}
 
   async execute({
-    createEvaluationAnonymous,
+    createEvaluation,
     sub,
-  }: CreateEvaluationAnonymousCommand): Promise<string> {
+  }: CreateEvaluationCommand): Promise<any> {
     const account = await this.accountEntityRepository.findBySub(sub);
 
     if (!account) {
@@ -35,7 +35,7 @@ export class CreateEvaluationAnonymousHandler
     }
 
     const problem = await this.problemEntityRepository.findBySlugWithRelations(
-      createEvaluationAnonymous.problemSlug,
+      createEvaluation.problemSlug,
     );
 
     if (!problem.getSetups() || !problem.getTests()) {
@@ -46,10 +46,7 @@ export class CreateEvaluationAnonymousHandler
 
     const problemSetup = problem
       .getSetups()
-      .find(
-        (setup) =>
-          setup.getLanguageId() === createEvaluationAnonymous.languageId,
-      );
+      .find((setup) => setup.getLanguageId() === createEvaluation.languageId);
 
     if (!problemSetup) {
       throw new NotFoundException(
@@ -61,8 +58,8 @@ export class CreateEvaluationAnonymousHandler
       this.judgeSubmissionFactory.create(
         problemSetup,
         problem.getTests(),
-        createEvaluationAnonymous.sourceCode,
-        createEvaluationAnonymous.languageId,
+        createEvaluation.sourceCode,
+        createEvaluation.languageId,
       ),
     );
 
@@ -81,8 +78,8 @@ export class CreateEvaluationAnonymousHandler
     );
 
     const result = await this.submissionResultFactory.create({
-      languageId: createEvaluationAnonymous.languageId,
-      isSubmission: false,
+      languageId: createEvaluation.languageId,
+      isSubmission: true,
       createdAt: new Date(),
       updatedAt: new Date(),
       createdBy: account,

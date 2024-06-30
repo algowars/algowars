@@ -34,6 +34,7 @@ export class SubmissionResultDtoRepository extends PageableRepository<Submission
   ): SubmissionResultDto {
     return {
       id: submissionResult.id,
+      isSubmission: submissionResult.isSubmission,
       createdBy: submissionResult.createdBy,
       testcases: submissionResult.testcases.map(
         this.toSumissionRestTestcaseDto,

@@ -19,6 +19,7 @@ export class SubmissionResultFactory
     const submissionResult = new SubmissionResult(
       uuidv4(),
       createSubmissionResult.languageId,
+      createSubmissionResult.isSubmission,
       createSubmissionResult.createdAt,
       createSubmissionResult.updatedAt,
       createSubmissionResult.createdBy,

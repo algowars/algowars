@@ -16,13 +16,35 @@ export class EvaluationService extends Api {
     return EvaluationService.instance;
   }
 
-  public createAnonymouse(
+  public createAnonymous(
     accessToken: string,
     problemSlug: string,
     sourceCode: string
   ): Promise<string> {
     const config: AxiosRequestConfig = {
       url: "/api/v1/evaluation/anonymous",
+      method: "POST",
+      data: {
+        sourceCode,
+        problemSlug,
+        languageId: this.JAVASCRIPT_LANGUAGE_ID,
+      },
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    return this.callExternalApi<string>({ config });
+  }
+
+  public create(
+    accessToken: string,
+    problemSlug: string,
+    sourceCode: string
+  ): Promise<string> {
+    const config: AxiosRequestConfig = {
+      url: "/api/v1/evaluation",
       method: "POST",
       data: {
         sourceCode,

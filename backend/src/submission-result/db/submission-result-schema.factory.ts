@@ -18,6 +18,7 @@ export class SubmissionResultSchemaFactory
     return {
       id: submissionResult.getId(),
       langaugeId: submissionResult.getLanguageId(),
+      isSubmission: submissionResult.getIsSubmission(),
       createdAt: submissionResult.getCreatedAt(),
       updatedAt: submissionResult.getUpdatedAt(),
       createdBy: this.accountSchemaFactory.create(
@@ -37,6 +38,7 @@ export class SubmissionResultSchemaFactory
     return new SubmissionResult(
       submissionResultSchema.id,
       submissionResultSchema.langaugeId,
+      submissionResultSchema.isSubmission,
       submissionResultSchema.createdAt,
       submissionResultSchema.updatedAt,
       this.accountSchemaFactory.createFromSchema(

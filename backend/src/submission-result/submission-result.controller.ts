@@ -52,13 +52,19 @@ export class SubmissionResultController {
       throw new UnauthorizedException('You do not own this submission');
     }
 
-    console.log(
-      'IS FINISHED: ',
-      this.isFinished(submissionResultDto),
-      submissionResultDto.testcases.map((testcase) => testcase.statusId),
-    );
-
     if (this.isFinished(submissionResultDto)) {
+      if (submissionResultDto.isSubmission) {
+        return {
+          ...submissionResultDto,
+          testcases: [
+            submissionResultDto.testcases.find((testcase) => {
+              if (![1, 2, 3].includes(testcase.statusId)) {
+                return testcase;
+              }
+            }),
+          ],
+        };
+      }
       return submissionResultDto;
     }
 
@@ -71,8 +77,6 @@ export class SubmissionResultController {
       Judge0Submission[]
     >(new FindBatchEvaluationQuery(tokens));
 
-    console.log('JUDGE0SUBMISSIONS: ', judge0Submissions);
-
     const testcases = await this.commandBus.execute<
       UpdateSubmissionResultTestcasesCommand,
       SubmissionResultTestcaseDto[]
@@ -81,6 +85,19 @@ export class SubmissionResultController {
         this.getUpdatedSubmission(judge0Submissions),
       ),
     );
+
+    if (submissionResultDto.isSubmission) {
+      return {
+        ...submissionResultDto,
+        testcases: [
+          testcases.find((testcase) => {
+            if (![1, 2, 3].includes(testcase.statusId)) {
+              return testcase;
+            }
+          }),
+        ],
+      };
+    }
 
     return {
       ...submissionResultDto,

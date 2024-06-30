@@ -6,6 +6,7 @@ export class SubmissionResult extends AggregateRoot {
   constructor(
     private readonly id: string,
     private readonly languageId: number,
+    private readonly isSubmission: boolean,
     private readonly createdAt: Date,
     private readonly updatedAt: Date,
     private readonly createdBy: Account,
@@ -36,5 +37,9 @@ export class SubmissionResult extends AggregateRoot {
 
   getTestcases() {
     return this.testcases;
+  }
+
+  getIsSubmission() {
+    return this.isSubmission;
   }
 }

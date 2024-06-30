@@ -28,6 +28,9 @@ export class SubmissionResultSchema
   @Column({ nullable: false })
   langaugeId: number;
 
+  @Column({ default: false })
+  isSubmission: boolean;
+
   @ManyToOne(() => AccountSchema, (account) => account.submissions, {
     nullable: false,
   })
