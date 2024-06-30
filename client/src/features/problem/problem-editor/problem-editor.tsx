@@ -42,6 +42,7 @@ const ProblemEditor = ({ problemAggregate }: Props) => {
             {submissionResult ? (
               <ProblemEditorSubmissionResult
                 submissionResult={submissionResult}
+                className="bg-muted/40"
               />
             ) : (
               <ProblemEditorTestcases

@@ -22,6 +22,9 @@ import { SubmissionResultTestcaseDto } from './dto/submission-result-testcase.dt
 
 @Controller('v1/submission-result')
 export class SubmissionResultController {
+  public static IN_QUEUE_ID = 1;
+  public static PROCESSING_ID = 2;
+  public static ACCEPTED_ID = 3;
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
@@ -49,7 +52,13 @@ export class SubmissionResultController {
       throw new UnauthorizedException('You do not own this submission');
     }
 
-    if (submissionResultDto.testcases.find((testcase) => testcase.statusId)) {
+    console.log(
+      'IS FINISHED: ',
+      this.isFinished(submissionResultDto),
+      submissionResultDto.testcases.map((testcase) => testcase.statusId),
+    );
+
+    if (this.isFinished(submissionResultDto)) {
       return submissionResultDto;
     }
 
@@ -61,6 +70,8 @@ export class SubmissionResultController {
       FindBatchEvaluationQuery,
       Judge0Submission[]
     >(new FindBatchEvaluationQuery(tokens));
+
+    console.log('JUDGE0SUBMISSIONS: ', judge0Submissions);
 
     const testcases = await this.commandBus.execute<
       UpdateSubmissionResultTestcasesCommand,
@@ -77,6 +88,25 @@ export class SubmissionResultController {
     };
   }
 
+  private isFinished(submissionResultDto: SubmissionResultDto): boolean {
+    let isFinished = true;
+    submissionResultDto.testcases.forEach(({ statusId }) => {
+      if (!statusId) {
+        isFinished = false;
+      }
+
+      if (statusId === SubmissionResultController.IN_QUEUE_ID) {
+        isFinished = false;
+      }
+
+      if (statusId === SubmissionResultController.PROCESSING_ID) {
+        isFinished = false;
+      }
+    });
+
+    return isFinished;
+  }
+
   private getUpdatedSubmission(
     judge0Submissions: Judge0Submission[],
   ): UpdateSubmissionResultTestcase[] {
@@ -84,6 +114,7 @@ export class SubmissionResultController {
       order: index,
       token: submission.token,
       sourceCode: submission.source_code,
+      stdin: submission.stdin,
       stdout: submission.stdout,
       expectedOutput: submission.expected_output,
       statusId: submission.status_id,

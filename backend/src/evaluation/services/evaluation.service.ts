@@ -35,6 +35,8 @@ export class EvaluationService {
       const response = await firstValueFrom(
         this.httpService.get('/submissions/batch', { params }),
       );
+
+      console.log('RESPONSE: ', response.data.submissions);
       return response.data.submissions;
     } catch (error) {
       this.handleError(error);

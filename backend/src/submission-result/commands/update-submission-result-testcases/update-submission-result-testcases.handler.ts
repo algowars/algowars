@@ -18,6 +18,7 @@ export class UpdateSubmissionResultTestcasesHandler
   }: UpdateSubmissionResultTestcasesCommand): Promise<
     SubmissionResultTestcaseDto[]
   > {
+    console.log('UPDATE: ', updateSubmissionResultTestcases);
     const submissionResultTestcases =
       await this.submissionResultTestcaseEntityRepository.findByTokens(
         updateSubmissionResultTestcases.map((testcase) => testcase.token),
@@ -46,6 +47,7 @@ export class UpdateSubmissionResultTestcasesHandler
     submissionResultTestcase.setSourceCode(
       updateSubmissionResultTestcase.sourceCode,
     );
+    submissionResultTestcase.setStdin(updateSubmissionResultTestcase.stdin);
     submissionResultTestcase.setStdout(updateSubmissionResultTestcase.stdout);
     submissionResultTestcase.setExpectedOutput(
       updateSubmissionResultTestcase.expectedOutput,

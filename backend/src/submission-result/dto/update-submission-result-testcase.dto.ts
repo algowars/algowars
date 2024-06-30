@@ -4,6 +4,7 @@ export class UpdateSubmissionResultTestcase {
   isRandomTestcase?: boolean;
   token: string;
 
+  stdin: string;
   sourceCode: string;
   stdout: string;
   expectedOutput: string;

@@ -16,16 +16,17 @@ const Status = ({ statusId }: Props) => {
     return null;
   }
 
-  const WRONG_STATUS = 4;
   const ACCEPTED = 3;
+
+  const badStatuses = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
   return (
     <TypographyH4
       className={
-        foundStatus.id === WRONG_STATUS
+        badStatuses.includes(foundStatus.id)
           ? "text-red-600 dark:text-red-500"
           : foundStatus.id === ACCEPTED
-          ? "text-green-600 dark:text-green-500"
+          ? "text-green-500 dark:text-green-500"
           : ""
       }
     >

@@ -13,6 +13,29 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
+const isSubmissionFinished = (submissionResult: SubmissionResult): boolean => {
+  const IN_QUEUE_STATUS = 1;
+  const PROCESSING_STATUS = 2;
+
+  let isFinished = true;
+
+  submissionResult.testcases.forEach(({ statusId }) => {
+    if (!statusId) {
+      isFinished = false;
+    }
+
+    if (statusId === IN_QUEUE_STATUS) {
+      isFinished = false;
+    }
+
+    if (statusId === PROCESSING_STATUS) {
+      isFinished = false;
+    }
+  });
+
+  return isFinished;
+};
+
 const ProblemPage = () => {
   const { getAccessTokenSilently } = useAuth0();
 
@@ -57,6 +80,9 @@ const ProblemPage = () => {
     mutationFn: async () => {
       const accessToken = await getAccessTokenSilently();
 
+      setPollingId("");
+      setSubmissionResult(null);
+
       const submissionId =
         await EvaluationService.getInstance().createAnonymouse(
           accessToken,
@@ -86,17 +112,8 @@ const ProblemPage = () => {
           pollingId
         );
 
-      const IN_QUEUE_STATUS = 1;
-      const PROCESSING_STATUS = 2;
-
       // status id to see if submission is finished
-      if (
-        result.testcases.find(
-          (testcase) =>
-            testcase.statusId !== IN_QUEUE_STATUS ||
-            testcase.statusId !== PROCESSING_STATUS
-        )
-      ) {
+      if (isSubmissionFinished(result)) {
         setSubmissionResult(result);
         setPollingId("");
       }
@@ -130,6 +147,7 @@ const ProblemPage = () => {
             sourceCode={sourceCode}
             changeSourceCode={changeSourceCode}
             submissionResult={submissionResult}
+            pollingId={pollingId}
           >
             <div className="grow pb-5 px-5">
               <ProblemEditor problemAggregate={problemAggregate} />
