@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateEvaluationCommand } from './create-evaluation.command';
 import { AccountEntityRepository } from 'src/account/db/account-entity.repository';
 import {
@@ -22,6 +22,7 @@ export class CreateEvaluationHandler
     private readonly judgeSubmissionFactory: Judge0SubmissionFactory,
     private readonly submissionResultFactory: SubmissionResultFactory,
     private readonly submissionResultTestcaseFactory: SubmissionResultTestcaseFactory,
+    private readonly eventPublisher: EventPublisher,
   ) {}
 
   async execute({
@@ -77,15 +78,18 @@ export class CreateEvaluationHandler
       ),
     );
 
-    const result = await this.submissionResultFactory.create({
-      languageId: createEvaluation.languageId,
-      isSubmission: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      createdBy: account,
-      testcases: testcases,
-    });
+    const result = this.eventPublisher.mergeObjectContext(
+      await this.submissionResultFactory.create({
+        languageId: createEvaluation.languageId,
+        isSubmission: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: account,
+        testcases: testcases,
+      }),
+    );
 
+    result.commit();
     return result.getId();
   }
 }

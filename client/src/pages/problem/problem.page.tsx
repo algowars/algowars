@@ -122,7 +122,7 @@ const ProblemPage = () => {
 
   const { isPending: isPollingPending, error: pollingError } = useQuery({
     queryKey: ["poll-submission", pollingId],
-    refetchInterval: () => (isTestPending ? 2_000 : false),
+    refetchInterval: () => (pollingId ? 2_000 : false),
     queryFn: async () => {
       if (!pollingId) {
         return null;
@@ -137,10 +137,12 @@ const ProblemPage = () => {
         );
 
       // status id to see if submission is finished
+      console.log("IS SUBMISSION FINISHED: ", isSubmissionFinished(result));
       if (isSubmissionFinished(result)) {
         setSubmissionResult(result);
         setPollingId("");
       }
+      return null;
     },
   });
 
@@ -176,7 +178,7 @@ const ProblemPage = () => {
     testError?.message,
   ]);
 
-  const isAllPending = isPollingPending || isPending || isSubmitPending;
+  const isAllPending = isPollingPending || isSubmitPending;
 
   if (isPending) {
     return <PageLoader />;

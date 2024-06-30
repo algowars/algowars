@@ -15,10 +15,7 @@ import { FindSubmissionResultByIdQuery } from './queries/find-submission-result-
 import { AccountDto } from 'src/account/dto/account.dto';
 import { FindAccountBySubQuery } from 'src/account/queries/find-account-by-sub/find-account-by-sub.query';
 import { UpdateSubmissionResultTestcase } from './dto/update-submission-result-testcase.dto';
-import { UpdateSubmissionResultTestcasesCommand } from './commands/update-submission-result-testcases/update-submission-result-testcases.command';
-import { FindBatchEvaluationQuery } from 'src/evaluation/queries/find-batch-evaluation/find-batch-evaluation.query';
 import { Judge0Submission } from 'src/evaluation/dto/judge0/judge0-submission.dto';
-import { SubmissionResultTestcaseDto } from './dto/submission-result-testcase.dto';
 
 @Controller('v1/submission-result')
 export class SubmissionResultController {
@@ -52,57 +49,59 @@ export class SubmissionResultController {
       throw new UnauthorizedException('You do not own this submission');
     }
 
-    if (this.isFinished(submissionResultDto)) {
-      if (submissionResultDto.isSubmission) {
-        return {
-          ...submissionResultDto,
-          testcases: [
-            submissionResultDto.testcases.find((testcase) => {
-              if (![1, 2, 3].includes(testcase.statusId)) {
-                return testcase;
-              }
-            }),
-          ],
-        };
-      }
-      return submissionResultDto;
-    }
+    return submissionResultDto;
 
-    const tokens = submissionResultDto.testcases.map(
-      (testcase) => testcase.token,
-    );
+    // if (this.isFinished(submissionResultDto)) {
+    //   if (submissionResultDto.isSubmission) {
+    //     return {
+    //       ...submissionResultDto,
+    //       testcases: [
+    //         submissionResultDto.testcases.find((testcase) => {
+    //           if (![1, 2, 3].includes(testcase.statusId)) {
+    //             return testcase;
+    //           }
+    //         }),
+    //       ],
+    //     };
+    //   }
+    //   return submissionResultDto;
+    // }
 
-    const judge0Submissions = await this.queryBus.execute<
-      FindBatchEvaluationQuery,
-      Judge0Submission[]
-    >(new FindBatchEvaluationQuery(tokens));
+    // const tokens = submissionResultDto.testcases.map(
+    //   (testcase) => testcase.token,
+    // );
 
-    const testcases = await this.commandBus.execute<
-      UpdateSubmissionResultTestcasesCommand,
-      SubmissionResultTestcaseDto[]
-    >(
-      new UpdateSubmissionResultTestcasesCommand(
-        this.getUpdatedSubmission(judge0Submissions),
-      ),
-    );
+    // const judge0Submissions = await this.queryBus.execute<
+    //   FindBatchEvaluationQuery,
+    //   Judge0Submission[]
+    // >(new FindBatchEvaluationQuery(tokens));
 
-    if (submissionResultDto.isSubmission) {
-      return {
-        ...submissionResultDto,
-        testcases: [
-          testcases.find((testcase) => {
-            if (![1, 2, 3].includes(testcase.statusId)) {
-              return testcase;
-            }
-          }),
-        ],
-      };
-    }
+    // const testcases = await this.commandBus.execute<
+    //   UpdateSubmissionResultTestcasesCommand,
+    //   SubmissionResultTestcaseDto[]
+    // >(
+    //   new UpdateSubmissionResultTestcasesCommand(
+    //     this.getUpdatedSubmission(judge0Submissions),
+    //   ),
+    // );
 
-    return {
-      ...submissionResultDto,
-      testcases,
-    };
+    // if (submissionResultDto.isSubmission) {
+    //   return {
+    //     ...submissionResultDto,
+    //     testcases: [
+    //       testcases.find((testcase) => {
+    //         if (![1, 2, 3].includes(testcase.statusId)) {
+    //           return testcase;
+    //         }
+    //       }),
+    //     ],
+    //   };
+    // }
+
+    // return {
+    //   ...submissionResultDto,
+    //   testcases,
+    // };
   }
 
   private isFinished(submissionResultDto: SubmissionResultDto): boolean {

@@ -31,6 +31,7 @@ import { SubmissionResultTestcaseEntityRepository } from 'src/submission-result/
 import { SubmissionResultEntityRepository } from 'src/submission-result/db/submission-result-entity.repository';
 import { SubmissionResultSchemaFactory } from 'src/submission-result/db/submission-result-schema.factory';
 import { SubmissionResultTestcaseSchemaFactory } from 'src/submission-result/db/submission-result-testcase/submission-result-testcase-schema.factory';
+import { EvaluationEventHandlers } from './events';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { SubmissionResultTestcaseSchemaFactory } from 'src/submission-result/db/
     ...ProblemFactories,
     ...SubmissionResultFactories,
     ...EvaluationQueryHandlers,
+    ...EvaluationEventHandlers,
   ],
 })
 export class EvaluationModule {}

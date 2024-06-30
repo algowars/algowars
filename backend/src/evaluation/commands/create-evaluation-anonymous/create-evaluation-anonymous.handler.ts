@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateEvaluationAnonymousCommand } from './create-evaluation-anonymous.command';
 import { EvaluationService } from 'src/evaluation/services/evaluation.service';
 import { ProblemEntityRepository } from 'src/problem/db/problem/problem-entity.repository';
@@ -22,6 +22,7 @@ export class CreateEvaluationAnonymousHandler
     private readonly judgeSubmissionFactory: Judge0SubmissionFactory,
     private readonly submissionResultFactory: SubmissionResultFactory,
     private readonly submissionResultTestcaseFactory: SubmissionResultTestcaseFactory,
+    private readonly eventPublisher: EventPublisher,
   ) {}
 
   async execute({
@@ -79,16 +80,18 @@ export class CreateEvaluationAnonymousHandler
         }),
       ),
     );
+    const result = this.eventPublisher.mergeObjectContext(
+      await this.submissionResultFactory.create({
+        languageId: createEvaluationAnonymous.languageId,
+        isSubmission: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: account,
+        testcases: testcases,
+      }),
+    );
 
-    const result = await this.submissionResultFactory.create({
-      languageId: createEvaluationAnonymous.languageId,
-      isSubmission: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      createdBy: account,
-      testcases: testcases,
-    });
-
+    result.commit();
     return result.getId();
   }
 }

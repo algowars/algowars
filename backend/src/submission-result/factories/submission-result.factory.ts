@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { SubmissionResult } from '../entities/submission-result.entity';
 import { CreateSubmissionResult } from '../dto/create-submission-result.dto';
 import { SubmissionResultEntityRepository } from '../db/submission-result-entity.repository';
+import { EvaluationCreatedEvent } from 'src/evaluation/events/evaluation-created/evaluation-created.event';
 
 @Injectable()
 export class SubmissionResultFactory
@@ -27,7 +28,10 @@ export class SubmissionResultFactory
     );
 
     await this.submissionResultEntityRepository.create(submissionResult);
-
+    console.log('BEING CRATED: ', submissionResult);
+    submissionResult.apply(
+      new EvaluationCreatedEvent(submissionResult.getId()),
+    );
     return submissionResult;
   }
 }
