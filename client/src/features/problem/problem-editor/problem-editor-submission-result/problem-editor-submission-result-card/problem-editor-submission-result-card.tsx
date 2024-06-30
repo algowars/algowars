@@ -21,18 +21,25 @@ const ProblemEditorSubmissionResultCard = ({ testcase }: Props) => {
         <SubmissionResultError error={testcase.stderr} />
       </div>
       <div className="p-5 flex flex-col gap-5">
-        <div className="flex flex-col gap-3">
-          <TypographyMuted>Input</TypographyMuted>
-          <p className="p-3 bg-muted rounded">{testcase.stdin}</p>
-        </div>
-        <div className="flex flex-col gap-3">
-          <TypographyMuted>Output</TypographyMuted>
-          <p className="p-3 bg-muted rounded">{testcase.stdout}</p>
-        </div>
-        <div className="flex flex-col gap-3">
-          <TypographyMuted>Expected</TypographyMuted>
-          <p className="p-3 bg-muted rounded">{testcase.expectedOutput}</p>
-        </div>
+        {testcase.stdin ? (
+          <div className="flex flex-col gap-3">
+            <TypographyMuted>Input</TypographyMuted>
+            <p className="p-3 bg-muted rounded">{testcase.stdin}</p>
+          </div>
+        ) : null}
+
+        {testcase.stdout ? (
+          <div className="flex flex-col gap-3">
+            <TypographyMuted>Output</TypographyMuted>
+            <p className="p-3 bg-muted rounded">{testcase.stdout}</p>
+          </div>
+        ) : null}
+        {testcase.expectedOutput ? (
+          <div className="flex flex-col gap-3">
+            <TypographyMuted>Expected</TypographyMuted>
+            <p className="p-3 bg-muted rounded">{testcase.expectedOutput}</p>
+          </div>
+        ) : null}
       </div>
     </div>
   );
