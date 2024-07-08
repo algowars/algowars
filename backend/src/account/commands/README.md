@@ -4,10 +4,12 @@ This project demonstrates the implementation of a command and its handler to cre
 
 ## Project Structure
 
-- `create-account/`
-  - `create-account.command.ts`
-  - `create-account.handler.ts`
-- `index.ts`
+```text
+- create-account/
+  - create-account.command.ts
+  - create-account.handler.ts
+- index.ts
+```
 
 ## Files Overview
 
