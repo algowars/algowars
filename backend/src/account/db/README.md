@@ -48,15 +48,3 @@ This factory class is responsible for creating instances of the account schema. 
 This file provides tests for the `AccountSchemaFactory`. The tests verify that the factory correctly creates instances of the account schema and adheres to the expected structure and rules.
 
 ## Usage
-
-### Setting Up
-
-1. **Clone the repository**: 
-   ```bash
-   git clone <repository-url>
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
