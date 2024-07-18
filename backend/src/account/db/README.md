@@ -46,5 +46,3 @@ This factory class is responsible for creating instances of the account schema. 
 ### `src/account/db/account-schema.factory.spec.ts`
 
 This file provides tests for the `AccountSchemaFactory`. The tests verify that the factory correctly creates instances of the account schema and adheres to the expected structure and rules.
-
-## Usage
