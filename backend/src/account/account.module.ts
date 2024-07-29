@@ -13,17 +13,21 @@ import { AccountCommandHandlers } from './commands';
 import { AccountDtoFactory } from './dto/account.dto.factory';
 
 @Module({
-  imports: [CqrsModule, TypeOrmModule.forFeature([AccountSchema])],
-  controllers: [AccountController],
+  imports: [
+    CqrsModule, // Importing CQRS module to handle command and query responsibilities.
+    TypeOrmModule.forFeature([AccountSchema]) // Importing TypeOrmModule with AccountSchema to enable TypeORM functionalities for AccountSchema.
+  ],
+  controllers: [AccountController], // Registering AccountController to handle HTTP requests.
   providers: [
-    AccountEntityRepository,
-    AccountDtoFactory,
-    AccountDtoRepository,
-    AccountSchemaFactory,
-    AccountFactory,
-    ...AccountCommandHandlers,
-    ...AccountEventHandlers,
-    ...AccountQueryHandlers,
+    AccountEntityRepository, // Provider for AccountEntityRepository to handle entity persistence.
+    AccountDtoFactory, // Provider for AccountDtoFactory to create AccountDto from schema.
+    AccountDtoRepository, // Provider for AccountDtoRepository to handle DTO-related database operations.
+    AccountSchemaFactory, // Provider for AccountSchemaFactory to create AccountSchema from entities.
+    AccountFactory, // Provider for AccountFactory to create new Account entities.
+    ...AccountCommandHandlers, // Spreading AccountCommandHandlers array to register command handlers.
+    ...AccountEventHandlers, // Spreading AccountEventHandlers array to register event handlers.
+    ...AccountQueryHandlers, // Spreading AccountQueryHandlers array to register query handlers.
   ],
 })
-export class AccountModule {}
+// AccountModule is the main module that bundles all account-related components together.
+export class AccountModule { }
