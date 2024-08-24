@@ -12,18 +12,20 @@ describe('ProblemEntityRepository', () => {
   let problemRepository: Repository<ProblemSchema>;
   let problemSchemaFactory: ProblemSchemaFactory;
 
+  // Setup the testing module and inject dependencies before each test case
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProblemEntityRepository,
         {
           provide: getRepositoryToken(ProblemSchema),
-          useClass: Repository,
+          useClass: Repository, // Provide the TypeORM repository for ProblemSchema
         },
         ProblemSchemaFactory,
       ],
     }).compile();
 
+    // Get instances of the repository and factory from the testing module
     repository = module.get<ProblemEntityRepository>(ProblemEntityRepository);
     problemRepository = module.get<Repository<ProblemSchema>>(
       getRepositoryToken(ProblemSchema),
@@ -32,14 +34,17 @@ describe('ProblemEntityRepository', () => {
       module.get<ProblemSchemaFactory>(ProblemSchemaFactory);
   });
 
+  // Check if the repository is defined (i.e., successfully instantiated)
   it('should be defined', () => {
     expect(repository).toBeDefined();
   });
 
+  // Verify that the repository extends from BaseEntityRepository
   it('should extend BaseEntityRepository', () => {
     expect(repository).toBeInstanceOf(BaseEntityRepository);
   });
 
+  // Test if the create method of the problem repository is called correctly
   it('should call the problem repository create method', async () => {
     const problem: Problem = new Problem(
       '1',
@@ -60,12 +65,19 @@ describe('ProblemEntityRepository', () => {
       updatedAt: new Date(),
     };
 
+    // Mock the create method of ProblemSchemaFactory to return a ProblemSchema object
     jest.spyOn(problemSchemaFactory, 'create').mockReturnValue(problemSchema);
+
+    // Mock the save method of the problem repository to resolve to the created ProblemSchema
     jest.spyOn(problemRepository, 'save').mockResolvedValue(problemSchema);
 
+    // Call the create method of the repository
     await repository.create(problem);
 
+    // Ensure the create method of the factory is called with the correct problem entity
     expect(problemSchemaFactory.create).toHaveBeenCalledWith(problem);
+
+    // Ensure the save method of the problem repository is called with the correct ProblemSchema
     expect(problemRepository.save).toHaveBeenCalledWith(problemSchema);
   });
 });

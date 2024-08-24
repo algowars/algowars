@@ -9,17 +9,19 @@ import { DatabaseMock } from 'src/test-utils/database/database.mock';
 describe('ProblemDtoRepository', () => {
   let repository: ProblemDtoRepository;
 
+  // Setup before each test case
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProblemDtoRepository,
         {
           provide: DataSource,
-          useValue: DatabaseMock.mockDataSource(),
+          useValue: DatabaseMock.mockDataSource(), // Mocked DataSource to avoid actual database interactions
         },
       ],
     }).compile();
 
+    // Get an instance of the repository from the testing module
     repository = module.get<ProblemDtoRepository>(ProblemDtoRepository);
   });
 
@@ -46,11 +48,15 @@ describe('ProblemDtoRepository', () => {
         },
       ];
 
+      // Mock the repository's find method to return the problemSchemas array
       jest.spyOn(repository, 'find').mockResolvedValue(problemSchemas);
 
       const result = await repository.findAll();
 
+      // Verify that the find method was called exactly once
       expect(repository.find).toHaveBeenCalledTimes(1);
+
+      // Verify that the result is correctly mapped to ProblemDto array
       expect(result).toEqual(
         problemSchemas.map((problem) => repository['toProblemDto'](problem)),
       );
@@ -87,15 +93,18 @@ describe('ProblemDtoRepository', () => {
         totalPages: 1,
       };
 
+      // Mock the repository's findPageable method to return the paginationResponse
       jest
         .spyOn(repository, 'findPageable')
         .mockResolvedValue(paginationResponse);
 
       const result = await repository.findProblemsPageable(problemPageable);
 
+      // Verify that the findPageable method was called exactly once with the correct pageable parameter
       expect(repository.findPageable).toHaveBeenCalledTimes(1);
       expect(repository.findPageable).toHaveBeenCalledWith(problemPageable);
 
+      // Verify that the result is correctly mapped to PaginationResponse<ProblemDto>
       expect(result.results).toEqual(
         problemSchemas.map((problem) => repository['toProblemDto'](problem)),
       );
