@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
-import { PaginationRequest } from './dto/request/pagination-request.dto';
+import { Module } from '@nestjs/common'; // Import the Module decorator from NestJS
+import { PaginationRequest } from './dto/request/pagination-request.dto'; // Import the PaginationRequest DTO
 
+// Define a module for pagination functionality
 @Module({
-  providers: [PaginationRequest],
+  providers: [PaginationRequest], // Register the PaginationRequest as a provider in this module
 })
-export class PaginationModule {}
+export class PaginationModule { } // Export the PaginationModule class

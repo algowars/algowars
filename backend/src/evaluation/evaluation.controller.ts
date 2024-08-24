@@ -10,33 +10,33 @@ import { CreateEvaluationCommand } from './commands/create-evaluation/create-eva
 @Controller('v1/evaluation')
 export class EvaluationController {
   constructor(
-    private readonly commandBus: CommandBus,
-    private readonly queryBus: QueryBus,
-  ) {}
+    private readonly commandBus: CommandBus, // Handles command dispatching
+    private readonly queryBus: QueryBus,     // Handles query dispatching (not used in this example)
+  ) { }
 
-  @UseGuards(AuthorizationGuard)
+  // Endpoint for anonymous evaluation
+  @UseGuards(AuthorizationGuard) // Applies the AuthorizationGuard to secure the route
   @Post('anonymous')
   async evaluateAnonymous(
-    @Body()
-    createEvaluationAnonymous: CreateEvaluationAnonymous,
-    @Req() request: Request,
+    @Body() createEvaluationAnonymous: CreateEvaluationAnonymous, // The request body containing evaluation details
+    @Req() request: Request,                                       // The request object, used here to access auth information
   ): Promise<string> {
-    const sub = request.auth.payload.sub;
+    const sub = request.auth.payload.sub; // Extracts the subject (user identifier) from the JWT payload
     return this.commandBus.execute<CreateEvaluationAnonymousCommand, string>(
-      new CreateEvaluationAnonymousCommand(createEvaluationAnonymous, sub),
+      new CreateEvaluationAnonymousCommand(createEvaluationAnonymous, sub), // Dispatches the CreateEvaluationAnonymousCommand
     );
   }
 
-  @UseGuards(AuthorizationGuard)
+  // Endpoint for authenticated user evaluation
+  @UseGuards(AuthorizationGuard) // Applies the AuthorizationGuard to secure the route
   @Post()
   async evaluate(
-    @Body()
-    createEvaluation: CreateEvaluation,
-    @Req() request: Request,
+    @Body() createEvaluation: CreateEvaluation, // The request body containing evaluation details
+    @Req() request: Request,                    // The request object, used here to access auth information
   ): Promise<string> {
-    const sub = request.auth.payload.sub;
+    const sub = request.auth.payload.sub; // Extracts the subject (user identifier) from the JWT payload
     return this.commandBus.execute<CreateEvaluationCommand, string>(
-      new CreateEvaluationCommand(createEvaluation, sub),
+      new CreateEvaluationCommand(createEvaluation, sub), // Dispatches the CreateEvaluationCommand
     );
   }
 }

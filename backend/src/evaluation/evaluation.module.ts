@@ -35,20 +35,21 @@ import { EvaluationEventHandlers } from './events';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot(), // Importing ConfigModule for environment variable management
     HttpModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        baseURL: configService.get<string>('EVALUATOR_URL'),
+        baseURL: configService.get<string>('EVALUATOR_URL'), // Base URL for the evaluator API
         headers: {
-          'X-RapidAPI-Key': configService.get<string>('EVALUATOR_API_KEY'),
-          'X-RapidAPI-Host': configService.get<string>('EVALUATOR_HOST'),
+          'X-RapidAPI-Key': configService.get<string>('EVALUATOR_API_KEY'), // API key for authentication
+          'X-RapidAPI-Host': configService.get<string>('EVALUATOR_HOST'),   // Host header for the evaluator API
         },
       }),
-      inject: [ConfigService],
+      inject: [ConfigService], // Injects ConfigService to access environment variables
     }),
-    CqrsModule,
+    CqrsModule, // Importing CqrsModule to enable CQRS (Command Query Responsibility Segregation) pattern
     TypeOrmModule.forFeature([
+      // Registers database schemas with TypeORM
       ProblemSchema,
       ProblemSetupSchema,
       TestSchema,
@@ -58,8 +59,9 @@ import { EvaluationEventHandlers } from './events';
       SubmissionResultTestcaseSchema,
     ]),
   ],
-  controllers: [EvaluationController],
+  controllers: [EvaluationController], // Registers EvaluationController
   providers: [
+    // List of services, repositories, factories, command/query/event handlers to be provided in the module
     EvaluationService,
     ProblemEntityRepository,
     ProblemSchemaFactory,
@@ -73,12 +75,12 @@ import { EvaluationEventHandlers } from './events';
     SubmissionResultTestcaseEntityRepository,
     SubmissionResultSchemaFactory,
     SubmissionResultTestcaseSchemaFactory,
-    ...EvaluationCommandHandlers,
-    ...EvaluationFactories,
-    ...ProblemFactories,
-    ...SubmissionResultFactories,
-    ...EvaluationQueryHandlers,
-    ...EvaluationEventHandlers,
+    ...EvaluationCommandHandlers,  // Spread operator to include all command handlers
+    ...EvaluationFactories,        // Spread operator to include all factories related to evaluations
+    ...ProblemFactories,           // Spread operator to include all factories related to problems
+    ...SubmissionResultFactories,  // Spread operator to include all factories related to submission results
+    ...EvaluationQueryHandlers,    // Spread operator to include all query handlers
+    ...EvaluationEventHandlers,    // Spread operator to include all event handlers
   ],
 })
-export class EvaluationModule {}
+export class EvaluationModule { }

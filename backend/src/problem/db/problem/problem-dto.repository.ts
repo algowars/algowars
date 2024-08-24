@@ -20,11 +20,20 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
     super(ProblemSchema, dataSource);
   }
 
+  /**
+   * Finds all problems and returns them as an array of ProblemDto.
+   * @returns A promise that resolves to an array of ProblemDto.
+   */
   async findAll(): Promise<ProblemDto[]> {
     const problems = await this.find({});
     return problems.map((problem) => this.toProblemDto(problem));
   }
 
+  /**
+   * Finds a problem by its ID and returns it as a ProblemDto.
+   * @param id - The ID of the problem to find.
+   * @returns A promise that resolves to a ProblemDto.
+   */
   async findById(id: string): Promise<ProblemDto> {
     const problem = await this.dataSource.getRepository(ProblemSchema).findOne({
       where: {
@@ -35,6 +44,14 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
     return this.toProblemDto(problem);
   }
 
+  /**
+   * Finds a problem by its slug and language ID and returns its aggregate data.
+   * Includes problem details, initial code, and test cases.
+   * @param slug - The slug of the problem to find.
+   * @param languageId - The language ID for the problem setup.
+   * @returns A promise that resolves to a ProblemAggregateDto.
+   * @throws NotFoundException if the problem or its setup is not found.
+   */
   async findAggregateBySlug(
     slug: string,
     languageId: number,
@@ -72,6 +89,11 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
     };
   }
 
+  /**
+   * Finds problems with pagination support and returns a paginated response.
+   * @param problemPageable - The pagination parameters.
+   * @returns A promise that resolves to a PaginationResponse containing ProblemDto objects.
+   */
   async findProblemsPageable(
     problemPageable: Pageable,
   ): Promise<PaginationResponse<ProblemDto>> {
@@ -87,6 +109,11 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
     };
   }
 
+  /**
+   * Converts a ProblemSchema object to a ProblemDto object.
+   * @param problem - The ProblemSchema to convert.
+   * @returns A ProblemDto object.
+   */
   private toProblemDto(problem: ProblemSchema): ProblemDto {
     return {
       id: problem.id,
@@ -100,16 +127,31 @@ export class ProblemDtoRepository extends PageableRepository<ProblemSchema> {
     };
   }
 
+  /**
+   * Converts a TestSchema object to a TestDto object.
+   * @param test - The TestSchema to convert.
+   * @returns A TestDto object.
+   */
   private toTestDto(test: TestSchema): TestDto {
     return {
       inputs: test?.inputs?.map((input) => this.toTestInputDto(input)) ?? [],
     };
   }
 
+  /**
+   * Converts an array of TagSchema objects to an array of TagDto objects.
+   * @param tags - The array of TagSchema objects to convert.
+   * @returns An array of TagDto objects.
+   */
   private toTagDto(tags: TagSchema[]): TagDto[] {
     return tags.map((tag) => ({ name: tag.name }));
   }
 
+  /**
+   * Converts a TestInputSchema object to a TestInputDto object.
+   * @param testInput - The TestInputSchema to convert.
+   * @returns A TestInputDto object.
+   */
   private toTestInputDto(testInput: TestInputSchema): TestInputDto {
     return {
       label: testInput.label,

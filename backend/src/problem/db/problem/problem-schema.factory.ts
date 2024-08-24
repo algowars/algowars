@@ -7,13 +7,19 @@ import { ProblemSetupSchemaFactory } from '../problem-setup/problem-setup-schema
 
 @Injectable()
 export class ProblemSchemaFactory
-  implements EntitySchemaFactory<ProblemSchema, Problem>
-{
+  implements EntitySchemaFactory<ProblemSchema, Problem> {
   constructor(
     private readonly testSchemaFactory: TestSchemaFactory,
     private readonly problemSetupSchemaFactory: ProblemSetupSchemaFactory,
-  ) {}
+  ) { }
 
+  /**
+   * Creates a ProblemSchema object from a Problem entity.
+   * This method is used to map the domain entity to the persistence schema.
+   * 
+   * @param problem - The Problem entity to convert.
+   * @returns A ProblemSchema object containing the persisted data.
+   */
   create(problem: Problem): ProblemSchema {
     return {
       id: problem.getId(),
@@ -23,27 +29,38 @@ export class ProblemSchemaFactory
       rating: problem.getRating(),
       createdAt: problem.getCreatedAt(),
       updatedAt: problem.getUpdatedAt(),
-      setups: problem.getSetups() as any,
-      tests: problem.getTests() as any,
-      tags: problem.getTags() as any,
+      setups: problem.getSetups() as any, // Converting setups to a format suitable for persistence
+      tests: problem.getTests() as any, // Converting tests to a format suitable for persistence
+      tags: problem.getTags() as any, // Converting tags to a format suitable for persistence
     };
   }
 
+  /**
+   * Creates a Problem entity from a ProblemSchema object.
+   * This method is used to map the persistence schema back to the domain entity.
+   * 
+   * @param problemSchema - The ProblemSchema object to convert.
+   * @returns A Problem entity containing the domain logic.
+   */
   createFromSchema(problemSchema: ProblemSchema): Problem {
     let setups = [];
     let tests = [];
 
+    // Convert each ProblemSetupSchema to a domain entity if setups exist
     if (problemSchema.setups) {
       setups = problemSchema.setups.map((setup) =>
         this.problemSetupSchemaFactory.createFromSchema(setup),
       );
     }
 
+    // Convert each TestSchema to a domain entity if tests exist
     if (problemSchema.tests) {
       tests = problemSchema.tests.map((test) =>
         this.testSchemaFactory.createFromSchema(test),
       );
     }
+
+    // Create and return a new Problem entity with the converted data
     return new Problem(
       problemSchema.id,
       problemSchema.title,
