@@ -6,13 +6,11 @@ import { useAccount } from "./features/account/hooks/use-account";
 import { Toaster } from "sonner";
 
 const App = () => {
-  const { isLoading } = useAuth0();
-
   const { isLoading: isAccountLoading } = useAccount();
 
   useAuthRoles();
 
-  if (isLoading || isAccountLoading) {
+  if (isAccountLoading) {
     return (
       <div>
         <PageLoader />

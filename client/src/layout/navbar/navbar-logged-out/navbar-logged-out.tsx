@@ -1,11 +1,13 @@
 import Logo from "@/components/logo/logo";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { useAuthLoginButton } from "@/features/auth/auth-login-button/auth-login-button.hooks";
 import { useAuthSignupButton } from "@/features/auth/auth-signup-button/auth-signup-button.hooks";
 import Container from "@/layout/container/container";
 import { createLink, signedOutLinks } from "../nav-links";
 import { NavLink } from "../nav-link";
+import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 type Props = {
   width?: string;
@@ -34,14 +36,20 @@ const NavbarLoggedOut = ({ width, className, border = "border-b" }: Props) => {
         </ul>
         <ul className="flex items-center gap-3 text-sm">
           <li>
-            <Button variant="outline" onClick={handleLogin} className="w-24">
+            <Link
+              to="/login"
+              className={cn(buttonVariants({ variant: "outline" }), "w-24")}
+            >
               Log in
-            </Button>
+            </Link>
           </li>
           <li>
-            <Button variant="default" className="w-24" onClick={handleSignUp}>
+            <Link
+              to="/login"
+              className={cn(buttonVariants({ variant: "outline" }), "w-24")}
+            >
               Sign up
-            </Button>
+            </Link>
           </li>
         </ul>
       </Container>

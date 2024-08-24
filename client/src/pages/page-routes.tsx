@@ -9,10 +9,12 @@ import ProblemPage from "./problem/problem.page";
 import CreatePage from "./create/create.page";
 import ProblemResultPage from "./problem/problem-result/problem-result.page";
 import ProfilePage from "./profile/profile.page";
+import SignInPage from "./sign-in/sign-in.page";
 
 const PageRoutes = () => {
   return (
     <Routes>
+      <Route path="login" element={<SignInPage />} />
       <Route
         path="account/setup"
         element={<AuthenticationGuard component={AccountSetupPage} />}
