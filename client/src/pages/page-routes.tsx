@@ -11,16 +11,14 @@ import ProblemResultPage from "./problem/problem-result/problem-result.page";
 import ProfilePage from "./profile/profile.page";
 import SignInPage from "./sign-in/sign-in.page";
 import DocsPage from "./docs/docs.page";
+import SignUpPage from "./sign-up/sign-up.page";
 
 const PageRoutes = () => {
   return (
     <Routes>
       <Route path="login" element={<SignInPage />} />
       <Route path="docs" element={<DocsPage />} />
-      <Route
-        path="account/setup"
-        element={<AuthenticationGuard component={AccountSetupPage} />}
-      />
+      <Route path="signup" element={<SignUpPage />} />
       <Route
         path="create"
         element={<AuthenticationGuard component={CreatePage} />}

@@ -5,7 +5,7 @@ import Layout from "@/layout/layout";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
-const SignInPage = () => {
+const SignUpPage = () => {
   return (
     <Layout>
       <Container className="border rounded my-5 p-0 grid grid-cols-2 h-full border">
@@ -19,8 +19,11 @@ const SignInPage = () => {
           >
             Sign up
           </Link>
-          <form>
-            <h2>Sign in to an account</h2>
+          <form className="flex flex-col gap-5">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold">Create an account</h2>
+              <p>Enter your email below to create your account</p>
+            </div>
           </form>
         </main>
       </Container>
@@ -28,4 +31,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;
