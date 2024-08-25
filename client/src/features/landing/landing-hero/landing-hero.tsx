@@ -7,8 +7,8 @@ import { buttonVariants } from "@/components/ui/button";
 const LandingHero = () => {
   return (
     <article className="min-h-[60vh] lg:min-h-[80vh] py-12">
-      <Container className="flex flex-col items-start justify-center h-full">
-        <div className="max-w-3xl flex flex-col gap-5">
+      <Container className="flex flex-col items-center justify-center h-full">
+        <div className="max-w-3xl flex flex-col items-center text-center gap-5">
           <h1 className="scroll-m-20 text-3xl md:text-5xl lg:text-7xl font-semibold tracking-tight lg:text-5xl mb-4 md:mb-7">
             {landingHero.title}
           </h1>
