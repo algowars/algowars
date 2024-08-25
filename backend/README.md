@@ -59,6 +59,12 @@ $ npm run test:cov
 
 # Contributing
 
+For contributing to these repositories. It is recommended that the commit messages follow a consistent style. The first param will be the type of commit [Feature,Bug,etc.], The second param will be the GitHub issue number, and the last param will be a short message. 
+
+```
+Bug xxxx - Short descriptions of your change.
+```
+
 # License
 
 Algowars is [MIT licensed](LICENSE).
