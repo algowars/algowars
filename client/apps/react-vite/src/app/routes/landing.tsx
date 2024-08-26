@@ -2,8 +2,10 @@ import { useNavigate } from 'react-router';
 
 import logo from '@/assets/logo.svg';
 import { Head } from '@/components/seo';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { useUser } from '@/lib/auth';
+import { LandingNavbar } from '@/components/navbars/landing-navbar';
+import { Link } from '@/components/ui/link';
 
 export const LandingRoute = () => {
   const navigate = useNavigate();
@@ -20,6 +22,39 @@ export const LandingRoute = () => {
   return (
     <>
       <Head description="Welcome to Algowars" />
+      <header>
+        <LandingNavbar />
+      </header>
+      <main className="flex flex-col h-screen items-center">
+        <div className="relative max-w-5xl mx-auto pt-20 sm:pt-24 lg:pt-32">
+          <h1 className="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center">
+            Unleash Your Coding Power in the Ultimate Developer Showdown
+          </h1>
+          <p className="mt-6 text-lg text-slate-600 text-center max-w-3xl mx-auto">
+            Join a global arena where speed, skill, and strategy define the best
+            developers. Compete, conquer, and rise to the top of the
+            leaderboard!
+          </p>
+          <ul className="flex items-center gap-5 justify-center mt-7">
+            <li>
+              <Link
+                to="/login"
+                className={buttonVariants({ variant: 'default' })}
+              >
+                Get started
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/sign-up"
+                className={buttonVariants({ variant: 'secondary' })}
+              >
+                Join today
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </main>
       <div className="flex h-screen items-center bg-white">
         <div className="mx-auto max-w-7xl px-4 py-12 text-center sm:px-6 lg:px-8 lg:py-16">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
