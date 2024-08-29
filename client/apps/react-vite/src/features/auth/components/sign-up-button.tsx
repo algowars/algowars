@@ -3,7 +3,7 @@ import { Link } from '@/components/ui/link';
 
 export const SignupButton = () => {
   return (
-    <Link to="/login" className={buttonVariants({ variant: 'outline' })}>
+    <Link to="/sign-up" className={buttonVariants({ variant: 'outline' })}>
       Sign up
     </Link>
   );
