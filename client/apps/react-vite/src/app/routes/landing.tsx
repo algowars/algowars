@@ -56,9 +56,6 @@ export const LandingRoute = () => {
               </li>
             </ul>
           </div>
-
-          <div className="animate-pulse-slow delay absolute w-64 h-64 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 absolute blur top-12 right-0"></div>
-          <div className="animate-pulse-slow absolute w-64 h-64 rounded-full bg-gradient-to-r from-sky-500 to-indigo-500 absolute blur bottom-0 left-0"></div>
         </div>
       </main>
       <LandingFooter />
