@@ -1,9 +1,10 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { FindProblemBySlugQuery } from './find-problem-by-slug.query';
 import { ProblemResult } from './problem-result';
-import { Inject } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectionToken } from '../injection-token';
 import { ProblemQuery } from './problem-query';
+import { ProblemErrorMessage } from 'src/problem/domain/problem-error-message';
 
 @QueryHandler(FindProblemBySlugQuery)
 export class FindProblemBySlugHandler
@@ -13,5 +14,8 @@ export class FindProblemBySlugHandler
 
   async execute(query: FindProblemBySlugQuery): Promise<ProblemResult> {
     const data = await this.problemQuery.findBySlug(query.slug);
+    if (!data) {
+      throw new NotFoundException(ProblemErrorMessage.PROBLEM_NOT_FOUND);
+    }
   }
 }
