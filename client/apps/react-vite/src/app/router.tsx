@@ -9,6 +9,7 @@ import {
 import { ProtectedRoute } from '@/lib/auth';
 
 import { AppRoot } from './routes/app/root';
+import { DocsRoute } from './routes/docs/docs';
 
 export const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
@@ -31,6 +32,14 @@ export const createAppRouter = (queryClient: QueryClient) =>
       lazy: async () => {
         const { LoginRoute } = await import('./routes/auth/login');
         return { Component: LoginRoute };
+      },
+    },
+    {
+      path: 'docs',
+      lazy: async () => {
+        return {
+          Component: DocsRoute,
+        };
       },
     },
     {

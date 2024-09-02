@@ -2,8 +2,10 @@ import { useNavigate } from 'react-router';
 
 import logo from '@/assets/logo.svg';
 import { Head } from '@/components/seo';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { useUser } from '@/lib/auth';
+import { Link } from '@/components/ui/link';
+import { cn } from '@/utils/cn';
 
 export const LandingRoute = () => {
   const navigate = useNavigate();
@@ -52,6 +54,12 @@ export const LandingRoute = () => {
               </Button>
             </div>
             <div className="ml-3 inline-flex">
+              <Link
+                to="docs"
+                className={cn('mr-3', buttonVariants({ variant: 'outline' }))}
+              >
+                Documentation
+              </Link>
               <a
                 href="https://github.com/alan2207/bulletproof-react"
                 target="_blank"
