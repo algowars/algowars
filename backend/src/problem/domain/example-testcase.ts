@@ -1,3 +1,5 @@
+import { ExampleTestcaseInput } from './example-testcase-input';
+
 export type ExampleTestcaseProperties = Readonly<{
   label: string;
   problemId: string;
@@ -6,4 +8,7 @@ export type ExampleTestcaseProperties = Readonly<{
 
 export interface ExampleTestcase {}
 
-export class ExampleTestcaseImplementation implements ExampleTestcase {}
+export class ExampleTestcaseImplementation implements ExampleTestcase {
+  private readonly inputs: ExampleTestcaseInput[];
+  private readonly expectedOutput: string;
+}

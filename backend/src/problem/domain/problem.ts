@@ -1,4 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
+import { ExampleTestcase } from './example-testcase';
 
 export type ProblemEssentialProperties = Readonly<
   Required<{
@@ -24,6 +25,7 @@ export class ProblemImplementation extends AggregateRoot implements Problem {
   private readonly title: string;
   private readonly question: string;
   private readonly slug: string;
+  private readonly exampleTestcases: ExampleTestcase[];
   private readonly createdAt: Date;
   private readonly updatedAt: Date;
   private readonly deletedAt: Date | null;
