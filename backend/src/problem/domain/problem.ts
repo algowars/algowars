@@ -10,7 +10,13 @@ export type ProblemEssentialProperties = Readonly<
   }>
 >;
 
-export type ProblemOptionalProperties = Readonly<Partial<{}>>;
+export type ProblemOptionalProperties = Readonly<
+  Partial<{
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+  }>
+>;
 
 export type ProblemProperties = ProblemEssentialProperties &
   Required<ProblemOptionalProperties>;
