@@ -6,34 +6,12 @@ import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-function checkEnvironment(configService: ConfigService) {
-  const requiredEnvVars = [
-    'PORT',
-    'CLIENT_ORIGIN_URL',
-    'POSTGRESQL_HOST',
-    'POSTGRESQL_PORT',
-    'POSTGRESQL_USERNAME',
-    'POSTGRESQL_PASSWORD',
-    'POSTGRESQL_NAME',
-    'EVALUATOR_HOST',
-    'EVALUATOR_URL',
-    'EVALUATOR_API_KEY',
-  ];
-
-  requiredEnvVars.forEach((envVar) => {
-    if (!configService.get<string>(envVar)) {
-      throw Error(`Undefined environment variable: ${envVar}`);
-    }
-  });
-}
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['log'],
   });
 
   const configService = app.get<ConfigService>(ConfigService);
-  checkEnvironment(configService);
 
   app.setGlobalPrefix('api');
 
