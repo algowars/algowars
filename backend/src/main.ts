@@ -4,17 +4,16 @@ import { HttpExceptionFilter } from './http-exception.filter';
 import * as nocache from 'nocache';
 import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Config } from './config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['log'],
   });
 
-  const configService = app.get<ConfigService>(ConfigService);
-
   app.setGlobalPrefix('api');
 
+  console.log(Config);
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -26,7 +25,7 @@ async function bootstrap() {
   app.use(nocache());
 
   app.enableCors({
-    origin: configService.get<string>('CLIENT_ORIGIN_URL'),
+    origin: Config.CLIENT_ORIGIN_URLS,
     methods: ['GET', 'POST', 'PUT'],
     allowedHeaders: ['Authorization', 'Content-Type', 'content-type'],
     maxAge: 86400,
@@ -45,8 +44,8 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(configService.get<string>('PORT'), () => {
-    console.log(`Listening on port 🚀 ${configService.get<string>('PORT')} 🚀`);
+  await app.listen(Config.PORT, () => {
+    console.log(`Listening on port 🚀 ${Config.PORT} 🚀`);
   });
 }
 

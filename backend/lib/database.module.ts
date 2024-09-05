@@ -9,6 +9,7 @@ import {
   Repository,
   SelectQueryBuilder,
 } from 'typeorm';
+
 import { v4 } from 'uuid';
 
 interface WriteConnection {
@@ -79,7 +80,7 @@ export interface EntityIdTransformer {
   to: (stringId: string) => Buffer;
 }
 
-class EntityIdTransformerImplementation implements EntityIdTransformer {
+class EntityIdTransformerImplement implements EntityIdTransformer {
   from(dbData: Buffer): string {
     return Buffer.from(dbData.toString('binary'), 'ascii').toString('hex');
   }
@@ -95,7 +96,7 @@ class EntityIdTransformerImplementation implements EntityIdTransformer {
     DatabaseService,
     {
       provide: ENTITY_ID_TRANSFORMER,
-      useClass: EntityIdTransformerImplementation,
+      useClass: EntityIdTransformerImplement,
     },
   ],
   exports: [ENTITY_ID_TRANSFORMER],

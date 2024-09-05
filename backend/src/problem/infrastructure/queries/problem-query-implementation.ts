@@ -3,21 +3,29 @@ import {
   ENTITY_ID_TRANSFORMER,
   EntityIdTransformer,
   readConnection,
-} from 'src/lib/database.module';
-import { FindProblemResult } from 'src/problem/application/queries/find-problem-result';
+} from 'lib/database.module';
 import { ProblemQuery } from 'src/problem/application/queries/problem-query';
 import { ProblemEntity } from '../entities/problem.entity';
+import { FindProblemBySlugResult } from 'src/problem/application/queries/find-problem-by-slug-query/find-problem-by-slug-result';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
   @Inject(ENTITY_ID_TRANSFORMER)
   private readonly entityIdTransformer: EntityIdTransformer;
 
-  async findBySlug(slug: string): Promise<FindProblemResult | null> {
+  async findBySlug(slug: string): Promise<FindProblemBySlugResult | null> {
     const problem = await readConnection
       .getRepository(ProblemEntity)
       .findOneBy({ slug: slug });
 
-    problem.id = this.entityIdTransformer.from(problem.id);
+    return {
+      id: this.entityIdTransformer.from(problem.id),
+      title: problem.title,
+      slug: problem.slug,
+      question: problem.question,
+      createdAt: problem.createdAt,
+      updatedAt: problem.updatedAt,
+      deletedAt: problem.deletedAt,
+    };
   }
 }

@@ -19,6 +19,7 @@ export class ProblemFactory {
         createdAt: new Date(),
         updatedAt: new Date(),
         deletedAt: null,
+        version: 0,
       }),
     );
   }

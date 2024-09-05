@@ -15,6 +15,7 @@ export type ProblemOptionalProperties = Readonly<
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
+    version: number;
   }>
 >;
 
@@ -35,6 +36,7 @@ export class ProblemImplementation extends AggregateRoot implements Problem {
   private readonly createdAt: Date;
   private readonly updatedAt: Date;
   private readonly deletedAt: Date | null;
+  private readonly version: number;
 
   constructor(properties: ProblemProperties) {
     super();
