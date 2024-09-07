@@ -1,5 +1,11 @@
-import { Global, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { Config } from 'src/config';
+import {
+  Global,
+  Injectable,
+  Module,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import {
   DataSource,
   EntityManager,
@@ -41,17 +47,20 @@ interface ReadConnection {
 export let writeConnection = {} as WriteConnection;
 export let readConnection = {} as ReadConnection;
 
+@Injectable()
 class DatabaseService implements OnModuleInit, OnModuleDestroy {
+  constructor(private readonly configService: ConfigService) {}
+
   private readonly dataSource = new DataSource({
     type: 'postgres',
     entities: [],
-    logging: Config.DATABASE_LOGGING,
-    host: Config.DATABASE_HOST,
-    port: Config.DATABASE_PORT,
-    database: Config.DATABASE_NAME,
-    username: Config.DATABASE_USER,
-    password: Config.DATABASE_PASSWORD,
-    synchronize: Config.DATABASE_SYNC,
+    logging: this.configService.get<string>('DATABASE_LOGGING') === 'true',
+    host: this.configService.get<string>('DATABASE_HOST'),
+    port: Number(this.configService.get<number>('DATABASE_PORT')),
+    database: this.configService.get<string>('DATABASE_NAME'),
+    username: this.configService.get<string>('DATABASE_USER'),
+    password: this.configService.get<string>('DATABASE_PASSWORD'),
+    synchronize: this.configService.get<string>('DATABASE_SYNC') === 'true',
   });
 
   async onModuleInit(): Promise<void> {
@@ -92,6 +101,11 @@ class EntityIdTransformerImplement implements EntityIdTransformer {
 
 @Global()
 @Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
   providers: [
     DatabaseService,
     {

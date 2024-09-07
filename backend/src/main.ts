@@ -4,16 +4,36 @@ import { HttpExceptionFilter } from './http-exception.filter';
 import * as nocache from 'nocache';
 import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
-import { Config } from './config';
+import { ConfigService } from '@nestjs/config';
+
+function checkEnvironment(configService: ConfigService) {
+  const requiredEnvVars = [
+    'PORT',
+    'DATABASE_HOST',
+    'DATABASE_PORT',
+    'DATABASE_USER',
+    'DATABASE_PASSWORD',
+    'DATABASE_NAME',
+    'CLIENT_ORIGIN_URLS',
+  ];
+
+  requiredEnvVars.forEach((envVar) => {
+    if (!configService.get<string>(envVar)) {
+      throw Error(`Undefined environment variable: ${envVar}`);
+    }
+  });
+}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['log'],
   });
 
+  const configService = app.get<ConfigService>(ConfigService);
+  checkEnvironment(configService);
+
   app.setGlobalPrefix('api');
 
-  console.log(Config);
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -24,12 +44,12 @@ async function bootstrap() {
 
   app.use(nocache());
 
-  app.enableCors({
-    origin: Config.CLIENT_ORIGIN_URLS,
-    methods: ['GET', 'POST', 'PUT'],
-    allowedHeaders: ['Authorization', 'Content-Type', 'content-type'],
-    maxAge: 86400,
-  });
+  // app.enableCors({
+  //   origin: Config.CLIENT_ORIGIN_URLS,
+  //   methods: ['GET', 'POST', 'PUT'],
+  //   allowedHeaders: ['Authorization', 'Content-Type', 'content-type'],
+  //   maxAge: 86400,
+  // });
 
   app.use(
     helmet({
@@ -44,8 +64,10 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(Config.PORT, () => {
-    console.log(`Listening on port 🚀 ${Config.PORT} 🚀`);
+  const port = Number(configService.get<number>('PORT'));
+
+  await app.listen(port, () => {
+    console.log(`Listening on port 🚀 ${port} 🚀`);
   });
 }
 
