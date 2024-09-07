@@ -9,15 +9,12 @@ import { ConfigService } from '@nestjs/config';
 function checkEnvironment(configService: ConfigService) {
   const requiredEnvVars = [
     'PORT',
-    'CLIENT_ORIGIN_URL',
-    'POSTGRESQL_HOST',
-    'POSTGRESQL_PORT',
-    'POSTGRESQL_USERNAME',
-    'POSTGRESQL_PASSWORD',
-    'POSTGRESQL_NAME',
-    'EVALUATOR_HOST',
-    'EVALUATOR_URL',
-    'EVALUATOR_API_KEY',
+    'DATABASE_HOST',
+    'DATABASE_PORT',
+    'DATABASE_USER',
+    'DATABASE_PASSWORD',
+    'DATABASE_NAME',
+    'CLIENT_ORIGIN_URLS',
   ];
 
   requiredEnvVars.forEach((envVar) => {
@@ -47,12 +44,12 @@ async function bootstrap() {
 
   app.use(nocache());
 
-  app.enableCors({
-    origin: configService.get<string>('CLIENT_ORIGIN_URL'),
-    methods: ['GET', 'POST', 'PUT'],
-    allowedHeaders: ['Authorization', 'Content-Type', 'content-type'],
-    maxAge: 86400,
-  });
+  // app.enableCors({
+  //   origin: Config.CLIENT_ORIGIN_URLS,
+  //   methods: ['GET', 'POST', 'PUT'],
+  //   allowedHeaders: ['Authorization', 'Content-Type', 'content-type'],
+  //   maxAge: 86400,
+  // });
 
   app.use(
     helmet({
@@ -67,8 +64,10 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(configService.get<string>('PORT'), () => {
-    console.log(`Listening on port 🚀 ${configService.get<string>('PORT')} 🚀`);
+  const port = Number(configService.get<number>('PORT'));
+
+  await app.listen(port, () => {
+    console.log(`Listening on port 🚀 ${port} 🚀`);
   });
 }
 
