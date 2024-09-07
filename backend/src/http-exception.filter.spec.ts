@@ -2,11 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { HttpException, ArgumentsHost } from '@nestjs/common';
 import { Response } from 'express';
+import { Logger } from '@nestjs/common';
 
 describe('HttpExceptionFilter', () => {
   let filter: HttpExceptionFilter;
 
   beforeEach(async () => {
+    jest.spyOn(Logger.prototype, 'error').mockImplementation(jest.fn()); // Mock logger
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [HttpExceptionFilter],
     }).compile();
@@ -34,10 +37,10 @@ describe('HttpExceptionFilter', () => {
       };
     });
 
-    it('should handle general HTTP exceptions', () => {
+    it('should handle general HTTP exceptions', async () => {
       const exception = new HttpException('Forbidden', 403);
 
-      filter.catch(exception, mockHost as ArgumentsHost);
+      await filter.catch(exception, mockHost as ArgumentsHost);
 
       expect(mockResponse.status).toHaveBeenCalledWith(403);
       expect(mockResponse.json).toHaveBeenCalledWith({
@@ -46,10 +49,10 @@ describe('HttpExceptionFilter', () => {
       });
     });
 
-    it('should handle not found exceptions', () => {
+    it('should handle not found exceptions', async () => {
       const exception = new HttpException('Not Found', 404);
 
-      filter.catch(exception, mockHost as ArgumentsHost);
+      await filter.catch(exception, mockHost as ArgumentsHost);
 
       expect(mockResponse.status).toHaveBeenCalledWith(404);
       expect(mockResponse.json).toHaveBeenCalledWith({
@@ -58,10 +61,10 @@ describe('HttpExceptionFilter', () => {
       });
     });
 
-    it('should handle internal server error exceptions', () => {
+    it('should handle internal server error exceptions', async () => {
       const exception = new HttpException('Internal server error', 500);
 
-      filter.catch(exception, mockHost as ArgumentsHost);
+      await filter.catch(exception, mockHost as ArgumentsHost);
 
       expect(mockResponse.status).toHaveBeenCalledWith(500);
       expect(mockResponse.json).toHaveBeenCalledWith({
@@ -70,7 +73,7 @@ describe('HttpExceptionFilter', () => {
       });
     });
 
-    it('should handle validation errors', () => {
+    it('should handle validation errors', async () => {
       const exceptionResponse = {
         message: ['name must be a string', 'age must be a number'],
       };
@@ -81,7 +84,7 @@ describe('HttpExceptionFilter', () => {
         .spyOn(filter as any, 'formatValidationErrorResponse')
         .mockReturnValue('name must be a string, age must be a number');
 
-      filter.catch(exception, mockHost as ArgumentsHost);
+      await filter.catch(exception, mockHost as ArgumentsHost);
 
       expect(mockResponse.status).toHaveBeenCalledWith(400);
       expect(mockResponse.json).toHaveBeenCalledWith({

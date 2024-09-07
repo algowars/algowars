@@ -1,10 +1,5 @@
 import { Inject } from '@nestjs/common';
-import {
-  ENTITY_ID_TRANSFORMER,
-  EntityId,
-  EntityIdTransformer,
-  writeConnection,
-} from 'lib/database.module';
+import { EntityId, writeConnection } from 'lib/database.module';
 import { Problem, ProblemProperties } from 'src/problem/domain/problem';
 import { ProblemFactory } from 'src/problem/domain/problem-factory';
 import { ProblemRepository } from 'src/problem/domain/problem-repository';
