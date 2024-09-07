@@ -24,19 +24,6 @@ export class FindProblemBySlugHandler
       throw new NotFoundException(ProblemErrorMessage.PROBLEM_NOT_FOUND);
     }
 
-    const dataKeys = Object.keys(data);
-    const resultKeys = Object.keys(new FindProblemBySlugResult());
-
-    if (dataKeys.length < resultKeys.length)
-      throw new InternalServerErrorException();
-
-    if (resultKeys.find((resultKey) => !dataKeys.includes(resultKey)))
-      throw new InternalServerErrorException();
-
-    dataKeys
-      .filter((dataKey) => !resultKeys.includes(dataKey))
-      .forEach((dataKey) => delete data[dataKey]);
-
     return data;
   }
 }

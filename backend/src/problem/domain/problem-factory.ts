@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Problem, ProblemImplementation, ProblemProperties } from './problem';
+import { ProblemEntity } from '../infrastructure/entities/problem.entity';
 
 type CreateProblemOptions = Readonly<{
   id: string;
@@ -22,6 +23,14 @@ export class ProblemFactory {
         version: 0,
       }),
     );
+  }
+
+  createFromEntity(problemEntity: ProblemEntity): Problem {
+    return this.create(problemEntity);
+  }
+
+  reconstituteFromEntity(problemEntity: ProblemEntity): Problem {
+    return this.reconstitute(problemEntity);
   }
 
   reconstitute(properties: ProblemProperties): Problem {

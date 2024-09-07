@@ -14,7 +14,7 @@ export class BaseEntity {
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   readonly updatedAt: Date;
 
-  @DeleteDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @DeleteDateColumn({ type: 'timestamptz' })
   readonly deletedAt: Date | null;
 
   @VersionColumn()

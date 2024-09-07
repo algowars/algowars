@@ -6,6 +6,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { entities } from 'src/db/entities';
 import {
   DataSource,
   EntityManager,
@@ -53,7 +54,7 @@ class DatabaseService implements OnModuleInit, OnModuleDestroy {
 
   private readonly dataSource = new DataSource({
     type: 'postgres',
-    entities: [],
+    entities,
     logging: this.configService.get<string>('DATABASE_LOGGING') === 'true',
     host: this.configService.get<string>('DATABASE_HOST'),
     port: Number(this.configService.get<number>('DATABASE_PORT')),
@@ -78,7 +79,7 @@ class DatabaseService implements OnModuleInit, OnModuleDestroy {
 
 export class EntityId extends String {
   constructor() {
-    super(v4().split('-').join(''));
+    super(v4());
   }
 }
 

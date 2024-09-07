@@ -1,10 +1,10 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('problem')
 export class ProblemEntity extends BaseEntity {
-  @PrimaryColumn({ type: 'binary', length: '16' })
-  id: Buffer;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ nullable: false, length: 100 })
   readonly title: string;
