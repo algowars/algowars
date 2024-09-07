@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { readConnection } from 'lib/database.module';
 import { ProblemQuery } from 'src/problem/application/queries/problem-query';
 import { ProblemEntity } from '../entities/problem.entity';

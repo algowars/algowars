@@ -1,10 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { FindProblemBySlugQuery } from './find-problem-by-slug.query';
-import {
-  Inject,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import { ProblemErrorMessage } from 'src/problem/domain/problem-error-message';
 import { InjectionToken } from '../../injection-token';
 import { FindProblemBySlugResult } from './find-problem-by-slug-result';
