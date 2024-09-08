@@ -1,20 +1,31 @@
-# Domain
+# Algowars Backend
 
-Problem
+## Introduction
+Algowars backend application was built with scaling in mind. This repo attempts to represent many common patterns used in building nestjs applications.
 
-## Description
+## Table of Contents:
 
-The **Problem Domain** is crucial for managing the lifecycle of coding problems. This includes creating, updating, retrieving, and deleting problems. Each problem is a unique entity with specific attributes that make it suitable for competitive programming.
+- [💻 Application Overview](docs/application-overview.md)
+- [⚙️ Project Standards](docs/project-standards.md)
+- [🗄️ Project Structure](docs/project-structure.md)
+- [🧱 Components And Styling](docs/components-and-styling.md)
+- [📡 API Layer](docs/api-layer.md)
+- [🧪 Testing](docs/testing.md)
+- [⚠️ Error Handling](docs/error-handling.md)
+- [🔐 Security](docs/security.md)
+- [🚄 Performance](docs/performance.md)
+- [🌐 Deployment](docs/deployment.md)
+- [📚 Additional Resources](docs/additional-resources.md)
 
-## Entities
+## Contributing
 
-### Problem
+Contributions are always welcome! Feel free to contribute if you have any ideas, suggestions, or fixes. You can do that by going through the following steps:
 
-| Column Name | Data Type   | Nullable | Length | Unique | Default           | Description               |
-| ----------- | ----------- | -------- | ------ | ------ | ----------------- | ------------------------- |
-| title       | string      | false    | 100    | false  |                   | The title of the problem. |
-| question    | text        | false    |        | false  |                   | The problem description.  |
-| slug        | string      | false    | 110    | true   |                   | Unique identifier slug.   |
-| rating      | number      | true     |        | false  |                   | Rating of the problem.    |
-| createdAt   | timestamptz | false    |        | false  | CURRENT_TIMESTAMP | Creation timestamp.       |
-| updatedAt   | timestamptz | false    |        | false  | CURRENT_TIMESTAMP | Last updated timestamp.   |
+1. Clone this mono-repo
+2. Create a branch: `git checkout -b your-feature`
+3. Make some changes
+4. Test your changes
+5. Push your branch and open a Pull Request
+
+## License
+[MIT](/LICENSE)
