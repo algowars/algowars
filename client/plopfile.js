@@ -1,3 +1,4 @@
+import { componentGenerator } from "./generators/component/index.js";
 import { routeGenerator } from "./generators/route/index.js";
 
 export default function (
@@ -8,4 +9,5 @@ export default function (
 ) {
   // create your generators here
   plop.setGenerator("route", routeGenerator);
+  plop.setGenerator("component", componentGenerator);
 }
