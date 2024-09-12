@@ -12,7 +12,7 @@ export const Container = ({
   ...props
 }: ContainerProps) => {
   return (
-    <div className={cn("max-w-4xl mx-auto", className)} {...props}>
+    <div className={cn("max-w-6xl mx-auto", className)} {...props}>
       {children}
     </div>
   );

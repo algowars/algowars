@@ -1,12 +1,31 @@
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
+import { buttonVariants } from "@/components/ui/button";
+import { Link } from "@/components/ui/link";
 
 export const LandingNavbar = () => {
   return (
     <nav>
-      <Container>
-        <Logo />
-        <ul></ul>
+      <Container className="flex items-center py-3">
+        <Link to="/">
+          <Logo />
+        </Link>
+
+        <ul className="flex items-center gap-0 ml-auto">
+          <li>
+            <Link to="/" className={buttonVariants({ variant: "ghost" })}>
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/problems"
+              className={buttonVariants({ variant: "ghost" })}
+            >
+              Problems
+            </Link>
+          </li>
+        </ul>
       </Container>
     </nav>
   );
