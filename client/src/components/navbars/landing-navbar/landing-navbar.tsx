@@ -1,10 +1,12 @@
 import { Container } from "@/components/container";
+import { Logo } from "@/components/logos/logo";
 
 export const LandingNavbar = () => {
   return (
     <nav>
       <Container>
-        <h1>TESTING</h1>
+        <Logo />
+        <ul></ul>
       </Container>
     </nav>
   );
