@@ -8,6 +8,7 @@ Algowars backend application was built with scaling in mind. This repo attempts 
 - [💻 Application Overview](docs/application-overview.md)
 - [⚙️ Project Standards](docs/project-standards.md)
 - [🗄️ Project Structure](docs/project-structure.md)
+- [📚 Library Resources](docs/library-resources)
 - [🧱 Components And Styling](docs/components-and-styling.md)
 - [📡 API Layer](docs/api-layer.md)
 - [🧪 Testing](docs/testing.md)
