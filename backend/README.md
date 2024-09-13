@@ -1,7 +1,7 @@
 # Algowars Backend
 
 ## Introduction
-Algowars backend application was built with scaling in mind. This repo attempts to represent many common patterns used in building nestjs applications.
+Algowars backend application was built with scaling in mind. This repo attempts to represent many common patterns used in building nestjs applications. This backend is based off of this repository: [https://github.com/kyhsa93/nestjs-rest-cqrs-example](https://github.com/kyhsa93/nestjs-rest-cqrs-example)
 
 ## Table of Contents:
 
