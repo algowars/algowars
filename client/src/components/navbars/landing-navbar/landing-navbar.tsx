@@ -1,5 +1,6 @@
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
+import { ModeToggle } from "@/components/theme/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 
@@ -11,7 +12,7 @@ export const LandingNavbar = () => {
           <Logo />
         </Link>
 
-        <ul className="flex items-center gap-0 ml-auto">
+        <ul className="flex items-center gap-5 ml-auto">
           <li>
             <Link to="/" className={buttonVariants({ variant: "ghost" })}>
               Home
@@ -24,6 +25,9 @@ export const LandingNavbar = () => {
             >
               Problems
             </Link>
+          </li>
+          <li>
+            <ModeToggle />
           </li>
         </ul>
       </Container>

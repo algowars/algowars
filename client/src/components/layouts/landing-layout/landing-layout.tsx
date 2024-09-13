@@ -11,7 +11,7 @@ export const LandingLayout = ({ children }: LandingLayoutProps) => {
   return (
     <>
       <Head title="Algowars" />
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-background">
         <header>
           <LandingNavbar />
         </header>

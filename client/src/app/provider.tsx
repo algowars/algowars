@@ -1,4 +1,5 @@
 import { MainErrorFallback } from "@/components/error/main-error-fallback";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Spinner } from "@/components/ui/spinner";
 import { queryConfig } from "@/lib/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -30,8 +31,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
         <HelmetProvider>
           <QueryClientProvider client={queryClient}>
-            {import.meta.env.DEV && <ReactQueryDevtools />}
-            {children}
+            <ThemeProvider>
+              {import.meta.env.DEV && <ReactQueryDevtools />}
+              {children}
+            </ThemeProvider>
           </QueryClientProvider>
         </HelmetProvider>
       </ErrorBoundary>

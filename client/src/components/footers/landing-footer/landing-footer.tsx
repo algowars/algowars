@@ -8,15 +8,15 @@ export type LandingFooterProps = {};
 
 export const LandingFooter = (props: LandingFooterProps) => {
   return (
-    <footer className="bg-primary">
-      <Container className="text-muted-foreground p-10 grid grid-cols-12 gap-5">
+    <footer className="bg-foreground">
+      <Container className="p-10 grid grid-cols-12 gap-5">
         <div className="col-span-4 flex flex-col gap-5">
-          <Logo className="text-muted" />
-          <p>Online coding competitions.</p>
+          <Logo className="text-background" />
+          <p className="text-muted">Online coding competitions.</p>
         </div>
         <div className="col-span-2 flex flex-col gap-5">
-          <h4 className="text-muted font-semibold">Support</h4>
-          <ul>
+          <h4 className="text-background font-semibold">Support</h4>
+          <ul className="text-muted">
             <li>
               <Link to="/contact">Contact Us</Link>
             </li>
@@ -26,8 +26,8 @@ export const LandingFooter = (props: LandingFooterProps) => {
           </ul>
         </div>
         <div className="col-span-2 flex flex-col gap-5">
-          <h4 className="text-muted font-semibold">Support</h4>
-          <ul>
+          <h4 className="text-background font-semibold">Support</h4>
+          <ul className="text-muted">
             <li>
               <Link to="/contact">Contact Us</Link>
             </li>
@@ -40,7 +40,10 @@ export const LandingFooter = (props: LandingFooterProps) => {
           <p className="text-muted font-semibold">
             Subscribe to our newsletter
           </p>
-          <Input placeholder="Enter your email address" />
+          <Input
+            placeholder="Enter your email address"
+            className="border-muted-foreground"
+          />
           <div>
             <Button variant={"secondary"} className="w-28">
               Sign up
