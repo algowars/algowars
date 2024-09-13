@@ -1,3 +1,4 @@
+import { LandingFooter } from "@/components/footers/landing-footer";
 import { LandingNavbar } from "@/components/navbars/landing-navbar";
 import { Head } from "@/components/seo";
 import { ReactNode } from "react";
@@ -15,6 +16,7 @@ export const LandingLayout = ({ children }: LandingLayoutProps) => {
           <LandingNavbar />
         </header>
         <main className="grow">{children}</main>
+        <LandingFooter />
       </div>
     </>
   );
