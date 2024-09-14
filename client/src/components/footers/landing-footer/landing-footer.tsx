@@ -4,9 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
 
-export type LandingFooterProps = {};
-
-export const LandingFooter = (props: LandingFooterProps) => {
+export const LandingFooter = () => {
   return (
     <footer className="bg-foreground">
       <Container className="py-10 grid grid-cols-12 gap-5">
