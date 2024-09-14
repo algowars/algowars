@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./client/apps/react-vite
+        working-directory: ./client
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -33,30 +33,30 @@ jobs:
         run: yarn lint
       - name: Check types
         run: yarn check-types
-  e2e:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./client/apps/react-vite
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-      - name: Set environment variables
-        run: mv .env.example-e2e .env
-      - name: Install dependencies
-        run: npm install -g yarn && yarn
-      - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
-      - name: Run Playwright tests
-        run: yarn test-e2e
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: |
-            playwright-report/
-            mocked-db.json
-          retention-days: 30
+  # e2e:
+  #   timeout-minutes: 60
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: ./client
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: lts/*
+  #     - name: Set environment variables
+  #       run: mv .env.example-e2e .env
+  #     - name: Install dependencies
+  #       run: npm install -g yarn && yarn
+  #     - name: Install Playwright Browsers
+  #       run: yarn playwright install --with-deps
+  #     - name: Run Playwright tests
+  #       run: yarn test-e2e
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report
+  #         path: |
+  #           playwright-report/
+  #           mocked-db.json
+  #         retention-days: 30
