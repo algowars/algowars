@@ -1,20 +1,20 @@
-import Cookies from 'js-cookie';
-import { delay } from 'msw';
+import Cookies from "js-cookie";
+import { delay } from "msw";
 
-import { db } from './db';
+import { db } from "./db";
 
 export const encode = (obj: any) => {
   const btoa =
-    typeof window === 'undefined'
-      ? (str: string) => Buffer.from(str, 'binary').toString('base64')
+    typeof window === "undefined"
+      ? (str: string) => Buffer.from(str, "binary").toString("base64")
       : window.btoa;
   return btoa(JSON.stringify(obj));
 };
 
 export const decode = (str: string) => {
   const atob =
-    typeof window === 'undefined'
-      ? (str: string) => Buffer.from(str, 'base64').toString('binary')
+    typeof window === "undefined"
+      ? (str: string) => Buffer.from(str, "base64").toString("binary")
       : window.atob;
   return JSON.parse(atob(str));
 };
@@ -48,7 +48,7 @@ const omit = <T extends object>(obj: T, keys: string[]): T => {
 };
 
 export const sanitizeUser = <O extends object>(user: O) =>
-  omit<O>(user, ['password', 'iat']);
+  omit<O>(user, ["password", "iat"]);
 
 export function authenticate({
   email,
@@ -71,7 +71,7 @@ export function authenticate({
     return { user: sanitizedUser, jwt: encodedToken };
   }
 
-  const error = new Error('Invalid username or password');
+  const error = new Error("Invalid username or password");
   throw error;
 }
 
@@ -81,7 +81,7 @@ export function requireAuth(cookies: Record<string, string>) {
   try {
     const encodedToken = cookies[AUTH_COOKIE] || Cookies.get(AUTH_COOKIE);
     if (!encodedToken) {
-      return { error: 'Unauthorized', user: null };
+      return { error: "Unauthorized", user: null };
     }
     const decodedToken = decode(encodedToken) as { id: string };
 
@@ -94,17 +94,18 @@ export function requireAuth(cookies: Record<string, string>) {
     });
 
     if (!user) {
-      return { error: 'Unauthorized', user: null };
+      return { error: "Unauthorized", user: null };
     }
 
     return { user: sanitizeUser(user) };
   } catch (err: any) {
-    return { error: 'Unauthorized', user: null };
+    console.log(err);
+    return { error: "Unauthorized", user: null };
   }
 }
 
 export function requireAdmin(user: any) {
-  if (user.role !== 'ADMIN') {
-    throw Error('Unauthorized');
+  if (user.role !== "ADMIN") {
+    throw Error("Unauthorized");
   }
 }
