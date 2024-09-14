@@ -73,6 +73,7 @@
     "js-cookie": "^3.0.5",
     "jsdom": "^25.0.0",
     "plop": "^4.0.1",
+    "pm2": "^5.4.2",
     "postcss": "^8.4.45",
     "storybook": "^8.2.9",
     "tailwindcss": "^3.4.10",
