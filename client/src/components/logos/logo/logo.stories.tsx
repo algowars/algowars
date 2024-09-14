@@ -1,14 +1,13 @@
 import { Meta, StoryObj } from "@storybook/react";
+import { Logo } from "./logo";
 
-import { Logos } from "./logo";
-
-const meta: Meta<typeof Logos> = {
-  component: Logos,
+const meta: Meta<typeof Logo> = {
+  component: Logo,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Logos>;
+type Story = StoryObj<typeof Logo>;
 
 export const Default: Story = {
   args: {},
