@@ -1,3 +1,5 @@
+import { LoginButton } from "@/components/auth/login-button";
+import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { LandingLayout } from "@/components/layouts/landing-layout";
 import { buttonVariants } from "@/components/ui/button";
@@ -17,20 +19,14 @@ export const LandingRoute = () => {
           </p>
           <ul className="flex items-center gap-5">
             <li>
-              <Link
-                to="/signup"
-                className={buttonVariants({ variant: "default" })}
-              >
+              <LoginButton variant="default" className="w-28">
                 Get Started
-              </Link>
+              </LoginButton>
             </li>
             <li>
-              <Link
-                to="/signup"
-                className={buttonVariants({ variant: "outline" })}
-              >
+              <SignupButton variant="outline" className="w-28">
                 Join Today
-              </Link>
+              </SignupButton>
             </li>
           </ul>
         </Container>

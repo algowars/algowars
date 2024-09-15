@@ -18,6 +18,7 @@
     "run-mock-server": "vite-node mock-server.ts | pino-pretty -c"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "@mswjs/data": "^0.16.2",
     "@mswjs/http-middleware": "^0.10.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
