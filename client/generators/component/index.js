@@ -51,6 +51,13 @@ export const componentGenerator = {
         type: "add",
         path:
           componentGeneratePath +
+          "/{{kebabCase name}}/{{kebabCase name}}.test.tsx",
+        templateFile: "generators/component/component.test.tsx.hbs",
+      },
+      {
+        type: "add",
+        path:
+          componentGeneratePath +
           "/{{kebabCase name}}/{{kebabCase name}}.stories.tsx",
         templateFile: "generators/component/component.stories.tsx.hbs",
       },

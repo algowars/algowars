@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/components/auth/auth-provider/auth-provider";
 import { MainErrorFallback } from "@/components/error/main-error-fallback";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Spinner } from "@/components/ui/spinner";
@@ -30,12 +31,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     >
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
         <HelmetProvider>
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider>
-              {import.meta.env.DEV && <ReactQueryDevtools />}
-              {children}
-            </ThemeProvider>
-          </QueryClientProvider>
+          <AuthProvider>
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider>
+                {import.meta.env.DEV && <ReactQueryDevtools />}
+                {children}
+              </ThemeProvider>
+            </QueryClientProvider>
+          </AuthProvider>
         </HelmetProvider>
       </ErrorBoundary>
     </Suspense>

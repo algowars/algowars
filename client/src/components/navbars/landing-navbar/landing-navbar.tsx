@@ -1,7 +1,8 @@
+import { LoginButton } from "@/components/auth/login-button";
+import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
-import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 
 export const LandingNavbar = () => {
@@ -14,17 +15,10 @@ export const LandingNavbar = () => {
 
         <ul className="flex items-center gap-5 ml-auto">
           <li>
-            <Link to="/" className={buttonVariants({ variant: "ghost" })}>
-              Home
-            </Link>
+            <LoginButton variant="outline" className="w-24" />
           </li>
           <li>
-            <Link
-              to="/problems"
-              className={buttonVariants({ variant: "ghost" })}
-            >
-              Problems
-            </Link>
+            <SignupButton className="w-24" />
           </li>
           <li>
             <ModeToggle />
