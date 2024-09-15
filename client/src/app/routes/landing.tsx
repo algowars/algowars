@@ -2,8 +2,6 @@ import { LoginButton } from "@/components/auth/login-button";
 import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { LandingLayout } from "@/components/layouts/landing-layout";
-import { buttonVariants } from "@/components/ui/button";
-import { Link } from "@/components/ui/link";
 
 export const LandingRoute = () => {
   return (

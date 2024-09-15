@@ -18,7 +18,7 @@ export const LandingNavbar = () => {
             <LoginButton variant="outline" className="w-24" />
           </li>
           <li>
-            <SignupButton variant="ghost" className="w-24" />
+            <SignupButton className="w-24" />
           </li>
           <li>
             <ModeToggle />
