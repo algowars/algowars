@@ -23,6 +23,11 @@ export const domainGenerator = {
       ...generateDomainFiles(domainGeneratedPath),
       ...generateInfrastructure(domainGeneratedPath),
       ...generateInterfaceFiles(domainGeneratedPath),
+      {
+        type: "add",
+        path: domainGeneratedPath + "/{{kebabCase name}}.module.ts",
+        templateFile: "generators/domain/domain.module.ts.hbs"
+      }
     ]
   },
 };
@@ -55,6 +60,16 @@ const generateDomainFiles = (basePath) => {
       type: "add",
       path: appPath + "/{{kebabCase name}}.spec.ts",
       templateFile: "generators/domain/domain/entity.spec.ts.hbs"
+    },
+    {
+      type: "add",
+      path: appPath + "/{{kebabCase name}}-factory.ts",
+      templateFile: "generators/domain/domain/entity-factory.ts.hbs"
+    },
+    {
+      type: "add",
+      path: appPath + "/{{kebabCase name}}-repository.ts",
+      templateFile: "generators/domain/domain/entity-repository.ts.hbs"
     }
   ]
 }

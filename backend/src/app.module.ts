@@ -4,7 +4,7 @@ import { DatabaseModule } from '../lib/database.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import { ProfileModule } from './profile/profile.module';
+import { AccountModule } from './account/account.module';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { ProfileModule } from './profile/profile.module';
     DatabaseModule,
     ProblemModule,
     ThrottlerModule.forRoot(),
-    ProfileModule,
+    AccountModule,
   ],
   providers: [
     {
