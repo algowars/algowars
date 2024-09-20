@@ -1,4 +1,4 @@
-import { domainGenerator } from "./generators/domain";
+import { domainGenerator } from "./generators/domain/index.js";
 
 export default function (
   /*

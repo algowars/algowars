@@ -17,7 +17,7 @@ export const domainGenerator = {
     },
   ],
   actions: (answers) => {
-    const domainGeneratedPath = 'src/{{folder}}';
+    const domainGeneratedPath = 'src/{{folder}}/{{kebabCase name}}';
     return [
       ...generateApplicationFiles(domainGeneratedPath),
       ...generateDomainFiles(domainGeneratedPath),
@@ -65,7 +65,7 @@ const generateInfrastructure = (basePath) => {
     {
       type: "add",
       path: appPath + "/entities/{{kebabCase name}}.entity.ts",
-      templateFile: "generators/domain/infrastructure/entities/entity.entity.ts"
+      templateFile: "generators/domain/infrastructure/entities/entity.entity.ts.hbs"
     },
     {
       type: "add",
@@ -75,7 +75,7 @@ const generateInfrastructure = (basePath) => {
     {
       type: "add",
       path: appPath + "/repositories/{{kebabCase name}}-repositories-implementation.ts",
-      templateFile: "generators/domain/infrastructure/repositories/entity-repositories-implementation.ts.hbs"
+      templateFile: "generators/domain/infrastructure/repositories/entity-repository-implementation.ts.hbs"
     }
   ]
 }
