@@ -1,0 +1,16 @@
+import { {{ properCase name }}Implementation } from './{{quiet name}}';
+
+describe('{{properCase name}}', () => {
+    it('should compare id', () => {
+        const expectedId = 'id';
+        const {{camelCase name}} = new {{properCase name}}Implementation({
+            id: expectedId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            deletedAt: null,
+            version: 1
+        });
+
+        expect({{name}}.compareId(expectedId)).toBeTruthy();
+    })
+})
