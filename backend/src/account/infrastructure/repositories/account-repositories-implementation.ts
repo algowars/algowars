@@ -32,6 +32,6 @@ export class AccountRepositoryImplementation implements AccountRepository {
   }
 
   private entityToModel(entity: AccountEntity): Account {
-    return this.problemFactory.createFromEntity(entity);
+    return this.accountFactory.createFromEntity(entity);
   }
 }

@@ -1,13 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { Account, AccountImplementation, AccountProperties } from './{kebabCase name}';
-import { AccountEntity } from '../infrastructure/entities/{kebabCase name}.entity';
+import { Account, AccountImplementation, AccountProperties } from './account';
+import { AccountEntity } from '../infrastructure/entities/account.entity';
 
 type CreateAccountOptions = Readonly<{
   id: string;
-  title: string;
-  slug: string;
-  question: string;
+  username: string;
+  sub: string;
 }>;
 
 export class AccountFactory {
@@ -25,12 +24,12 @@ export class AccountFactory {
     );
   }
 
-  createFromEntity({camelCase name}Entity: AccountEntity): Account {
-    return this.create({camelCase name}Entity);
+  createFromEntity(accountEntity: AccountEntity): Account {
+    return this.create(accountEntity);
   }
 
-  reconstituteFromEntity({camelCase name}Entity: AccountEntity): Account {
-    return this.reconstitute({camelCase name}Entity);
+  reconstituteFromEntity(accountEntity: AccountEntity): Account {
+    return this.reconstitute(accountEntity);
   }
 
   reconstitute(properties: AccountProperties): Account {
