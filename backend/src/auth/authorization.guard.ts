@@ -53,6 +53,7 @@ export class AuthorizationGuard implements CanActivate {
    * @throws {InternalServerErrorException} If an unexpected error occurs during token validation.
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log('CONTEXT: ', context);
     const request = context.switchToHttp().getRequest<Request>();
     const response = context.switchToHttp().getResponse<Response>();
 
