@@ -22,6 +22,6 @@ export class AccountController {
       new OpenAccountCommand(sub, body.username),
     );
 
-    return id.getValue();
+    return id.toString();
   }
 }

@@ -16,7 +16,6 @@ function checkEnvironment(configService: ConfigService) {
     'DATABASE_NAME',
     'CLIENT_ORIGIN_URLS',
     'ISSUER_BASE_URL',
-    'DOMAIN',
     'AUDIENCE',
   ];
 

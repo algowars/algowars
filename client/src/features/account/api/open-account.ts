@@ -3,6 +3,7 @@ import { z } from "zod";
 import { Account } from "../models/account.model";
 import { MutationConfig } from "@/lib/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosRequestConfig } from "axios";
 
 export const openAccountSchema = z.object({
   username: z
@@ -20,13 +21,16 @@ export const openAccount = ({
   data: OpenAccountInput;
   accessToken: string;
 }): Promise<Account> => {
-  return api.post("/api/v1/account", {
+  console.log(data, accessToken);
+  const config: AxiosRequestConfig = {
+    url: "/api/v1/account",
     method: "POST",
     data,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-  });
+  };
+  return api(config);
 };
 
 type UseOpenAccountOptions = {

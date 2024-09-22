@@ -2,7 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { Username } from './username';
 import { UserSub } from './user-sub';
 import { AccountOpenedEvent } from './events/account-opened.event';
-import { Id } from 'src/common/domain/id';
+import { Id, IdImplementation } from 'src/common/domain/id';
 
 export type AccountEssentialProperties = Readonly<
   Required<{
@@ -13,7 +13,7 @@ export type AccountEssentialProperties = Readonly<
 
 export type AccountOptionalProperties = Readonly<
   Partial<{
-    id: string;
+    id: Id;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;

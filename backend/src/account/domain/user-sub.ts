@@ -1,5 +1,5 @@
 export interface UserSub {
-  getSub(): string;
+  toString(): string;
   validateSub(sub: string): string[];
 }
 
@@ -16,7 +16,7 @@ export class UserSubImplementation implements UserSub {
     this.sub = sub;
   }
 
-  getSub(): string {
+  toString(): string {
     return this.sub;
   }
 

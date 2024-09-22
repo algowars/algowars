@@ -6,6 +6,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Id, IdImplementation } from 'src/common/domain/id';
 import { entities } from 'src/db/entities';
 import {
   DataSource,
@@ -15,6 +16,7 @@ import {
   QueryRunner,
   Repository,
   SelectQueryBuilder,
+  ValueTransformer,
 } from 'typeorm';
 
 import { v4 } from 'uuid';
@@ -84,6 +86,15 @@ export class EntityId extends String {
 }
 
 export const ENTITY_ID_TRANSFORMER = 'EntityIdTransformer';
+
+export const IdTransformer = {
+  to(value: Id): string {
+    return value ? value.toString() : null;
+  },
+  from(value: string): Id {
+    return value ? new IdImplementation(value) : null;
+  },
+};
 
 export interface EntityIdTransformer {
   from: (dbData: Buffer) => string;

@@ -1,5 +1,5 @@
 export interface Id {
-  getValue(): string;
+  toString(): string;
   equals(id: Id): boolean;
   rawEquals(id: string): boolean;
 }
@@ -12,10 +12,10 @@ export class IdImplementation implements Id {
   }
 
   equals(id: Id): boolean {
-    return this.value === id.getValue();
+    return this.toString() === id.toString();
   }
 
-  getValue(): string {
+  toString(): string {
     return this.value;
   }
 

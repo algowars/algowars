@@ -16,12 +16,14 @@ import { Card } from "@/components/ui/card";
 import { openAccountSchema, useOpenAccount } from "../api/open-account";
 import { toast } from "sonner";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 
 type AccountSetupFormProps = {
   className?: string;
 };
 
 export const AccountSetupForm = ({ className }: AccountSetupFormProps) => {
+  const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
 
   const form = useForm<z.infer<typeof openAccountSchema>>({
@@ -35,6 +37,7 @@ export const AccountSetupForm = ({ className }: AccountSetupFormProps) => {
     mutationConfig: {
       onSuccess: () => {
         toast("Account Created");
+        navigate("/");
       },
     },
   });

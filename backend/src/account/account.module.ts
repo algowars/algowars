@@ -5,7 +5,7 @@ import { AccountQueryImplementation } from './infrastructure/queries/account-que
 import { AccountQueryHandlers } from './application/queries';
 import { AccountFactory } from './domain/account-factory';
 import { CqrsModule } from '@nestjs/cqrs';
-import { AccountRepositoryImplementation } from './infrastructure/repositories/account-repositories-implementation';
+import { AccountRepositoryImplementation } from './infrastructure/repositories/account-repository-implementation';
 import { AccountCommandHandlers } from './application/commands';
 
 const infrastructure: Provider[] = [

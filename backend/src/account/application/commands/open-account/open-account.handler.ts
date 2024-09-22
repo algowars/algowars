@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { OpenAccountCommand } from './open-account.command';
-import { Inject } from '@nestjs/common';
+import { ConflictException, Inject } from '@nestjs/common';
 import { InjectionToken } from '../../injection-token';
 import { AccountRepository } from 'src/account/domain/account-repository';
 import { AccountFactory } from 'src/account/domain/account-factory';
@@ -22,6 +22,22 @@ export class OpenAccountHandler
       ...command,
       id: await this.accountRepository.newId(),
     });
+
+    const foundAccountBySub = await this.accountRepository.findBySub(
+      account.getSub(),
+    );
+
+    if (foundAccountBySub) {
+      throw new ConflictException('Account already exists.');
+    }
+
+    const foundAccountByUsername = await this.accountRepository.findByUsername(
+      account.getUsername(),
+    );
+
+    if (foundAccountByUsername) {
+      throw new ConflictException('Username already in use.');
+    }
 
     account.open();
 

@@ -23,15 +23,15 @@ api.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
-    toast("Error", {
+    toast.error("Error", {
       description: message,
     });
 
-    if (error.response?.status === 401) {
-      const searchParams = new URLSearchParams();
-      const redirectTo = searchParams.get("redirectTo");
-      window.location.href = `/auth/login?redirectTo=${redirectTo}`;
-    }
+    // if (error.response?.status === 401) {
+    //   const searchParams = new URLSearchParams();
+    //   const redirectTo = searchParams.get("redirectTo");
+    //   window.location.href = `/auth/login?redirectTo=${redirectTo}`;
+    // }
 
     return Promise.reject(error);
   }
