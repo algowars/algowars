@@ -18,6 +18,8 @@ export interface AccountStoreState {
 
 interface AccountStoreContextState {
   store: StoreApi<AccountStoreState> | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
 }
 
 const accountStore = createStore<AccountStoreState>((set) => ({
@@ -31,6 +33,8 @@ const accountStore = createStore<AccountStoreState>((set) => ({
 
 const initialAccountStoreContextState: AccountStoreContextState = {
   store: null,
+  isLoading: true,
+  isAuthenticated: false,
 };
 
 const AccountStoreContext = createContext<AccountStoreContextState>(
@@ -44,8 +48,14 @@ type AccountStoreProviderProps = {
 export const AccountStoreProvider = ({
   children,
 }: AccountStoreProviderProps) => {
-  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const {
+    isAuthenticated: isAuthAuthenticated,
+    isLoading: isAuthLoading,
+    getAccessTokenSilently,
+  } = useAuth0();
   const [store] = useState(() => accountStore);
+  const [isLoading, setIsLoading] = useState(true);
+  const isAuthenticated = store.getState().account !== null;
 
   const findAccountBySubMutation = useFindAccountBySub({
     mutationConfig: {
@@ -53,21 +63,26 @@ export const AccountStoreProvider = ({
         if (account) {
           store.getState().setAccount(account);
         }
+        setIsLoading(false);
       },
     },
   });
 
   useEffect(() => {
     (async () => {
-      if (!isLoading && isAuthenticated) {
+      if (!isAuthLoading && isAuthAuthenticated) {
         const accessToken = await getAccessTokenSilently();
-        findAccountBySubMutation.mutate({ accessToken });
+        findAccountBySubMutation.mutate({
+          accessToken,
+        });
       }
     })();
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthAuthenticated, isAuthLoading]);
 
   const value = {
     store,
+    isLoading,
+    isAuthenticated,
   };
 
   return (
