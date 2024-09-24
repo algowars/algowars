@@ -21,7 +21,6 @@ export const openAccount = ({
   data: OpenAccountInput;
   accessToken: string;
 }): Promise<Account> => {
-  console.log(data, accessToken);
   const config: AxiosRequestConfig = {
     url: "/api/v1/account",
     method: "POST",
