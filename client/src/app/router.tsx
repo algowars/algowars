@@ -18,6 +18,13 @@ export const createAppRouter = () => {
       element: <ProtectedRoute component={AppRoot} />,
       children: [
         {
+          path: "/app",
+          lazy: async () => {
+            const { DashboardRoute } = await import("./routes/app/dashboard");
+            return { Component: DashboardRoute };
+          },
+        },
+        {
           path: "/app/account/setup",
           lazy: async () => {
             const { AccountSetupRoute } = await import(
