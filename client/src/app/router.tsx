@@ -1,8 +1,10 @@
 import { ProtectedRoute } from "@/components/auth/protected-route/protected-route";
 import { useQueryClient } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { Profiler, useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppRoot } from "./routes/app/root";
+import { ProfileRoute } from "./routes/app/profile";
+import { ProfileBioRoute } from "./routes/app/profile/bio";
 
 export const createAppRouter = () => {
   return createBrowserRouter([
@@ -12,6 +14,16 @@ export const createAppRouter = () => {
         const { LandingRoute } = await import("./routes/landing");
         return { Component: LandingRoute };
       },
+    },
+    {
+      path: "/profile/:username",
+      element: <ProfileRoute />,
+      children: [
+        {
+          path: "/profile/:username",
+          element: <ProfileBioRoute />,
+        },
+      ],
     },
     {
       path: "/app",

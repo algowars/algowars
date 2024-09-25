@@ -4,14 +4,17 @@ import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
-import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
+import { useAccountStore } from "@/features/account/account-store.provider";
 
 export type NavbarProps = {
   isAuthenticated?: boolean;
 };
 
 export const Navbar = ({ isAuthenticated }: NavbarProps) => {
+  const { store } = useAccountStore();
+  const profileUrl = store?.getState().account?.username ?? "";
+
   return (
     <nav>
       <Container className="flex items-center py-3">
@@ -30,10 +33,12 @@ export const Navbar = ({ isAuthenticated }: NavbarProps) => {
           {isAuthenticated ? (
             <>
               <li>
-                <LogoutButton>Sign Out</LogoutButton>
+                <Link to={`/profile/${encodeURIComponent(profileUrl)}`}>
+                  Profile
+                </Link>
               </li>
               <li>
-                <ModeToggle />
+                <LogoutButton>Sign Out</LogoutButton>
               </li>
               <li>
                 <ModeToggle />

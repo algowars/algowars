@@ -8,9 +8,14 @@ import { ReactNode } from "react";
 export type LayoutProps = {
   children?: ReactNode;
   className?: string;
+  isAuthenticated?: boolean;
 };
 
-export const Layout = ({ children, className }: LayoutProps) => {
+export const Layout = ({
+  children,
+  className,
+  isAuthenticated,
+}: LayoutProps) => {
   return (
     <>
       <Head title="Algowars" />
@@ -18,7 +23,7 @@ export const Layout = ({ children, className }: LayoutProps) => {
         className={cn("flex flex-col min-h-screen bg-background", className)}
       >
         <header>
-          <Navbar />
+          <Navbar isAuthenticated={isAuthenticated} />
         </header>
         <main className="grow">{children}</main>
         <Toaster />
