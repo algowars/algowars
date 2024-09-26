@@ -1,5 +1,4 @@
 import { IQueryResult } from '@nestjs/cqrs';
-import { Username } from 'src/account/domain/username';
 
 export class FindAccountBySubResult implements IQueryResult {
   readonly id: string;

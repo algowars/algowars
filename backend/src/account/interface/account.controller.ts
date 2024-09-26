@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { OpenAccountRequest } from './dto/request/open-account-request.dto';
 import { OpenAccountCommand } from '../application/commands/open-account/open-account.command';
@@ -7,6 +15,9 @@ import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { Request } from 'express';
 import { FindAccountBySubResponseDto } from './dto/response/find-account-by-sub-response.dto';
 import { FindAccountBySubQuery } from '../application/queries/find-account-by-sub-query/find-account-by-sub.query';
+import { FindAccountByUsername } from './dto/request/find-account-by-username.dto';
+import { FindAccountByUsernameResult } from '../application/queries/find-account-by-username-query/find-account-by-username-result';
+import { FindAccountByUsernameQuery } from '../application/queries/find-account-by-username-query/find-account-by-username.query';
 
 @Controller('v1/account')
 export class AccountController {
@@ -28,6 +39,15 @@ export class AccountController {
     );
 
     return id.toString();
+  }
+
+  @Get('find/username')
+  async findAccountByUsername(
+    @Param() param: FindAccountByUsername,
+  ): Promise<FindAccountByUsernameResult> {
+    return this.queryBus.execute(
+      new FindAccountByUsernameQuery(param.username),
+    );
   }
 
   @UseGuards(AuthorizationGuard)
