@@ -1,0 +1,7 @@
+import { Controller} from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
+
+@Controller('v1/{{ name }}')
+export class {{ properCase name }}Controller {
+  constructor(private readonly queryBus: QueryBus) {}
+}

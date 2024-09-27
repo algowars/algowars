@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ExampleTestcase } from './example-testcase';
+import { Id, IdImplementation } from 'src/common/domain/id';
 
 export type ProblemEssentialProperties = Readonly<
   Required<{
@@ -23,12 +24,12 @@ export type ProblemProperties = ProblemEssentialProperties &
   Required<ProblemOptionalProperties>;
 
 export interface Problem {
-  compareId: (id: string) => boolean;
+  compareId: (id: Id) => boolean;
   commit: () => void;
 }
 
 export class ProblemImplementation extends AggregateRoot implements Problem {
-  private readonly id: string;
+  private readonly id: Id;
   private readonly title: string;
   private readonly question: string;
   private readonly slug: string;
@@ -41,9 +42,10 @@ export class ProblemImplementation extends AggregateRoot implements Problem {
   constructor(properties: ProblemProperties) {
     super();
     Object.assign(this, properties);
+    this.id = new IdImplementation(properties.id) as Id;
   }
 
-  compareId(id: string): boolean {
-    return id === this.id;
+  compareId(id: Id): boolean {
+    return this.id.equals(id);
   }
 }

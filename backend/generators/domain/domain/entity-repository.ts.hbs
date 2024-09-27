@@ -1,0 +1,7 @@
+import { {{ properCase name}} } from './{{ kebabCase name}}';
+
+export interface {{ properCase name}}Repository {
+  newId: () => Promise<string>;
+  save: ({{ camelCase name}}: {{ properCase name}} | {{ properCase name}}[]) => Promise<void>;
+  findById: (id: string) => Promise<{{ properCase name}} | null>;
+}

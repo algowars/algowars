@@ -15,6 +15,8 @@ function checkEnvironment(configService: ConfigService) {
     'DATABASE_PASSWORD',
     'DATABASE_NAME',
     'CLIENT_ORIGIN_URLS',
+    'ISSUER_BASE_URL',
+    'AUDIENCE',
   ];
 
   requiredEnvVars.forEach((envVar) => {
@@ -44,12 +46,13 @@ async function bootstrap() {
 
   app.use(nocache());
 
-  // app.enableCors({
-  //   origin: Config.CLIENT_ORIGIN_URLS,
-  //   methods: ['GET', 'POST', 'PUT'],
-  //   allowedHeaders: ['Authorization', 'Content-Type', 'content-type'],
-  //   maxAge: 86400,
-  // });
+  app.enableCors({
+    origin: configService.get<string>('CLIENT_ORIGIN_URLS').split(','),
+    methods: ['GET', 'POST', 'PUT'],
+    allowedHeaders: ['Authorization', 'Content-Type', 'content-type'],
+    credentials: true,
+    maxAge: 86400,
+  });
 
   app.use(
     helmet({

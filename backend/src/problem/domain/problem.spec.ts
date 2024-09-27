@@ -1,3 +1,4 @@
+import { IdImplementation } from 'src/common/domain/id';
 import { ProblemImplementation } from './problem';
 
 describe('Problem', () => {
@@ -14,6 +15,6 @@ describe('Problem', () => {
       version: 1,
     });
 
-    expect(problem.compareId(expectedId)).toBeTruthy();
+    expect(problem.compareId(new IdImplementation(expectedId))).toBeTruthy();
   });
 });

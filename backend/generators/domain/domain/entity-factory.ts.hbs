@@ -1,0 +1,41 @@
+import { Inject } from '@nestjs/common';
+import { EventPublisher } from '@nestjs/cqrs';
+import { {{properCase name}}, {{properCase name}}Implementation, {{properCase name}}Properties } from './{kebabCase name}';
+import { {{properCase name}}Entity } from '../infrastructure/entities/{kebabCase name}.entity';
+
+type Create{{properCase name}}Options = Readonly<{
+  id: string;
+  title: string;
+  slug: string;
+  question: string;
+}>;
+
+export class {{properCase name}}Factory {
+  @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
+
+  create(options: Create{{properCase name}}Options): {{properCase name}} {
+    return this.eventPublisher.mergeObjectContext(
+      new {{properCase name}}Implementation({
+        ...options,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+        version: 0,
+      }),
+    );
+  }
+
+  createFromEntity({camelCase name}Entity: {{properCase name}}Entity): {{properCase name}} {
+    return this.create({camelCase name}Entity);
+  }
+
+  reconstituteFromEntity({camelCase name}Entity: {{properCase name}}Entity): {{properCase name}} {
+    return this.reconstitute({camelCase name}Entity);
+  }
+
+  reconstitute(properties: {{properCase name}}Properties): {{properCase name}} {
+    return this.eventPublisher.mergeObjectContext(
+      new {{properCase name}}Implementation(properties),
+    );
+  }
+}

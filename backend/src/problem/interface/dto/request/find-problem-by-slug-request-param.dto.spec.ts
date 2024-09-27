@@ -23,8 +23,6 @@ describe('FindProblemBySlugRequestParam', () => {
 
     const slugError = errors.find((error) => error.property === 'slug');
 
-    console.log(slugError);
-
     expect(slugError).toBeDefined();
     expect(slugError?.constraints).toBeDefined();
     expect(slugError?.constraints?.isNotEmpty).toContain(

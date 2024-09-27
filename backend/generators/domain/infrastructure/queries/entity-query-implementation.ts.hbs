@@ -1,0 +1,8 @@
+import { Injectable } from '@nestjs/common';
+import { readConnection } from 'lib/database.module';
+import { {{ properCase name}}Query } from 'src/problem/application/queries/problem-query';
+import { {{ properCase name}}Entity } from '../entities/problem.entity';
+
+@Injectable()
+export class {{ properCase name}}QueryImplementation implements {{ properCase name}}Query {
+}

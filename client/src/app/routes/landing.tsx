@@ -2,12 +2,17 @@ import { LoginButton } from "@/components/auth/login-button";
 import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { LandingLayout } from "@/components/layouts/landing-layout";
+import { useAccountStore } from "@/features/account/account-store.provider";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const LandingRoute = () => {
+  const { isAuthenticated: isAuthAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAccountStore();
+
   return (
-    <LandingLayout>
+    <LandingLayout isAuthenticated={isAuthAuthenticated || isAuthenticated}>
       <section>
-        <Container className="flex flex-col items-center pt-20 text-center">
+        <Container className="flex flex-col items-center py-20 text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl max-w-4xl tracking-light font-bold mb-5">
             Battle and Compete in Fast-Paced Coding Challenges
           </h1>
