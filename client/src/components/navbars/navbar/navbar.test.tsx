@@ -1,8 +1,8 @@
-import { render } from "@testing-library/react";
 import { Navbar } from "./navbar";
+import { renderApp } from "@/testing/test-utils";
 
 describe("Navbar", () => {
-    test("should be defined", () => {
-        render(<Navbar />)
-    })
-})
+  test("should be defined", () => {
+    renderApp(<Navbar />, { skipWaitForLoading: true });
+  });
+});

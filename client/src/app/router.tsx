@@ -1,6 +1,6 @@
 import { ProtectedRoute } from "@/components/auth/protected-route/protected-route";
 import { useQueryClient } from "@tanstack/react-query";
-import { Profiler, useMemo } from "react";
+import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppRoot } from "./routes/app/root";
 import { ProfileRoute } from "./routes/app/profile";

@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { createStore, StoreApi, useStore } from "zustand";
+import { createStore, StoreApi } from "zustand";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useFindAccountBySub } from "./api/find-account-by-sub";
 import { Account } from "./models/account.model";
