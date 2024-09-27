@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ExampleTestcase } from './example-testcase';
-import { Id } from 'src/common/domain/id';
+import { Id, IdImplementation } from 'src/common/domain/id';
 
 export type ProblemEssentialProperties = Readonly<
   Required<{
@@ -42,6 +42,7 @@ export class ProblemImplementation extends AggregateRoot implements Problem {
   constructor(properties: ProblemProperties) {
     super();
     Object.assign(this, properties);
+    this.id = new IdImplementation(properties.id) as Id;
   }
 
   compareId(id: Id): boolean {
