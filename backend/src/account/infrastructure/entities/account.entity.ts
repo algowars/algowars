@@ -1,11 +1,5 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
-import {
-  Column,
-  Entity,
-  Generated,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('account')
 export class AccountEntity extends BaseEntity {

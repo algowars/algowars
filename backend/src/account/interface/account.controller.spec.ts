@@ -7,7 +7,6 @@ import { CanActivate } from '@nestjs/common';
 
 describe('AccountController', () => {
   let controller: AccountController;
-  let queryBus: QueryBus;
 
   beforeEach(async () => {
     const mockAuthGuard: CanActivate = AuthMock.mockAuthGuard();
@@ -33,7 +32,6 @@ describe('AccountController', () => {
       .compile();
 
     controller = module.get<AccountController>(AccountController);
-    queryBus = module.get<QueryBus>(QueryBus);
   });
 
   it('should be defined', () => {
