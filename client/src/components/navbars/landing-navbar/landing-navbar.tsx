@@ -4,7 +4,6 @@ import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
-import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 
 type LandingNavbarProps = {
@@ -21,9 +20,14 @@ export const LandingNavbar = ({ isAuthenticated }: LandingNavbarProps) => {
 
         <ul className="flex items-center gap-5 ml-auto">
           {isAuthenticated ? (
-            <li>
-              <LogoutButton>Sign Out</LogoutButton>
-            </li>
+            <>
+              <li>
+                <Link to="/app">Home</Link>
+              </li>
+              <li>
+                <LogoutButton>Sign Out</LogoutButton>
+              </li>
+            </>
           ) : (
             <>
               <li>
