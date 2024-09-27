@@ -5,8 +5,13 @@ import { Spinner } from "@/components/ui/spinner";
 import { useFindAccountByUsername } from "@/features/account/api/find-account-by-username";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useAccountStore } from "@/features/account/account-store.provider";
 
 export const ProfileBioRoute = () => {
+  const { isAuthenticated: isAuthAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAccountStore();
+
   const { username } = useParams();
 
   const accountQuery = useFindAccountByUsername({
@@ -28,7 +33,7 @@ export const ProfileBioRoute = () => {
   }
 
   return (
-    <Layout>
+    <Layout isAuthenticated={isAuthAuthenticated || isAuthenticated}>
       <Container className="py-12">
         <Card className="p-5 flex flex-col gap-5">
           <h2>{account.username}</h2>
