@@ -21,6 +21,10 @@ export class FindAccountByUsernameHandler
       throw new NotFoundException(AccountErrorMessage.ACCOUNT_NOT_FOUND);
     }
 
-    return data;
+    return {
+      id: data.id,
+      username: data.username,
+      createdAt: data.createdAt,
+    };
   }
 }

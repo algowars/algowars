@@ -41,7 +41,7 @@ export class AccountController {
     return id.toString();
   }
 
-  @Get('find/username')
+  @Get('find/username/:username')
   async findAccountByUsername(
     @Param() param: FindAccountByUsername,
   ): Promise<FindAccountByUsernameResult> {
