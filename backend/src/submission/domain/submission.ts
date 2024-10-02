@@ -1,18 +1,20 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Account } from 'src/account/domain/account';
-import { Id, IdImplementation } from 'src/common/domain/id';
+import { Id } from 'src/common/domain/id';
 import { SubmissionResult } from './submission-result';
+import { Language } from 'src/problem/domain/language';
 
 export type SubmissionEssentialProperties = Readonly<
   Required<{
-    id: string;
     createdBy: Account;
-    languageId: number;
+    language: Language;
+    sourceCode: string;
   }>
 >;
 
 export type SubmissionOptionalProperties = Readonly<
   Partial<{
+    id: Id;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
@@ -26,6 +28,8 @@ export type SubmissionProperties = SubmissionEssentialProperties &
 export interface Submission {
   compareId: (id: Id) => boolean;
   commit: () => void;
+  getId: () => Id;
+  getCreatedBy: () => Account;
 }
 
 export class SubmissionImplementation
@@ -33,8 +37,10 @@ export class SubmissionImplementation
   implements Submission
 {
   private readonly id: Id;
+  private readonly sourceCode: string;
   private readonly submissionResults: SubmissionResult[];
   private readonly createdBy: Account;
+  private readonly language: Language;
   private readonly createdAt: Date;
   private readonly updatedAt: Date;
   private readonly deletedAt: Date | null;
@@ -43,10 +49,18 @@ export class SubmissionImplementation
   constructor(properties: SubmissionProperties) {
     super();
     Object.assign(this, properties);
-    this.id = new IdImplementation(properties.id) as Id;
+    this.id = properties.id;
   }
 
   compareId(id: Id): boolean {
     return this.id.equals(id);
+  }
+
+  getCreatedBy(): Account {
+    return this.createdBy;
+  }
+
+  getId() {
+    return this.id;
   }
 }

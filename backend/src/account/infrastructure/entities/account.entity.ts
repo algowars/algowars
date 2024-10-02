@@ -1,5 +1,7 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Submission } from 'src/submission/domain/submission';
+import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('account')
 export class AccountEntity extends BaseEntity {
@@ -11,4 +13,7 @@ export class AccountEntity extends BaseEntity {
 
   @Column({ nullable: false, length: 16, unique: true })
   username: string;
+
+  @OneToMany(() => SubmissionEntity, (submission) => submission.createdBy)
+  readonly submissions: Submission[];
 }
