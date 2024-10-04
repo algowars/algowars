@@ -15,5 +15,5 @@ export class AccountEntity extends BaseEntity {
   username: string;
 
   @OneToMany(() => SubmissionEntity, (submission) => submission.createdBy)
-  readonly submissions: Submission[];
+  readonly submissions?: Submission[];
 }

@@ -1,3 +1,9 @@
+import {
+  BaseDomain,
+  BaseDomainImplementation,
+  BaseDomainProperties,
+} from 'src/common/entities/base-domain';
+
 export type LanguageEssentialProperties = Readonly<
   Required<{
     id: number;
@@ -9,35 +15,30 @@ export type LanguageOptionalProperties = Readonly<
   Partial<{
     isArchived: boolean;
     isAvailable: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-    version: number;
   }>
 >;
 
 export type LanguageProperties = LanguageEssentialProperties &
-  LanguageOptionalProperties;
+  LanguageOptionalProperties &
+  BaseDomainProperties;
 
-export interface Language {
-  compareId: (id: number) => boolean;
+export interface Language extends BaseDomain {
   getName: () => string;
   getIsArchived: () => boolean;
   getIsAvailable: () => boolean;
 }
 
-export class LanguageImplementation implements Language {
-  private readonly id: number;
+export class LanguageImplementation
+  extends BaseDomainImplementation
+  implements Language
+{
   private readonly name: string;
   private readonly isArchived: boolean;
   private readonly isAvailable: boolean;
 
   constructor(properties: LanguageProperties) {
+    super(properties);
     Object.assign(this, properties);
-  }
-
-  compareId(id: number): boolean {
-    return this.id === id;
   }
 
   getName(): string {

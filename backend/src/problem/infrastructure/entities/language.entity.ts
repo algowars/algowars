@@ -1,11 +1,6 @@
+import { BaseEntity } from 'src/common/entities/base-entity';
 import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('language')
 export class LanguageEntity extends BaseEntity {
@@ -16,10 +11,10 @@ export class LanguageEntity extends BaseEntity {
   readonly name: string;
 
   @Column({ default: false })
-  readonly isArchived: boolean;
+  readonly isArchived?: boolean;
 
   @Column({ default: true })
-  readonly isAvailable: boolean;
+  readonly isAvailable?: boolean;
 
   @OneToMany(() => SubmissionEntity, (submission) => submission.language)
   readonly submissions?: Promise<SubmissionEntity[]>;

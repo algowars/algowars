@@ -1,10 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateSubmissionCommand } from './create-submission.command';
 import { Id, IdImplementation } from 'src/common/domain/id';
-import { Inject } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectionToken } from '../../injection-token';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
+import { LanguageRepository } from 'src/problem/domain/language-repository';
 
 @CommandHandler(CreateSubmissionCommand)
 export class CreateSubmissionHandler
@@ -12,13 +13,18 @@ export class CreateSubmissionHandler
 {
   @Inject(InjectionToken.SUBMISSION_REPOSITORY)
   private readonly submissionRepository: SubmissionRepository;
+  @Inject(InjectionToken.LANGUAGE_REPOSITORY)
+  private readonly languageRepository: LanguageRepository;
   @Inject()
   private readonly submissionFactory: SubmissionFactory;
 
   async execute(command: CreateSubmissionCommand): Promise<Id> {
-    const submission = this.submissionFactory.create({
-      ...command,
-      id: await this.submissionRepository.findById(),
-    });
+    const language = await this.languageRepository.findById(
+      command.request.languageId,
+    );
+
+    if (!language) {
+      throw new NotFoundException('Language not found');
+    }
   }
 }

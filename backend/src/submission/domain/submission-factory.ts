@@ -5,12 +5,12 @@ import { Submission, SubmissionImplementation } from './submission';
 import { Account, AccountImplementation } from 'src/account/domain/account';
 import { SubmissionEntity } from '../infrastructure/entities/submission.entity';
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
-import { UserSubImplementation } from 'src/account/domain/user-sub';
-import { UsernameImplementation } from 'src/account/domain/username';
+import { Language, LanguageImplementation } from 'src/problem/domain/language';
+import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
 
 type CreateSubmissionOptions = Readonly<{
   id: Id;
-  languageId: number;
+  language: Language;
   createdBy: Account;
   sourceCode: string;
 }>;
@@ -32,20 +32,29 @@ export class SubmissionFactory {
 
   createFromEntity(submissionEntity: SubmissionEntity): Submission {
     const id = new IdImplementation(submissionEntity.id);
-    const createdBy = this.mapAccountEntityToDomain(submissionEntity.createdBy);
-    const languageId = submissionEntity.language.id;
 
     return this.create({
       id,
-      createdBy,
-      languageId,
+      createdBy: this.mapAccountEntityToDomain(submissionEntity.createdBy),
+      language: this.mapLanguageEntityToDomain(submissionEntity.language),
       sourceCode: submissionEntity.sourceCode,
+    });
+  }
+
+  private mapLanguageEntityToDomain(language: LanguageEntity): Language {
+    return new LanguageImplementation({
+      id: language.id,
+      name: language.name,
+      version: language.version,
+      createdAt: language.createdAt,
+      updatedAt: language.updatedAt,
+      deletedAt: language.deletedAt,
     });
   }
 
   private mapAccountEntityToDomain(accountEntity: AccountEntity): Account {
     return new AccountImplementation({
-      id: new IdImplementation(accountEntity.id),
+      id: accountEntity.id,
       sub: accountEntity.sub,
       username: accountEntity.username,
       createdAt: accountEntity.createdAt,

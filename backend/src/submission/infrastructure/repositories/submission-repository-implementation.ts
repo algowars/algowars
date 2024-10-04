@@ -8,8 +8,11 @@ import {
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionEntity } from '../entities/submission.entity';
-import { AccountFactory } from 'src/account/domain/account-factory';
+import { Account } from 'src/account/domain/account';
 import { LanguageFactory } from 'src/problem/domain/language-factory';
+import { Language, LanguageProperties } from 'src/problem/domain/language';
+import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
+import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 
 export class SubmissionRepositoryImplementation
   implements SubmissionRepository
@@ -38,16 +41,41 @@ export class SubmissionRepositoryImplementation
   }
 
   private modelToEntity(model: Submission): SubmissionEntity {
-    const properties = JSON.parse(
-      JSON.stringify(model),
-    ) as SubmissionProperties;
-
     return {
-      ...properties,
-      id: properties.id.toString(),
-      language: this.languageFactory.reconstituteFromEntity(
-        properties.language,
-      ),
+      id: model.getId().toString(),
+      sourceCode: model.getSourceCode(),
+      createdBy: this.accountToEntity(model.getCreatedBy()),
+      createdAt: model.getCreatedAt(),
+      updatedAt: model.getUpdatedAt(),
+      deletedAt: model.getDeletedAt(),
+      version: model.getVersion(),
+      language: this.languageToEntity(model.getLanguage()),
+    };
+  }
+
+  private languageToEntity(language: Language): LanguageEntity {
+    const properties: LanguageProperties = {
+      id: language.getId().toNumber(),
+      name: language.getName(),
+      createdAt: language.getCreatedAt(),
+      updatedAt: language.getUpdatedAt(),
+      deletedAt: language.getDeletedAt(),
+      version: language.getVersion(),
+      isArchived: language.getIsArchived(),
+    };
+
+    return properties;
+  }
+
+  private accountToEntity(account: Account): AccountEntity {
+    return {
+      id: account.getId().toString(),
+      sub: account.getSub().toString(),
+      username: account.getUsername().toString(),
+      createdAt: account.getCreatedAt(),
+      updatedAt: account.getUpdatedAt(),
+      deletedAt: account.getDeletedAt(),
+      version: account.getVersion(),
     };
   }
 

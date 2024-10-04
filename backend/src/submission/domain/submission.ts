@@ -3,6 +3,11 @@ import { Account } from 'src/account/domain/account';
 import { Id } from 'src/common/domain/id';
 import { SubmissionResult } from './submission-result';
 import { Language } from 'src/problem/domain/language';
+import {
+  BaseDomainAggregateRoot,
+  BaseDomainAggregateRootImplementation,
+  BaseDomainProperties,
+} from 'src/common/entities/base-domain';
 
 export type SubmissionEssentialProperties = Readonly<
   Required<{
@@ -15,52 +20,47 @@ export type SubmissionEssentialProperties = Readonly<
 export type SubmissionOptionalProperties = Readonly<
   Partial<{
     id: Id;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-    version: number;
   }>
 >;
 
 export type SubmissionProperties = SubmissionEssentialProperties &
-  Required<SubmissionOptionalProperties>;
+  SubmissionOptionalProperties &
+  BaseDomainProperties;
 
-export interface Submission {
-  compareId: (id: Id) => boolean;
-  commit: () => void;
-  getId: () => Id;
+export interface Submission extends BaseDomainAggregateRoot {
   getCreatedBy: () => Account;
+  getSourceCode: () => string;
+  getSubmissionResults: () => SubmissionResult[];
+  getLanguage: () => Language;
 }
 
 export class SubmissionImplementation
-  extends AggregateRoot
+  extends BaseDomainAggregateRootImplementation
   implements Submission
 {
-  private readonly id: Id;
   private readonly sourceCode: string;
   private readonly submissionResults: SubmissionResult[];
   private readonly createdBy: Account;
   private readonly language: Language;
-  private readonly createdAt: Date;
-  private readonly updatedAt: Date;
-  private readonly deletedAt: Date | null;
-  private readonly version: number;
 
   constructor(properties: SubmissionProperties) {
-    super();
+    super(properties);
     Object.assign(this, properties);
-    this.id = properties.id;
   }
 
-  compareId(id: Id): boolean {
-    return this.id.equals(id);
-  }
-
-  getCreatedBy(): Account {
+  getCreatedBy() {
     return this.createdBy;
   }
 
-  getId() {
-    return this.id;
+  getSourceCode() {
+    return this.sourceCode;
+  }
+
+  getSubmissionResults() {
+    return this.submissionResults;
+  }
+
+  getLanguage() {
+    return this.language;
   }
 }
