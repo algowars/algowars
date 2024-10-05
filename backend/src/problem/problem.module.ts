@@ -6,6 +6,7 @@ import { ProblemRepositoryImplementation } from './infrastructure/repositories/p
 import { ProblemQueryHandlers } from './application/queries';
 import { ProblemFactory } from './domain/problem-factory';
 import { CqrsModule } from '@nestjs/cqrs';
+import { ProblemCommandHandlers } from './application/commands';
 
 const infrastructure: Provider[] = [
   {
@@ -18,7 +19,7 @@ const infrastructure: Provider[] = [
   },
 ];
 
-const application = [...ProblemQueryHandlers];
+const application = [...ProblemQueryHandlers, ...ProblemCommandHandlers];
 
 const domain = [ProblemFactory];
 
