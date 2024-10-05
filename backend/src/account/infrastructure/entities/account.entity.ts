@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
+import { ProblemEntity } from 'src/problem/infrastructure/entities/problem.entity';
 import { Submission } from 'src/submission/domain/submission';
 import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
@@ -16,4 +17,7 @@ export class AccountEntity extends BaseEntity {
 
   @OneToMany(() => SubmissionEntity, (submission) => submission.createdBy)
   readonly submissions?: Submission[];
+
+  @OneToMany(() => ProblemEntity, (problem) => problem.createdBy)
+  readonly problems?: ProblemEntity[];
 }

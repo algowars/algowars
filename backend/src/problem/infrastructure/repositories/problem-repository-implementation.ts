@@ -27,10 +27,19 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
 
   private modelToEntity(model: Problem): ProblemEntity {
     const properties = JSON.parse(JSON.stringify(model)) as ProblemProperties;
-
+    const createdBy = model.getCreatedBy();
     return {
       ...properties,
       id: properties.id.toString(),
+      createdBy: {
+        id: createdBy.getId().toString(),
+        sub: createdBy.getSub().toString(),
+        username: createdBy.getUsername().toString(),
+        createdAt: createdBy.getCreatedAt(),
+        updatedAt: createdBy.getUpdatedAt(),
+        deletedAt: createdBy.getDeletedAt(),
+        version: createdBy.getVersion(),
+      },
     };
   }
 

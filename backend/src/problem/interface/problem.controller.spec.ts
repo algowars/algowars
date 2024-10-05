@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProblemController } from './problem.controller';
-import { QueryBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { FindProblemBySlugRequestParam } from './dto/request/find-problem-by-slug-request-param.dto';
 import { FindProblemBySlugQuery } from '../application/queries/find-problem-by-slug-query/find-problem-by-slug.query';
+import { AuthorizationGuard } from 'src/auth/authorization.guard';
+import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard';
 
 describe('ProblemController', () => {
   let controller: ProblemController;
@@ -18,8 +20,19 @@ describe('ProblemController', () => {
             execute: jest.fn(),
           },
         },
+        {
+          provide: CommandBus,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
       ],
-    }).compile();
+    })
+      .overrideGuard(AuthorizationGuard)
+      .useValue({ canActivate: jest.fn(() => true) })
+      .overrideGuard(AccountAuthorizationGuard)
+      .useValue({ canActivate: jest.fn(() => true) })
+      .compile();
 
     controller = module.get<ProblemController>(ProblemController);
     queryBus = module.get<QueryBus>(QueryBus);
