@@ -1,6 +1,11 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { ExampleTestcase } from './example-testcase';
 import { Id, IdImplementation } from 'src/common/domain/id';
+import {
+  BaseDomainAggregateRoot,
+  BaseDomainAggregateRootImplementation,
+  BaseDomainProperties,
+} from 'src/common/entities/base-domain';
 
 export type ProblemEssentialProperties = Readonly<
   Required<{
@@ -11,41 +16,43 @@ export type ProblemEssentialProperties = Readonly<
   }>
 >;
 
-export type ProblemOptionalProperties = Readonly<
-  Partial<{
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-    version: number;
-  }>
->;
-
 export type ProblemProperties = ProblemEssentialProperties &
-  Required<ProblemOptionalProperties>;
+  BaseDomainProperties;
 
-export interface Problem {
-  compareId: (id: Id) => boolean;
-  commit: () => void;
+export interface Problem extends BaseDomainAggregateRoot {
+  getTitle(): string;
+  getQuestion(): string;
+  getSlug(): string;
+  getExampleTestcases(): ExampleTestcase[];
 }
 
-export class ProblemImplementation extends AggregateRoot implements Problem {
-  private readonly id: Id;
+export class ProblemImplementation
+  extends BaseDomainAggregateRootImplementation
+  implements Problem
+{
   private readonly title: string;
   private readonly question: string;
   private readonly slug: string;
   private readonly exampleTestcases: ExampleTestcase[];
-  private readonly createdAt: Date;
-  private readonly updatedAt: Date;
-  private readonly deletedAt: Date | null;
-  private readonly version: number;
 
   constructor(properties: ProblemProperties) {
-    super();
+    super(properties);
     Object.assign(this, properties);
-    this.id = new IdImplementation(properties.id) as Id;
   }
 
-  compareId(id: Id): boolean {
-    return this.id.equals(id);
+  getTitle(): string {
+    return this.title;
+  }
+
+  getQuestion(): string {
+    return this.question;
+  }
+
+  getSlug(): string {
+    return this.slug;
+  }
+
+  getExampleTestcases(): ExampleTestcase[] {
+    return this.exampleTestcases;
   }
 }
