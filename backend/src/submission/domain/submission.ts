@@ -1,4 +1,3 @@
-import { AggregateRoot } from '@nestjs/cqrs';
 import { Account } from 'src/account/domain/account';
 import { Id } from 'src/common/domain/id';
 import { SubmissionResult } from './submission-result';

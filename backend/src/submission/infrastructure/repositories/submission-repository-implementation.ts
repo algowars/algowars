@@ -1,16 +1,13 @@
 import { Inject } from '@nestjs/common';
 import { EntityId, readConnection, writeConnection } from 'lib/database.module';
 import { Id, IdImplementation } from 'src/common/domain/id';
-import {
-  Submission,
-  SubmissionProperties,
-} from 'src/submission/domain/submission';
+import { Submission } from 'src/submission/domain/submission';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionEntity } from '../entities/submission.entity';
 import { Account } from 'src/account/domain/account';
 import { LanguageFactory } from 'src/problem/domain/language-factory';
-import { Language, LanguageProperties } from 'src/problem/domain/language';
+import { Language } from 'src/problem/domain/language';
 import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 

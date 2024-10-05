@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { Id, IdImplementation } from '../domain/id';
+import { Id } from '../domain/id';
 
 export type BaseDomainProperties = {
   id: Id;

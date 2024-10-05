@@ -4,7 +4,6 @@ import { AccountQuery } from 'src/account/application/queries/account-query';
 import { FindAccountBySubResult } from 'src/account/application/queries/find-account-by-sub-query/find-account-by-sub-result';
 import { AccountEntity } from '../entities/account.entity';
 import { FindAccountByUsernameResult } from 'src/account/application/queries/find-account-by-username-query/find-account-by-username-result';
-import { Account } from 'src/account/domain/account';
 
 @Injectable()
 export class AccountQueryImplementation implements AccountQuery {

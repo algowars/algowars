@@ -6,7 +6,6 @@ import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard'
 
 describe('SubmissionController', () => {
   let controller: SubmissionController;
-  let commandBus: CommandBus;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,7 +26,6 @@ describe('SubmissionController', () => {
       .compile();
 
     controller = module.get<SubmissionController>(SubmissionController);
-    commandBus = module.get<CommandBus>(CommandBus);
   });
 
   it('should be defined', () => {

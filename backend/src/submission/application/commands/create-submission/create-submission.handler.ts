@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateSubmissionCommand } from './create-submission.command';
-import { Id, IdImplementation } from 'src/common/domain/id';
+import { Id } from 'src/common/domain/id';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectionToken } from '../../injection-token';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';

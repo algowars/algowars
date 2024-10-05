@@ -1,11 +1,5 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { SubmissionEntity } from './submission.entity';
 import { StatusEntity } from './status.entity';
 
