@@ -1,5 +1,6 @@
 import { LoginButton } from "@/components/auth/login-button";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
 import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
@@ -14,6 +15,7 @@ export type NavbarProps = {
 export const Navbar = ({ isAuthenticated }: NavbarProps) => {
   const { store } = useAccountStore();
   const profileUrl = store?.getState().account?.username ?? "";
+  const { roles } = useAuthPermissions();
 
   return (
     <nav>
@@ -32,6 +34,11 @@ export const Navbar = ({ isAuthenticated }: NavbarProps) => {
         <ul className="flex items-center gap-5 ml-auto">
           {isAuthenticated ? (
             <>
+              {roles.includes("Admin") ? (
+                <li>
+                  <Link to={"/app/admin/"}>Admin</Link>
+                </li>
+              ) : null}
               <li>
                 <Link to={`/profile/${encodeURIComponent(profileUrl)}`}>
                   Profile

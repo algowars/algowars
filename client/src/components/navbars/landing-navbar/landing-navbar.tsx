@@ -1,5 +1,6 @@
 import { LoginButton } from "@/components/auth/login-button";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
 import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
@@ -11,6 +12,7 @@ type LandingNavbarProps = {
 };
 
 export const LandingNavbar = ({ isAuthenticated }: LandingNavbarProps) => {
+  const { roles } = useAuthPermissions();
   return (
     <nav>
       <Container className="flex items-center py-3">
@@ -21,6 +23,11 @@ export const LandingNavbar = ({ isAuthenticated }: LandingNavbarProps) => {
         <ul className="flex items-center gap-5 ml-auto">
           {isAuthenticated ? (
             <>
+              {roles.includes("Admin") ? (
+                <li>
+                  <Link to={"/app/admin/"}>Admin</Link>
+                </li>
+              ) : null}
               <li>
                 <Link to="/app">Home</Link>
               </li>

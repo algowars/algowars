@@ -5,6 +5,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppRoot } from "./routes/app/root";
 import { ProfileRoute } from "./routes/app/profile";
 import { ProfileBioRoute } from "./routes/app/profile/bio";
+import { PermissionProtectedRoute } from "@/components/auth/permission-protected-route/permission-protected-route";
+import { AdminRoute } from "./routes/app/admin";
+import { AdminCreateProblemRoute } from "./routes/app/admin/create-problem";
 
 export const createAppRouter = () => {
   return createBrowserRouter([
@@ -44,6 +47,24 @@ export const createAppRouter = () => {
             );
             return { Component: AccountSetupRoute };
           },
+        },
+        {
+          path: "/app/admin",
+          element: (
+            <PermissionProtectedRoute
+              component={AdminRoute}
+              allowedPermissions={["Admin"]}
+            />
+          ),
+        },
+        {
+          path: "/app/admin/create-problem",
+          element: (
+            <PermissionProtectedRoute
+              component={AdminCreateProblemRoute}
+              allowedPermissions={["Admin"]}
+            />
+          ),
         },
       ],
     },
