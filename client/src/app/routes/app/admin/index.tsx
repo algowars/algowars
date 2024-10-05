@@ -1,5 +1,6 @@
 import { Container } from "@/components/container";
 import { Layout } from "@/components/layouts/layout/layout";
+import { PageLoader } from "@/components/loader/page-loader/page-loader";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
@@ -11,6 +12,10 @@ export const AdminRoute = () => {
   const { isAuthenticated: isAuthAuthenticated, isLoading: isAuthLoading } =
     useAuth0();
   const { isAuthenticated, isLoading } = useAccountStore();
+
+  if (isAuthLoading || isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <Layout isAuthenticated={isAuthAuthenticated || isAuthenticated}>
