@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { EntityId, writeConnection } from 'lib/database.module';
+import { EntityId, readConnection, writeConnection } from 'lib/database.module';
 import { Problem, ProblemProperties } from 'src/problem/domain/problem';
 import { ProblemFactory } from 'src/problem/domain/problem-factory';
 import { ProblemRepository } from 'src/problem/domain/problem-repository';
@@ -19,7 +19,7 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
   }
 
   async findById(id: string): Promise<Problem | null> {
-    const entity = await writeConnection.manager
+    const entity = await readConnection
       .getRepository(ProblemEntity)
       .findOneBy({ id });
     return entity ? this.entityToModel(entity) : null;
@@ -28,7 +28,10 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
   private modelToEntity(model: Problem): ProblemEntity {
     const properties = JSON.parse(JSON.stringify(model)) as ProblemProperties;
 
-    return properties;
+    return {
+      ...properties,
+      id: properties.id.toString(),
+    };
   }
 
   private entityToModel(entity: ProblemEntity): Problem {

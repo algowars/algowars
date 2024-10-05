@@ -11,6 +11,10 @@ export class AccountQueryImplementation implements AccountQuery {
     return readConnection.getRepository(AccountEntity).findOneBy({ sub });
   }
 
+  findBySubRaw(sub: string): Promise<AccountEntity | null> {
+    return readConnection.getRepository(AccountEntity).findOneBy({ sub });
+  }
+
   findByUsername(
     username: string,
   ): Promise<FindAccountByUsernameResult | null> {

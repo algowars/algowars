@@ -18,7 +18,7 @@ export const AccountSetupRoute = () => {
   }
 
   return (
-    <Layout>
+    <Layout isAuthenticated={isAuthAuthenticated || isAuthenticated}>
       <section>
         <Container className="flex items-center justify-center py-8">
           <AccountSetupForm />

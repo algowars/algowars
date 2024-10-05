@@ -6,6 +6,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { AccountModule } from './account/account.module';
 import { RequestStorageMiddleware } from 'lib/request-storage-middleware';
+import { SubmissionModule } from './submission/submission.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RequestStorageMiddleware } from 'lib/request-storage-middleware';
     ProblemModule,
     ThrottlerModule.forRoot(),
     AccountModule,
+    SubmissionModule,
   ],
   providers: [
     {

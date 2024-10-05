@@ -3,7 +3,7 @@ import { ProblemImplementation } from './problem';
 
 describe('Problem', () => {
   it('should compare id', () => {
-    const expectedId = 'id';
+    const expectedId = new IdImplementation('id');
     const problem = new ProblemImplementation({
       id: expectedId,
       title: 'test',
@@ -15,6 +15,6 @@ describe('Problem', () => {
       version: 1,
     });
 
-    expect(problem.compareId(new IdImplementation(expectedId))).toBeTruthy();
+    expect(problem.compareId(expectedId)).toBeTruthy();
   });
 });
