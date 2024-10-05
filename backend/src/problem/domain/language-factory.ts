@@ -6,6 +6,7 @@ import {
   LanguageProperties,
 } from './language';
 import { LanguageEntity } from '../infrastructure/entities/language.entity';
+import { IdImplementation } from 'src/common/domain/id';
 
 type CreateLanguageOptions = Readonly<{
   id: number;
@@ -20,6 +21,7 @@ export class LanguageFactory {
   create(options: CreateLanguageOptions): Language {
     return new LanguageImplementation({
       ...options,
+      id: new IdImplementation(options.id),
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: null,
@@ -32,7 +34,14 @@ export class LanguageFactory {
   }
 
   reconstituteFromEntity(languageEntity: LanguageEntity): Language {
-    return this.reconstitute(languageEntity);
+    return this.reconstitute({
+      id: new IdImplementation(languageEntity.id),
+      name: languageEntity.name,
+      createdAt: languageEntity.createdAt,
+      updatedAt: languageEntity.updatedAt,
+      deletedAt: languageEntity.deletedAt,
+      version: languageEntity.version,
+    });
   }
 
   reconstitute(properties: LanguageProperties): Language {

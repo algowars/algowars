@@ -26,5 +26,20 @@ export class CreateSubmissionHandler
     if (!language) {
       throw new NotFoundException('Language not found');
     }
+
+    const submissionId = await this.submissionRepository.newId();
+
+    const submission = this.submissionFactory.create({
+      id: submissionId,
+      language,
+      sourceCode: command.request.sourceCode,
+      createdBy: command.account,
+    });
+
+    await this.submissionRepository.save(submission);
+
+    submission.commit();
+
+    return submission.getId();
   }
 }

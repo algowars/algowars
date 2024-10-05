@@ -2,7 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { Id, IdImplementation } from '../domain/id';
 
 export type BaseDomainProperties = {
-  id: string | number;
+  id: Id;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -35,7 +35,6 @@ export abstract class BaseDomainAggregateRootImplementation
   constructor(properties: BaseDomainProperties) {
     super();
     Object.assign(this, properties);
-    this.id = new IdImplementation(properties.id) as Id;
   }
 
   compareId(id: Id): boolean {
@@ -72,7 +71,6 @@ export abstract class BaseDomainImplementation implements BaseDomain {
 
   constructor(properties: BaseDomainProperties) {
     Object.assign(this, properties);
-    this.id = new IdImplementation(properties.id) as Id;
   }
 
   compareId(id: Id): boolean {

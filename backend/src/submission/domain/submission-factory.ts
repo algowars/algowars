@@ -43,7 +43,7 @@ export class SubmissionFactory {
 
   private mapLanguageEntityToDomain(language: LanguageEntity): Language {
     return new LanguageImplementation({
-      id: language.id,
+      id: new IdImplementation(language.id),
       name: language.name,
       version: language.version,
       createdAt: language.createdAt,
@@ -54,7 +54,7 @@ export class SubmissionFactory {
 
   private mapAccountEntityToDomain(accountEntity: AccountEntity): Account {
     return new AccountImplementation({
-      id: accountEntity.id,
+      id: new IdImplementation(accountEntity.id),
       sub: accountEntity.sub,
       username: accountEntity.username,
       createdAt: accountEntity.createdAt,

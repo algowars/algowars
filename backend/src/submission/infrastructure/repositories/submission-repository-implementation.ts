@@ -54,7 +54,7 @@ export class SubmissionRepositoryImplementation
   }
 
   private languageToEntity(language: Language): LanguageEntity {
-    const properties: LanguageProperties = {
+    return {
       id: language.getId().toNumber(),
       name: language.getName(),
       createdAt: language.getCreatedAt(),
@@ -63,8 +63,6 @@ export class SubmissionRepositoryImplementation
       version: language.getVersion(),
       isArchived: language.getIsArchived(),
     };
-
-    return properties;
   }
 
   private accountToEntity(account: Account): AccountEntity {

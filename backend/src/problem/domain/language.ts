@@ -6,7 +6,6 @@ import {
 
 export type LanguageEssentialProperties = Readonly<
   Required<{
-    id: number;
     name: string;
   }>
 >;
