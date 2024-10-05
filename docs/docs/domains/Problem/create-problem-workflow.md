@@ -4,7 +4,7 @@ The **Create Problem Workflow** defines the series of steps required to create a
 
 ![Create Problem Workflow](../../../static/img/create-problem-workflow.png)
 
-### Workflow Steps:
+### Workflow Steps
 
 1. **Validate User Permissions**
 
@@ -29,7 +29,7 @@ The **Create Problem Workflow** defines the series of steps required to create a
 6. **Create Problem**
    - If all tests pass successfully, the system finalizes the problem creation process. The new problem is added to the problem pool, and it becomes available for use in the competitive coding environment.
 
-### Important Notes:
+### Important Notes
 
 - Any failure in permission validation, authentication, or testing will result in the termination of the workflow.
 - Problems that fail the tests must be revised and re-submitted for validation.
