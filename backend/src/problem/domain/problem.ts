@@ -1,6 +1,5 @@
-import { AggregateRoot } from '@nestjs/cqrs';
 import { ExampleTestcase } from './example-testcase';
-import { Id, IdImplementation } from 'src/common/domain/id';
+import { Id } from 'src/common/domain/id';
 import {
   BaseDomainAggregateRoot,
   BaseDomainAggregateRootImplementation,
@@ -9,7 +8,7 @@ import {
 
 export type ProblemEssentialProperties = Readonly<
   Required<{
-    id: string;
+    id: Id;
     title: string;
     slug: string;
     question: string;

@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Problem, ProblemImplementation, ProblemProperties } from './problem';
 import { ProblemEntity } from '../infrastructure/entities/problem.entity';
+import { IdImplementation } from 'src/common/domain/id';
 
 type CreateProblemOptions = Readonly<{
   id: string;
@@ -17,6 +18,7 @@ export class ProblemFactory {
     return this.eventPublisher.mergeObjectContext(
       new ProblemImplementation({
         ...options,
+        id: new IdImplementation(options.id),
         createdAt: new Date(),
         updatedAt: new Date(),
         deletedAt: null,
@@ -30,7 +32,10 @@ export class ProblemFactory {
   }
 
   reconstituteFromEntity(problemEntity: ProblemEntity): Problem {
-    return this.reconstitute(problemEntity);
+    return this.reconstitute({
+      ...problemEntity,
+      id: new IdImplementation(problemEntity.id),
+    });
   }
 
   reconstitute(properties: ProblemProperties): Problem {

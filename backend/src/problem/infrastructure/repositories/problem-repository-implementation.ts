@@ -28,7 +28,10 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
   private modelToEntity(model: Problem): ProblemEntity {
     const properties = JSON.parse(JSON.stringify(model)) as ProblemProperties;
 
-    return properties;
+    return {
+      ...properties,
+      id: properties.id.toString(),
+    };
   }
 
   private entityToModel(entity: ProblemEntity): Problem {
