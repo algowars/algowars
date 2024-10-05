@@ -3,12 +3,17 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { Problem, ProblemImplementation, ProblemProperties } from './problem';
 import { ProblemEntity } from '../infrastructure/entities/problem.entity';
 import { IdImplementation } from 'src/common/domain/id';
+import { Account, AccountImplementation } from 'src/account/domain/account';
+import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
+import { UserSubImplementation } from 'src/account/domain/user-sub';
+import { UsernameImplementation } from 'src/account/domain/username';
 
 type CreateProblemOptions = Readonly<{
   id: string;
   title: string;
   slug: string;
   question: string;
+  createdBy: Account;
 }>;
 
 export class ProblemFactory {
@@ -28,13 +33,29 @@ export class ProblemFactory {
   }
 
   createFromEntity(problemEntity: ProblemEntity): Problem {
-    return this.create(problemEntity);
+    return this.create({
+      ...problemEntity,
+      createdBy: this.mapAccountEntityToDomain(problemEntity.createdBy),
+    });
   }
 
   reconstituteFromEntity(problemEntity: ProblemEntity): Problem {
     return this.reconstitute({
       ...problemEntity,
       id: new IdImplementation(problemEntity.id),
+      createdBy: this.mapAccountEntityToDomain(problemEntity.createdBy),
+    });
+  }
+
+  private mapAccountEntityToDomain(account: AccountEntity): Account {
+    return new AccountImplementation({
+      id: new IdImplementation(account.id),
+      sub: new UserSubImplementation(account.sub),
+      username: new UsernameImplementation(account.username),
+      createdAt: account.createdAt,
+      updatedAt: account.updatedAt,
+      deletedAt: account.deletedAt,
+      version: account.version,
     });
   }
 

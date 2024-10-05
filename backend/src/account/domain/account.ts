@@ -9,8 +9,8 @@ import {
 
 export type AccountEssentialProperties = Readonly<
   Required<{
-    sub: string;
-    username: string;
+    sub: UserSub;
+    username: Username;
   }>
 >;
 

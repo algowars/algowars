@@ -7,6 +7,8 @@ import { SubmissionEntity } from '../infrastructure/entities/submission.entity';
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 import { Language, LanguageImplementation } from 'src/problem/domain/language';
 import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
+import { UserSubImplementation } from 'src/account/domain/user-sub';
+import { UsernameImplementation } from 'src/account/domain/username';
 
 type CreateSubmissionOptions = Readonly<{
   id: Id;
@@ -55,8 +57,8 @@ export class SubmissionFactory {
   private mapAccountEntityToDomain(accountEntity: AccountEntity): Account {
     return new AccountImplementation({
       id: new IdImplementation(accountEntity.id),
-      sub: accountEntity.sub,
-      username: accountEntity.username,
+      sub: new UserSubImplementation(accountEntity.sub),
+      username: new UsernameImplementation(accountEntity.username),
       createdAt: accountEntity.createdAt,
       updatedAt: accountEntity.updatedAt,
       deletedAt: accountEntity.deletedAt,

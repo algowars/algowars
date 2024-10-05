@@ -1,3 +1,4 @@
+import { Account } from 'src/account/domain/account';
 import { ExampleTestcase } from './example-testcase';
 import { Id } from 'src/common/domain/id';
 import {
@@ -12,6 +13,7 @@ export type ProblemEssentialProperties = Readonly<
     title: string;
     slug: string;
     question: string;
+    createdBy: Account;
   }>
 >;
 
@@ -23,6 +25,7 @@ export interface Problem extends BaseDomainAggregateRoot {
   getQuestion(): string;
   getSlug(): string;
   getExampleTestcases(): ExampleTestcase[];
+  getCreatedBy(): Account;
 }
 
 export class ProblemImplementation
@@ -33,14 +36,19 @@ export class ProblemImplementation
   private readonly question: string;
   private readonly slug: string;
   private readonly exampleTestcases: ExampleTestcase[];
+  private readonly createdBy: Account;
 
   constructor(properties: ProblemProperties) {
     super(properties);
     Object.assign(this, properties);
   }
 
-  getTitle(): string {
-    return this.title;
+  getCreatedBy(): Account {
+    return this.createdBy;
+  }
+
+  getExampleTestcases(): ExampleTestcase[] {
+    return this.exampleTestcases;
   }
 
   getQuestion(): string {
@@ -51,7 +59,7 @@ export class ProblemImplementation
     return this.slug;
   }
 
-  getExampleTestcases(): ExampleTestcase[] {
-    return this.exampleTestcases;
+  getTitle(): string {
+    return this.title;
   }
 }

@@ -3,6 +3,8 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { Account, AccountImplementation, AccountProperties } from './account';
 import { AccountEntity } from '../infrastructure/entities/account.entity';
 import { Id, IdImplementation } from 'src/common/domain/id';
+import { UserSubImplementation } from './user-sub';
+import { UsernameImplementation } from './username';
 
 type CreateAccountOptions = Readonly<{
   id: Id;
@@ -17,6 +19,8 @@ export class AccountFactory {
     return this.eventPublisher.mergeObjectContext(
       new AccountImplementation({
         ...options,
+        sub: new UserSubImplementation(options.sub),
+        username: new UsernameImplementation(options.username),
         createdAt: new Date(),
         updatedAt: new Date(),
         deletedAt: null,
@@ -39,6 +43,8 @@ export class AccountFactory {
 
     const properties: AccountProperties = {
       ...accountEntity,
+      sub: new UserSubImplementation(accountEntity.sub),
+      username: new UsernameImplementation(accountEntity.username),
       id,
     };
 

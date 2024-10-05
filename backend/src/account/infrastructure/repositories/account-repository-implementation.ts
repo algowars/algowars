@@ -61,7 +61,9 @@ export class AccountRepositoryImplementation implements AccountRepository {
     return {
       ...properties,
       id: model.getId().toString(),
-    } as AccountEntity;
+      userSub: model.getSub().toString(),
+      username: model.getUsername().toString(),
+    } as unknown as AccountEntity;
   }
 
   private entityToModel(entity: AccountEntity): Account {
