@@ -10,7 +10,7 @@ export class AccountAuthorizationGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const sub = request.getRequest().auth?.payload?.sub;
+    const sub = request.auth?.payload?.sub;
 
     if (!sub) {
       throw new UnauthorizedError('User sub not found');

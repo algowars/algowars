@@ -11,7 +11,6 @@ export const useAuthPermissions = () => {
       const claim = await getIdTokenClaims();
 
       if (claim) {
-        console.log("BOI: ", claim[namespace]);
         const foundRoles = claim[namespace];
 
         if (Array.isArray(foundRoles)) {
