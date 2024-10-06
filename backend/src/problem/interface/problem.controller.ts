@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -18,6 +19,11 @@ import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard'
 import { CreateProblemRequest } from './dto/request/create-problem.dto';
 import { CreateProblemCommand } from '../application/commands/create-problem/create-problem.command';
 import { Request } from 'express';
+import { GetProblemsPageableParam } from './dto/request/get-problems-pageable-param.dto';
+import { PageResult } from 'src/common/pagination/page-result';
+import { Problem } from '../domain/problem';
+import { GetProblemsPaginatedResponse } from './dto/response/get-problems-paginated-response.dto';
+import { GetProblemsPageableQuery } from '../application/queries/get-problems-pageable-query/get-problems-pageable.query';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -25,6 +31,15 @@ export class ProblemController {
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
   ) {}
+
+  @Get()
+  async getProblemsPaginated(
+    @Query() query: GetProblemsPageableParam,
+  ): Promise<PageResult<GetProblemsPaginatedResponse>> {
+    return this.queryBus.execute(
+      new GetProblemsPageableQuery(query.page, query.size, query.timestamp),
+    );
+  }
 
   @Get('find/slug/:slug')
   async findProblemBySlug(
