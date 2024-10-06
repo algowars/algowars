@@ -15,6 +15,7 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
   async save(data: Problem | Problem[]): Promise<void> {
     const models = Array.isArray(data) ? data : [data];
     const entities = models.map((model) => this.modelToEntity(model));
+
     await writeConnection.manager.getRepository(ProblemEntity).save(entities);
   }
 
@@ -30,7 +31,7 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
     const createdBy = model.getCreatedBy();
     return {
       ...properties,
-      id: properties.id.toString(),
+      id: model.getId().toString(),
       createdBy: {
         id: createdBy.getId().toString(),
         sub: createdBy.getSub().toString(),

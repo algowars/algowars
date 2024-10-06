@@ -9,7 +9,6 @@ import {
 
 export type ProblemEssentialProperties = Readonly<
   Required<{
-    id: Id;
     title: string;
     slug: string;
     question: string;

@@ -1,3 +1,4 @@
+import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
 import { Container } from "@/components/container";
 import { Layout } from "@/components/layouts/layout/layout";
 import { AccountSetupForm } from "@/features/account/account-setup-form/account-setup-form";
@@ -10,6 +11,7 @@ export const AccountSetupRoute = () => {
     useAuth0();
   const { isAuthenticated, isLoading } = useAccountStore();
   const navigate = useNavigate();
+  useAuthPermissions();
 
   if (!isAuthLoading && isAuthAuthenticated) {
     if (!isLoading && isAuthenticated) {

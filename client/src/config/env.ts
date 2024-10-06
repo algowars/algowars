@@ -14,6 +14,7 @@ const createEnv = () => {
     AUTH_CLIENT_ID: z.string(),
     AUTH_CALLBACK_URL: z.string(),
     AUTH_AUDIENCE: z.string(),
+    AUTH_NAMESPACE: z.string(),
   });
 
   const envVars = Object.entries(import.meta.env).reduce<
