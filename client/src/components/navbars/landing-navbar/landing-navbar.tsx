@@ -1,3 +1,4 @@
+import { routerConfig } from "@/app/router";
 import { LoginButton } from "@/components/auth/login-button";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
@@ -16,7 +17,7 @@ export const LandingNavbar = ({ isAuthenticated }: LandingNavbarProps) => {
   return (
     <nav>
       <Container className="flex items-center py-3">
-        <Link to="/">
+        <Link to={routerConfig.root.path}>
           <Logo />
         </Link>
 
@@ -25,11 +26,11 @@ export const LandingNavbar = ({ isAuthenticated }: LandingNavbarProps) => {
             <>
               {roles.includes("Admin") ? (
                 <li>
-                  <Link to={"/app/admin/"}>Admin</Link>
+                  <Link to={routerConfig.admin.path}>Admin</Link>
                 </li>
               ) : null}
               <li>
-                <Link to="/app">Home</Link>
+                <Link to={routerConfig.appRoot.path}>Home</Link>
               </li>
               <li>
                 <LogoutButton>Sign Out</LogoutButton>

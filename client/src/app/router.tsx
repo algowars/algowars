@@ -9,38 +9,60 @@ import { PermissionProtectedRoute } from "@/components/auth/permission-protected
 import { AdminRoute } from "./routes/app/admin";
 import { AdminCreateProblemRoute } from "./routes/app/admin/create-problem";
 
+export const routerConfig = {
+  root: {
+    path: "/",
+  },
+  profile: {
+    path: "/profile/:username",
+    execute: (subPath: string) => `/profile/${encodeURIComponent(subPath)}`,
+  },
+  appRoot: {
+    path: "/app",
+  },
+  accountSetup: {
+    path: "/app/account/setup",
+  },
+  admin: {
+    path: "/app/admin",
+  },
+  adminCreateProblem: {
+    path: "/app/admin/create-problem",
+  },
+};
+
 export const createAppRouter = () => {
   return createBrowserRouter([
     {
-      path: "/",
+      path: routerConfig.root.path,
       lazy: async () => {
         const { LandingRoute } = await import("./routes/landing");
         return { Component: LandingRoute };
       },
     },
     {
-      path: "/profile/:username",
+      path: routerConfig.profile.path,
       element: <ProfileRoute />,
       children: [
         {
-          path: "/profile/:username",
+          path: routerConfig.profile.path,
           element: <ProfileBioRoute />,
         },
       ],
     },
     {
-      path: "/app",
+      path: routerConfig.appRoot.path,
       element: <ProtectedRoute component={AppRoot} />,
       children: [
         {
-          path: "/app",
+          path: routerConfig.appRoot.path,
           lazy: async () => {
             const { DashboardRoute } = await import("./routes/app/dashboard");
             return { Component: DashboardRoute };
           },
         },
         {
-          path: "/app/account/setup",
+          path: routerConfig.accountSetup.path,
           lazy: async () => {
             const { AccountSetupRoute } = await import(
               "./routes/app/account/setup"
@@ -49,7 +71,7 @@ export const createAppRouter = () => {
           },
         },
         {
-          path: "/app/admin",
+          path: routerConfig.admin.path,
           element: (
             <PermissionProtectedRoute
               component={AdminRoute}
@@ -58,7 +80,7 @@ export const createAppRouter = () => {
           ),
         },
         {
-          path: "/app/admin/create-problem",
+          path: routerConfig.adminCreateProblem.path,
           element: (
             <PermissionProtectedRoute
               component={AdminCreateProblemRoute}
