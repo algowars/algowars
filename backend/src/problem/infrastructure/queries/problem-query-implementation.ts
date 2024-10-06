@@ -36,6 +36,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
             const result: GetProblemsPageableResult = {
               id: problemEntity.id,
               slug: problemEntity.slug,
+              title: problemEntity.title,
               createdAt: problemEntity.createdAt,
             };
 
