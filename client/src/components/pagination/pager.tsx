@@ -1,32 +1,56 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { Button } from "../ui/button";
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "../ui/pagination";
 import { usePagination } from "./pagination-context.provider";
 
-export const Pager = () => {
+type PagerProps = {
+  totalPages: number;
+};
+
+export const Pager = ({ totalPages }: PagerProps) => {
   const { page, changePage } = usePagination();
+  const pagesEndDiff = totalPages ?? 0 - page;
+
   return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">{page}</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+    <div>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <Button
+              variant={"ghost"}
+              disabled={page <= 1}
+              onClick={() => changePage(page - 1)}
+            >
+              <ChevronLeftIcon className="h-4 w-4" />
+              <span>Previous</span>
+            </Button>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink>{page}</PaginationLink>
+          </PaginationItem>
+          {pagesEndDiff > 1 ? (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          ) : null}
+          <PaginationItem>
+            <Button
+              variant={"ghost"}
+              disabled={page >= totalPages}
+              onClick={() => changePage(page + 1)}
+            >
+              <span>Next</span>
+              <ChevronRightIcon className="h-4 w-4" />
+            </Button>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
   );
 };

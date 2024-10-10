@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -5,20 +6,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Pager } from "./pager";
 import { usePagination } from "./pagination-context.provider";
 
-export const PaginationFooter = () => {
-  const { sizeOptions } = usePagination();
+type PaginationFooterProps = {
+  className?: string;
+  totalPages: number;
+};
+export const PaginationFooter = ({
+  className,
+  totalPages,
+}: PaginationFooterProps) => {
+  const { sizeOptions, size, changeSize } = usePagination();
+
   return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Size" />
-      </SelectTrigger>
-      <SelectContent>
-        {sizeOptions.map((option) => (
-          <SelectItem value={`${option.size}`}>{option.label}</SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className={cn("flex justify-between items-center", className)}>
+      <Select
+        value={`${size}`}
+        onValueChange={(value) => changeSize(Number(value))}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Size" />
+        </SelectTrigger>
+        <SelectContent>
+          {sizeOptions.map((option) => (
+            <SelectItem key={option.size} value={`${option.size}`}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Pager totalPages={totalPages} />
+    </div>
   );
 };

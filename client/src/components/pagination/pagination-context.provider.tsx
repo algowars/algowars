@@ -1,8 +1,16 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type PaginationProviderProps = {
   children?: ReactNode;
   sizeOptions?: { size: number; label: string }[];
+  paginationMutation: (page: number, size: number, timestamp: Date) => void;
+  defaultSize?: number;
 };
 
 type PaginationProviderState = {
@@ -27,6 +35,7 @@ const PaginationContext = createContext<PaginationProviderState>(initialState);
 
 export const PaginationProvider = ({
   children,
+  paginationMutation,
   sizeOptions = [
     {
       size: 20,
@@ -41,10 +50,11 @@ export const PaginationProvider = ({
       label: "100 / page",
     },
   ],
+  defaultSize,
   ...props
 }: PaginationProviderProps) => {
   const [page, setPage] = useState<number>(1);
-  const [size, setSize] = useState<number>(25);
+  const [size, setSize] = useState<number>(defaultSize ?? 25);
   const [timestamp] = useState<Date>(new Date());
 
   const changePage = (newPage: number) => {
@@ -54,6 +64,10 @@ export const PaginationProvider = ({
   const changeSize = (newSize: number) => {
     setSize(newSize);
   };
+
+  useEffect(() => {
+    paginationMutation(page, size, timestamp);
+  }, [page, size]);
 
   const value = {
     page,
