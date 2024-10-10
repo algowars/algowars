@@ -29,6 +29,10 @@ export const routerConfig = {
   adminCreateProblem: {
     path: "/app/admin/create-problem",
   },
+  problem: {
+    path: "/problem/:slug",
+    execute: (subPath: string) => `/problem/${encodeURIComponent(subPath)}`,
+  },
 };
 
 export const createAppRouter = () => {
