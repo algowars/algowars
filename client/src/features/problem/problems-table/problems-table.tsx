@@ -7,7 +7,6 @@ import { PaginationResult } from "@/features/common/pagination/pagination-result
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,

@@ -54,7 +54,7 @@ export const PaginationProvider = ({
   ...props
 }: PaginationProviderProps) => {
   const [page, setPage] = useState<number>(1);
-  const [size, setSize] = useState<number>(defaultSize ?? 25);
+  const [size, setSize] = useState<number>(defaultSize ?? 20);
   const [timestamp] = useState<Date>(new Date());
 
   const changePage = (newPage: number) => {
