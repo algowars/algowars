@@ -8,9 +8,14 @@ import { vscodeDark, vscodeLight } from "./code-editor-themes/vscode";
 type CodeEditorProps = {
   code: string;
   changeCode: (newCode: string) => void;
+  className?: string;
 };
 
-export const CodeEditor = ({ code, changeCode }: CodeEditorProps) => {
+export const CodeEditor = ({
+  code,
+  changeCode,
+  className,
+}: CodeEditorProps) => {
   const { getThemeWithSystem } = useTheme();
 
   const onChange = useCallback(changeCode, []);
@@ -27,6 +32,8 @@ export const CodeEditor = ({ code, changeCode }: CodeEditorProps) => {
       onChange={onChange}
       theme={theme}
       extensions={[langs.tsx()]}
+      height="100%"
+      className={className}
     />
   );
 };
