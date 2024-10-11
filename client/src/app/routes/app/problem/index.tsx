@@ -40,7 +40,6 @@ export const ProblemRoute = () => {
             className="flex flex-col h-[1px]"
           >
             <ProblemEditor problem={problem} />
-            <div className="p-5">FOoter</div>
           </LayoutFull>
         </ErrorBoundary>
       </Suspense>
