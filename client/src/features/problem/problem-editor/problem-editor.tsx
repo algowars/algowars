@@ -8,15 +8,39 @@ import {
 import { Problem } from "../models/problem.model";
 import { ProblemEditorCreatedBy } from "./problem-editor-createdby/problem-editor-createdby";
 import { ProblemEditorFooter } from "./problem-editor-footer/problem-editor-footer";
+import { useCreateSubmission } from "@/features/submission/api/create-submission";
+import { useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 type ProblemEditorProps = {
   problem: Problem | undefined;
 };
 
 export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [code, setCode] = useState<string>("");
+  const createSubmissionMutation = useCreateSubmission();
+
   if (!problem) {
     return null;
   }
+
+  const changeCode = (newCode: string) => {
+    setCode(newCode);
+  };
+
+  const createSubmission = async () => {
+    const accessToken = await getAccessTokenSilently();
+
+    createSubmissionMutation.mutate({
+      data: {
+        sourceCode: code,
+        problemSlug: problem.slug,
+        languageId: 93,
+      },
+      accessToken,
+    });
+  };
 
   return (
     <>
@@ -28,8 +52,8 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                 <h4 className="text-xl font-semibold">Code</h4>
               </div>
               <CodeEditor
-                code={"test"}
-                changeCode={(newCode: string) => console.log(newCode)}
+                code={code}
+                changeCode={changeCode}
                 className="h-full"
               />
             </Card>
@@ -60,7 +84,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
-      <ProblemEditorFooter />
+      <ProblemEditorFooter onSubmit={createSubmission} />
     </>
   );
 };

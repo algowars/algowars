@@ -6,6 +6,7 @@ import { InjectionToken } from '../../injection-token';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { LanguageRepository } from 'src/problem/domain/language-repository';
+import { CodeExecutionContextFactory } from 'lib/code-execution/code-execution-context-factory';
 
 @CommandHandler(CreateSubmissionCommand)
 export class CreateSubmissionHandler
@@ -17,6 +18,8 @@ export class CreateSubmissionHandler
   private readonly languageRepository: LanguageRepository;
   @Inject()
   private readonly submissionFactory: SubmissionFactory;
+  @Inject()
+  private readonly contextFactory: CodeExecutionContextFactory;
 
   async execute(command: CreateSubmissionCommand): Promise<Id> {
     const language = await this.languageRepository.findById(
@@ -26,6 +29,14 @@ export class CreateSubmissionHandler
     if (!language) {
       throw new NotFoundException('Language not found');
     }
+
+    const executionContext = this.contextFactory.createContext(language);
+
+    const builtRequest = executionContext.build(command.request.sourceCode);
+
+    const executionResult = await executionContext.execute(builtRequest);
+
+    console.log('RESULT: ', executionResult);
 
     const submissionId = await this.submissionRepository.newId();
 

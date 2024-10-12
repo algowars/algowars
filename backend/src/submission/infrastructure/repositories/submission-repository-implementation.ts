@@ -6,7 +6,6 @@ import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionEntity } from '../entities/submission.entity';
 import { Account } from 'src/account/domain/account';
-import { LanguageFactory } from 'src/problem/domain/language-factory';
 import { Language } from 'src/problem/domain/language';
 import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
@@ -15,7 +14,6 @@ export class SubmissionRepositoryImplementation
   implements SubmissionRepository
 {
   @Inject() private readonly submissionFactory: SubmissionFactory;
-  @Inject() private readonly languageFactory: LanguageFactory;
 
   async newId(): Promise<Id> {
     return new IdImplementation(new EntityId().toString());
