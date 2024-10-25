@@ -9,29 +9,18 @@ import { Language, LanguageImplementation } from 'src/problem/domain/language';
 import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
 import { UserSubImplementation } from 'src/account/domain/user-sub';
 import { UsernameImplementation } from 'src/account/domain/username';
-import { SubmissionResultImplementation } from './submission-result';
 
 type CreateSubmissionOptions = Readonly<{
   id: Id;
   language: Language;
   createdBy: Account;
   sourceCode: string;
-  results: {
-    token: string;
-  }[];
 }>;
 
 export class SubmissionFactory {
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
 
   create(options: CreateSubmissionOptions): Submission {
-    const results = options.results.map(
-      (result) =>
-        new SubmissionResultImplementation({
-          token: result.token,
-        }),
-    );
-
     return this.eventPublisher.mergeObjectContext(
       new SubmissionImplementation({
         ...options,
@@ -39,7 +28,6 @@ export class SubmissionFactory {
         updatedAt: new Date(),
         deletedAt: null,
         version: 0,
-        submissionResults: results,
       }),
     );
   }
@@ -52,10 +40,6 @@ export class SubmissionFactory {
       createdBy: this.mapAccountEntityToDomain(submissionEntity.createdBy),
       language: this.mapLanguageEntityToDomain(submissionEntity.language),
       sourceCode: submissionEntity.sourceCode,
-      results:
-        submissionEntity?.results.map((result) => ({
-          token: result.token,
-        })) ?? [],
     });
   }
 

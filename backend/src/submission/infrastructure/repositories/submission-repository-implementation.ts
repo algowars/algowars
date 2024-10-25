@@ -6,16 +6,16 @@ import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionEntity } from '../entities/submission.entity';
 import { Account } from 'src/account/domain/account';
+import { LanguageFactory } from 'src/problem/domain/language-factory';
 import { Language } from 'src/problem/domain/language';
 import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
-import { SubmissionResult } from 'src/submission/domain/submission-result';
-import { SubmissionResultEntity } from '../entities/submission-result.entity';
 
 export class SubmissionRepositoryImplementation
   implements SubmissionRepository
 {
   @Inject() private readonly submissionFactory: SubmissionFactory;
+  @Inject() private readonly languageFactory: LanguageFactory;
 
   async newId(): Promise<Id> {
     return new IdImplementation(new EntityId().toString());
@@ -41,17 +41,12 @@ export class SubmissionRepositoryImplementation
     return {
       id: model.getId().toString(),
       sourceCode: model.getSourceCode(),
-      createdBy: model?.getCreatedBy()
-        ? this.accountToEntity(model.getCreatedBy())
-        : null,
+      createdBy: this.accountToEntity(model.getCreatedBy()),
       createdAt: model.getCreatedAt(),
       updatedAt: model.getUpdatedAt(),
       deletedAt: model.getDeletedAt(),
       version: model.getVersion(),
       language: this.languageToEntity(model.getLanguage()),
-      results: model?.getSubmissionResults()
-        ? this.resultsToEntity(model.getSubmissionResults())
-        : [],
     };
   }
 
@@ -77,16 +72,6 @@ export class SubmissionRepositoryImplementation
       deletedAt: account.getDeletedAt(),
       version: account.getVersion(),
     };
-  }
-
-  private resultsToEntity(
-    results: SubmissionResult[],
-  ): SubmissionResultEntity[] {
-    return results.map((result) => {
-      return new SubmissionResultEntity({
-        token: result.getToken(),
-      });
-    });
   }
 
   private entityToModel(entity: SubmissionEntity): Submission {
