@@ -7,7 +7,6 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "postbuild": "cp ./lib/code-execution/languages/additional_files/package.json && cd dist/lib/code-execution/languages/additional_files && npm install",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "generate": "plop",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
