@@ -21,7 +21,6 @@ import { CreateProblemCommand } from '../application/commands/create-problem/cre
 import { Request } from 'express';
 import { GetProblemsPageableParam } from './dto/request/get-problems-pageable-param.dto';
 import { PageResult } from 'src/common/pagination/page-result';
-import { Problem } from '../domain/problem';
 import { GetProblemsPaginatedResponse } from './dto/response/get-problems-paginated-response.dto';
 import { GetProblemsPageableQuery } from '../application/queries/get-problems-pageable-query/get-problems-pageable.query';
 
