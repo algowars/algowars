@@ -7,10 +7,8 @@ import { ProblemQueryHandlers } from './application/queries';
 import { ProblemFactory } from './domain/problem-factory';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ProblemCommandHandlers } from './application/commands';
-import { LanguageRepositoryImplementation } from './infrastructure/repositories/language-repository-implementation';
-import { LanguageFactory } from './domain/language-factory';
 
-export const infrastructure: Provider[] = [
+const infrastructure: Provider[] = [
   {
     provide: InjectionToken.PROBLEM_QUERY,
     useClass: ProblemQueryImplementation,
@@ -19,15 +17,11 @@ export const infrastructure: Provider[] = [
     provide: InjectionToken.PROBLEM_REPOSITORY,
     useClass: ProblemRepositoryImplementation,
   },
-  {
-    provide: InjectionToken.LANGUAGE_REPOSITORY,
-    useClass: LanguageRepositoryImplementation,
-  },
 ];
 
-export const application = [...ProblemQueryHandlers, ...ProblemCommandHandlers];
+const application = [...ProblemQueryHandlers, ...ProblemCommandHandlers];
 
-export const domain = [ProblemFactory, LanguageFactory];
+const domain = [ProblemFactory];
 
 @Module({
   imports: [CqrsModule],

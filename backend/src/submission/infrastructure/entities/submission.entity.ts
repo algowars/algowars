@@ -24,9 +24,8 @@ export class SubmissionEntity extends BaseEntity {
   @OneToMany(
     () => SubmissionResultEntity,
     (submissionResult) => submissionResult.submission,
-    { cascade: true },
   )
-  readonly results: SubmissionResultEntity[];
+  readonly results?: SubmissionResultEntity[];
 
   @ManyToOne(() => AccountEntity, (account) => account.submissions)
   readonly createdBy: AccountEntity;

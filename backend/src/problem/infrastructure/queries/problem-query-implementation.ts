@@ -3,7 +3,10 @@ import { readConnection } from 'lib/database.module';
 import { ProblemQuery } from 'src/problem/application/queries/problem-query';
 import { ProblemEntity } from '../entities/problem.entity';
 import { FindProblemBySlugResult } from 'src/problem/application/queries/find-problem-by-slug-query/find-problem-by-slug-result';
-import { PageResult } from 'src/common/pagination/page-result';
+import {
+  PageResult,
+  PageResultImplementation,
+} from 'src/common/pagination/page-result';
 import { GetProblemsPageableResult } from 'src/problem/application/queries/get-problems-pageable-query/get-problems-pageable-result';
 import { Pagination } from 'src/common/pagination/pagination';
 

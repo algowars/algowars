@@ -1,10 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-type ProblemEditorFooterProps = {
-  onSubmit: () => void;
-};
-
-export const ProblemEditorFooter = ({ onSubmit }: ProblemEditorFooterProps) => {
+export const ProblemEditorFooter = () => {
   return (
     <footer className="flex items-center px-5 pb-5">
       <ul className="flex items-center gap-5 ml-auto">
@@ -14,9 +10,7 @@ export const ProblemEditorFooter = ({ onSubmit }: ProblemEditorFooterProps) => {
           </Button>
         </li>
         <li>
-          <Button className="w-28" onClick={() => onSubmit()}>
-            Submit
-          </Button>
+          <Button className="w-28">Submit</Button>
         </li>
       </ul>
     </footer>
