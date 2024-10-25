@@ -16,6 +16,10 @@ import { AdminCreateProblemFormTextEditor } from "../admin-create-problem-form-t
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "sonner";
+import { AdminCreateProblemLanguageSelect } from "../admin-create-problem-language-select/admin-create-problem-language-select";
+import { AdminCreateProblemFormInitialCode } from "../admin-create-problem-form-initial-code/admin-create-problem-form-initial-code";
+import { AdminCreateProblemFormSolution } from "../admin-create-problem-form-solution/admin-create-problem-form-solution";
+import { AdminCreateProblemFormTest } from "../admin-create-problem-form-test/admin-create-problem-form-test";
 
 type AdminCreateProblemFormProps = {
   className?: string;
@@ -33,6 +37,22 @@ export const AdminCreateProblemForm = ({
       title: "",
       slug: "",
       question: "",
+      language: 93,
+      initialCode: `function testFunction(){
+      
+}`,
+      test: `import { test } from "uvu";
+import * as assert from "uvu/assert";
+
+test("testFunction is defined", () => {
+  assert.ok(testFunction, 'Function should be defined');
+});
+
+test.run();
+`,
+      solution: `function testFunction(){
+  // solution goes here
+}`,
     },
   });
 
@@ -93,6 +113,64 @@ export const AdminCreateProblemForm = ({
                 <FormControl>
                   <AdminCreateProblemFormTextEditor field={field} />
                 </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="language"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Language</FormLabel>
+                <AdminCreateProblemLanguageSelect field={field} />
+                <FormDescription>
+                  JavaScript is the only allowed language at this time.
+                </FormDescription>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="initialCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Initial Code</FormLabel>
+                <AdminCreateProblemFormInitialCode field={field} />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="solution"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Solution</FormLabel>
+                <FormDescription>
+                  Solution must match function declaration in the initial code.
+                </FormDescription>
+                <AdminCreateProblemFormSolution field={field} />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="test"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Test File</FormLabel>
+                <FormDescription>
+                  Test must call the function declaration that matches in
+                  initial code/solution. To see more on how uvu works:{" "}
+                  <a
+                    href="https://github.com/lukeed/uvu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline underline-offset-3"
+                  >
+                    uvu documentation
+                  </a>
+                </FormDescription>
+                <AdminCreateProblemFormTest field={field} />
               </FormItem>
             )}
           />
