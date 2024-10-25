@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AccountModule } from './account/account.module';
 import { RequestStorageMiddleware } from 'lib/request-storage-middleware';
 import { SubmissionModule } from './submission/submission.module';
+import { CodeExecutionModule } from 'lib/code-execution/code-execution.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SubmissionModule } from './submission/submission.module';
       isGlobal: true,
     }),
     DatabaseModule,
+    CodeExecutionModule,
     ProblemModule,
     ThrottlerModule.forRoot(),
     AccountModule,
