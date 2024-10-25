@@ -18,7 +18,27 @@ type ProblemEditorProps = {
 
 export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const { getAccessTokenSilently } = useAuth0();
-  const [code, setCode] = useState<string>("");
+  const [code, setCode] = useState<string>(`// Import uvu and assert
+const { test } = require('uvu');
+const assert = require('uvu/assert');
+
+// Basic test
+test('addition', () => {
+  const sum = 1 + 1;
+  assert.is(sum, 2, '1 + 1 should equal 2');
+});
+
+// Another test
+test('object equality', () => {
+  const obj1 = { name: 'test' };
+  const obj2 = { name: 'test' };
+  
+  assert.equal(obj1, obj2, 'Objects should be deeply equal');
+});
+
+// Run the tests
+test.run();
+`);
   const createSubmissionMutation = useCreateSubmission();
 
   if (!problem) {

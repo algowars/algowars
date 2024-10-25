@@ -32,19 +32,19 @@ export class CreateSubmissionHandler
 
     const executionContext = this.contextFactory.createContext(language);
 
-    const builtRequest = executionContext.build(command.request.sourceCode);
+    const builtRequest = await executionContext.build(
+      command.request.sourceCode,
+    );
 
     const executionResult = await executionContext.execute(builtRequest);
 
-    console.log('RESULT: ', executionResult);
-
     const submissionId = await this.submissionRepository.newId();
-
     const submission = this.submissionFactory.create({
       id: submissionId,
       language,
       sourceCode: command.request.sourceCode,
       createdBy: command.account,
+      results: [executionResult],
     });
 
     await this.submissionRepository.save(submission);

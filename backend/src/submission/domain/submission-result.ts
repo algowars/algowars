@@ -1,12 +1,22 @@
 import { Status } from './status';
 
-export type SubmissionResultProperties = Readonly<{
-  token: string;
-}>;
+export type SubmissionResultProperties = Readonly<{ token: string }>;
 
-export interface SubmissionResult {}
+export interface SubmissionResult {
+  getToken(): string;
+  getSourceCode(): string;
+  getLanguageId(): number;
+  getStdin(): string;
+  getStdout(): string;
+  getTime(): string;
+  getMemory(): number;
+  getStderr(): string | null;
+  getExpectedOutput(): string;
+  getMessage(): string;
+  getStatus(): Status;
+}
 
-export class SumissionResultImplementation implements SubmissionResult {
+export class SubmissionResultImplementation implements SubmissionResult {
   private readonly token: string;
   private readonly sourceCode: string;
   private readonly language_id: number;
@@ -18,4 +28,52 @@ export class SumissionResultImplementation implements SubmissionResult {
   private readonly expectedOutput: string;
   private readonly message: string;
   private readonly status: Status;
+
+  constructor(properties: SubmissionResultProperties) {
+    Object.assign(this, properties);
+  }
+
+  getToken(): string {
+    return this.token;
+  }
+
+  getSourceCode(): string {
+    return this.sourceCode;
+  }
+
+  getExpectedOutput(): string {
+    return this.expectedOutput;
+  }
+
+  getLanguageId(): number {
+    return this.language_id;
+  }
+
+  getMemory(): number {
+    return this.memory;
+  }
+
+  getMessage(): string {
+    return this.message;
+  }
+
+  getStatus(): Status {
+    return this.status;
+  }
+
+  getStderr(): string | null {
+    return this.stderr;
+  }
+
+  getStdin(): string {
+    return this.stdin;
+  }
+
+  getStdout(): string {
+    return this.stdout;
+  }
+
+  getTime(): string {
+    return this.time;
+  }
 }

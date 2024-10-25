@@ -5,7 +5,7 @@ export interface CodeExecutionRequest {
   source_code: string; // The source code to be executed
   language_id: number; // ID representing the programming language
   stdin?: string; // Optional input to be provided during execution
-  additional_files?: string; // Base64-encoded zipped file containing additional files (e.g., node_modules)
+  additional_files?: string | Buffer; // Base64-encoded zipped file containing additional files (e.g., node_modules)
   compile_command?: string; // Optional compilation command (if needed)
   execute_command?: string; // Optional execution command (if needed)
 }

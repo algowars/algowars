@@ -1,6 +1,5 @@
 import { Account } from 'src/account/domain/account';
 import { ExampleTestcase } from './example-testcase';
-import { Id } from 'src/common/domain/id';
 import {
   BaseDomainAggregateRoot,
   BaseDomainAggregateRootImplementation,

@@ -5,6 +5,7 @@ import {
   CodeExecutionService,
 } from './code-execution-service';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Injectable } from '@nestjs/common';
 
 export interface Judge0ExecutionConfig {
   apiKey: string;
@@ -13,6 +14,7 @@ export interface Judge0ExecutionConfig {
   headers: Record<string, string>;
 }
 
+@Injectable()
 export class Judge0CodeExecutionService extends CodeExecutionService {
   constructor(
     httpService: HttpService,
