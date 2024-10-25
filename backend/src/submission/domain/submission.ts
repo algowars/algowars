@@ -19,6 +19,7 @@ export type SubmissionEssentialProperties = Readonly<
 export type SubmissionOptionalProperties = Readonly<
   Partial<{
     id: Id;
+    submissionResults: SubmissionResult[];
   }>
 >;
 

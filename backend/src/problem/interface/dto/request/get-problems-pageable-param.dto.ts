@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsNumber } from 'class-validator';
+import { IsDate, IsNumber } from 'class-validator';
 
 export class GetProblemsPageableParam {
   @IsNumber()
