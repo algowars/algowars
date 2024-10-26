@@ -1,33 +1,34 @@
-import { CodeExecutionContext } from '../code-execution-context';
+import { Injectable } from '@nestjs/common';
+import { CodeExecutionContext } from 'lib/code-execution/code-execution-context';
 import {
   CodeExecutionRequest,
+  CodeExecutionRequestImplementation,
   CodeExecutionResponse,
-  CodeExecutionService,
-} from '../code-execution-service';
-import { Injectable } from '@nestjs/common';
+} from 'lib/code-execution/code-execution-service';
+import { Judge0CodeExecutionService } from 'lib/code-execution/judge0/judge0-code-execution-service';
 import { S3Service } from 'lib/s3.module';
 
 @Injectable()
-export class JavaScriptCodeExecutionContext extends CodeExecutionContext {
+export class JavaScriptJudge0CodeExecutionContext
+  implements CodeExecutionContext
+{
   constructor(
-    codeExecutionService: CodeExecutionService,
+    private readonly judge0CodeExecutionService: Judge0CodeExecutionService,
     private readonly s3Service: S3Service,
-  ) {
-    super(codeExecutionService);
-  }
+  ) {}
 
   async build(
     sourceCode: string,
     input: string = '',
   ): Promise<CodeExecutionRequest> {
-    return {
+    return new CodeExecutionRequestImplementation({
       source_code: Buffer.from(sourceCode).toString('base64'),
       language_id: 93,
       stdin: input,
       additional_files: await this.getAdditionalFiles(
         'uvu-testing-library.txt',
       ),
-    };
+    });
   }
 
   private async getAdditionalFiles(s3Key: string): Promise<string> {
@@ -43,6 +44,6 @@ export class JavaScriptCodeExecutionContext extends CodeExecutionContext {
   }
 
   async execute(request: CodeExecutionRequest): Promise<CodeExecutionResponse> {
-    return await this.codeExecutionService.run(request);
+    return await this.judge0CodeExecutionService.run(request);
   }
 }

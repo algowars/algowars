@@ -1,54 +1,58 @@
 import { HttpModule, HttpService } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
-import { CodeExecutionContextFactory } from './code-execution-context-factory';
-import { JavaScriptCodeExecutionContext } from './languages/javascript-code-execution-context';
-import { Judge0CodeExecutionService } from './judge0-code-execution-service';
-import { CqrsModule } from '@nestjs/cqrs';
-import { SubmissionModule } from 'src/submission/submission.module';
-import { ProblemModule } from 'src/problem/problem.module';
-import { LanguageFactory } from 'src/problem/domain/language-factory';
+import { Global, Module, Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { S3Module, S3Service } from 'lib/s3.module';
+import { S3Service } from 'lib/s3.module';
+import { JavaScriptJudge0CodeExecutionContext } from './languages/javascript/judge0/javascript-judge0-code-execution-context';
+import { CodeExecutionContextFactory } from './code-execution-context-factory';
+import {
+  Judge0CodeExecutionService,
+  Judge0ExecutionConfig,
+} from './judge0/judge0-code-execution-service';
 
+const codeExecutionContextProviders: Provider[] = [
+  {
+    provide: JavaScriptJudge0CodeExecutionContext,
+    useFactory: (
+      judge0CodeExecutionService: Judge0CodeExecutionService,
+      s3Service: S3Service,
+    ) =>
+      new JavaScriptJudge0CodeExecutionContext(
+        judge0CodeExecutionService,
+        s3Service,
+      ),
+    inject: [Judge0CodeExecutionService, S3Service],
+  },
+  CodeExecutionContextFactory,
+];
+
+@Global()
 @Module({
-  imports: [CqrsModule, HttpModule, ProblemModule, SubmissionModule, S3Module],
+  imports: [HttpModule],
   providers: [
-    CodeExecutionContextFactory,
+    ...codeExecutionContextProviders,
+    {
+      provide: Judge0CodeExecutionService,
+      useFactory: (httpService: HttpService, configService: ConfigService) => {
+        const judge0Config: Judge0ExecutionConfig = {
+          apiKey: configService.get<string>('JUDGE0_API_KEY'),
+          url: configService.get<string>('JUDGE0_URL'),
+          host: configService.get<string>('JUDGE0_HOST'),
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': configService.get<string>('JUDGE0_API_KEY'),
+          },
+        };
+        return new Judge0CodeExecutionService(httpService, judge0Config);
+      },
+      inject: [HttpService, ConfigService],
+    },
     {
       provide: S3Service,
       useFactory: (configService: ConfigService) =>
         new S3Service(configService),
       inject: [ConfigService],
     },
-    {
-      provide: Judge0CodeExecutionService,
-      useFactory: (httpService: HttpService, configService: ConfigService) =>
-        new Judge0CodeExecutionService(httpService, {
-          apiKey: configService.get('EVALUATOR_API_KEY'),
-          url: configService.get('EVALUATOR_URL'),
-          host: configService.get('EVALUATOR_HOST'),
-          headers: {
-            'x-rapidapi-key': configService.get('EVALUATOR_API_KEY'),
-            'x-rapidapi-host': configService.get('EVALUATOR_HOST'),
-            'Content-Type': 'application/json',
-          },
-        }),
-      inject: [HttpService, ConfigService],
-    },
-    {
-      provide: JavaScriptCodeExecutionContext,
-      useFactory: (
-        judge0CodeExecutionService: Judge0CodeExecutionService,
-        s3Service: S3Service,
-      ) =>
-        new JavaScriptCodeExecutionContext(
-          judge0CodeExecutionService,
-          s3Service,
-        ),
-      inject: [Judge0CodeExecutionService, S3Service],
-    },
-    LanguageFactory,
   ],
-  exports: [CodeExecutionContextFactory],
+  exports: [...codeExecutionContextProviders, S3Service],
 })
 export class CodeExecutionModule {}

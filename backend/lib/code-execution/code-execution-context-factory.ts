@@ -1,18 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { JavaScriptCodeExecutionContext } from './languages/javascript-code-execution-context';
-import { CodeExecutionContext } from './code-execution-context';
+import { JavaScriptJudge0CodeExecutionContext } from './languages/javascript/judge0/javascript-judge0-code-execution-context';
 import { Language } from 'src/problem/domain/language';
+import { CodeExecutionContext } from './code-execution-context';
 
 @Injectable()
 export class CodeExecutionContextFactory {
   constructor(
-    private readonly jsExecutionContext: JavaScriptCodeExecutionContext,
+    private readonly jsJudge0ExecutionContext: JavaScriptJudge0CodeExecutionContext,
   ) {}
 
   createContext(language: Language): CodeExecutionContext {
     switch (language.getId().toNumber()) {
       case CodeExecutionContextFactory.JAVASCRIPT_LANGUAGE_ID:
-        return this.jsExecutionContext;
+        return this.jsJudge0ExecutionContext;
       default:
         throw new NotFoundException(
           `Execution context for language ${language.getName()} not found`,

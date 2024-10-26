@@ -1,20 +1,5 @@
-import {
-  CodeExecutionRequest,
-  CodeExecutionResponse,
-  CodeExecutionService,
-} from './code-execution-service';
+export interface CodeExecutionContext {
+  build(sourceCode: string, input?: string): Promise<any>;
 
-export abstract class CodeExecutionContext {
-  constructor(protected readonly codeExecutionService: CodeExecutionService) {}
-
-  abstract build(
-    sourceCode: string,
-    input?: string,
-  ): Promise<CodeExecutionRequest>;
-
-  async execute(
-    codeExecutionRequest: CodeExecutionRequest,
-  ): Promise<CodeExecutionResponse> {
-    return this.codeExecutionService.run(codeExecutionRequest);
-  }
+  execute(codeExecutionRequest: {}): Promise<any>;
 }
