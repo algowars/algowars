@@ -40,12 +40,6 @@ const domain = [SubmissionFactory, ...problemDomain];
     ...problemInfrastructure,
     ...application,
     ...domain,
-    {
-      provide: S3Service,
-      useFactory: (configService: ConfigService) =>
-        new S3Service(configService),
-      inject: [ConfigService],
-    },
   ],
 })
 export class SubmissionModule {}

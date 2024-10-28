@@ -22,12 +22,10 @@ export class JavaScriptJudge0CodeExecutionContext
     input: string = '',
   ): Promise<CodeExecutionRequest> {
     return new CodeExecutionRequestImplementation({
-      source_code: Buffer.from(sourceCode).toString('base64'),
-      language_id: 93,
+      sourceCode: Buffer.from(sourceCode).toString('base64'),
+      languageId: 93,
       stdin: input,
-      additional_files: await this.getAdditionalFiles(
-        'uvu-testing-library.txt',
-      ),
+      additionalFiles: await this.getAdditionalFiles('uvu-testing-library.txt'),
     });
   }
 
@@ -44,6 +42,11 @@ export class JavaScriptJudge0CodeExecutionContext
   }
 
   async execute(request: CodeExecutionRequest): Promise<CodeExecutionResponse> {
-    return await this.judge0CodeExecutionService.run(request);
+    try {
+      console.log(request);
+      return await this.judge0CodeExecutionService.run(request);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

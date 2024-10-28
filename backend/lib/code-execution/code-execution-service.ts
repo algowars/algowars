@@ -18,10 +18,10 @@ export class CodeExecutionRequestImplementation
   private readonly executeCommand?: string;
 
   constructor(properties: {
-    source_code: string;
-    language_id: number;
+    sourceCode: string;
+    languageId: number;
     stdin: string;
-    additional_files: string;
+    additionalFiles: string;
   }) {
     Object.assign(this, properties);
   }

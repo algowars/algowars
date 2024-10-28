@@ -23,12 +23,14 @@ export class Judge0CodeExecutionService {
   private execute<T>(
     requestConfig: AxiosRequestConfig,
   ): Promise<AxiosResponse<T>> {
+    console.log('REQUEST CONFIG: ', requestConfig);
     return this.httpService.axiosRef<T>(requestConfig);
   }
 
   public async run(
     request: CodeExecutionRequest,
   ): Promise<CodeExecutionResponse> {
+    console.log(this.judge0Config.url);
     const config: AxiosRequestConfig = {
       url: `${this.judge0Config.url}/submissions?base64_encoded=true&wait=false`,
       method: 'POST',

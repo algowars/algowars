@@ -35,7 +35,6 @@ export class CreateSubmissionHandler
     const builtRequest = await executionContext.build(
       command.request.sourceCode,
     );
-
     const executionResult = await executionContext.execute(builtRequest);
 
     const submissionId = await this.submissionRepository.newId();
