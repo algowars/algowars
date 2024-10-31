@@ -33,5 +33,6 @@ export const domain = [ProblemFactory, LanguageFactory];
   imports: [CqrsModule],
   controllers: [ProblemController],
   providers: [Logger, ...infrastructure, ...application, ...domain],
+  exports: [...infrastructure, ...domain],
 })
 export class ProblemModule {}

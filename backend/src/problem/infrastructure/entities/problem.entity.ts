@@ -1,6 +1,13 @@
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 import { BaseEntity } from 'src/common/entities/base-entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ProblemSetupEntity } from './problem-setup.entity';
 
 @Entity('problem')
 export class ProblemEntity extends BaseEntity {
@@ -18,4 +25,7 @@ export class ProblemEntity extends BaseEntity {
 
   @ManyToOne(() => AccountEntity, (account) => account.problems)
   readonly createdBy?: AccountEntity;
+
+  @OneToMany(() => ProblemSetupEntity, (setup) => setup.problem)
+  readonly setups: Promise<ProblemSetupEntity[]>;
 }

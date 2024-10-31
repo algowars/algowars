@@ -41,6 +41,7 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
         deletedAt: createdBy.getDeletedAt(),
         version: createdBy.getVersion(),
       },
+      setups: Promise.resolve([]),
     };
   }
 
