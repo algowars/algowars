@@ -23,7 +23,7 @@ export class AdditionalTestFileEntity extends BaseEntity {
   })
   readonly language: Language;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   readonly initialTestFile: string;
 
   @OneToMany(() => TestEntity, (test) => test.additionalTestFile)

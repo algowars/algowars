@@ -20,6 +20,8 @@ import { AdminCreateProblemLanguageSelect } from "../admin-create-problem-langua
 import { AdminCreateProblemFormInitialCode } from "../admin-create-problem-form-initial-code/admin-create-problem-form-initial-code";
 import { AdminCreateProblemFormSolution } from "../admin-create-problem-form-solution/admin-create-problem-form-solution";
 import { AdminCreateProblemFormTest } from "../admin-create-problem-form-test/admin-create-problem-form-test";
+import { useGetInitialProblemCreation } from "../api/get-initial-problem-creation";
+import { useEffect, useState } from "react";
 
 type AdminCreateProblemFormProps = {
   className?: string;
@@ -30,6 +32,26 @@ export const AdminCreateProblemForm = ({
 }: AdminCreateProblemFormProps) => {
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAccessToken = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        setAccessToken(token);
+      } catch (error) {
+        console.error("Error fetching access token:", error);
+      }
+    };
+    fetchAccessToken();
+  }, [getAccessTokenSilently]);
+
+  const defaultLanguageId = 93;
+
+  const initialProblemCreationQuery = useGetInitialProblemCreation({
+    languageId: defaultLanguageId,
+    accessToken,
+  });
 
   const form = useForm<z.infer<typeof createProblemSchema>>({
     resolver: zodResolver(createProblemSchema),
@@ -37,24 +59,26 @@ export const AdminCreateProblemForm = ({
       title: "",
       slug: "",
       question: "",
-      language: 93,
-      initialCode: `function testFunction(){
-      
-}`,
-      test: `import { test } from "uvu";
-import * as assert from "uvu/assert";
-
-test("testFunction is defined", () => {
-  assert.ok(testFunction, 'Function should be defined');
-});
-
-test.run();
-`,
-      solution: `function testFunction(){
-  // solution goes here
-}`,
+      language: defaultLanguageId,
+      initialCode: "",
+      test: "",
+      solution: "",
     },
   });
+
+  const { reset } = form;
+
+  useEffect(() => {
+    if (initialProblemCreationQuery.data) {
+      const { initialCode, testFile, initialSolution } =
+        initialProblemCreationQuery.data;
+      reset({
+        initialCode: initialCode || "",
+        test: testFile || "",
+        solution: initialSolution || "",
+      });
+    }
+  }, [initialProblemCreationQuery.data, reset]);
 
   const createProblemMutation = useCreateProblem({
     mutationConfig: {

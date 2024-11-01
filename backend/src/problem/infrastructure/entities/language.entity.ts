@@ -25,6 +25,12 @@ export class LanguageEntity extends BaseEntity {
   @Column({ default: true })
   readonly isAvailable?: boolean;
 
+  @Column({ nullable: false })
+  readonly initialCode: string;
+
+  @Column({ nullable: false })
+  readonly initialSolution: string;
+
   @OneToMany(() => SubmissionEntity, (submission) => submission.language)
   readonly submissions?: Promise<SubmissionEntity[]>;
 

@@ -36,7 +36,7 @@ export const getInitialProblemCreationQueryOptions = (
 
 type UseGetInitialProblemCreationOptions = {
   languageId: number;
-  accessToken: string;
+  accessToken?: string | null;
   queryConfig?: QueryConfig<typeof getInitialProblemCreation>;
 };
 
@@ -45,7 +45,8 @@ export const useGetInitialProblemCreation = ({
   accessToken,
 }: UseGetInitialProblemCreationOptions) => {
   return useQuery({
-    ...getInitialProblemCreationQueryOptions(languageId, accessToken),
+    ...getInitialProblemCreationQueryOptions(languageId, accessToken ?? ""),
     ...queryConfig,
+    enabled: !!accessToken,
   });
 };

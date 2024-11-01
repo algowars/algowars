@@ -14,6 +14,8 @@ export type LanguageOptionalProperties = Readonly<
   Partial<{
     isArchived: boolean;
     isAvailable: boolean;
+    initialCode: string;
+    initialSolution: string;
   }>
 >;
 
@@ -22,9 +24,11 @@ export type LanguageProperties = LanguageEssentialProperties &
   BaseDomainProperties;
 
 export interface Language extends BaseDomain {
-  getName: () => string;
-  getIsArchived: () => boolean;
-  getIsAvailable: () => boolean;
+  getName(): string;
+  getIsArchived(): boolean;
+  getIsAvailable(): boolean;
+  getInitialCode(): string;
+  getInitialSolution(): string;
 }
 
 export class LanguageImplementation
@@ -34,6 +38,8 @@ export class LanguageImplementation
   private readonly name: string;
   private readonly isArchived: boolean;
   private readonly isAvailable: boolean;
+  private readonly initialCode: string;
+  private readonly initialSolution: string;
 
   constructor(properties: LanguageProperties) {
     super(properties);
@@ -50,5 +56,13 @@ export class LanguageImplementation
 
   getIsAvailable(): boolean {
     return this.isAvailable;
+  }
+
+  getInitialCode(): string {
+    return this.initialCode;
+  }
+
+  getInitialSolution(): string {
+    return this.initialSolution;
   }
 }

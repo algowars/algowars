@@ -9,6 +9,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ProblemCommandHandlers } from './application/commands';
 import { LanguageRepositoryImplementation } from './infrastructure/repositories/language-repository-implementation';
 import { LanguageFactory } from './domain/language-factory';
+import { LanguageQueryImplementation } from './infrastructure/queries/language-query-implementation';
 
 export const infrastructure: Provider[] = [
   {
@@ -22,6 +23,10 @@ export const infrastructure: Provider[] = [
   {
     provide: InjectionToken.LANGUAGE_REPOSITORY,
     useClass: LanguageRepositoryImplementation,
+  },
+  {
+    provide: InjectionToken.LANGUAGE_QUERY,
+    useClass: LanguageQueryImplementation,
   },
 ];
 

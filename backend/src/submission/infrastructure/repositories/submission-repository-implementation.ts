@@ -66,6 +66,8 @@ export class SubmissionRepositoryImplementation
       isArchived: language.getIsArchived(),
       additionalTestFiles: Promise.resolve([]),
       setups: Promise.resolve([]),
+      initialCode: language.getInitialCode(),
+      initialSolution: language.getInitialSolution(),
     };
   }
 
