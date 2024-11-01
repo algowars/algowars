@@ -64,7 +64,6 @@ export class ProblemController {
   @Post()
   async createProblem(
     @Body() body: CreateProblemRequest,
-
     @Req() request: Request,
   ): Promise<string> {
     const account = request?.account;

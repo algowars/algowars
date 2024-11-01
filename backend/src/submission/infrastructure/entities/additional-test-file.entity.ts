@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   Column,
   Entity,
   ManyToOne,
@@ -9,6 +8,7 @@ import {
 import { TestEntity } from './test.entity';
 import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
 import { Language } from 'src/problem/domain/language';
+import { BaseEntity } from 'src/common/entities/base-entity';
 
 @Entity('additional-test-files')
 export class AdditionalTestFileEntity extends BaseEntity {

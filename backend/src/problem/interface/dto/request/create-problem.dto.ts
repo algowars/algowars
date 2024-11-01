@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
 
 export class CreateProblemRequest {
   @IsString()
@@ -15,4 +15,7 @@ export class CreateProblemRequest {
   @IsNotEmpty()
   @MaxLength(750)
   readonly question: string;
+
+  @IsNumber()
+  readonly languageId: number;
 }
