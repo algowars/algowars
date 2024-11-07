@@ -3,6 +3,7 @@ import {
   BaseDomainImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
+import { AdditionalTestFile } from 'src/problem/domain/additional-test-file';
 
 export type LanguageEssentialProperties = Readonly<
   Required<{
@@ -16,6 +17,7 @@ export type LanguageOptionalProperties = Readonly<
     isAvailable: boolean;
     initialCode: string;
     initialSolution: string;
+    additionalTestFiles?: AdditionalTestFile[];
   }>
 >;
 
@@ -29,6 +31,7 @@ export interface Language extends BaseDomain {
   getIsAvailable(): boolean;
   getInitialCode(): string;
   getInitialSolution(): string;
+  getAdditionalTestFiles(): AdditionalTestFile[];
 }
 
 export class LanguageImplementation
@@ -40,6 +43,7 @@ export class LanguageImplementation
   private readonly isAvailable: boolean;
   private readonly initialCode: string;
   private readonly initialSolution: string;
+  private readonly additionalTestFiles: AdditionalTestFile[];
 
   constructor(properties: LanguageProperties) {
     super(properties);
@@ -64,5 +68,9 @@ export class LanguageImplementation
 
   getInitialSolution(): string {
     return this.initialSolution;
+  }
+
+  getAdditionalTestFiles(): AdditionalTestFile[] {
+    return this.additionalTestFiles;
   }
 }

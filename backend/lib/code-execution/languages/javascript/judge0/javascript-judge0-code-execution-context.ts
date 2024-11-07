@@ -7,6 +7,7 @@ import {
 } from 'lib/code-execution/code-execution-service';
 import { Judge0CodeExecutionService } from 'lib/code-execution/judge0/judge0-code-execution-service';
 import { S3Service } from 'lib/s3.module';
+import { AdditionalTestFile } from 'src/problem/domain/additional-test-file';
 
 @Injectable()
 export class JavaScriptJudge0CodeExecutionContext
@@ -19,14 +20,23 @@ export class JavaScriptJudge0CodeExecutionContext
 
   async build(
     sourceCode: string,
+    additionalTestFile: AdditionalTestFile | null,
     input: string = '',
   ): Promise<CodeExecutionRequest> {
-    return new CodeExecutionRequestImplementation({
+    const request = {
       sourceCode: Buffer.from(sourceCode).toString('base64'),
       languageId: 93,
       stdin: input,
-      additionalFiles: await this.getAdditionalFiles('uvu-testing-library.txt'),
-    });
+      additionalFiles: '',
+    };
+
+    if (additionalTestFile) {
+      request['additionalFiles'] = await this.getAdditionalFiles(
+        additionalTestFile.getFileName(),
+      );
+    }
+
+    return new CodeExecutionRequestImplementation(request);
   }
 
   private async getAdditionalFiles(s3Key: string): Promise<string> {

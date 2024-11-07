@@ -16,7 +16,7 @@ export class AdditionalTestFileEntity extends BaseEntity {
   readonly id: string;
 
   @Column({ nullable: false })
-  readonly filaName: string;
+  readonly fileName: string;
 
   @ManyToOne(() => LanguageEntity, (language) => language.additionalTestFiles, {
     nullable: false,

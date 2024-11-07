@@ -3,10 +3,11 @@ import { CreateSubmissionCommand } from './create-submission.command';
 import { Id } from 'src/common/domain/id';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectionToken } from '../../injection-token';
+import { InjectionToken as ProblemInjectionToken } from '../../../../problem/application/injection-token';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
-import { LanguageRepository } from 'src/problem/domain/language-repository';
 import { CodeExecutionContextFactory } from 'lib/code-execution/code-execution-context-factory';
+import { ProblemSetupRepository } from 'src/problem/domain/problem-setup-repository';
 
 @CommandHandler(CreateSubmissionCommand)
 export class CreateSubmissionHandler
@@ -14,33 +15,37 @@ export class CreateSubmissionHandler
 {
   @Inject(InjectionToken.SUBMISSION_REPOSITORY)
   private readonly submissionRepository: SubmissionRepository;
-  @Inject(InjectionToken.LANGUAGE_REPOSITORY)
-  private readonly languageRepository: LanguageRepository;
   @Inject()
   private readonly submissionFactory: SubmissionFactory;
+  @Inject(ProblemInjectionToken.PROBLEM_SETUP_REPOSITORY)
+  private readonly problemSetupRepository: ProblemSetupRepository;
   @Inject()
   private readonly contextFactory: CodeExecutionContextFactory;
 
   async execute(command: CreateSubmissionCommand): Promise<Id> {
-    const language = await this.languageRepository.findById(
+    const setup = await this.problemSetupRepository.findByProblemSlug(
+      command.request.problemSlug,
       command.request.languageId,
     );
 
-    if (!language) {
+    if (!setup || !setup.getLanguage()) {
       throw new NotFoundException('Language not found');
     }
 
-    const executionContext = this.contextFactory.createContext(language);
+    const executionContext = this.contextFactory.createContext(
+      setup.getLanguage(),
+    );
 
     const builtRequest = await executionContext.build(
       command.request.sourceCode,
+      setup.getTests()[0].getAdditionalTestFile(),
     );
     const executionResult = await executionContext.execute(builtRequest);
 
     const submissionId = await this.submissionRepository.newId();
     const submission = this.submissionFactory.create({
       id: submissionId,
-      language,
+      language: setup.getLanguage(),
       sourceCode: command.request.sourceCode,
       createdBy: command.account,
       results: [executionResult],

@@ -10,6 +10,11 @@ import { ProblemCommandHandlers } from './application/commands';
 import { LanguageRepositoryImplementation } from './infrastructure/repositories/language-repository-implementation';
 import { LanguageFactory } from './domain/language-factory';
 import { LanguageQueryImplementation } from './infrastructure/queries/language-query-implementation';
+import { ProblemSetupFactory } from './domain/problem-setup-factory';
+import { TestFactory } from 'src/problem/domain/test-factory';
+import { AdditionalTestFileFactory } from 'src/problem/domain/additional-test-file-factory';
+import { AdditionalTestFileRepositoryImplementation } from './infrastructure/repositories/additional-test-file-repository-implementation';
+import { ProblemSetupRepositoryImplementation } from './infrastructure/repositories/problem-setup-repository-implementation';
 
 export const infrastructure: Provider[] = [
   {
@@ -28,11 +33,25 @@ export const infrastructure: Provider[] = [
     provide: InjectionToken.LANGUAGE_QUERY,
     useClass: LanguageQueryImplementation,
   },
+  {
+    provide: InjectionToken.ADDITIONAL_TEST_FILE_REPOSITORY,
+    useClass: AdditionalTestFileRepositoryImplementation,
+  },
+  {
+    provide: InjectionToken.PROBLEM_SETUP_REPOSITORY,
+    useClass: ProblemSetupRepositoryImplementation,
+  },
 ];
 
 export const application = [...ProblemQueryHandlers, ...ProblemCommandHandlers];
 
-export const domain = [ProblemFactory, LanguageFactory];
+export const domain = [
+  ProblemFactory,
+  LanguageFactory,
+  ProblemSetupFactory,
+  TestFactory,
+  AdditionalTestFileFactory,
+];
 
 @Module({
   imports: [CqrsModule],

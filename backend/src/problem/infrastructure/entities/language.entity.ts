@@ -1,8 +1,8 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
-import { AdditionalTestFileEntity } from 'src/submission/infrastructure/entities/additional-test-file.entity';
 import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ProblemSetupEntity } from './problem-setup.entity';
+import { AdditionalTestFileEntity } from './additional-test-file.entity';
 
 @Entity('language')
 export class LanguageEntity extends BaseEntity {
