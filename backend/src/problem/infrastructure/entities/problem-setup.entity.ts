@@ -18,7 +18,7 @@ export class ProblemSetupEntity extends BaseEntity {
   @ManyToOne(() => LanguageEntity, (language) => language.setups)
   readonly language: LanguageEntity;
 
-  @OneToMany(() => TestEntity, (test) => test.setups)
+  @OneToMany(() => TestEntity, (test) => test.setups, { cascade: true })
   readonly tests: TestEntity[];
 
   @Column({ nullable: false, type: 'text' })

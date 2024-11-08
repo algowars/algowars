@@ -26,6 +26,8 @@ export class ProblemEntity extends BaseEntity {
   @ManyToOne(() => AccountEntity, (account) => account.problems)
   readonly createdBy?: AccountEntity;
 
-  @OneToMany(() => ProblemSetupEntity, (setup) => setup.problem)
+  @OneToMany(() => ProblemSetupEntity, (setup) => setup.problem, {
+    cascade: true,
+  })
   readonly setups: Promise<ProblemSetupEntity[]>;
 }

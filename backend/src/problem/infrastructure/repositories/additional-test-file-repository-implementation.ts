@@ -16,7 +16,7 @@ export class AdditionalTestFileRepositoryImplementation
     return new IdImplementation(new EntityId().toString());
   }
 
-  async findById(id: number): Promise<AdditionalTestFile | null> {
+  async findById(id: string): Promise<AdditionalTestFile | null> {
     const entity = await readConnection
       .getRepository(AdditionalTestFileEntity)
       .findOneBy({ id: id.toString() });

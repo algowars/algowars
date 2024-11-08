@@ -6,17 +6,19 @@ import { ProblemSetupEntity } from '../infrastructure/entities/problem-setup.ent
 import { Inject } from '@nestjs/common';
 import { ProblemFactory } from './problem-factory';
 import { LanguageFactory } from './language-factory';
-import { AdditionalTestFileFactory } from 'src/problem/domain/additional-test-file-factory';
-import { TestFactory } from 'src/problem/domain/test-factory';
+import {
+  CreateTestOptions,
+  TestFactory,
+} from 'src/problem/domain/test-factory';
 import { Test } from 'src/problem/domain/test';
 
-type CreateProblemSetupOptions = Readonly<{
+export type CreateProblemSetupOptions = Readonly<{
   problemId: string;
-  problem: Problem;
+  problem?: Problem;
   languageId: number;
-  language: Language;
+  language?: Language;
   initialCode: string;
-  tests: Test[];
+  tests?: CreateTestOptions[];
 }>;
 
 export class ProblemSetupFactory {
@@ -33,13 +35,18 @@ export class ProblemSetupFactory {
       updatedAt: new Date(),
       deletedAt: null,
       version: 0,
+      tests: options.tests?.map((test) => this.testFactory.create(test)),
     });
   }
 
-  createFromEntity(problemSetupEntity: ProblemSetupEntity): ProblemSetup {
+  async createFromEntity(
+    problemSetupEntity: ProblemSetupEntity,
+  ): Promise<ProblemSetup> {
     return this.create({
       ...problemSetupEntity,
-      problem: this.problemFactory.createFromEntity(problemSetupEntity.problem),
+      problem: await this.problemFactory.createFromEntity(
+        problemSetupEntity.problem,
+      ),
       language: this.languageFactory.createFromEntity(
         problemSetupEntity.language,
       ),

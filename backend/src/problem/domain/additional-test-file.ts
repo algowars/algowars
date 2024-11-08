@@ -10,6 +10,7 @@ export type AdditionalTestFileEssentialProperties = Readonly<
     fileName: string;
     language: Language;
     initialTestFile: string;
+    name: string;
   }>
 >;
 
@@ -20,6 +21,7 @@ export interface AdditionalTestFile extends BaseDomain {
   getFileName(): string;
   getLanguage(): Language;
   getInitialTestFile(): string;
+  getName(): string;
 }
 
 export class AdditionalTestFileImplementation
@@ -29,6 +31,7 @@ export class AdditionalTestFileImplementation
   private readonly fileName: string;
   private readonly language: Language;
   private readonly initialTestFile: string;
+  private readonly name: string;
 
   constructor(properties: AdditionalTestFileProperties) {
     super(properties);
@@ -45,5 +48,9 @@ export class AdditionalTestFileImplementation
 
   getInitialTestFile(): string {
     return this.initialTestFile;
+  }
+
+  getName(): string {
+    return this.name;
   }
 }

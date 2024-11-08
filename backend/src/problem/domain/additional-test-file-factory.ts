@@ -7,11 +7,12 @@ import {
   AdditionalTestFileImplementation,
 } from './additional-test-file';
 
-type CreateAdditionalTestFileOptions = Readonly<{
+export type CreateAdditionalTestFileOptions = Readonly<{
   id: Id;
   fileName: string;
   language: Language;
   initialTestFile: string;
+  name: string;
 }>;
 
 export class AdditionalTestFileFactory {
@@ -35,6 +36,7 @@ export class AdditionalTestFileFactory {
       fileName: additionalTestFileEntity.fileName,
       language: additionalTestFileEntity.language,
       initialTestFile: additionalTestFileEntity.initialTestFile,
+      name: additionalTestFileEntity.name,
     });
   }
 }

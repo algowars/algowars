@@ -14,6 +14,7 @@ export class GetProblemSetupHandler
 
   async execute(query: GetProblemSetupQuery): Promise<GetProblemSetupResult> {
     const data = await this.languageQuery.findSetupById(query.languageId);
+    console.log('DATA: ', data);
     if (!data) {
       throw new NotFoundException(LanguageErrorMessage.LANGUAGE_NOT_FOUND);
     }

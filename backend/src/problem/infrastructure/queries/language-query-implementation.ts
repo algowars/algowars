@@ -19,7 +19,8 @@ export class LanguageQueryImplementation implements LanguageQuery {
         'language.initialCode',
         'language.initialSolution',
         'additionalTestFiles.id',
-        'additionalTestFiles.filaName',
+        'additionalTestFiles.fileName',
+        'additionalTestFiles.name',
         'additionalTestFiles.initialTestFile',
       ])
       .where('language.id = :id', { id })
@@ -35,6 +36,7 @@ export class LanguageQueryImplementation implements LanguageQuery {
   private async mapLanguageToProblemSetupResult(
     language: LanguageEntity,
   ): Promise<GetProblemSetupResult> {
+    console.log('LANGUAGE: ', language);
     const additionalTestFiles = language.additionalTestFiles
       ? await language.additionalTestFiles
       : [];
@@ -48,6 +50,10 @@ export class LanguageQueryImplementation implements LanguageQuery {
       initialCode: language.initialCode,
       initialSolution: language.initialSolution,
       testFile: testFile || '',
+      additionalTestFiles: additionalTestFiles.map(({ id, name }) => ({
+        id,
+        name,
+      })),
     };
   }
 }

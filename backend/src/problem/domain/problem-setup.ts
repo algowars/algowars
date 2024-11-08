@@ -1,8 +1,3 @@
-import {
-  BaseDomain,
-  BaseDomainImplementation,
-  BaseDomainProperties,
-} from 'src/common/entities/base-domain';
 import { Language } from './language';
 import { Problem } from './problem';
 import { Id } from 'src/common/domain/id';
@@ -12,8 +7,7 @@ export type ProblemSetupEssentialProperties = Readonly<
   Required<{
     problemId: Id;
     languageId: Id;
-    problem: Problem;
-    language: Language;
+
     initialCode: string;
     createdAt: Date;
     updatedAt: Date;
@@ -21,6 +15,10 @@ export type ProblemSetupEssentialProperties = Readonly<
     version: number;
     tests: Test[];
   }>
+>;
+
+export type ProblemSetupOptionalProperties = Readonly<
+  Partial<{ language: Language; problem: Problem }>
 >;
 
 export type ProblemSetupProperties = ProblemSetupEssentialProperties;

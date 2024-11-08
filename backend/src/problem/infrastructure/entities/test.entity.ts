@@ -14,8 +14,11 @@ export class TestEntity extends BaseEntity {
   @ManyToOne(
     () => AdditionalTestFileEntity,
     (additionalTestFile) => additionalTestFile.tests,
+    {
+      nullable: true,
+    },
   )
-  readonly additionalTestFile: AdditionalTestFileEntity;
+  readonly additionalTestFile: AdditionalTestFileEntity | null;
 
   @ManyToOne(() => ProblemSetupEntity, (setup) => setup.language)
   readonly setups: Promise<ProblemSetupEntity[]>;

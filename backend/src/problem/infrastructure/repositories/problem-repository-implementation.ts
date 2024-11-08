@@ -45,7 +45,7 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
     };
   }
 
-  private entityToModel(entity: ProblemEntity): Problem {
+  private async entityToModel(entity: ProblemEntity): Promise<Problem> {
     return this.problemFactory.createFromEntity(entity);
   }
 }

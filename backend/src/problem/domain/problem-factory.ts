@@ -7,6 +7,14 @@ import { Account, AccountImplementation } from 'src/account/domain/account';
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 import { UserSubImplementation } from 'src/account/domain/user-sub';
 import { UsernameImplementation } from 'src/account/domain/username';
+import { Language } from './language';
+import { AdditionalTestFile } from './additional-test-file';
+import { LanguageFactory } from './language-factory';
+import { AdditionalTestFileFactory } from './additional-test-file-factory';
+import {
+  CreateProblemSetupOptions,
+  ProblemSetupFactory,
+} from './problem-setup-factory';
 
 type CreateProblemOptions = Readonly<{
   id: string;
@@ -14,10 +22,17 @@ type CreateProblemOptions = Readonly<{
   slug: string;
   question: string;
   createdBy: Account;
+  setups?: CreateProblemSetupOptions;
 }>;
 
 export class ProblemFactory {
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
+  @Inject()
+  private readonly languageFactory: LanguageFactory;
+  @Inject()
+  private readonly problemSetupFactory: ProblemSetupFactory;
+  @Inject()
+  private readonly additionalTestFileFactory: AdditionalTestFileFactory;
 
   create(options: CreateProblemOptions): Problem {
     return this.eventPublisher.mergeObjectContext(
@@ -32,10 +47,20 @@ export class ProblemFactory {
     );
   }
 
-  createFromEntity(problemEntity: ProblemEntity): Problem {
+  async createFromEntity(
+    problemEntity: ProblemEntity,
+    relations: string[] = [],
+  ): Promise<Problem> {
+    let setups = null;
+    if (relations.includes('setups')) {
+      setups = (await problemEntity.setups).map((setup) =>
+        this.problemSetupFactory.createFromEntity(setup),
+      );
+    }
     return this.create({
       ...problemEntity,
       createdBy: this.mapAccountEntityToDomain(problemEntity.createdBy),
+      setups,
     });
   }
 

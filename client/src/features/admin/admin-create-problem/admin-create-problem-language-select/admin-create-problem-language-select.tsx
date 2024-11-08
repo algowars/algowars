@@ -11,7 +11,7 @@ import { ControllerRenderProps } from "react-hook-form";
 import { createProblemRenderProps } from "../api/create-problem";
 
 type AdminCreateProblemLanguageSelectProps = {
-  field: ControllerRenderProps<createProblemRenderProps, "language">;
+  field: ControllerRenderProps<createProblemRenderProps, "languageId">;
 };
 
 export const AdminCreateProblemLanguageSelect = ({

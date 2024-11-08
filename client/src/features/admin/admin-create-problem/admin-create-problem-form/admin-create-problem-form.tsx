@@ -59,7 +59,7 @@ export const AdminCreateProblemForm = ({
       title: "",
       slug: "",
       question: "",
-      language: defaultLanguageId,
+      languageId: defaultLanguageId,
       initialCode: "",
       test: "",
       solution: "",
@@ -91,7 +91,12 @@ export const AdminCreateProblemForm = ({
 
   const onSubmit = async (values: z.infer<typeof createProblemSchema>) => {
     const accessToken = await getAccessTokenSilently();
-    createProblemMutation.mutate({ data: values, accessToken });
+    createProblemMutation.mutate({
+      data: values,
+      accessToken,
+      additionalTestFileId:
+        initialProblemCreationQuery.data?.additionalTestFiles[0].id ?? "",
+    });
   };
 
   return (
@@ -142,7 +147,7 @@ export const AdminCreateProblemForm = ({
           />
           <FormField
             control={form.control}
-            name="language"
+            name="languageId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Language</FormLabel>

@@ -10,11 +10,18 @@ export type TestEssentialProperties = Readonly<
   Required<{
     id: Id;
     code: string;
+  }>
+>;
+
+export type TestOptionalProperties = Readonly<
+  Partial<{
     additionalTestFile: AdditionalTestFile;
   }>
 >;
 
-export type TestProperties = TestEssentialProperties & BaseDomainProperties;
+export type TestProperties = TestEssentialProperties &
+  TestOptionalProperties &
+  BaseDomainProperties;
 
 export interface Test extends BaseDomain {
   getCode(): string;

@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateProblemRequest {
   @IsString()
@@ -18,4 +24,17 @@ export class CreateProblemRequest {
 
   @IsNumber()
   readonly languageId: number;
+
+  @IsString()
+  readonly initialCode: string;
+
+  @IsString()
+  readonly test: string;
+
+  @IsString()
+  readonly solution: string;
+
+  @IsString()
+  @IsOptional()
+  readonly additionalTestFileId: string;
 }

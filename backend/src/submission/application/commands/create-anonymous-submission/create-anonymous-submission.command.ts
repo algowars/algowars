@@ -6,6 +6,6 @@ export class CreateAnonymousSubmissionCommand implements ICommand {
     readonly account: Account,
     readonly code: string,
     readonly languageId: number,
-    readonly additionalFilesId: number,
+    readonly additionalFilesId: string,
   ) {}
 }
