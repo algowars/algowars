@@ -9,7 +9,7 @@ import { Problem } from "../models/problem.model";
 import { ProblemEditorCreatedBy } from "./problem-editor-createdby/problem-editor-createdby";
 import { ProblemEditorFooter } from "./problem-editor-footer/problem-editor-footer";
 import { useCreateSubmission } from "@/features/submission/api/create-submission";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 type ProblemEditorProps = {
@@ -41,6 +41,12 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
       accessToken,
     });
   };
+
+  useEffect(() => {
+    if (problem.initialCode) {
+      setCode(problem.initialCode);
+    }
+  }, [problem.initialCode]);
 
   return (
     <>

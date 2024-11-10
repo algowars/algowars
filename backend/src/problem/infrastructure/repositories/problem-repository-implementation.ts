@@ -47,9 +47,9 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
     problem.title = model.getTitle();
     problem.question = model.getQuestion();
     problem.slug = model.getSlug();
-    problem.setups = model
-      .getSetups()
-      .map((setup) => this.setupModelToEntity(setup));
+    problem.setups = Promise.resolve(
+      model.getSetups().map((setup) => this.setupModelToEntity(setup)),
+    );
     problem.status = this.statusModelToEntity(model.getStatus());
 
     return problem;

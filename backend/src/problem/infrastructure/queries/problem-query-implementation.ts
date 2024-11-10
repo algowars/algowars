@@ -26,21 +26,25 @@ export class ProblemQueryImplementation implements ProblemQuery {
 
     const result = await query.getOne();
 
+    let setup = null;
+
     if (languageId) {
       const setups = await result.setups;
 
-      return {
-        ...result,
-        initialCode: setups.find((setup) => setup.languageId === languageId)
-          .initialCode,
-      };
+      setup = setups.find((setup) => setup.languageId === languageId);
     }
 
     console.log('RESULT: ', result);
 
     return {
-      ...result,
-      initialCode: '',
+      id: result.id,
+      title: result.title,
+      slug: result.slug,
+      question: result.question,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+      deletedAt: result.deletedAt,
+      initialCode: setup ? setup.initialCode : '',
     };
   }
 
