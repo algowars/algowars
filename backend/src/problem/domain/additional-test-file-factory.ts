@@ -23,6 +23,7 @@ export class AdditionalTestFileFactory {
       updatedAt: new Date(),
       deletedAt: null,
       version: 0,
+      id: options.id,
     });
   }
 

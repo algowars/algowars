@@ -7,20 +7,20 @@ import { TestEntity } from './test.entity';
 @Entity('problem-setup')
 export class ProblemSetupEntity extends BaseEntity {
   @PrimaryColumn('uuid')
-  readonly problemId: string;
+  problemId: string;
 
   @PrimaryColumn()
-  readonly languageId: number;
+  languageId: number;
 
   @ManyToOne(() => ProblemEntity, (problem) => problem.setups)
-  readonly problem: ProblemEntity;
+  problem?: ProblemEntity;
 
   @ManyToOne(() => LanguageEntity, (language) => language.setups)
-  readonly language: LanguageEntity;
+  language?: LanguageEntity;
 
   @OneToMany(() => TestEntity, (test) => test.setups, { cascade: true })
-  readonly tests: TestEntity[];
+  tests: TestEntity[];
 
   @Column({ nullable: false, type: 'text' })
-  readonly initialCode: string;
+  initialCode: string;
 }

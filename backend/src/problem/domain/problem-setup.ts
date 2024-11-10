@@ -21,7 +21,8 @@ export type ProblemSetupOptionalProperties = Readonly<
   Partial<{ language: Language; problem: Problem }>
 >;
 
-export type ProblemSetupProperties = ProblemSetupEssentialProperties;
+export type ProblemSetupProperties = ProblemSetupEssentialProperties &
+  ProblemSetupOptionalProperties;
 
 export interface ProblemSetup {
   getProblemId(): Id;
@@ -50,6 +51,7 @@ export class ProblemSetupImplementation implements ProblemSetup {
 
   constructor(properties: ProblemSetupProperties) {
     Object.assign(this, properties);
+    this.tests = properties.tests;
   }
 
   getProblemId(): Id {

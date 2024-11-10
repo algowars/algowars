@@ -64,8 +64,8 @@ export class SubmissionRepositoryImplementation
       deletedAt: language.getDeletedAt(),
       version: language.getVersion(),
       isArchived: language.getIsArchived(),
-      additionalTestFiles: Promise.resolve([]),
-      setups: Promise.resolve([]),
+      additionalTestFiles: [],
+      setups: [],
       initialCode: language.getInitialCode(),
       initialSolution: language.getInitialSolution(),
     };

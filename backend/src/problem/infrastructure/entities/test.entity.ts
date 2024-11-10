@@ -6,20 +6,23 @@ import { BaseEntity } from 'src/common/entities/base-entity';
 @Entity('test')
 export class TestEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  readonly id: string;
+  id: string;
 
   @Column({ nullable: false })
-  readonly code: string;
+  code: string;
 
   @ManyToOne(
     () => AdditionalTestFileEntity,
     (additionalTestFile) => additionalTestFile.tests,
     {
       nullable: true,
+      eager: true,
     },
   )
-  readonly additionalTestFile: AdditionalTestFileEntity | null;
+  additionalTestFile: AdditionalTestFileEntity | null;
 
-  @ManyToOne(() => ProblemSetupEntity, (setup) => setup.language)
-  readonly setups: Promise<ProblemSetupEntity[]>;
+  @ManyToOne(() => ProblemSetupEntity, (setup) => setup.language, {
+    lazy: true,
+  })
+  setups: ProblemSetupEntity[];
 }

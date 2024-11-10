@@ -38,6 +38,7 @@ export class TestImplementation
   constructor(properties: TestProperties) {
     super(properties);
     Object.assign(this, properties);
+    this.additionalTestFile = properties.additionalTestFile;
   }
 
   getCode(): string {

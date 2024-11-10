@@ -6,10 +6,9 @@ import { InjectionToken } from '../../injection-token';
 import { ProblemRepository } from 'src/problem/domain/problem-repository';
 import { ProblemFactory } from 'src/problem/domain/problem-factory';
 import { Transactional } from 'lib/transactional';
-import { ProblemSetupFactory } from 'src/problem/domain/problem-setup-factory';
-import { TestFactory } from 'src/problem/domain/test-factory';
 import { LanguageRepository } from 'src/problem/domain/language-repository';
 import { AdditionalTestFileRepository } from 'src/problem/domain/additional-test-file-repository';
+import { ProblemStatusRepository } from 'src/problem/domain/problem-status-repository';
 
 @CommandHandler(CreateProblemCommand)
 export class CreateProblemHandler
@@ -23,6 +22,8 @@ export class CreateProblemHandler
   private readonly languageRepository: LanguageRepository;
   @Inject(InjectionToken.ADDITIONAL_TEST_FILE_REPOSITORY)
   private readonly additionalTestFileRepository: AdditionalTestFileRepository;
+  @Inject(InjectionToken.PROBLEM_STATUS_REPOSITORY)
+  private readonly problemStatusRepository: ProblemStatusRepository;
 
   @Transactional()
   async execute(command: CreateProblemCommand): Promise<Id> {
@@ -41,6 +42,14 @@ export class CreateProblemHandler
     if (!additionalTestFile) {
       throw new NotFoundException('Additional Test File not found');
     }
+
+    const problemStatus = await this.problemStatusRepository.findById(
+      CreateProblemHandler.PROBLEM_STATUS_PENDING_ID,
+    );
+
+    if (!problemStatus) {
+      throw new NotFoundException('Problem Status not found');
+    }
     // create submission and run submission
 
     // save problem as pending
@@ -55,20 +64,28 @@ export class CreateProblemHandler
       setups: [
         {
           problemId,
-          languageId: command.createProblemRequest.languageId,
+          languageId: language.getId().toNumber(),
           initialCode: command.createProblemRequest.initialCode,
-          language: language ? language : undefined,
           tests: [
             {
               id: await this.problemRepository.newId(),
               code: command.createProblemRequest.test,
-              additionalTestFile: additionalTestFile
-                ? additionalTestFile
-                : undefined,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+              version: 0,
+              additionalTestFile: {
+                id: additionalTestFile.getId(),
+                fileName: additionalTestFile.getFileName(),
+                language: additionalTestFile.getLanguage(),
+                initialTestFile: additionalTestFile.getInitialTestFile(),
+                name: additionalTestFile.getName(),
+              },
             },
           ],
         },
       ],
+      status: problemStatus,
     });
 
     await this.problemRepository.save(problem);
@@ -77,4 +94,6 @@ export class CreateProblemHandler
 
     return problem.getId();
   }
+
+  private static PROBLEM_STATUS_PENDING_ID = 1;
 }

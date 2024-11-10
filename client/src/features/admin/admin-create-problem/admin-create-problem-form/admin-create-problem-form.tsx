@@ -84,7 +84,7 @@ export const AdminCreateProblemForm = ({
     mutationConfig: {
       onSuccess: () => {
         toast("Problem Created");
-        navigate("/");
+        navigate("/app/admin");
       },
     },
   });

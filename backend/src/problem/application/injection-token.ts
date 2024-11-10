@@ -6,4 +6,5 @@ export enum InjectionToken {
   LANGUAGE_REPOSITORY = 'LanguageRepository',
   PROBLEM_SETUP_REPOSITORY = 'ProblemSetupRepository',
   ADDITIONAL_TEST_FILE_REPOSITORY = 'AdditionalTestFileRepository',
+  PROBLEM_STATUS_REPOSITORY = 'ProblemStatusRepository',
 }

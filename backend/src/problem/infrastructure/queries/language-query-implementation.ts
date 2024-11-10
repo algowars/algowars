@@ -33,12 +33,11 @@ export class LanguageQueryImplementation implements LanguageQuery {
     return this.mapLanguageToProblemSetupResult(languageEntity);
   }
 
-  private async mapLanguageToProblemSetupResult(
+  private mapLanguageToProblemSetupResult(
     language: LanguageEntity,
-  ): Promise<GetProblemSetupResult> {
-    console.log('LANGUAGE: ', language);
+  ): GetProblemSetupResult {
     const additionalTestFiles = language.additionalTestFiles
-      ? await language.additionalTestFiles
+      ? language.additionalTestFiles
       : [];
 
     const testFile =
@@ -50,10 +49,12 @@ export class LanguageQueryImplementation implements LanguageQuery {
       initialCode: language.initialCode,
       initialSolution: language.initialSolution,
       testFile: testFile || '',
-      additionalTestFiles: additionalTestFiles.map(({ id, name }) => ({
-        id,
-        name,
-      })),
+      additionalTestFiles: Array.isArray(additionalTestFiles)
+        ? additionalTestFiles.map(({ id, name }) => ({
+            id,
+            name,
+          }))
+        : [],
     };
   }
 }

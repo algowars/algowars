@@ -15,6 +15,10 @@ import { TestFactory } from 'src/problem/domain/test-factory';
 import { AdditionalTestFileFactory } from 'src/problem/domain/additional-test-file-factory';
 import { AdditionalTestFileRepositoryImplementation } from './infrastructure/repositories/additional-test-file-repository-implementation';
 import { ProblemSetupRepositoryImplementation } from './infrastructure/repositories/problem-setup-repository-implementation';
+import { AccountModule } from 'src/account/account.module';
+import { domain as accountDomain } from 'src/account/account.module';
+import { ProblemStatusRepositoryImplementation } from './infrastructure/repositories/problem-status-repository-implementation';
+import { ProblemStatusFactory } from './domain/problem-status-factory';
 
 export const infrastructure: Provider[] = [
   {
@@ -41,6 +45,10 @@ export const infrastructure: Provider[] = [
     provide: InjectionToken.PROBLEM_SETUP_REPOSITORY,
     useClass: ProblemSetupRepositoryImplementation,
   },
+  {
+    provide: InjectionToken.PROBLEM_STATUS_REPOSITORY,
+    useClass: ProblemStatusRepositoryImplementation,
+  },
 ];
 
 export const application = [...ProblemQueryHandlers, ...ProblemCommandHandlers];
@@ -49,12 +57,14 @@ export const domain = [
   ProblemFactory,
   LanguageFactory,
   ProblemSetupFactory,
+  ProblemStatusFactory,
   TestFactory,
   AdditionalTestFileFactory,
+  ...accountDomain,
 ];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, AccountModule],
   controllers: [ProblemController],
   providers: [Logger, ...infrastructure, ...application, ...domain],
   exports: [...infrastructure, ...domain],

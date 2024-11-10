@@ -8,6 +8,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProblemSetupEntity } from './problem-setup.entity';
+import { ProblemStatusEntity } from './problem-status.entity';
+import { ProblemStatus } from 'src/problem/domain/problem-status';
 
 @Entity('problem')
 export class ProblemEntity extends BaseEntity {
@@ -15,19 +17,25 @@ export class ProblemEntity extends BaseEntity {
   id: string;
 
   @Column({ nullable: false, length: 100 })
-  readonly title: string;
+  title: string;
 
   @Column({ nullable: false, type: 'text' })
-  readonly question: string;
+  question: string;
 
   @Column({ nullable: false, length: 110, unique: true })
-  readonly slug: string;
+  slug: string;
 
   @ManyToOne(() => AccountEntity, (account) => account.problems)
-  readonly createdBy?: AccountEntity;
+  createdBy?: AccountEntity;
 
   @OneToMany(() => ProblemSetupEntity, (setup) => setup.problem, {
     cascade: true,
+    lazy: true,
   })
-  readonly setups: Promise<ProblemSetupEntity[]>;
+  setups: ProblemSetupEntity[];
+
+  @ManyToOne(() => ProblemStatusEntity, (status) => status.problems, {
+    eager: true,
+  })
+  status: ProblemStatusEntity;
 }

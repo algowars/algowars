@@ -24,15 +24,19 @@ export class LanguageEntity extends BaseEntity {
   @Column({ nullable: false })
   readonly initialSolution: string;
 
-  @OneToMany(() => SubmissionEntity, (submission) => submission.language)
-  readonly submissions?: Promise<SubmissionEntity[]>;
+  @OneToMany(() => SubmissionEntity, (submission) => submission.language, {
+    lazy: true,
+  })
+  readonly submissions?: SubmissionEntity[];
 
-  @OneToMany(() => ProblemSetupEntity, (setup) => setup.language)
-  readonly setups: Promise<ProblemSetupEntity[]>;
+  @OneToMany(() => ProblemSetupEntity, (setup) => setup.language, {
+    lazy: true,
+  })
+  readonly setups: ProblemSetupEntity[];
 
   @OneToMany(
     () => AdditionalTestFileEntity,
     (additionalTestFiles) => additionalTestFiles.language,
   )
-  readonly additionalTestFiles: Promise<AdditionalTestFileEntity[]>;
+  readonly additionalTestFiles: AdditionalTestFileEntity[];
 }

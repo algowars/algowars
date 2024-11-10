@@ -3,36 +3,39 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { Problem, ProblemImplementation, ProblemProperties } from './problem';
 import { ProblemEntity } from '../infrastructure/entities/problem.entity';
 import { IdImplementation } from 'src/common/domain/id';
-import { Account, AccountImplementation } from 'src/account/domain/account';
-import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
-import { UserSubImplementation } from 'src/account/domain/user-sub';
-import { UsernameImplementation } from 'src/account/domain/username';
-import { Language } from './language';
-import { AdditionalTestFile } from './additional-test-file';
-import { LanguageFactory } from './language-factory';
-import { AdditionalTestFileFactory } from './additional-test-file-factory';
+import { Account } from 'src/account/domain/account';
 import {
   CreateProblemSetupOptions,
   ProblemSetupFactory,
 } from './problem-setup-factory';
+import {
+  AccountFactory,
+  CreateAccountOptions,
+} from 'src/account/domain/account-factory';
+import {
+  CreateProblemStatusOptions,
+  ProblemStatusFactory,
+} from './problem-status-factory';
+import { ProblemStatus } from './problem-status';
 
-type CreateProblemOptions = Readonly<{
+export type CreateProblemOptions = Readonly<{
   id: string;
   title: string;
   slug: string;
   question: string;
-  createdBy: Account;
-  setups?: CreateProblemSetupOptions;
+  createdBy: CreateAccountOptions | Account;
+  setups?: CreateProblemSetupOptions[];
+  status: CreateProblemStatusOptions | ProblemStatus;
 }>;
 
 export class ProblemFactory {
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
   @Inject()
-  private readonly languageFactory: LanguageFactory;
-  @Inject()
   private readonly problemSetupFactory: ProblemSetupFactory;
   @Inject()
-  private readonly additionalTestFileFactory: AdditionalTestFileFactory;
+  private readonly problemStatusFactory: ProblemStatusFactory;
+  @Inject()
+  private readonly accountFactory: AccountFactory;
 
   create(options: CreateProblemOptions): Problem {
     return this.eventPublisher.mergeObjectContext(
@@ -41,46 +44,56 @@ export class ProblemFactory {
         id: new IdImplementation(options.id),
         createdAt: new Date(),
         updatedAt: new Date(),
+        createdBy: this.createAccount(options.createdBy),
         deletedAt: null,
         version: 0,
+        setups: Array.isArray(options.setups)
+          ? options.setups.map((setup) =>
+              this.problemSetupFactory.create(setup),
+            )
+          : null,
+        status: this.createStatus(options.status),
       }),
     );
   }
 
-  async createFromEntity(
-    problemEntity: ProblemEntity,
-    relations: string[] = [],
-  ): Promise<Problem> {
-    let setups = null;
-    if (relations.includes('setups')) {
-      setups = (await problemEntity.setups).map((setup) =>
+  createFromEntity(problemEntity: ProblemEntity): Problem {
+    let setups = [];
+    if (Array.isArray(problemEntity.setups)) {
+      setups = problemEntity.setups.map((setup) =>
         this.problemSetupFactory.createFromEntity(setup),
       );
     }
-    return this.create({
-      ...problemEntity,
-      createdBy: this.mapAccountEntityToDomain(problemEntity.createdBy),
-      setups,
-    });
+
+    return this.eventPublisher.mergeObjectContext(
+      new ProblemImplementation({
+        ...problemEntity,
+        id: new IdImplementation(problemEntity.id),
+        createdBy: this.accountFactory.createFromEntity(
+          problemEntity.createdBy,
+        ),
+        setups,
+        status: this.problemStatusFactory.createFromEntity(
+          problemEntity.status,
+        ),
+      }),
+    );
   }
 
-  reconstituteFromEntity(problemEntity: ProblemEntity): Problem {
+  async reconstituteFromEntity(problemEntity: ProblemEntity): Promise<Problem> {
+    let setups = [];
+    if (Array.isArray(problemEntity.setups)) {
+      setups = problemEntity.setups.map((setup) =>
+        this.problemSetupFactory.createFromEntity(setup),
+      );
+    }
+
     return this.reconstitute({
       ...problemEntity,
       id: new IdImplementation(problemEntity.id),
-      createdBy: this.mapAccountEntityToDomain(problemEntity.createdBy),
-    });
-  }
-
-  private mapAccountEntityToDomain(account: AccountEntity): Account {
-    return new AccountImplementation({
-      id: new IdImplementation(account.id),
-      sub: new UserSubImplementation(account.sub),
-      username: new UsernameImplementation(account.username),
-      createdAt: account.createdAt,
-      updatedAt: account.updatedAt,
-      deletedAt: account.deletedAt,
-      version: account.version,
+      createdBy: this.accountFactory.createFromEntity(problemEntity.createdBy),
+      setups,
+      status: this.problemStatusFactory.createFromEntity(problemEntity.status),
     });
   }
 
@@ -88,5 +101,24 @@ export class ProblemFactory {
     return this.eventPublisher.mergeObjectContext(
       new ProblemImplementation(properties),
     );
+  }
+
+  private createAccount(createdBy: CreateAccountOptions | Account): Account {
+    // Check if `createdBy` has `getSub` and `getUsername` methods, assuming these are unique to `Account`
+    if ('getSub' in createdBy && 'getUsername' in createdBy) {
+      return createdBy as Account;
+    }
+    // Otherwise, use the factory to create an Account instance from `CreateAccountOptions`
+    return this.accountFactory.create(createdBy as CreateAccountOptions);
+  }
+
+  private createStatus(
+    status: CreateProblemStatusOptions | ProblemStatus,
+  ): ProblemStatus {
+    if ('getDescription' in status) {
+      return status as ProblemStatus;
+    }
+
+    return this.problemStatusFactory.create(status);
   }
 }

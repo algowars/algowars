@@ -2,7 +2,6 @@ import { Inject } from '@nestjs/common';
 import { Test, TestImplementation } from './test';
 import { IdImplementation } from 'src/common/domain/id';
 import { TestEntity } from '../infrastructure/entities/test.entity';
-import { AdditionalTestFile } from './additional-test-file';
 import {
   AdditionalTestFileFactory,
   CreateAdditionalTestFileOptions,
@@ -21,6 +20,7 @@ export type CreateTestOptions = Readonly<{
 export class TestFactory {
   @Inject()
   private readonly additionalTestFileFactory: AdditionalTestFileFactory;
+
   create(options: CreateTestOptions): Test {
     return new TestImplementation({
       ...options,
@@ -32,8 +32,9 @@ export class TestFactory {
   }
 
   createFromEntity(testEntity: TestEntity): Test {
-    return this.create({
+    return new TestImplementation({
       ...testEntity,
+      id: new IdImplementation(testEntity.id),
       additionalTestFile: testEntity.additionalTestFile
         ? this.additionalTestFileFactory.createFromEntity(
             testEntity.additionalTestFile,

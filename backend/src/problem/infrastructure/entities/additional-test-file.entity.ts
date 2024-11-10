@@ -13,22 +13,24 @@ import { BaseEntity } from 'src/common/entities/base-entity';
 @Entity('additional-test-files')
 export class AdditionalTestFileEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  readonly id: string;
+  id: string;
 
   @Column({ nullable: false })
-  readonly fileName: string;
+  fileName: string;
 
   @Column({ nullable: false })
-  readonly name: string;
+  name: string;
 
   @ManyToOne(() => LanguageEntity, (language) => language.additionalTestFiles, {
     nullable: false,
   })
-  readonly language: Language;
+  language: Language;
 
   @Column({ nullable: false })
-  readonly initialTestFile: string;
+  initialTestFile: string;
 
-  @OneToMany(() => TestEntity, (test) => test.additionalTestFile)
-  readonly tests: Promise<TestEntity[]>;
+  @OneToMany(() => TestEntity, (test) => test.additionalTestFile, {
+    lazy: true,
+  })
+  tests: TestEntity[];
 }
