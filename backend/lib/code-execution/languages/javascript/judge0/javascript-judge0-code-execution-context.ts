@@ -53,7 +53,6 @@ export class JavaScriptJudge0CodeExecutionContext
 
   async execute(request: CodeExecutionRequest): Promise<CodeExecutionResponse> {
     try {
-      console.log(request);
       return await this.judge0CodeExecutionService.run(request);
     } catch (error) {
       console.log(error);

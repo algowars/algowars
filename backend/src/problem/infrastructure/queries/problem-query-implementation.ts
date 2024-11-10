@@ -34,8 +34,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
       setup = setups.find((setup) => setup.languageId === languageId);
     }
 
-    console.log('RESULT: ', result);
-
     return {
       id: result.id,
       title: result.title,

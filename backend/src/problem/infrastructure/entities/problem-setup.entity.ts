@@ -15,8 +15,10 @@ export class ProblemSetupEntity extends BaseEntity {
   @ManyToOne(() => ProblemEntity, (problem) => problem.setups)
   problem?: ProblemEntity;
 
-  @ManyToOne(() => LanguageEntity, (language) => language.setups)
-  language?: LanguageEntity;
+  @ManyToOne(() => LanguageEntity, (language) => language.setups, {
+    eager: true,
+  })
+  language: LanguageEntity;
 
   @OneToMany(() => TestEntity, (test) => test.setups, { cascade: true })
   tests: TestEntity[];

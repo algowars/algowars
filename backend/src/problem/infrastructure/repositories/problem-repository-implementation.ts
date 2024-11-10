@@ -24,8 +24,6 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
     const models = Array.isArray(data) ? data : [data];
     const entities = models.map((model) => this.modelToEntity(model));
 
-    entities.forEach((entity) => console.log(entity));
-
     await writeConnection.manager.getRepository(ProblemEntity).save(entities);
   }
 

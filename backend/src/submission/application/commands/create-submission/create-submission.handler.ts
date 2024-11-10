@@ -8,6 +8,7 @@ import { SubmissionRepository } from 'src/submission/domain/submission-repositor
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { CodeExecutionContextFactory } from 'lib/code-execution/code-execution-context-factory';
 import { ProblemSetupRepository } from 'src/problem/domain/problem-setup-repository';
+import { LanguageRepository } from 'src/problem/domain/language-repository';
 
 @CommandHandler(CreateSubmissionCommand)
 export class CreateSubmissionHandler
@@ -19,6 +20,8 @@ export class CreateSubmissionHandler
   private readonly submissionFactory: SubmissionFactory;
   @Inject(ProblemInjectionToken.PROBLEM_SETUP_REPOSITORY)
   private readonly problemSetupRepository: ProblemSetupRepository;
+  @Inject(ProblemInjectionToken.LANGUAGE_REPOSITORY)
+  private readonly languageRepository: LanguageRepository;
   @Inject()
   private readonly contextFactory: CodeExecutionContextFactory;
 
@@ -28,16 +31,19 @@ export class CreateSubmissionHandler
       command.request.languageId,
     );
 
-    if (!setup || !setup.getLanguage()) {
+    const language = await this.languageRepository.findById(
+      command.request.languageId,
+    );
+
+    if (!setup || !language) {
       throw new NotFoundException('Language not found');
     }
 
-    const executionContext = this.contextFactory.createContext(
-      setup.getLanguage(),
-    );
+    const executionContext = this.contextFactory.createContext(language);
 
     const builtRequest = await executionContext.build(
-      command.request.sourceCode,
+      `${command.request.sourceCode}
+${setup.getTests()[0].getCode()}`,
       setup.getTests()[0].getAdditionalTestFile(),
     );
     const executionResult = await executionContext.execute(builtRequest);
@@ -45,7 +51,7 @@ export class CreateSubmissionHandler
     const submissionId = await this.submissionRepository.newId();
     const submission = this.submissionFactory.create({
       id: submissionId,
-      language: setup.getLanguage(),
+      language,
       sourceCode: command.request.sourceCode,
       createdBy: command.account,
       results: [executionResult],

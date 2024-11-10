@@ -20,7 +20,6 @@ export class FindProblemBySlugHandler
       query.languageId,
     );
 
-    console.log('DATA: ', data);
     if (!data) {
       throw new NotFoundException(ProblemErrorMessage.PROBLEM_NOT_FOUND);
     }

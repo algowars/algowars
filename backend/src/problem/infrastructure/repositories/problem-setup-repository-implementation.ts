@@ -26,6 +26,8 @@ export class ProblemSetupRepositoryImplementation
         relations: ['language', 'tests', 'tests.additionalTestFile'],
       });
 
+    await entity.language;
+
     return entity ? this.entityToModel(entity) : null;
   }
 
