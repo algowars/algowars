@@ -3,7 +3,10 @@ import { FindProblemBySlugResult } from './find-problem-by-slug-query/find-probl
 import { GetProblemsPageableResult } from './get-problems-pageable-query/get-problems-pageable-result';
 
 export interface ProblemQuery {
-  findBySlug(slug: string): Promise<FindProblemBySlugResult | null>;
+  findBySlug(
+    slug: string,
+    languageId?: number,
+  ): Promise<FindProblemBySlugResult | null>;
   getPageable(
     page: number,
     size: number,

@@ -26,6 +26,7 @@ import { GetProblemsPageableQuery } from '../application/queries/get-problems-pa
 import { CreateProblemSetupRequest } from './dto/request/create-problem-setup.dto';
 import { GetProblemSetupResponse } from './dto/response/get-problem-setup-response.dto';
 import { GetProblemSetupQuery } from '../application/queries/get-problem-setup-query/get-problem-setup.query';
+import { FindProblemBySlugRequestQuery } from './dto/request/find-problem-by-slug-request-query.dto';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -46,8 +47,11 @@ export class ProblemController {
   @Get('find/slug/:slug')
   async findProblemBySlug(
     @Param() param: FindProblemBySlugRequestParam,
+    @Query() query: FindProblemBySlugRequestQuery,
   ): Promise<FindProblemBySlugResponseDto> {
-    return this.queryBus.execute(new FindProblemBySlugQuery(param.slug));
+    return this.queryBus.execute(
+      new FindProblemBySlugQuery(param.slug, query.languageId),
+    );
   }
 
   @UseGuards(PermissionsGuard([ProblemPermissions.CREATE_PROBLEM]))

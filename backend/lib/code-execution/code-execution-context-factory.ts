@@ -15,7 +15,7 @@ export class CodeExecutionContextFactory {
         return this.jsJudge0ExecutionContext;
       default:
         throw new NotFoundException(
-          `Execution context for language ${language.getName()} not found`,
+          `Execution context for language "${language.getName()}" not found`,
         );
     }
   }

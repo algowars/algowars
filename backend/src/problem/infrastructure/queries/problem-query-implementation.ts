@@ -9,10 +9,39 @@ import { Pagination } from 'src/common/pagination/pagination';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
-  findBySlug(slug: string): Promise<FindProblemBySlugResult | null> {
-    return readConnection
+  async findBySlug(
+    slug: string,
+    languageId?: number,
+  ): Promise<FindProblemBySlugResult | null> {
+    const query = readConnection
       .getRepository(ProblemEntity)
-      .findOneBy({ slug: slug });
+      .createQueryBuilder('problem')
+      .leftJoinAndSelect('problem.status', 'status')
+      .andWhere('problem.slug = :slug', { slug });
+
+    if (languageId) {
+      query.leftJoinAndSelect('problem.setups', 'setup');
+      query.andWhere('setup.languageId = :languageId', { languageId });
+    }
+
+    const result = await query.getOne();
+
+    if (languageId) {
+      const setups = await result.setups;
+
+      return {
+        ...result,
+        initialCode: setups.find((setup) => setup.languageId === languageId)
+          .initialCode,
+      };
+    }
+
+    console.log('RESULT: ', result);
+
+    return {
+      ...result,
+      initialCode: '',
+    };
   }
 
   async getPageable(

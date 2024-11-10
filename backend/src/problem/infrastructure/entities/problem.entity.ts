@@ -9,7 +9,6 @@ import {
 } from 'typeorm';
 import { ProblemSetupEntity } from './problem-setup.entity';
 import { ProblemStatusEntity } from './problem-status.entity';
-import { ProblemStatus } from 'src/problem/domain/problem-status';
 
 @Entity('problem')
 export class ProblemEntity extends BaseEntity {
@@ -32,7 +31,7 @@ export class ProblemEntity extends BaseEntity {
     cascade: true,
     lazy: true,
   })
-  setups: ProblemSetupEntity[];
+  setups: Promise<ProblemSetupEntity[]>;
 
   @ManyToOne(() => ProblemStatusEntity, (status) => status.problems, {
     eager: true,

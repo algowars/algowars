@@ -8,4 +8,5 @@ export class FindProblemBySlugResult implements IQueryResult {
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly deletedAt: Date | null;
+  readonly initialCode: string;
 }

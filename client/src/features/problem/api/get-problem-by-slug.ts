@@ -11,6 +11,9 @@ export const getProblemBySlug = ({
 }): Promise<Problem> => {
   const config: AxiosRequestConfig = {
     url: `/api/v1/problem/find/slug/${encodeURIComponent(slug)}`,
+    params: {
+      languageId: 93,
+    },
   };
 
   return api(config);

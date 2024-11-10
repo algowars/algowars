@@ -15,7 +15,12 @@ export class FindProblemBySlugHandler
   async execute(
     query: FindProblemBySlugQuery,
   ): Promise<FindProblemBySlugResult> {
-    const data = await this.problemQuery.findBySlug(query.slug);
+    const data = await this.problemQuery.findBySlug(
+      query.slug,
+      query.languageId,
+    );
+
+    console.log('DATA: ', data);
     if (!data) {
       throw new NotFoundException(ProblemErrorMessage.PROBLEM_NOT_FOUND);
     }
