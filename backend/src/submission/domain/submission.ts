@@ -7,6 +7,7 @@ import {
   BaseDomainAggregateRootImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
+import { SubmissionCreatedEvent } from './events/submission-created-event';
 
 export type SubmissionEssentialProperties = Readonly<
   Required<{
@@ -28,10 +29,11 @@ export type SubmissionProperties = SubmissionEssentialProperties &
   BaseDomainProperties;
 
 export interface Submission extends BaseDomainAggregateRoot {
-  getCreatedBy: () => Account;
-  getSourceCode: () => string;
-  getSubmissionResults: () => SubmissionResult[];
-  getLanguage: () => Language;
+  getCreatedBy(): Account;
+  getSourceCode(): string;
+  getSubmissionResults(): SubmissionResult[];
+  getLanguage(): Language;
+  create(): void;
 }
 
 export class SubmissionImplementation
@@ -62,5 +64,10 @@ export class SubmissionImplementation
 
   getLanguage() {
     return this.language;
+  }
+
+  create(): void {
+    console.log('IN CREATE');
+    this.apply(new SubmissionCreatedEvent(this.getId().toString()));
   }
 }

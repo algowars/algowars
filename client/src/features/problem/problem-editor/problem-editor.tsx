@@ -43,10 +43,10 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   };
 
   useEffect(() => {
-    if (problem.initialCode) {
-      setCode(problem.initialCode);
+    if (problem?.initialCode) {
+      setCode(problem?.initialCode);
     }
-  }, [problem.initialCode]);
+  }, [problem?.initialCode]);
 
   return (
     <>

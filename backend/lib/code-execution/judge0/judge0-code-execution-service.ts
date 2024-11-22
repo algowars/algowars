@@ -57,4 +57,18 @@ export class Judge0CodeExecutionService {
       execute_command: request.getExecuteCommand(),
     };
   }
+
+  async getSubmission(token: string): Promise<CodeExecutionResponse> {
+    const config: AxiosRequestConfig = {
+      url: `${this.judge0Config.url}/submissions/${encodeURIComponent(token)}`,
+      params: {
+        base64_encoded: 'true',
+        fields: '*',
+      },
+      headers: this.judge0Config.headers,
+    };
+
+    const response = await this.execute<CodeExecutionResponse>(config);
+    return response.data;
+  }
 }

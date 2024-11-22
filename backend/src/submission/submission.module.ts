@@ -11,6 +11,7 @@ import {
   domain as problemDomain,
 } from 'src/problem/problem.module';
 import { HttpModule } from '@nestjs/axios';
+import { SubmissionEventHandlers } from './application/events';
 const infrastructure: Provider[] = [
   {
     provide: InjectionToken.SUBMISSION_REPOSITORY,
@@ -18,7 +19,7 @@ const infrastructure: Provider[] = [
   },
 ];
 
-const application = [...SubmissionCommandHandlers];
+const application = [...SubmissionCommandHandlers, ...SubmissionEventHandlers];
 
 const domain = [SubmissionFactory, ...problemDomain];
 

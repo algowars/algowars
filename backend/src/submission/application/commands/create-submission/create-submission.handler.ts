@@ -57,7 +57,11 @@ ${setup.getTests()[0].getCode()}`,
       results: [executionResult],
     });
 
+    console.log('SUBMISSION: ', submission);
+
     await this.submissionRepository.save(submission);
+
+    submission.create();
 
     submission.commit();
 
