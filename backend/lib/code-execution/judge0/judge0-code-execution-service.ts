@@ -4,7 +4,10 @@ import { Injectable } from '@nestjs/common';
 import {
   CodeExecutionRequest,
   CodeExecutionResponse,
+  CodeExecutionResponseImplementation,
+  CodeExecutionService,
 } from '../code-execution-service';
+import { unescape } from 'querystring';
 
 export interface Judge0ExecutionConfig {
   apiKey: string;
@@ -14,7 +17,7 @@ export interface Judge0ExecutionConfig {
 }
 
 @Injectable()
-export class Judge0CodeExecutionService {
+export class Judge0CodeExecutionService implements CodeExecutionService {
   constructor(
     private readonly httpService: HttpService,
     private readonly judge0Config: Judge0ExecutionConfig,
@@ -68,7 +71,39 @@ export class Judge0CodeExecutionService {
       headers: this.judge0Config.headers,
     };
 
-    const response = await this.execute<CodeExecutionResponse>(config);
-    return response.data;
+    const { data } = await this.execute<{
+      token: string;
+      stdout?: string;
+      stderr?: string;
+      compileOut?: string;
+      status: {
+        id: number;
+        description: string;
+      };
+      time?: string;
+      memory?: string;
+    }>(config);
+    return new CodeExecutionResponseImplementation({
+      token: data.token,
+      stdout: this.decode(data.stdout),
+      stderr: this.decode(data.stderr),
+      compileOut: data.compileOut,
+      status: data.status,
+      time: data.time,
+      memory: data.memory,
+    });
+  }
+
+  private encode(string: string): string {
+    return btoa(unescape(encodeURIComponent(string)));
+  }
+
+  private decode(bytes: string): string {
+    let escaped = escape(atob(bytes));
+    try {
+      return decodeURIComponent(escaped);
+    } catch {
+      return unescape(escaped);
+    }
   }
 }

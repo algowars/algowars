@@ -56,7 +56,10 @@ export interface CodeExecutionResponse {
   getStdout(): string | undefined;
   getStderr(): string | undefined;
   getCompileOut(): string | undefined;
-  getStatus(): any;
+  getStatus(): {
+    id: number;
+    description: string;
+  };
   getTime(): string | undefined;
   getMemory(): string | undefined;
 }
@@ -68,7 +71,10 @@ export class CodeExecutionResponseImplementation
   private readonly stdout?: string;
   private readonly stderr?: string;
   private readonly compileOut?: string;
-  private readonly status?: any;
+  private readonly status?: {
+    id: number;
+    description: string;
+  };
   private readonly time?: string;
   private readonly memory?: string;
 
@@ -77,7 +83,10 @@ export class CodeExecutionResponseImplementation
     stdout?: string;
     stderr?: string;
     compileOut?: string;
-    status?: any;
+    status?: {
+      id: number;
+      description: string;
+    };
     time?: string;
     memory?: string;
   }) {
@@ -111,4 +120,8 @@ export class CodeExecutionResponseImplementation
   getTime(): string | undefined {
     return this.time;
   }
+}
+
+export interface CodeExecutionService {
+  getSubmission(token: string): Promise<CodeExecutionResponse>;
 }

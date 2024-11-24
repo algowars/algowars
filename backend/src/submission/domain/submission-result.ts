@@ -8,12 +8,14 @@ export interface SubmissionResult {
   getLanguageId(): number;
   getStdin(): string;
   getStdout(): string;
+  setStdout(output: string): void;
   getTime(): string;
   getMemory(): number;
   getStderr(): string | null;
   getExpectedOutput(): string;
   getMessage(): string;
   getStatus(): Status;
+  setStatus(newStatus: Status): void;
 }
 
 export class SubmissionResultImplementation implements SubmissionResult {
@@ -21,13 +23,13 @@ export class SubmissionResultImplementation implements SubmissionResult {
   private readonly sourceCode: string;
   private readonly language_id: number;
   private readonly stdin?: string;
-  private readonly stdout?: string;
+  private stdout?: string;
   private readonly time: string;
   private readonly memory: number;
   private readonly stderr?: string | null;
   private readonly expectedOutput: string;
   private readonly message: string;
-  private readonly status: Status;
+  private status: Status;
 
   constructor(properties: SubmissionResultProperties) {
     Object.assign(this, properties);
@@ -61,6 +63,10 @@ export class SubmissionResultImplementation implements SubmissionResult {
     return this.status;
   }
 
+  setStatus(newStatus: Status): void {
+    this.status = newStatus;
+  }
+
   getStderr(): string | null {
     return this.stderr;
   }
@@ -71,6 +77,10 @@ export class SubmissionResultImplementation implements SubmissionResult {
 
   getStdout(): string {
     return this.stdout;
+  }
+
+  setStdout(output: string): void {
+    this.stdout = output;
   }
 
   getTime(): string {

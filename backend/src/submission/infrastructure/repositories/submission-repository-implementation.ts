@@ -11,6 +11,8 @@ import { LanguageEntity } from 'src/problem/infrastructure/entities/language.ent
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 import { SubmissionResult } from 'src/submission/domain/submission-result';
 import { SubmissionResultEntity } from '../entities/submission-result.entity';
+import { Status } from 'src/submission/domain/status';
+import { StatusEntity } from '../entities/status.entity';
 
 export class SubmissionRepositoryImplementation
   implements SubmissionRepository
@@ -24,7 +26,10 @@ export class SubmissionRepositoryImplementation
   async findById(id: Id): Promise<Submission | null> {
     const entity = await readConnection
       .getRepository(SubmissionEntity)
-      .findOneBy({ id: id.toString() });
+      .findOne({
+        where: { id: id.toString() },
+        relations: ['results', 'language', 'createdBy', 'results.status'],
+      });
 
     return entity ? this.entityToModel(entity) : null;
   }
@@ -32,9 +37,23 @@ export class SubmissionRepositoryImplementation
   async save(data: Submission | Submission[]): Promise<void> {
     const models = Array.isArray(data) ? data : [data];
     const entities = models.map((model) => this.modelToEntity(model));
+
     await writeConnection.manager
       .getRepository(SubmissionEntity)
       .save(entities);
+  }
+
+  async updateSubmissionResult(
+    submissionResult: SubmissionResult,
+  ): Promise<void> {
+    console.log('RESULT: ', submissionResult);
+    const entity = this.resultsToEntity([submissionResult]);
+
+    console.log('AS ENTITY: ', entity);
+
+    await writeConnection.manager
+      .getRepository(SubmissionResultEntity)
+      .save(entity);
   }
 
   private modelToEntity(model: Submission): SubmissionEntity {
@@ -48,6 +67,7 @@ export class SubmissionRepositoryImplementation
       updatedAt: model.getUpdatedAt(),
       deletedAt: model.getDeletedAt(),
       version: model.getVersion(),
+      codeExecutionContext: model.getCodeExecutionContext(),
       language: this.languageToEntity(model.getLanguage()),
       results: model?.getSubmissionResults()
         ? this.resultsToEntity(model.getSubmissionResults())
@@ -87,10 +107,35 @@ export class SubmissionRepositoryImplementation
     results: SubmissionResult[],
   ): SubmissionResultEntity[] {
     return results.map((result) => {
+      const statusEntity = result.getStatus()
+        ? this.statusToEntity(result.getStatus())
+        : undefined;
+
       return new SubmissionResultEntity({
         token: result.getToken(),
+        sourceCode: result.getSourceCode(),
+        languageId: result.getLanguageId(),
+        stdin: result.getStdin(),
+        stdout: result.getStdout(),
+        time: result.getTime(),
+        memory: result.getMemory(),
+        stderr: result.getStderr(),
+        expectedOutput: result.getExpectedOutput(),
+        message: result.getMessage(),
+        status: statusEntity,
       });
     });
+  }
+
+  private statusToEntity(status: Status): StatusEntity {
+    return {
+      id: status.getId().toNumber(),
+      description: status.getDescription(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      deletedAt: null,
+      version: 1,
+    };
   }
 
   private entityToModel(entity: SubmissionEntity): Submission {

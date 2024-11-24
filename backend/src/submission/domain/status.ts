@@ -1,19 +1,20 @@
 import { Id } from 'src/common/domain/id';
 
 export type StatusEssentialProperties = Readonly<
-  Required<{ id: Id; name: string }>
+  Required<{ id: Id; description: string }>
 >;
 
 export type StatusProperties = StatusEssentialProperties;
 
 export interface Status {
-  compareId: (id: Id) => boolean;
-  getName: () => string;
+  getId(): Id;
+  compareId(id: Id): boolean;
+  getDescription(): string;
 }
 
 export class StatusImplementation implements Status {
   private readonly id: Id;
-  private readonly name: string;
+  private readonly description: string;
 
   constructor(properties: StatusProperties) {
     Object.assign(this, properties);
@@ -24,7 +25,11 @@ export class StatusImplementation implements Status {
     return this.id.equals(id);
   }
 
-  getName(): string {
-    return this.name;
+  getId(): Id {
+    return this.id;
+  }
+
+  getDescription(): string {
+    return this.description;
   }
 }

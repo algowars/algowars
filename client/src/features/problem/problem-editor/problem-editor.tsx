@@ -21,6 +21,12 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const [code, setCode] = useState<string>("");
   const createSubmissionMutation = useCreateSubmission();
 
+  useEffect(() => {
+    if (problem?.initialCode) {
+      setCode(problem?.initialCode);
+    }
+  }, [problem?.initialCode]);
+
   if (!problem) {
     return null;
   }
@@ -41,12 +47,6 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
       accessToken,
     });
   };
-
-  useEffect(() => {
-    if (problem?.initialCode) {
-      setCode(problem?.initialCode);
-    }
-  }, [problem?.initialCode]);
 
   return (
     <>

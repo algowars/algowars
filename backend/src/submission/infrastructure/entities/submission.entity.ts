@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { SubmissionResultEntity } from './submission-result.entity';
 import { BaseEntity } from 'src/common/entities/base-entity';
+import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
 
 @Entity('submission')
 export class SubmissionEntity extends BaseEntity {
@@ -27,6 +28,9 @@ export class SubmissionEntity extends BaseEntity {
     { cascade: true },
   )
   readonly results: SubmissionResultEntity[];
+
+  @Column({ nullable: false })
+  readonly codeExecutionContext: CodeExecutionEngine;
 
   @ManyToOne(() => AccountEntity, (account) => account.submissions)
   readonly createdBy: AccountEntity;

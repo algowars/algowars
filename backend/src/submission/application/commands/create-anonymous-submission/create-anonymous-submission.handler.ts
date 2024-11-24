@@ -63,6 +63,7 @@ export class CreateAnonymousSubmissionHandler
       sourceCode: command.code,
       createdBy: command.account,
       results: [executionResult],
+      codeExecutionContext: executionContext.getEngine(),
     });
 
     await this.submissionRepository.save(submission);

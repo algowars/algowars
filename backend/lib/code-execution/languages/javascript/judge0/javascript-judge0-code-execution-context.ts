@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CodeExecutionContext } from 'lib/code-execution/code-execution-context';
+import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
 import {
   CodeExecutionRequest,
   CodeExecutionRequestImplementation,
@@ -49,6 +50,10 @@ export class JavaScriptJudge0CodeExecutionContext
     } catch (error) {
       throw new Error('Failed to retrieve additional files from s3');
     }
+  }
+
+  getEngine(): CodeExecutionEngine {
+    return CodeExecutionEngine.JUDGE0;
   }
 
   async execute(request: CodeExecutionRequest): Promise<CodeExecutionResponse> {

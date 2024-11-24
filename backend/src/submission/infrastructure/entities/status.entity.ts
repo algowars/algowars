@@ -14,5 +14,5 @@ export class StatusEntity extends BaseEntity {
     () => SubmissionResultEntity,
     (submissionResult) => submissionResult.status,
   )
-  readonly submissionResults: SubmissionResultEntity[];
+  readonly submissionResults?: SubmissionResultEntity[];
 }

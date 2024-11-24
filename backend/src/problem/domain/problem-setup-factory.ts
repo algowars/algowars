@@ -26,7 +26,9 @@ export class ProblemSetupFactory {
       updatedAt: new Date(),
       deletedAt: null,
       version: 0,
-      tests: options.tests?.map((test) => this.testFactory.create(test)),
+      tests: Array.isArray(options?.tests)
+        ? options.tests.map((test) => this.testFactory.create(test))
+        : null,
     });
   }
 

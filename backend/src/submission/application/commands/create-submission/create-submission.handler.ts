@@ -55,9 +55,8 @@ ${setup.getTests()[0].getCode()}`,
       sourceCode: command.request.sourceCode,
       createdBy: command.account,
       results: [executionResult],
+      codeExecutionContext: executionContext.getEngine(),
     });
-
-    console.log('SUBMISSION: ', submission);
 
     await this.submissionRepository.save(submission);
 

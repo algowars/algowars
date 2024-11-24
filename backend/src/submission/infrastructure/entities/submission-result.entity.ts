@@ -18,6 +18,7 @@ export interface SubmissionResultEntityProperties {
   updatedAt?: Date;
   deletedAt?: Date | null;
   version?: number;
+  status?: StatusEntity | undefined;
 }
 
 @Entity('submission-result')

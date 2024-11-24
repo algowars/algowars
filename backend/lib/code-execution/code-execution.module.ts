@@ -8,6 +8,9 @@ import {
   Judge0CodeExecutionService,
   Judge0ExecutionConfig,
 } from './judge0/judge0-code-execution-service';
+import { CodeExecutionServiceFactory } from './code-execution-service-factory';
+import { CodeExecutionEvaluationResultFactory } from './code-execution-evaluation-result-factory';
+import { JavaScriptJudge0CodeExecutionEvaluator } from './languages/javascript/judge0/javascript-judge0-code-execution-evaluator';
 
 const codeExecutionContextProviders: Provider[] = [
   {
@@ -22,7 +25,10 @@ const codeExecutionContextProviders: Provider[] = [
       ),
     inject: [Judge0CodeExecutionService, S3Service],
   },
+  JavaScriptJudge0CodeExecutionEvaluator,
+  CodeExecutionServiceFactory,
   CodeExecutionContextFactory,
+  CodeExecutionEvaluationResultFactory,
 ];
 
 @Global()
