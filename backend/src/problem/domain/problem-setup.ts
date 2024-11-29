@@ -1,3 +1,4 @@
+import { Submission } from 'src/submission/domain/submission';
 import { Language } from './language';
 import { Problem } from './problem';
 import { Id } from 'src/common/domain/id';
@@ -7,13 +8,13 @@ export type ProblemSetupEssentialProperties = Readonly<
   Required<{
     problemId: Id;
     languageId: Id;
-
     initialCode: string;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
     version: number;
     tests: Test[];
+    solution: Submission;
   }>
 >;
 
@@ -34,6 +35,7 @@ export interface ProblemSetup {
   getCreatedAt(): Date;
   getUpdatedAt(): Date;
   getDeletedAt(): Date | null;
+  getSolution(): Submission;
   getVersion(): number;
 }
 
@@ -48,6 +50,7 @@ export class ProblemSetupImplementation implements ProblemSetup {
   private readonly deletedAt: Date | null;
   private readonly version: number;
   private readonly tests: Test[];
+  private readonly solution: Submission;
 
   constructor(properties: ProblemSetupProperties) {
     Object.assign(this, properties);
@@ -76,6 +79,10 @@ export class ProblemSetupImplementation implements ProblemSetup {
 
   getInitialCode(): string {
     return this.initialCode;
+  }
+
+  getSolution(): Submission {
+    return this.solution;
   }
 
   getCreatedAt() {

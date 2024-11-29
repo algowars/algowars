@@ -11,8 +11,6 @@ import { LanguageEntity } from 'src/problem/infrastructure/entities/language.ent
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 import { SubmissionResult } from 'src/submission/domain/submission-result';
 import { SubmissionResultEntity } from '../entities/submission-result.entity';
-import { Status } from 'src/submission/domain/status';
-import { StatusEntity } from '../entities/status.entity';
 
 export class SubmissionRepositoryImplementation
   implements SubmissionRepository
@@ -28,7 +26,7 @@ export class SubmissionRepositoryImplementation
       .getRepository(SubmissionEntity)
       .findOne({
         where: { id: id.toString() },
-        relations: ['results', 'language', 'createdBy', 'results.status'],
+        relations: ['results', 'language', 'createdBy'],
       });
 
     return entity ? this.entityToModel(entity) : null;
@@ -46,10 +44,7 @@ export class SubmissionRepositoryImplementation
   async updateSubmissionResult(
     submissionResult: SubmissionResult,
   ): Promise<void> {
-    console.log('RESULT: ', submissionResult);
     const entity = this.resultsToEntity([submissionResult]);
-
-    console.log('AS ENTITY: ', entity);
 
     await writeConnection.manager
       .getRepository(SubmissionResultEntity)
@@ -107,10 +102,6 @@ export class SubmissionRepositoryImplementation
     results: SubmissionResult[],
   ): SubmissionResultEntity[] {
     return results.map((result) => {
-      const statusEntity = result.getStatus()
-        ? this.statusToEntity(result.getStatus())
-        : undefined;
-
       return new SubmissionResultEntity({
         token: result.getToken(),
         sourceCode: result.getSourceCode(),
@@ -122,20 +113,9 @@ export class SubmissionRepositoryImplementation
         stderr: result.getStderr(),
         expectedOutput: result.getExpectedOutput(),
         message: result.getMessage(),
-        status: statusEntity,
+        status: result.getStatus(),
       });
     });
-  }
-
-  private statusToEntity(status: Status): StatusEntity {
-    return {
-      id: status.getId().toNumber(),
-      description: status.getDescription(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      deletedAt: null,
-      version: 1,
-    };
   }
 
   private entityToModel(entity: SubmissionEntity): Submission {

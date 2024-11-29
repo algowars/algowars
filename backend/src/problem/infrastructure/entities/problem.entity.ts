@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProblemSetupEntity } from './problem-setup.entity';
-import { ProblemStatusEntity } from './problem-status.entity';
+import { ProblemStatus } from 'src/problem/domain/problem-status';
 
 @Entity('problem')
 export class ProblemEntity extends BaseEntity {
@@ -33,8 +33,10 @@ export class ProblemEntity extends BaseEntity {
   })
   setups: Promise<ProblemSetupEntity[]>;
 
-  @ManyToOne(() => ProblemStatusEntity, (status) => status.problems, {
-    eager: true,
+  @Column({
+    type: 'enum',
+    enum: ProblemStatus,
+    default: ProblemStatus.PENDING,
   })
-  status: ProblemStatusEntity;
+  status: ProblemStatus;
 }

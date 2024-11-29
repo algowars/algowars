@@ -6,16 +6,20 @@ import {
   CreateTestOptions,
   TestFactory,
 } from 'src/problem/domain/test-factory';
+import { Submission } from 'src/submission/domain/submission';
+import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 
 export type CreateProblemSetupOptions = Readonly<{
   problemId: string;
   languageId: number;
   initialCode: string;
   tests?: CreateTestOptions[];
+  solution: Submission;
 }>;
 
 export class ProblemSetupFactory {
   @Inject() private readonly testFactory: TestFactory;
+  @Inject() private readonly submissionFactory: SubmissionFactory;
 
   create(options: CreateProblemSetupOptions): ProblemSetup {
     return new ProblemSetupImplementation({
@@ -25,6 +29,7 @@ export class ProblemSetupFactory {
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: null,
+      solution: options.solution,
       version: 0,
       tests: Array.isArray(options?.tests)
         ? options.tests.map((test) => this.testFactory.create(test))
@@ -35,6 +40,9 @@ export class ProblemSetupFactory {
   async createFromEntity(
     problemSetupEntity: ProblemSetupEntity,
   ): Promise<ProblemSetup> {
+    const solution = problemSetupEntity?.solution
+      ? this.submissionFactory.createFromEntity(problemSetupEntity.solution)
+      : null;
     return new ProblemSetupImplementation({
       ...problemSetupEntity,
       problemId: new IdImplementation(problemSetupEntity.problemId),
@@ -44,6 +52,7 @@ export class ProblemSetupFactory {
       tests: problemSetupEntity.tests.map((test) =>
         this.testFactory.createFromEntity(test),
       ),
+      solution,
     });
   }
 }

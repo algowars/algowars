@@ -12,11 +12,9 @@ import {
   AccountFactory,
   CreateAccountOptions,
 } from 'src/account/domain/account-factory';
-import {
-  CreateProblemStatusOptions,
-  ProblemStatusFactory,
-} from './problem-status-factory';
 import { ProblemStatus } from './problem-status';
+import { Submission } from 'src/submission/domain/submission';
+import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 
 export type CreateProblemOptions = Readonly<{
   id: string;
@@ -25,15 +23,13 @@ export type CreateProblemOptions = Readonly<{
   question: string;
   createdBy: CreateAccountOptions | Account;
   setups?: CreateProblemSetupOptions[];
-  status: CreateProblemStatusOptions | ProblemStatus;
+  status: ProblemStatus;
 }>;
 
 export class ProblemFactory {
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
   @Inject()
   private readonly problemSetupFactory: ProblemSetupFactory;
-  @Inject()
-  private readonly problemStatusFactory: ProblemStatusFactory;
   @Inject()
   private readonly accountFactory: AccountFactory;
 
@@ -52,7 +48,6 @@ export class ProblemFactory {
               this.problemSetupFactory.create(setup),
             )
           : null,
-        status: this.createStatus(options.status),
       }),
     );
   }
@@ -73,9 +68,6 @@ export class ProblemFactory {
           problemEntity.createdBy,
         ),
         setups,
-        status: this.problemStatusFactory.createFromEntity(
-          problemEntity.status,
-        ),
       }),
     );
   }
@@ -93,7 +85,6 @@ export class ProblemFactory {
       id: new IdImplementation(problemEntity.id),
       createdBy: this.accountFactory.createFromEntity(problemEntity.createdBy),
       setups,
-      status: this.problemStatusFactory.createFromEntity(problemEntity.status),
     });
   }
 
@@ -110,15 +101,5 @@ export class ProblemFactory {
     }
     // Otherwise, use the factory to create an Account instance from `CreateAccountOptions`
     return this.accountFactory.create(createdBy as CreateAccountOptions);
-  }
-
-  private createStatus(
-    status: CreateProblemStatusOptions | ProblemStatus,
-  ): ProblemStatus {
-    if ('getDescription' in status) {
-      return status as ProblemStatus;
-    }
-
-    return this.problemStatusFactory.create(status);
   }
 }

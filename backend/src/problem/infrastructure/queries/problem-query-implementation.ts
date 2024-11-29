@@ -16,7 +16,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
     const query = readConnection
       .getRepository(ProblemEntity)
       .createQueryBuilder('problem')
-      .leftJoinAndSelect('problem.status', 'status')
       .andWhere('problem.slug = :slug', { slug });
 
     if (languageId) {

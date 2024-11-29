@@ -6,26 +6,19 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { InjectionToken } from './application/injection-token';
 import { SubmissionRepositoryImplementation } from './infrastructure/repositories/submission-repository-implementation';
 import { ProblemModule } from 'src/problem/problem.module';
-import { domain as problemDomain } from 'src/problem/problem.module';
 import { HttpModule } from '@nestjs/axios';
 import { SubmissionEventHandlers } from './application/events';
-import { StatusRepositoryImplementation } from './infrastructure/repositories/status-repository-implementation';
-import { StatusFactory } from './domain/status-factory';
 
-const infrastructure: Provider[] = [
+export const infrastructure: Provider[] = [
   {
     provide: InjectionToken.SUBMISSION_REPOSITORY,
     useClass: SubmissionRepositoryImplementation,
-  },
-  {
-    provide: InjectionToken.STATUS_REPOSITORY,
-    useClass: StatusRepositoryImplementation,
   },
 ];
 
 const application = [...SubmissionCommandHandlers, ...SubmissionEventHandlers];
 
-const domain = [SubmissionFactory, StatusFactory, ...problemDomain];
+const domain = [SubmissionFactory];
 
 @Module({
   imports: [
@@ -38,5 +31,6 @@ const domain = [SubmissionFactory, StatusFactory, ...problemDomain];
   ],
   controllers: [SubmissionController],
   providers: [Logger, ...infrastructure, ...application, ...domain],
+  exports: [...infrastructure, ...domain],
 })
 export class SubmissionModule {}

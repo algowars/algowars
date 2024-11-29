@@ -7,6 +7,7 @@ import {
 } from 'src/common/entities/base-domain';
 import { ProblemSetup, ProblemSetupProperties } from './problem-setup';
 import { ProblemStatus } from './problem-status';
+import { Submission } from 'src/submission/domain/submission';
 
 export type ProblemEssentialProperties = Readonly<
   Required<{

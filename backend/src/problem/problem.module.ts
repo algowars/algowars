@@ -1,6 +1,7 @@
 import { Logger, Module, Provider } from '@nestjs/common';
 import { ProblemController } from './interface/problem.controller';
 import { InjectionToken } from './application/injection-token';
+import { InjectionToken as SubmissionInjectionToken } from 'src/submission/application/injection-token';
 import { ProblemQueryImplementation } from './infrastructure/queries/problem-query-implementation';
 import { ProblemRepositoryImplementation } from './infrastructure/repositories/problem-repository-implementation';
 import { ProblemQueryHandlers } from './application/queries';
@@ -17,8 +18,8 @@ import { AdditionalTestFileRepositoryImplementation } from './infrastructure/rep
 import { ProblemSetupRepositoryImplementation } from './infrastructure/repositories/problem-setup-repository-implementation';
 import { AccountModule } from 'src/account/account.module';
 import { domain as accountDomain } from 'src/account/account.module';
-import { ProblemStatusRepositoryImplementation } from './infrastructure/repositories/problem-status-repository-implementation';
-import { ProblemStatusFactory } from './domain/problem-status-factory';
+import { SubmissionRepositoryImplementation } from 'src/submission/infrastructure/repositories/submission-repository-implementation';
+import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 
 export const infrastructure: Provider[] = [
   {
@@ -46,8 +47,8 @@ export const infrastructure: Provider[] = [
     useClass: ProblemSetupRepositoryImplementation,
   },
   {
-    provide: InjectionToken.PROBLEM_STATUS_REPOSITORY,
-    useClass: ProblemStatusRepositoryImplementation,
+    provide: SubmissionInjectionToken.SUBMISSION_REPOSITORY,
+    useClass: SubmissionRepositoryImplementation,
   },
 ];
 
@@ -56,8 +57,8 @@ export const application = [...ProblemQueryHandlers, ...ProblemCommandHandlers];
 export const domain = [
   ProblemFactory,
   LanguageFactory,
+  SubmissionFactory,
   ProblemSetupFactory,
-  ProblemStatusFactory,
   TestFactory,
   AdditionalTestFileFactory,
   ...accountDomain,

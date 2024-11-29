@@ -1,4 +1,4 @@
-import { Status } from './status';
+import { SubmissionStatus } from './submission-status';
 
 export type SubmissionResultProperties = Readonly<{ token: string }>;
 
@@ -14,8 +14,8 @@ export interface SubmissionResult {
   getStderr(): string | null;
   getExpectedOutput(): string;
   getMessage(): string;
-  getStatus(): Status;
-  setStatus(newStatus: Status): void;
+  getStatus(): SubmissionStatus;
+  setStatus(newStatus: SubmissionStatus): void;
 }
 
 export class SubmissionResultImplementation implements SubmissionResult {
@@ -29,7 +29,7 @@ export class SubmissionResultImplementation implements SubmissionResult {
   private readonly stderr?: string | null;
   private readonly expectedOutput: string;
   private readonly message: string;
-  private status: Status;
+  private status: SubmissionStatus;
 
   constructor(properties: SubmissionResultProperties) {
     Object.assign(this, properties);
@@ -59,11 +59,11 @@ export class SubmissionResultImplementation implements SubmissionResult {
     return this.message;
   }
 
-  getStatus(): Status {
+  getStatus(): SubmissionStatus {
     return this.status;
   }
 
-  setStatus(newStatus: Status): void {
+  setStatus(newStatus: SubmissionStatus): void {
     this.status = newStatus;
   }
 

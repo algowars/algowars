@@ -10,8 +10,8 @@ import { Test } from 'src/problem/domain/test';
 import { TestEntity } from '../entities/test.entity';
 import { AdditionalTestFileEntity } from '../entities/additional-test-file.entity';
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
-import { ProblemStatus } from 'src/problem/domain/problem-status';
-import { ProblemStatusEntity } from '../entities/problem-status.entity';
+import { Submission } from 'src/submission/domain/submission';
+import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
 
 export class ProblemRepositoryImplementation implements ProblemRepository {
   @Inject() private readonly problemFactory: ProblemFactory;
@@ -48,7 +48,7 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
     problem.setups = Promise.resolve(
       model.getSetups().map((setup) => this.setupModelToEntity(setup)),
     );
-    problem.status = this.statusModelToEntity(model.getStatus());
+    problem.status = model.getStatus();
 
     return problem;
   }
@@ -59,8 +59,15 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
     setup.languageId = model.getLanguageId().toNumber();
     setup.initialCode = model.getInitialCode();
     setup.tests = model.getTests().map((test) => this.testModelToEntity(test));
+    setup.solution = this.solutionToEntity(model.getSolution());
 
     return setup;
+  }
+
+  private solutionToEntity(model: Submission): SubmissionEntity {
+    const solution = new SubmissionEntity();
+    solution.id = model.getId().toString();
+    return solution;
   }
 
   private testModelToEntity(model: Test): TestEntity {
@@ -79,13 +86,6 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
     test.additionalTestFile = additionalTestFile;
 
     return test;
-  }
-
-  private statusModelToEntity(model: ProblemStatus): ProblemStatusEntity {
-    const status = new ProblemStatusEntity();
-    status.id = model.getId().toNumber();
-
-    return status;
   }
 
   private entityToModel(entity: ProblemEntity): Problem {

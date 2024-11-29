@@ -7,7 +7,6 @@ import { SubmissionRepository } from 'src/submission/domain/submission-repositor
 import { IdImplementation } from 'src/common/domain/id';
 import { CodeExecutionServiceFactory } from 'lib/code-execution/code-execution-service-factory';
 import { CodeExecutionResponse } from 'lib/code-execution/code-execution-service';
-import { StatusRepository } from 'src/submission/domain/status-repository';
 import { CodeExecutionEvaluationResultFactory } from 'lib/code-execution/code-execution-evaluation-result-factory';
 
 @EventsHandler(SubmissionCreatedEvent)
@@ -18,9 +17,6 @@ export class SubmissionCreatedEventHandler
 
   @Inject(SubmissionInjectionToken.SUBMISSION_REPOSITORY)
   private readonly submissionRepository: SubmissionRepository;
-
-  @Inject(SubmissionInjectionToken.STATUS_REPOSITORY)
-  private readonly statusRepository: StatusRepository;
 
   @Inject()
   private readonly codeExecutionServiceFactory: CodeExecutionServiceFactory;
@@ -49,26 +45,21 @@ export class SubmissionCreatedEventHandler
       retryDelay,
     );
 
+    console.log('RESULT: ', result);
+
     const evaluator = this.codeExecutionEvaluationResultFactory.getEvaluator(
       foundSubmission.getLanguage(),
     );
 
     const evaluationResult = evaluator.evaluate(result);
 
-    console.log('RESULT: ', evaluationResult);
-
-    const foundStatus = await this.statusRepository.findByDescription(
-      evaluationResult.status,
-    );
-
     const submissionResult = foundSubmission.getSubmissionResults()[0];
 
-    submissionResult.setStatus(foundStatus);
     submissionResult.setStdout(evaluationResult.stdout);
 
     foundSubmission.setSubmissionResults([submissionResult]);
 
-    this.submissionRepository.updateSubmissionResult(submissionResult);
+    await this.submissionRepository.updateSubmissionResult(submissionResult);
 
     this.logger.log(
       `Execution result: ${JSON.stringify(result)}, updatedSubmission: ${foundSubmission}`,
@@ -85,6 +76,8 @@ export class SubmissionCreatedEventHandler
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       const response = await codeExecutionService.getSubmission(token);
+
+      console.log('RESPONSE: ', response);
 
       if (
         response.getStatus().description !== 'In Queue' &&
