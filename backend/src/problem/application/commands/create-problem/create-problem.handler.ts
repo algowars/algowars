@@ -13,7 +13,6 @@ import { CodeExecutionContextFactory } from 'lib/code-execution/code-execution-c
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { ProblemStatus } from 'src/problem/domain/problem-status';
-import { RUNTIME_ERROR_STATUSES } from 'lib/code-execution/judge0/judge0-status';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 @CommandHandler(CreateProblemCommand)

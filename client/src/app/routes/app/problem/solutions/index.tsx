@@ -21,7 +21,7 @@ export const ProblemSolutions = () => {
     }
   }, [isAuthAuthenticated, isAuthAuthenticated, getAccessTokenSilently]);
 
-  const problemSolutions = useGetProblemSolutionsBySlug({
+  useGetProblemSolutionsBySlug({
     slug: slug ?? "",
     accessToken,
   });

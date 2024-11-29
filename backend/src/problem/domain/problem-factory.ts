@@ -13,8 +13,6 @@ import {
   CreateAccountOptions,
 } from 'src/account/domain/account-factory';
 import { ProblemStatus } from './problem-status';
-import { Submission } from 'src/submission/domain/submission';
-import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 
 export type CreateProblemOptions = Readonly<{
   id: string;

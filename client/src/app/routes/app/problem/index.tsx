@@ -12,15 +12,15 @@ export const ProblemRoute = () => {
 
   const { slug } = useParams();
 
-  if (!slug) {
-    return null;
-  }
-
   const problemQuery = useGetProblemBySlug({
-    slug,
+    slug: slug ?? "",
   });
 
   const problem = problemQuery?.data;
+
+  if (!slug) {
+    return null;
+  }
 
   return (
     <div>
