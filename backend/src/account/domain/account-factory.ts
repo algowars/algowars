@@ -6,7 +6,7 @@ import { Id, IdImplementation } from 'src/common/domain/id';
 import { UserSubImplementation } from './user-sub';
 import { UsernameImplementation } from './username';
 
-type CreateAccountOptions = Readonly<{
+export type CreateAccountOptions = Readonly<{
   id: Id;
   username: string;
   sub: string;

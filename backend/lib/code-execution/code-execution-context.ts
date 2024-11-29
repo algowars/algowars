@@ -1,20 +1,14 @@
-import {
-  CodeExecutionRequest,
-  CodeExecutionResponse,
-  CodeExecutionService,
-} from './code-execution-service';
+import { AdditionalTestFile } from 'src/problem/domain/additional-test-file';
+import { CodeExecutionEngine } from './code-execution-engines';
 
-export abstract class CodeExecutionContext {
-  constructor(protected readonly codeExecutionService: CodeExecutionService) {}
-
-  abstract build(
+export interface CodeExecutionContext {
+  build(
     sourceCode: string,
+    additionalFiles?: AdditionalTestFile,
     input?: string,
-  ): Promise<CodeExecutionRequest>;
+  ): Promise<any>;
 
-  async execute(
-    codeExecutionRequest: CodeExecutionRequest,
-  ): Promise<CodeExecutionResponse> {
-    return this.codeExecutionService.run(codeExecutionRequest);
-  }
+  getEngine(): CodeExecutionEngine;
+
+  execute(codeExecutionRequest: {}): Promise<any>;
 }

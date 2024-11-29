@@ -8,6 +8,7 @@ import { AccountModule } from './account/account.module';
 import { RequestStorageMiddleware } from 'lib/request-storage-middleware';
 import { SubmissionModule } from './submission/submission.module';
 import { CodeExecutionModule } from 'lib/code-execution/code-execution.module';
+import { S3Module } from 'lib/s3.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CodeExecutionModule } from 'lib/code-execution/code-execution.module';
       isGlobal: true,
     }),
     DatabaseModule,
+    S3Module,
     CodeExecutionModule,
     ProblemModule,
     ThrottlerModule.forRoot(),

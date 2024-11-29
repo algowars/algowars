@@ -9,7 +9,7 @@ import { Problem } from "../models/problem.model";
 import { ProblemEditorCreatedBy } from "./problem-editor-createdby/problem-editor-createdby";
 import { ProblemEditorFooter } from "./problem-editor-footer/problem-editor-footer";
 import { useCreateSubmission } from "@/features/submission/api/create-submission";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 type ProblemEditorProps = {
@@ -18,28 +18,14 @@ type ProblemEditorProps = {
 
 export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const { getAccessTokenSilently } = useAuth0();
-  const [code, setCode] = useState<string>(`// Import uvu and assert
-const { test } = require('uvu');
-const assert = require('uvu/assert');
-
-// Basic test
-test('addition', () => {
-  const sum = 1 + 1;
-  assert.is(sum, 2, '1 + 1 should equal 2');
-});
-
-// Another test
-test('object equality', () => {
-  const obj1 = { name: 'test' };
-  const obj2 = { name: 'test' };
-  
-  assert.equal(obj1, obj2, 'Objects should be deeply equal');
-});
-
-// Run the tests
-test.run();
-`);
+  const [code, setCode] = useState<string>("");
   const createSubmissionMutation = useCreateSubmission();
+
+  useEffect(() => {
+    if (problem?.initialCode) {
+      setCode(problem?.initialCode);
+    }
+  }, [problem?.initialCode]);
 
   if (!problem) {
     return null;
@@ -81,7 +67,7 @@ test.run();
           <ResizableHandle className="p-2 bg-inherit hover:bg-muted" />
           <ResizablePanel defaultSize={45} minSize={10}>
             <ResizablePanelGroup direction="vertical">
-              <ResizablePanel defaultSize={80} minSize={15}>
+              <ResizablePanel defaultSize={100} minSize={15}>
                 <Card className="h-full">
                   <div className="p-5 border-b">
                     <h2 className="text-2xl font-semibold">{problem.title}</h2>
@@ -90,8 +76,8 @@ test.run();
                   <div className="p-5">{problem.question}</div>
                 </Card>
               </ResizablePanel>
-              <ResizableHandle className="p-3 bg-inherit hover:bg-muted" />
-              <ResizablePanel defaultSize={20} minSize={15}>
+              {/* <ResizableHandle className="p-3 bg-inherit hover:bg-muted" /> */}
+              <ResizablePanel defaultSize={0}>
                 <Card className="h-full">
                   <div className="p-5 border-b">
                     <h2 className="text-2xl font-semibold">{problem.title}</h2>

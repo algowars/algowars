@@ -3,10 +3,12 @@ import { CreateSubmissionCommand } from './create-submission.command';
 import { Id } from 'src/common/domain/id';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { InjectionToken } from '../../injection-token';
+import { InjectionToken as ProblemInjectionToken } from '../../../../problem/application/injection-token';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
-import { LanguageRepository } from 'src/problem/domain/language-repository';
 import { CodeExecutionContextFactory } from 'lib/code-execution/code-execution-context-factory';
+import { ProblemSetupRepository } from 'src/problem/domain/problem-setup-repository';
+import { LanguageRepository } from 'src/problem/domain/language-repository';
 
 @CommandHandler(CreateSubmissionCommand)
 export class CreateSubmissionHandler
@@ -14,28 +16,36 @@ export class CreateSubmissionHandler
 {
   @Inject(InjectionToken.SUBMISSION_REPOSITORY)
   private readonly submissionRepository: SubmissionRepository;
-  @Inject(InjectionToken.LANGUAGE_REPOSITORY)
-  private readonly languageRepository: LanguageRepository;
   @Inject()
   private readonly submissionFactory: SubmissionFactory;
+  @Inject(ProblemInjectionToken.PROBLEM_SETUP_REPOSITORY)
+  private readonly problemSetupRepository: ProblemSetupRepository;
+  @Inject(ProblemInjectionToken.LANGUAGE_REPOSITORY)
+  private readonly languageRepository: LanguageRepository;
   @Inject()
   private readonly contextFactory: CodeExecutionContextFactory;
 
   async execute(command: CreateSubmissionCommand): Promise<Id> {
+    const setup = await this.problemSetupRepository.findByProblemSlug(
+      command.request.problemSlug,
+      command.request.languageId,
+    );
+
     const language = await this.languageRepository.findById(
       command.request.languageId,
     );
 
-    if (!language) {
+    if (!setup || !language) {
       throw new NotFoundException('Language not found');
     }
 
     const executionContext = this.contextFactory.createContext(language);
 
     const builtRequest = await executionContext.build(
-      command.request.sourceCode,
+      `${command.request.sourceCode}
+${setup.getTests()[0].getCode()}`,
+      setup.getTests()[0].getAdditionalTestFile(),
     );
-
     const executionResult = await executionContext.execute(builtRequest);
 
     const submissionId = await this.submissionRepository.newId();
@@ -45,9 +55,12 @@ export class CreateSubmissionHandler
       sourceCode: command.request.sourceCode,
       createdBy: command.account,
       results: [executionResult],
+      codeExecutionContext: executionContext.getEngine(),
     });
 
     await this.submissionRepository.save(submission);
+
+    submission.create();
 
     submission.commit();
 

@@ -1,7 +1,7 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { SubmissionEntity } from './submission.entity';
-import { StatusEntity } from './status.entity';
+import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 export interface SubmissionResultEntityProperties {
   token: string;
@@ -18,6 +18,7 @@ export interface SubmissionResultEntityProperties {
   updatedAt?: Date;
   deletedAt?: Date | null;
   version?: number;
+  status: SubmissionStatus;
 }
 
 @Entity('submission-result')
@@ -55,8 +56,12 @@ export class SubmissionResultEntity extends BaseEntity {
   @ManyToOne(() => SubmissionEntity, (submission) => submission.results)
   readonly submission?: SubmissionEntity;
 
-  @ManyToOne(() => StatusEntity, (status) => status.submissionResults)
-  readonly status?: StatusEntity;
+  @Column({
+    type: 'enum',
+    enum: SubmissionStatus,
+    default: SubmissionStatus.IN_QUEUE,
+  })
+  readonly status: SubmissionStatus;
 
   constructor(submissionResultProperties: SubmissionResultEntityProperties) {
     super();

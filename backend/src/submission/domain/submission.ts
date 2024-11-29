@@ -7,12 +7,15 @@ import {
   BaseDomainAggregateRootImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
+import { SubmissionCreatedEvent } from './events/submission-created-event';
+import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
 
 export type SubmissionEssentialProperties = Readonly<
   Required<{
     createdBy: Account;
     language: Language;
     sourceCode: string;
+    codeExecutionContext: CodeExecutionEngine;
   }>
 >;
 
@@ -28,10 +31,13 @@ export type SubmissionProperties = SubmissionEssentialProperties &
   BaseDomainProperties;
 
 export interface Submission extends BaseDomainAggregateRoot {
-  getCreatedBy: () => Account;
-  getSourceCode: () => string;
-  getSubmissionResults: () => SubmissionResult[];
-  getLanguage: () => Language;
+  getCreatedBy(): Account;
+  getSourceCode(): string;
+  getSubmissionResults(): SubmissionResult[];
+  setSubmissionResults(results: SubmissionResult[]): void;
+  getLanguage(): Language;
+  getCodeExecutionContext(): CodeExecutionEngine;
+  create(): void;
 }
 
 export class SubmissionImplementation
@@ -39,9 +45,10 @@ export class SubmissionImplementation
   implements Submission
 {
   private readonly sourceCode: string;
-  private readonly submissionResults: SubmissionResult[];
+  private submissionResults: SubmissionResult[];
   private readonly createdBy: Account;
   private readonly language: Language;
+  private readonly codeExecutionContext: CodeExecutionEngine;
 
   constructor(properties: SubmissionProperties) {
     super(properties);
@@ -52,6 +59,10 @@ export class SubmissionImplementation
     return this.createdBy;
   }
 
+  getCodeExecutionContext(): CodeExecutionEngine {
+    return this.codeExecutionContext;
+  }
+
   getSourceCode() {
     return this.sourceCode;
   }
@@ -60,7 +71,15 @@ export class SubmissionImplementation
     return this.submissionResults;
   }
 
+  setSubmissionResults(results: SubmissionResult[]): void {
+    this.submissionResults = results;
+  }
+
   getLanguage() {
     return this.language;
+  }
+
+  create(): void {
+    this.apply(new SubmissionCreatedEvent(this.getId().toString()));
   }
 }

@@ -23,6 +23,10 @@ import { GetProblemsPageableParam } from './dto/request/get-problems-pageable-pa
 import { PageResult } from 'src/common/pagination/page-result';
 import { GetProblemsPaginatedResponse } from './dto/response/get-problems-paginated-response.dto';
 import { GetProblemsPageableQuery } from '../application/queries/get-problems-pageable-query/get-problems-pageable.query';
+import { CreateProblemSetupRequest } from './dto/request/create-problem-setup.dto';
+import { GetProblemSetupResponse } from './dto/response/get-problem-setup-response.dto';
+import { GetProblemSetupQuery } from '../application/queries/get-problem-setup-query/get-problem-setup.query';
+import { FindProblemBySlugRequestQuery } from './dto/request/find-problem-by-slug-request-query.dto';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -43,8 +47,20 @@ export class ProblemController {
   @Get('find/slug/:slug')
   async findProblemBySlug(
     @Param() param: FindProblemBySlugRequestParam,
+    @Query() query: FindProblemBySlugRequestQuery,
   ): Promise<FindProblemBySlugResponseDto> {
-    return this.queryBus.execute(new FindProblemBySlugQuery(param.slug));
+    return this.queryBus.execute(
+      new FindProblemBySlugQuery(param.slug, query.languageId),
+    );
+  }
+
+  @UseGuards(PermissionsGuard([ProblemPermissions.CREATE_PROBLEM]))
+  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
+  @Get('create/setup')
+  async getCreateProblemSetup(
+    @Query() query: CreateProblemSetupRequest,
+  ): Promise<GetProblemSetupResponse> {
+    return this.queryBus.execute(new GetProblemSetupQuery(query.languageId));
   }
 
   @UseGuards(PermissionsGuard([ProblemPermissions.CREATE_PROBLEM]))
@@ -52,7 +68,6 @@ export class ProblemController {
   @Post()
   async createProblem(
     @Body() body: CreateProblemRequest,
-
     @Req() request: Request,
   ): Promise<string> {
     const account = request?.account;

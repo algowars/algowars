@@ -8,7 +8,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { AccountRepositoryImplementation } from './infrastructure/repositories/account-repository-implementation';
 import { AccountCommandHandlers } from './application/commands';
 
-const infrastructure: Provider[] = [
+export const infrastructure: Provider[] = [
   {
     provide: InjectionToken.ACCOUNT_QUERY,
     useClass: AccountQueryImplementation,
@@ -19,13 +19,14 @@ const infrastructure: Provider[] = [
   },
 ];
 
-const application = [...AccountQueryHandlers, ...AccountCommandHandlers];
+export const application = [...AccountQueryHandlers, ...AccountCommandHandlers];
 
-const domain = [AccountFactory];
+export const domain = [AccountFactory];
 
 @Module({
   imports: [CqrsModule],
   controllers: [AccountController],
   providers: [Logger, ...infrastructure, ...application, ...domain],
+  exports: [...infrastructure, ...domain],
 })
 export class AccountModule {}

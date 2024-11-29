@@ -6,4 +6,5 @@ export interface Problem {
   slug: string;
   question: string;
   createdBy?: Account;
+  initialCode?: string;
 }

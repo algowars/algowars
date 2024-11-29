@@ -15,6 +15,23 @@ export class LanguageRepositoryImplementation implements LanguageRepository {
     return entity ? this.entityToModel(entity) : null;
   }
 
+  async findByIdWithAdditionalTestFile(
+    id: number,
+    additionalTestFileId: number,
+  ): Promise<Language | null> {
+    const entity = await readConnection
+      .getRepository(LanguageEntity)
+      .createQueryBuilder('language')
+      .leftJoinAndSelect('language.additionalTestFiles', 'additionalTestFile')
+      .where('language.id = :id', { id })
+      .andWhere('additionalTestFile.id = :additionalTestFileId', {
+        additionalTestFileId,
+      })
+      .getOne();
+
+    return entity ? this.entityToModel(entity) : null;
+  }
+
   async findByName(name: string): Promise<Language | null> {
     const entity = await readConnection
       .getRepository(LanguageEntity)

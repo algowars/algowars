@@ -10,16 +10,16 @@ export type BaseDomainProperties = {
 };
 
 export interface BaseDomain {
-  compareId: (id: Id) => boolean;
-  getId: () => Id;
-  getCreatedAt: () => Date;
-  getUpdatedAt: () => Date;
-  getDeletedAt: () => Date | null;
-  getVersion: () => number;
+  compareId(id: Id): boolean;
+  getId(): Id;
+  getCreatedAt(): Date;
+  getUpdatedAt(): Date;
+  getDeletedAt(): Date | null;
+  getVersion(): number;
 }
 
 export interface BaseDomainAggregateRoot extends BaseDomain {
-  commit: () => void;
+  commit(): void;
 }
 
 export abstract class BaseDomainAggregateRootImplementation

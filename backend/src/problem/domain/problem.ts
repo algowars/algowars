@@ -5,6 +5,8 @@ import {
   BaseDomainAggregateRootImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
+import { ProblemSetup } from './problem-setup';
+import { ProblemStatus } from './problem-status';
 
 export type ProblemEssentialProperties = Readonly<
   Required<{
@@ -12,10 +14,18 @@ export type ProblemEssentialProperties = Readonly<
     slug: string;
     question: string;
     createdBy: Account;
+    status: ProblemStatus;
+  }>
+>;
+
+export type ProblemOptionalProperties = Readonly<
+  Partial<{
+    setups: ProblemSetup[];
   }>
 >;
 
 export type ProblemProperties = ProblemEssentialProperties &
+  ProblemOptionalProperties &
   BaseDomainProperties;
 
 export interface Problem extends BaseDomainAggregateRoot {
@@ -24,6 +34,9 @@ export interface Problem extends BaseDomainAggregateRoot {
   getSlug(): string;
   getExampleTestcases(): ExampleTestcase[];
   getCreatedBy(): Account;
+  getSetups(): ProblemSetup[];
+  getStatus(): ProblemStatus;
+  hasSetups(): boolean;
 }
 
 export class ProblemImplementation
@@ -35,10 +48,13 @@ export class ProblemImplementation
   private readonly slug: string;
   private readonly exampleTestcases: ExampleTestcase[];
   private readonly createdBy: Account;
+  private readonly setups?: ProblemSetup[];
+  private readonly status: ProblemStatus;
 
   constructor(properties: ProblemProperties) {
     super(properties);
     Object.assign(this, properties);
+    this.setups = properties.setups ?? [];
   }
 
   getCreatedBy(): Account {
@@ -59,5 +75,17 @@ export class ProblemImplementation
 
   getTitle(): string {
     return this.title;
+  }
+
+  getSetups(): ProblemSetup[] {
+    return this.setups;
+  }
+
+  hasSetups(): boolean {
+    return this.getSetups().length > 0;
+  }
+
+  getStatus(): ProblemStatus {
+    return this.status;
   }
 }

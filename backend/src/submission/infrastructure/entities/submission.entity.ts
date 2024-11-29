@@ -9,25 +9,29 @@ import {
 } from 'typeorm';
 import { SubmissionResultEntity } from './submission-result.entity';
 import { BaseEntity } from 'src/common/entities/base-entity';
+import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
 
 @Entity('submission')
 export class SubmissionEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  readonly id: string;
+  id: string;
 
   @Column({ nullable: false })
-  readonly sourceCode: string;
+  sourceCode: string;
 
   @ManyToOne(() => LanguageEntity, (language) => language.submissions)
-  readonly language: LanguageEntity;
+  language?: LanguageEntity;
 
   @OneToMany(
     () => SubmissionResultEntity,
     (submissionResult) => submissionResult.submission,
     { cascade: true },
   )
-  readonly results: SubmissionResultEntity[];
+  results?: SubmissionResultEntity[];
+
+  @Column({ nullable: false })
+  codeExecutionContext: CodeExecutionEngine;
 
   @ManyToOne(() => AccountEntity, (account) => account.submissions)
-  readonly createdBy: AccountEntity;
+  createdBy?: AccountEntity;
 }

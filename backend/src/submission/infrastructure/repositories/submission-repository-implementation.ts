@@ -24,7 +24,10 @@ export class SubmissionRepositoryImplementation
   async findById(id: Id): Promise<Submission | null> {
     const entity = await readConnection
       .getRepository(SubmissionEntity)
-      .findOneBy({ id: id.toString() });
+      .findOne({
+        where: { id: id.toString() },
+        relations: ['results', 'language', 'createdBy'],
+      });
 
     return entity ? this.entityToModel(entity) : null;
   }
@@ -32,9 +35,20 @@ export class SubmissionRepositoryImplementation
   async save(data: Submission | Submission[]): Promise<void> {
     const models = Array.isArray(data) ? data : [data];
     const entities = models.map((model) => this.modelToEntity(model));
+
     await writeConnection.manager
       .getRepository(SubmissionEntity)
       .save(entities);
+  }
+
+  async updateSubmissionResult(
+    submissionResult: SubmissionResult,
+  ): Promise<void> {
+    const entity = this.resultsToEntity([submissionResult]);
+
+    await writeConnection.manager
+      .getRepository(SubmissionResultEntity)
+      .save(entity);
   }
 
   private modelToEntity(model: Submission): SubmissionEntity {
@@ -48,6 +62,7 @@ export class SubmissionRepositoryImplementation
       updatedAt: model.getUpdatedAt(),
       deletedAt: model.getDeletedAt(),
       version: model.getVersion(),
+      codeExecutionContext: model.getCodeExecutionContext(),
       language: this.languageToEntity(model.getLanguage()),
       results: model?.getSubmissionResults()
         ? this.resultsToEntity(model.getSubmissionResults())
@@ -64,6 +79,10 @@ export class SubmissionRepositoryImplementation
       deletedAt: language.getDeletedAt(),
       version: language.getVersion(),
       isArchived: language.getIsArchived(),
+      additionalTestFiles: [],
+      setups: [],
+      initialCode: language.getInitialCode(),
+      initialSolution: language.getInitialSolution(),
     };
   }
 
@@ -85,6 +104,16 @@ export class SubmissionRepositoryImplementation
     return results.map((result) => {
       return new SubmissionResultEntity({
         token: result.getToken(),
+        sourceCode: result.getSourceCode(),
+        languageId: result.getLanguageId(),
+        stdin: result.getStdin(),
+        stdout: result.getStdout(),
+        time: result.getTime(),
+        memory: result.getMemory(),
+        stderr: result.getStderr(),
+        expectedOutput: result.getExpectedOutput(),
+        message: result.getMessage(),
+        status: result.getStatus(),
       });
     });
   }

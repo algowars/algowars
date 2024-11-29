@@ -10,6 +10,7 @@ import { LanguageEntity } from 'src/problem/infrastructure/entities/language.ent
 import { UserSubImplementation } from 'src/account/domain/user-sub';
 import { UsernameImplementation } from 'src/account/domain/username';
 import { SubmissionResultImplementation } from './submission-result';
+import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
 
 type CreateSubmissionOptions = Readonly<{
   id: Id;
@@ -19,18 +20,21 @@ type CreateSubmissionOptions = Readonly<{
   results: {
     token: string;
   }[];
+  codeExecutionContext: CodeExecutionEngine;
 }>;
 
 export class SubmissionFactory {
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
 
   create(options: CreateSubmissionOptions): Submission {
-    const results = options.results.map(
-      (result) =>
-        new SubmissionResultImplementation({
-          token: result.token,
-        }),
-    );
+    const results = Array.isArray(options.results)
+      ? options.results.map(
+          (result) =>
+            new SubmissionResultImplementation({
+              token: result.token,
+            }),
+        )
+      : null;
 
     return this.eventPublisher.mergeObjectContext(
       new SubmissionImplementation({
@@ -49,13 +53,18 @@ export class SubmissionFactory {
 
     return this.create({
       id,
-      createdBy: this.mapAccountEntityToDomain(submissionEntity.createdBy),
-      language: this.mapLanguageEntityToDomain(submissionEntity.language),
+      createdBy: submissionEntity?.createdBy
+        ? this.mapAccountEntityToDomain(submissionEntity.createdBy)
+        : null,
+      language: submissionEntity?.language
+        ? this.mapLanguageEntityToDomain(submissionEntity.language)
+        : null,
       sourceCode: submissionEntity.sourceCode,
       results:
         submissionEntity?.results.map((result) => ({
           token: result.token,
         })) ?? [],
+      codeExecutionContext: submissionEntity.codeExecutionContext,
     });
   }
 

@@ -14,7 +14,7 @@ type CodeEditorProps = {
 export const CodeEditor = ({
   code,
   changeCode,
-  className,
+  className = "border rounded",
 }: CodeEditorProps) => {
   const { getThemeWithSystem } = useTheme();
 

@@ -1,6 +1,8 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
 import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ProblemSetupEntity } from './problem-setup.entity';
+import { AdditionalTestFileEntity } from './additional-test-file.entity';
 
 @Entity('language')
 export class LanguageEntity extends BaseEntity {
@@ -16,6 +18,25 @@ export class LanguageEntity extends BaseEntity {
   @Column({ default: true })
   readonly isAvailable?: boolean;
 
-  @OneToMany(() => SubmissionEntity, (submission) => submission.language)
-  readonly submissions?: Promise<SubmissionEntity[]>;
+  @Column({ nullable: false })
+  readonly initialCode: string;
+
+  @Column({ nullable: false })
+  readonly initialSolution: string;
+
+  @OneToMany(() => SubmissionEntity, (submission) => submission.language, {
+    lazy: true,
+  })
+  readonly submissions?: SubmissionEntity[];
+
+  @OneToMany(() => ProblemSetupEntity, (setup) => setup.language, {
+    lazy: true,
+  })
+  readonly setups: ProblemSetupEntity[];
+
+  @OneToMany(
+    () => AdditionalTestFileEntity,
+    (additionalTestFiles) => additionalTestFiles.language,
+  )
+  readonly additionalTestFiles: AdditionalTestFileEntity[];
 }
