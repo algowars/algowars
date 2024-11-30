@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/components/auth/auth-provider/auth-provider";
+import { IsAuthLoaded } from "@/components/auth/is-auth-loaded/is-auth-loaded";
 import { MainErrorFallback } from "@/components/error/main-error-fallback";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Spinner } from "@/components/ui/spinner";
@@ -36,8 +37,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
             <QueryClientProvider client={queryClient}>
               <AccountStoreProvider>
                 <ThemeProvider>
-                  {import.meta.env.DEV && <ReactQueryDevtools />}
-                  {children}
+                  <IsAuthLoaded>
+                    {import.meta.env.DEV && <ReactQueryDevtools />}
+                    {children}
+                  </IsAuthLoaded>
                 </ThemeProvider>
               </AccountStoreProvider>
             </QueryClientProvider>

@@ -63,4 +63,7 @@ export class ProblemController {
 
     return id.toString();
   }
+
+  @Get('find/slug/:slug/test/solutions')
+  async getProblemSolutions() {}
 }

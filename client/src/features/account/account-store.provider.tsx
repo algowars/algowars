@@ -54,34 +54,37 @@ export const AccountStoreProvider = ({
     getAccessTokenSilently,
   } = useAuth0();
   const [store] = useState(() => accountStore);
-  const [isLoading, setIsLoading] = useState(true);
+  const [accessToken, setAccessToken] = useState<string>("");
   const isAuthenticated = store.getState().account !== null;
 
-  const findAccountBySubMutation = useFindAccountBySub({
-    mutationConfig: {
-      onSuccess: (account: Account) => {
-        if (account) {
-          store.getState().setAccount(account);
-        }
-        setIsLoading(false);
-      },
-    },
+  const findAccountBySubQuery = useFindAccountBySub({
+    accessToken,
   });
+
+  console.log("FIND ACCOUNT BY SUB QUERY: ", findAccountBySubQuery?.data);
+
+  useEffect(() => {
+    if (findAccountBySubQuery.data) {
+      store.getState().setAccount(findAccountBySubQuery.data);
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
       if (!isAuthLoading && isAuthAuthenticated) {
         const accessToken = await getAccessTokenSilently();
-        findAccountBySubMutation.mutate({
-          accessToken,
-        });
+        setAccessToken(accessToken);
       }
     })();
   }, [isAuthAuthenticated, isAuthLoading]);
 
   const value = {
     store,
-    isLoading,
+    isLoading:
+      !isAuthLoading &&
+      isAuthAuthenticated &&
+      !accessToken &&
+      findAccountBySubQuery.isPending,
     isAuthenticated,
   };
 

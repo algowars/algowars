@@ -28,7 +28,7 @@ export const NavbarFull = ({ isAuthenticated }: NavbarFullProps) => {
             </Link>
           </li>
           <li>
-            <Link to={routerConfig.root.path}>Home</Link>
+            <Link to={routerConfig.appRoot.path}>Home</Link>
           </li>
         </ul>
 

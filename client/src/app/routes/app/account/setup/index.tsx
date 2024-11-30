@@ -13,6 +13,13 @@ export const AccountSetupRoute = () => {
   const navigate = useNavigate();
   useAuthPermissions();
 
+  console.log(
+    isAuthAuthenticated,
+    isAuthAuthenticated,
+    isLoading,
+    isAuthenticated
+  );
+
   if (!isAuthLoading && isAuthAuthenticated) {
     if (!isLoading && isAuthenticated) {
       navigate("/app");
