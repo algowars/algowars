@@ -23,6 +23,9 @@ import { GetProblemsPageableParam } from './dto/request/get-problems-pageable-pa
 import { PageResult } from 'src/common/pagination/page-result';
 import { GetProblemsPaginatedResponse } from './dto/response/get-problems-paginated-response.dto';
 import { GetProblemsPageableQuery } from '../application/queries/get-problems-pageable-query/get-problems-pageable.query';
+import { FindProblemSolutionsParam } from './dto/request/find-problem-solutions-param.dto';
+import { FindProblemSolutionsQuery } from '../application/queries/find-problem-solutions-query/find-problem-solutions.query';
+import { FindProblemSolutionsResponse } from './dto/response/find-problem-solutions-response.dto';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -64,6 +67,18 @@ export class ProblemController {
     return id.toString();
   }
 
-  @Get('find/slug/:slug/test/solutions')
-  async getProblemSolutions() {}
+  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
+  @Get('find/slug/:slug/solutions')
+  async getProblemSolutions(
+    @Param() param: FindProblemSolutionsParam,
+    @Req() request: Request,
+  ): Promise<FindProblemSolutionsResponse> {
+    const account = request?.account;
+
+    const results = await this.queryBus.execute(
+      new FindProblemSolutionsQuery(param.slug, account),
+    );
+
+    return results;
+  }
 }

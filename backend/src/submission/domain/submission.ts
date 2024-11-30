@@ -7,12 +7,14 @@ import {
   BaseDomainAggregateRootImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
+import { Problem } from 'src/problem/domain/problem';
 
 export type SubmissionEssentialProperties = Readonly<
   Required<{
     createdBy: Account;
     language: Language;
     sourceCode: string;
+    problem: Problem;
   }>
 >;
 
@@ -28,10 +30,11 @@ export type SubmissionProperties = SubmissionEssentialProperties &
   BaseDomainProperties;
 
 export interface Submission extends BaseDomainAggregateRoot {
-  getCreatedBy: () => Account;
-  getSourceCode: () => string;
-  getSubmissionResults: () => SubmissionResult[];
-  getLanguage: () => Language;
+  getCreatedBy(): Account;
+  getSourceCode(): string;
+  getSubmissionResults(): SubmissionResult[];
+  getLanguage(): Language;
+  getProblem(): Problem;
 }
 
 export class SubmissionImplementation
@@ -42,6 +45,7 @@ export class SubmissionImplementation
   private readonly submissionResults: SubmissionResult[];
   private readonly createdBy: Account;
   private readonly language: Language;
+  private readonly problem: Problem;
 
   constructor(properties: SubmissionProperties) {
     super(properties);
@@ -58,6 +62,10 @@ export class SubmissionImplementation
 
   getSubmissionResults() {
     return this.submissionResults;
+  }
+
+  getProblem(): Problem {
+    return this.problem;
   }
 
   getLanguage() {

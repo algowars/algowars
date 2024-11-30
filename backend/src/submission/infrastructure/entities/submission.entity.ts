@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import { SubmissionResultEntity } from './submission-result.entity';
 import { BaseEntity } from 'src/common/entities/base-entity';
+import { ProblemEntity } from 'src/problem/infrastructure/entities/problem.entity';
+import { Problem } from 'src/problem/domain/problem';
 
 @Entity('submission')
 export class SubmissionEntity extends BaseEntity {
@@ -20,6 +22,9 @@ export class SubmissionEntity extends BaseEntity {
 
   @ManyToOne(() => LanguageEntity, (language) => language.submissions)
   readonly language: LanguageEntity;
+
+  @ManyToOne(() => ProblemEntity, (problem) => problem.submissions)
+  readonly problem: ProblemEntity;
 
   @OneToMany(
     () => SubmissionResultEntity,

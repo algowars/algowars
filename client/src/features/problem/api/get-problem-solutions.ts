@@ -28,7 +28,7 @@ export const getProblemSolutionsQueryOptions = (
   accessToken: string
 ) => {
   return queryOptions({
-    queryKey: ["problem-solutions", slug],
+    queryKey: ["problem-solutions", slug, accessToken],
     queryFn: () => getProblemSolutions({ slug, accessToken }),
   });
 };

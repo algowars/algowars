@@ -5,6 +5,7 @@ import {
   BaseDomainAggregateRootImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
+import { Submission } from 'src/submission/domain/submission';
 
 export type ProblemEssentialProperties = Readonly<
   Required<{
@@ -12,6 +13,7 @@ export type ProblemEssentialProperties = Readonly<
     slug: string;
     question: string;
     createdBy: Account;
+    submissions: Submission[];
   }>
 >;
 
@@ -24,6 +26,7 @@ export interface Problem extends BaseDomainAggregateRoot {
   getSlug(): string;
   getExampleTestcases(): ExampleTestcase[];
   getCreatedBy(): Account;
+  getSubmissions(): Submission[];
 }
 
 export class ProblemImplementation
@@ -35,6 +38,7 @@ export class ProblemImplementation
   private readonly slug: string;
   private readonly exampleTestcases: ExampleTestcase[];
   private readonly createdBy: Account;
+  private readonly submissions: Submission[];
 
   constructor(properties: ProblemProperties) {
     super(properties);
@@ -55,6 +59,10 @@ export class ProblemImplementation
 
   getSlug(): string {
     return this.slug;
+  }
+
+  getSubmissions(): Submission[] {
+    return this.submissions;
   }
 
   getTitle(): string {

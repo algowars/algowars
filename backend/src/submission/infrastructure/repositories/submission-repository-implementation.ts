@@ -11,11 +11,15 @@ import { LanguageEntity } from 'src/problem/infrastructure/entities/language.ent
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 import { SubmissionResult } from 'src/submission/domain/submission-result';
 import { SubmissionResultEntity } from '../entities/submission-result.entity';
+import { Problem } from 'src/problem/domain/problem';
+import { ProblemEntity } from 'src/problem/infrastructure/entities/problem.entity';
+import { ProblemFactory } from 'src/problem/domain/problem-factory';
 
 export class SubmissionRepositoryImplementation
   implements SubmissionRepository
 {
   @Inject() private readonly submissionFactory: SubmissionFactory;
+  @Inject() private readonly problemFactory: ProblemFactory;
 
   async newId(): Promise<Id> {
     return new IdImplementation(new EntityId().toString());
@@ -27,6 +31,14 @@ export class SubmissionRepositoryImplementation
       .findOneBy({ id: id.toString() });
 
     return entity ? this.entityToModel(entity) : null;
+  }
+
+  async findProblemBySlug(slug: string): Promise<Problem> {
+    const entity = await readConnection
+      .getRepository(ProblemEntity)
+      .findOneBy({ slug });
+
+    return entity ? this.problemEntityToModel(entity) : null;
   }
 
   async save(data: Submission | Submission[]): Promise<void> {
@@ -52,7 +64,14 @@ export class SubmissionRepositoryImplementation
       results: model?.getSubmissionResults()
         ? this.resultsToEntity(model.getSubmissionResults())
         : [],
+      problem: model.getProblem()
+        ? this.problemToEntity(model.getProblem())
+        : null,
     };
+  }
+
+  private problemEntityToModel(problemEntity: ProblemEntity): Problem {
+    return this.problemFactory.createFromEntity(problemEntity);
   }
 
   private languageToEntity(language: Language): LanguageEntity {
@@ -64,6 +83,20 @@ export class SubmissionRepositoryImplementation
       deletedAt: language.getDeletedAt(),
       version: language.getVersion(),
       isArchived: language.getIsArchived(),
+    };
+  }
+
+  private problemToEntity(problem: Problem): ProblemEntity {
+    return {
+      id: problem.getId().toString(),
+      title: problem.getTitle(),
+      question: problem.getQuestion(),
+      slug: problem.getSlug(),
+      createdBy: this.accountToEntity(problem.getCreatedBy()),
+      createdAt: problem.getCreatedAt(),
+      updatedAt: problem.getUpdatedAt(),
+      deletedAt: problem.getDeletedAt(),
+      version: problem.getVersion(),
     };
   }
 

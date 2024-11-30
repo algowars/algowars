@@ -10,6 +10,8 @@ import { LanguageEntity } from 'src/problem/infrastructure/entities/language.ent
 import { UserSubImplementation } from 'src/account/domain/user-sub';
 import { UsernameImplementation } from 'src/account/domain/username';
 import { SubmissionResultImplementation } from './submission-result';
+import { Problem } from 'src/problem/domain/problem';
+import { ProblemFactory } from 'src/problem/domain/problem-factory';
 
 type CreateSubmissionOptions = Readonly<{
   id: Id;
@@ -19,10 +21,12 @@ type CreateSubmissionOptions = Readonly<{
   results: {
     token: string;
   }[];
+  problem: Problem;
 }>;
 
 export class SubmissionFactory {
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
+  @Inject() private readonly problemFactory: ProblemFactory;
 
   create(options: CreateSubmissionOptions): Submission {
     const results = options.results.map(
@@ -56,6 +60,9 @@ export class SubmissionFactory {
         submissionEntity?.results.map((result) => ({
           token: result.token,
         })) ?? [],
+      problem: submissionEntity.problem
+        ? this.problemFactory.createFromEntity(submissionEntity.problem)
+        : null,
     });
   }
 

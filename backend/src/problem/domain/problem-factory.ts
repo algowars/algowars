@@ -33,17 +33,28 @@ export class ProblemFactory {
   }
 
   createFromEntity(problemEntity: ProblemEntity): Problem {
+    let createdBy = null;
+
+    if (problemEntity?.createdBy) {
+      createdBy = this.mapAccountEntityToDomain(problemEntity.createdBy);
+    }
     return this.create({
       ...problemEntity,
-      createdBy: this.mapAccountEntityToDomain(problemEntity.createdBy),
+      createdBy,
     });
   }
 
   reconstituteFromEntity(problemEntity: ProblemEntity): Problem {
+    let createdBy = null;
+
+    if (problemEntity?.createdBy) {
+      createdBy = this.mapAccountEntityToDomain(problemEntity.createdBy);
+    }
+
     return this.reconstitute({
       ...problemEntity,
       id: new IdImplementation(problemEntity.id),
-      createdBy: this.mapAccountEntityToDomain(problemEntity.createdBy),
+      createdBy,
     });
   }
 

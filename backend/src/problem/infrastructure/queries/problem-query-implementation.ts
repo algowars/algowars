@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { readConnection } from 'lib/database.module';
 import { ProblemQuery } from 'src/problem/application/queries/problem-query';
 import { ProblemEntity } from '../entities/problem.entity';
@@ -6,9 +6,14 @@ import { FindProblemBySlugResult } from 'src/problem/application/queries/find-pr
 import { PageResult } from 'src/common/pagination/page-result';
 import { GetProblemsPageableResult } from 'src/problem/application/queries/get-problems-pageable-query/get-problems-pageable-result';
 import { Pagination } from 'src/common/pagination/pagination';
+import { Id } from 'src/common/domain/id';
+import { Problem } from 'src/problem/domain/problem';
+import { ProblemFactory } from 'src/problem/domain/problem-factory';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
+  @Inject() private readonly problemFactory: ProblemFactory;
+
   findBySlug(slug: string): Promise<FindProblemBySlugResult | null> {
     return readConnection
       .getRepository(ProblemEntity)
@@ -50,5 +55,28 @@ export class ProblemQueryImplementation implements ProblemQuery {
     );
 
     return pageResult;
+  }
+
+  async findBySlugWithSubmissions(
+    slug: string,
+    accountId: Id,
+  ): Promise<Problem | null> {
+    const entity = await readConnection
+      .getRepository(ProblemEntity)
+      .createQueryBuilder('problem')
+      .leftJoinAndSelect('problem.createdBy', 'createdBy')
+      .leftJoinAndSelect('problem.submissions', 'submission')
+      .leftJoinAndSelect('submission.createdBy', 'submissionCreatedBy')
+      .where('problem.slug = :slug', { slug })
+      .andWhere('submissionCreatedBy.id = :accountId', {
+        accountId: accountId.toString(),
+      })
+      .getOne();
+
+    return this.entityToModel(entity);
+  }
+
+  private entityToModel(entity: ProblemEntity): Problem {
+    return this.problemFactory.createFromEntity(entity);
   }
 }

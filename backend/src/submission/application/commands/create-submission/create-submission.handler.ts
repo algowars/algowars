@@ -30,6 +30,16 @@ export class CreateSubmissionHandler
       throw new NotFoundException('Language not found');
     }
 
+    const problem = await this.submissionRepository.findProblemBySlug(
+      command.request.problemSlug,
+    );
+
+    if (!problem) {
+      throw new NotFoundException(
+        `Problem not found for slug "${command.request.problemSlug}"`,
+      );
+    }
+
     const executionContext = this.contextFactory.createContext(language);
 
     const builtRequest = await executionContext.build(
@@ -45,6 +55,7 @@ export class CreateSubmissionHandler
       sourceCode: command.request.sourceCode,
       createdBy: command.account,
       results: [executionResult],
+      problem,
     });
 
     await this.submissionRepository.save(submission);

@@ -4,6 +4,12 @@ import { Problem, ProblemProperties } from 'src/problem/domain/problem';
 import { ProblemFactory } from 'src/problem/domain/problem-factory';
 import { ProblemRepository } from 'src/problem/domain/problem-repository';
 import { ProblemEntity } from '../entities/problem.entity';
+import { Submission } from 'src/submission/domain/submission';
+import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
+import { Language } from 'src/problem/domain/language';
+import { LanguageEntity } from '../entities/language.entity';
+import { SubmissionResultEntity } from 'src/submission/infrastructure/entities/submission-result.entity';
+import { SubmissionResult } from 'src/submission/domain/submission-result';
 
 export class ProblemRepositoryImplementation implements ProblemRepository {
   @Inject() private readonly problemFactory: ProblemFactory;
@@ -41,6 +47,75 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
         deletedAt: createdBy.getDeletedAt(),
         version: createdBy.getVersion(),
       },
+    };
+  }
+
+  private submissionsToEntity(
+    submission: Submission[] | null,
+  ): SubmissionEntity[] {
+    if (!submission) {
+      return null;
+    }
+  }
+
+  private submissionToEntity(submission: Submission | null): SubmissionEntity {
+    if (!submission) {
+      return null;
+    }
+
+    return {
+      id: submission.getId().toString(),
+      sourceCode: submission.getSourceCode(),
+      language: this.languageToEntity(submission.getLanguage()),
+      results: submission.getSubmissionResults(),
+      createdBy: submission.getCreatedBy(),
+    };
+  }
+
+  private languageToEntity(language: Language | null): LanguageEntity | null {
+    if (!language) {
+      return null;
+    }
+
+    return {
+      id: language.getId().toNumber(),
+      name: language.getName(),
+      isArchived: language.getIsArchived(),
+      isAvailable: language.getIsAvailable(),
+      createdAt: language.getCreatedAt(),
+      updatedAt: language.getUpdatedAt(),
+      deletedAt: language.getDeletedAt(),
+      version: language.getVersion(),
+    };
+  }
+
+  private resultsToEntity(
+    results: SubmissionResult[] | null,
+  ): SubmissionResultEntity[] {
+    if (!results) {
+      return [];
+    }
+  }
+
+  private resultToEntity(
+    result: SubmissionResult | null,
+  ): SubmissionResultEntity | null {
+    if (!result) {
+      return null;
+    }
+
+    return {
+      token: result.getToken(),
+      sourceCode: result.getSourceCode(),
+      languageId: result.getLanguageId(),
+      stdin: result.getStdin(),
+      stdout: result.getStdout(),
+      time: result.getTime(),
+      memory: result.getMemory(),
+      stderr: result.getStderr(),
+      expectedOutput: result.getExpectedOutput(),
+      message: result.getMessage(),
+      status: result.getStatus(),
     };
   }
 
