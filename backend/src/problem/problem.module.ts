@@ -20,6 +20,7 @@ import { AccountModule } from 'src/account/account.module';
 import { domain as accountDomain } from 'src/account/account.module';
 import { SubmissionRepositoryImplementation } from 'src/submission/infrastructure/repositories/submission-repository-implementation';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
+import { SubmissionResultFactory } from 'src/submission/domain/submission-result-factory';
 
 export const infrastructure: Provider[] = [
   {
@@ -58,6 +59,7 @@ export const domain = [
   ProblemFactory,
   LanguageFactory,
   SubmissionFactory,
+  SubmissionResultFactory,
   ProblemSetupFactory,
   TestFactory,
   AdditionalTestFileFactory,

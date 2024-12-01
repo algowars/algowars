@@ -8,6 +8,8 @@ import {
 } from 'src/problem/domain/test-factory';
 import { Submission } from 'src/submission/domain/submission';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
+import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
+import { LanguageFactory } from './language-factory';
 
 export type CreateProblemSetupOptions = Readonly<{
   problemId: string;
@@ -17,9 +19,12 @@ export type CreateProblemSetupOptions = Readonly<{
   solution: Submission;
 }>;
 
-export class ProblemSetupFactory {
+export class ProblemSetupFactory
+  implements EntityDomainFactory<ProblemSetup, ProblemSetupEntity>
+{
   @Inject() private readonly testFactory: TestFactory;
   @Inject() private readonly submissionFactory: SubmissionFactory;
+  @Inject() private readonly languageFactory: LanguageFactory;
 
   create(options: CreateProblemSetupOptions): ProblemSetup {
     return new ProblemSetupImplementation({
@@ -37,9 +42,7 @@ export class ProblemSetupFactory {
     });
   }
 
-  async createFromEntity(
-    problemSetupEntity: ProblemSetupEntity,
-  ): Promise<ProblemSetup> {
+  createFromEntity(problemSetupEntity: ProblemSetupEntity): ProblemSetup {
     const solution = problemSetupEntity?.solution
       ? this.submissionFactory.createFromEntity(problemSetupEntity.solution)
       : null;
@@ -54,5 +57,30 @@ export class ProblemSetupFactory {
       ),
       solution,
     });
+  }
+
+  createEntityFromDomain(domain: ProblemSetup): ProblemSetupEntity {
+    let tests = [];
+
+    if (Array.isArray(domain.getTests())) {
+      tests = domain.getTests().map(this.testFactory.createEntityFromDomain);
+    }
+
+    return {
+      problemId: domain.getProblemId().toString(),
+      languageId: domain.getLanguageId().toNumber(),
+      language: this.languageFactory.createEntityFromDomain(
+        domain.getLanguage(),
+      ),
+      solution: this.submissionFactory.createEntityFromDomain(
+        domain.getSolution(),
+      ),
+      tests,
+      initialCode: domain.getInitialCode(),
+      createdAt: domain.getCreatedAt(),
+      updatedAt: domain.getUpdatedAt(),
+      deletedAt: domain.getDeletedAt(),
+      version: domain.getVersion(),
+    };
   }
 }

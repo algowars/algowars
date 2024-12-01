@@ -6,6 +6,7 @@ import {
   AdditionalTestFileFactory,
   CreateAdditionalTestFileOptions,
 } from './additional-test-file-factory';
+import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
 
 export type CreateTestOptions = Readonly<{
   id: string;
@@ -17,7 +18,7 @@ export type CreateTestOptions = Readonly<{
   additionalTestFile?: CreateAdditionalTestFileOptions;
 }>;
 
-export class TestFactory {
+export class TestFactory implements EntityDomainFactory<Test, TestEntity> {
   @Inject()
   private readonly additionalTestFileFactory: AdditionalTestFileFactory;
 
@@ -41,5 +42,19 @@ export class TestFactory {
           )
         : undefined,
     });
+  }
+
+  createEntityFromDomain(domain: Test): TestEntity {
+    return {
+      id: domain.getId().toString(),
+      code: domain.getCode(),
+      additionalTestFile: this.additionalTestFileFactory.createEntityFromDomain(
+        domain.getAdditionalTestFile(),
+      ),
+      createdAt: domain.getCreatedAt(),
+      updatedAt: domain.getUpdatedAt(),
+      deletedAt: domain.getDeletedAt(),
+      version: domain.getVersion(),
+    };
   }
 }

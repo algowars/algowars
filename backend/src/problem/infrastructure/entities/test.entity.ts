@@ -24,5 +24,5 @@ export class TestEntity extends BaseEntity {
   @ManyToOne(() => ProblemSetupEntity, (setup) => setup.language, {
     lazy: true,
   })
-  setups: ProblemSetupEntity[];
+  setups?: ProblemSetupEntity[];
 }

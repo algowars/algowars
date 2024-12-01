@@ -11,6 +11,10 @@ import { UserSubImplementation } from 'src/account/domain/user-sub';
 import { UsernameImplementation } from 'src/account/domain/username';
 import { SubmissionResultImplementation } from './submission-result';
 import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
+import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
+import { SubmissionResultFactory } from './submission-result-factory';
+import { AccountFactory } from 'src/account/domain/account-factory';
+import { LanguageFactory } from 'src/problem/domain/language-factory';
 
 type CreateSubmissionOptions = Readonly<{
   id: Id;
@@ -23,18 +27,20 @@ type CreateSubmissionOptions = Readonly<{
   codeExecutionContext: CodeExecutionEngine;
 }>;
 
-export class SubmissionFactory {
+export class SubmissionFactory
+  implements EntityDomainFactory<Submission, SubmissionEntity>
+{
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
+  @Inject() private readonly submissionResultFactory: SubmissionResultFactory;
+  @Inject() private readonly accountFactory: AccountFactory;
+  @Inject() private readonly languageFactory: LanguageFactory;
 
   create(options: CreateSubmissionOptions): Submission {
-    const results = Array.isArray(options.results)
-      ? options.results.map(
-          (result) =>
-            new SubmissionResultImplementation({
-              token: result.token,
-            }),
-        )
-      : null;
+    let results = [];
+
+    if (Array.isArray(options.results)) {
+      results = options.results.map(this.submissionResultFactory.create);
+    }
 
     return this.eventPublisher.mergeObjectContext(
       new SubmissionImplementation({
@@ -51,43 +57,51 @@ export class SubmissionFactory {
   createFromEntity(submissionEntity: SubmissionEntity): Submission {
     const id = new IdImplementation(submissionEntity.id);
 
+    let results = [];
+
+    if (Array.isArray(submissionEntity.results)) {
+      results = submissionEntity.results.map(
+        this.submissionResultFactory.createFromEntity,
+      );
+    }
+
     return this.create({
       id,
-      createdBy: submissionEntity?.createdBy
-        ? this.mapAccountEntityToDomain(submissionEntity.createdBy)
-        : null,
-      language: submissionEntity?.language
-        ? this.mapLanguageEntityToDomain(submissionEntity.language)
-        : null,
+      createdBy: this.accountFactory.createFromEntity(
+        submissionEntity.createdBy,
+      ),
+      language: this.languageFactory.createFromEntity(
+        submissionEntity.language,
+      ),
       sourceCode: submissionEntity.sourceCode,
-      results:
-        submissionEntity?.results.map((result) => ({
-          token: result.token,
-        })) ?? [],
+      results,
       codeExecutionContext: submissionEntity.codeExecutionContext,
     });
   }
 
-  private mapLanguageEntityToDomain(language: LanguageEntity): Language {
-    return new LanguageImplementation({
-      id: new IdImplementation(language.id),
-      name: language.name,
-      version: language.version,
-      createdAt: language.createdAt,
-      updatedAt: language.updatedAt,
-      deletedAt: language.deletedAt,
-    });
-  }
+  createEntityFromDomain(domain: Submission): SubmissionEntity {
+    let results = [];
 
-  private mapAccountEntityToDomain(accountEntity: AccountEntity): Account {
-    return new AccountImplementation({
-      id: new IdImplementation(accountEntity.id),
-      sub: new UserSubImplementation(accountEntity.sub),
-      username: new UsernameImplementation(accountEntity.username),
-      createdAt: accountEntity.createdAt,
-      updatedAt: accountEntity.updatedAt,
-      deletedAt: accountEntity.deletedAt,
-      version: accountEntity.version,
-    });
+    if (Array.isArray(domain.getSubmissionResults())) {
+      results = domain
+        .getSubmissionResults()
+        .map(this.submissionResultFactory.createEntityFromDomain);
+    }
+    return {
+      id: domain.getId().toString(),
+      sourceCode: domain.getSourceCode(),
+      language: this.languageFactory.createEntityFromDomain(
+        domain.getLanguage(),
+      ),
+      results,
+      createdBy: this.accountFactory.createEntityFromDomain(
+        domain.getCreatedBy(),
+      ),
+      codeExecutionContext: domain.getCodeExecutionContext(),
+      createdAt: domain.getCreatedAt(),
+      updatedAt: domain.getUpdatedAt(),
+      deletedAt: domain.getDeletedAt(),
+      version: domain.getVersion(),
+    };
   }
 }

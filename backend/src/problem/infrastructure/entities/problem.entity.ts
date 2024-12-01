@@ -31,7 +31,7 @@ export class ProblemEntity extends BaseEntity {
     cascade: true,
     lazy: true,
   })
-  setups: Promise<ProblemSetupEntity[]>;
+  setups?: Promise<ProblemSetupEntity[]>;
 
   @Column({
     type: 'enum',

@@ -8,6 +8,7 @@ import { SubmissionRepositoryImplementation } from './infrastructure/repositorie
 import { ProblemModule } from 'src/problem/problem.module';
 import { HttpModule } from '@nestjs/axios';
 import { SubmissionEventHandlers } from './application/events';
+import { SubmissionResultFactory } from './domain/submission-result-factory';
 
 export const infrastructure: Provider[] = [
   {
@@ -18,7 +19,7 @@ export const infrastructure: Provider[] = [
 
 const application = [...SubmissionCommandHandlers, ...SubmissionEventHandlers];
 
-const domain = [SubmissionFactory];
+const domain = [SubmissionFactory, SubmissionResultFactory];
 
 @Module({
   imports: [

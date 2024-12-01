@@ -24,7 +24,7 @@ export class AdditionalTestFileEntity extends BaseEntity {
   @ManyToOne(() => LanguageEntity, (language) => language.additionalTestFiles, {
     nullable: false,
   })
-  language: Language;
+  language: LanguageEntity;
 
   @Column({ nullable: false })
   initialTestFile: string;
@@ -32,5 +32,5 @@ export class AdditionalTestFileEntity extends BaseEntity {
   @OneToMany(() => TestEntity, (test) => test.additionalTestFile, {
     lazy: true,
   })
-  tests: TestEntity[];
+  tests?: TestEntity[];
 }

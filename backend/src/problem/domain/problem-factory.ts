@@ -13,6 +13,7 @@ import {
   CreateAccountOptions,
 } from 'src/account/domain/account-factory';
 import { ProblemStatus } from './problem-status';
+import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
 
 export type CreateProblemOptions = Readonly<{
   id: string;
@@ -24,7 +25,9 @@ export type CreateProblemOptions = Readonly<{
   status: ProblemStatus;
 }>;
 
-export class ProblemFactory {
+export class ProblemFactory
+  implements EntityDomainFactory<Problem, ProblemEntity>
+{
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
   @Inject()
   private readonly problemSetupFactory: ProblemSetupFactory;
@@ -68,6 +71,23 @@ export class ProblemFactory {
         setups,
       }),
     );
+  }
+
+  createEntityFromDomain(domain: Problem): ProblemEntity {
+    return {
+      id: domain.getId().toString(),
+      title: domain.getTitle(),
+      question: domain.getQuestion(),
+      slug: domain.getSlug(),
+      createdBy: this.accountFactory.createEntityFromDomain(
+        domain.getCreatedBy(),
+      ),
+      status: domain.getStatus(),
+      createdAt: domain.getCreatedAt(),
+      updatedAt: domain.getUpdatedAt(),
+      deletedAt: domain.getDeletedAt(),
+      version: domain.getVersion(),
+    };
   }
 
   async reconstituteFromEntity(problemEntity: ProblemEntity): Promise<Problem> {
