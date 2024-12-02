@@ -16,6 +16,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
     const query = readConnection
       .getRepository(ProblemEntity)
       .createQueryBuilder('problem')
+      .leftJoinAndSelect('problem.createdBy', 'createdBy')
       .andWhere('problem.slug = :slug', { slug });
 
     if (languageId) {
@@ -42,6 +43,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
       updatedAt: result.updatedAt,
       deletedAt: result.deletedAt,
       initialCode: setup ? setup.initialCode : '',
+      createdBy: result.createdBy?.username,
     };
   }
 

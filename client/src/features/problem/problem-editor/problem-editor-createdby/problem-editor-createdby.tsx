@@ -1,9 +1,11 @@
 import { routerConfig } from "@/app/router";
+import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
-import { Account } from "@/features/account/models/account.model";
+import { cn } from "@/lib/utils";
+import { CircleUserRound, User, UserRound } from "lucide-react";
 
 type ProblemEditorCreatedByProps = {
-  createdBy?: Account | undefined;
+  createdBy?: string | undefined;
 };
 
 export const ProblemEditorCreatedBy = ({
@@ -14,11 +16,14 @@ export const ProblemEditorCreatedBy = ({
   }
 
   return (
-    <span>
-      CreatedBy:{" "}
-      <Link to={routerConfig.profile.execute(createdBy.username)}>
-        {createdBy.username}
-      </Link>
-    </span>
+    <Link
+      to={routerConfig.profile.execute(createdBy)}
+      className={cn(
+        buttonVariants({ variant: "ghost" }),
+        "flex text-sm w-fit p-1 -ml-1"
+      )}
+    >
+      <CircleUserRound className="mr-1" size={18} /> {createdBy}
+    </Link>
   );
 };
