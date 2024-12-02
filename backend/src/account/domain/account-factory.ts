@@ -33,6 +33,10 @@ export class AccountFactory
   }
 
   createFromEntity(accountEntity: AccountEntity): Account {
+    if (!accountEntity) {
+      return null;
+    }
+
     const id = new IdImplementation(accountEntity.id);
 
     return this.create({
@@ -58,6 +62,10 @@ export class AccountFactory
   }
 
   reconstituteFromEntity(accountEntity: AccountEntity): Account {
+    if (!accountEntity) {
+      return null;
+    }
+
     const id = new IdImplementation(accountEntity.id);
 
     const properties: AccountProperties = {

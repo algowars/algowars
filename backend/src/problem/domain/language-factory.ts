@@ -33,10 +33,18 @@ export class LanguageFactory
   }
 
   createFromEntity(languageEntity: LanguageEntity): Language {
+    if (!languageEntity) {
+      return null;
+    }
+
     return this.create(languageEntity);
   }
 
   createEntityFromDomain(domain: Language): LanguageEntity {
+    if (!domain) {
+      return null;
+    }
+
     return {
       id: domain.getId().toNumber(),
       name: domain.getName(),
@@ -52,6 +60,10 @@ export class LanguageFactory
   }
 
   reconstituteFromEntity(languageEntity: LanguageEntity): Language {
+    if (!languageEntity) {
+      return null;
+    }
+
     return this.reconstitute({
       id: new IdImplementation(languageEntity.id),
       name: languageEntity.name,

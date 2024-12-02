@@ -43,9 +43,14 @@ export class ProblemSetupFactory
   }
 
   createFromEntity(problemSetupEntity: ProblemSetupEntity): ProblemSetup {
+    if (!problemSetupEntity) {
+      return null;
+    }
+
     const solution = problemSetupEntity?.solution
       ? this.submissionFactory.createFromEntity(problemSetupEntity.solution)
       : null;
+
     return new ProblemSetupImplementation({
       ...problemSetupEntity,
       problemId: new IdImplementation(problemSetupEntity.problemId),
@@ -60,6 +65,10 @@ export class ProblemSetupFactory
   }
 
   createEntityFromDomain(domain: ProblemSetup): ProblemSetupEntity {
+    if (!domain) {
+      return null;
+    }
+
     let tests = [];
 
     if (Array.isArray(domain.getTests())) {

@@ -54,6 +54,10 @@ export class ProblemFactory
   }
 
   createFromEntity(problemEntity: ProblemEntity): Problem {
+    if (!problemEntity) {
+      return null;
+    }
+
     let setups = [];
     if (Array.isArray(problemEntity.setups)) {
       setups = problemEntity.setups.map((setup) =>
@@ -91,6 +95,10 @@ export class ProblemFactory
   }
 
   async reconstituteFromEntity(problemEntity: ProblemEntity): Promise<Problem> {
+    if (!problemEntity) {
+      return null;
+    }
+
     let setups = [];
     if (Array.isArray(problemEntity.setups)) {
       setups = problemEntity.setups.map((setup) =>

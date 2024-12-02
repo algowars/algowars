@@ -38,10 +38,18 @@ export class SubmissionResultFactory
   }
 
   createFromEntity(entity: SubmissionResultEntity): SubmissionResult {
+    if (!entity) {
+      return null;
+    }
+
     return this.create(entity);
   }
 
   createEntityFromDomain(domain: SubmissionResult): SubmissionResultEntity {
+    if (!domain) {
+      return null;
+    }
+
     return {
       token: domain.getToken(),
       sourceCode: domain.getSourceCode(),

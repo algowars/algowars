@@ -37,6 +37,10 @@ export class AdditionalTestFileFactory
   createFromEntity(
     additionalTestFileEntity: AdditionalTestFileEntity,
   ): AdditionalTestFile {
+    if (!additionalTestFileEntity) {
+      return null;
+    }
+
     const id = new IdImplementation(additionalTestFileEntity.id);
 
     return this.create({
@@ -51,6 +55,10 @@ export class AdditionalTestFileFactory
   }
 
   createEntityFromDomain(domain: AdditionalTestFile): AdditionalTestFileEntity {
+    if (!domain) {
+      return null;
+    }
+
     return {
       id: domain.getId().toString(),
       fileName: domain.getFileName(),

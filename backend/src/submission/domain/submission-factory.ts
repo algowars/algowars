@@ -55,6 +55,10 @@ export class SubmissionFactory
   }
 
   createFromEntity(submissionEntity: SubmissionEntity): Submission {
+    if (!submissionEntity) {
+      return null;
+    }
+
     const id = new IdImplementation(submissionEntity.id);
 
     let results = [];
@@ -80,6 +84,10 @@ export class SubmissionFactory
   }
 
   createEntityFromDomain(domain: Submission): SubmissionEntity {
+    if (!domain) {
+      return null;
+    }
+
     let results = [];
 
     if (Array.isArray(domain.getSubmissionResults())) {

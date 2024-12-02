@@ -33,6 +33,10 @@ export class TestFactory implements EntityDomainFactory<Test, TestEntity> {
   }
 
   createFromEntity(testEntity: TestEntity): Test {
+    if (!test) {
+      return null;
+    }
+
     return new TestImplementation({
       ...testEntity,
       id: new IdImplementation(testEntity.id),
@@ -45,6 +49,10 @@ export class TestFactory implements EntityDomainFactory<Test, TestEntity> {
   }
 
   createEntityFromDomain(domain: Test): TestEntity {
+    if (!domain) {
+      return null;
+    }
+
     return {
       id: domain.getId().toString(),
       code: domain.getCode(),
