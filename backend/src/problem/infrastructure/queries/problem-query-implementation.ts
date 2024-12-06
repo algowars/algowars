@@ -6,6 +6,9 @@ import { FindProblemBySlugResult } from 'src/problem/application/queries/find-pr
 import { PageResult } from 'src/common/pagination/page-result';
 import { GetProblemsPageableResult } from 'src/problem/application/queries/get-problems-pageable-query/get-problems-pageable-result';
 import { Pagination } from 'src/common/pagination/pagination';
+import { Account } from 'src/account/domain/account';
+import { GetProblemSolutionsResult } from 'src/problem/application/queries/get-problem-solutions-query/get-problem-solutions.result';
+import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
@@ -82,5 +85,56 @@ export class ProblemQueryImplementation implements ProblemQuery {
     );
 
     return pageResult;
+  }
+
+  async findBySlugWithSolutions(
+    slug: string,
+    account: Account,
+  ): Promise<GetProblemSolutionsResult | null> {
+    const problem = await readConnection
+      .getRepository(ProblemEntity)
+      .createQueryBuilder('problem')
+      .leftJoinAndSelect('problem.createdBy', 'createdBy')
+      .where('problem.slug = :slug', { slug })
+      .getOne();
+
+    if (!problem) {
+      return null;
+    }
+
+    const submissions = await readConnection
+      .getRepository(SubmissionEntity)
+      .createQueryBuilder('submission')
+      .leftJoinAndSelect('submission.language', 'language')
+      .where('submission.problemId = :problemId', { problemId: problem.id })
+      .andWhere('submission.createdById = :accountId', {
+        accountId: account.getId().toString(),
+      })
+      .getMany();
+
+    const submissionResults = submissions.map((submission) => ({
+      id: submission.id,
+      sourceCode: submission.sourceCode,
+      language: submission.language
+        ? {
+            id: submission.language.id,
+            name: submission.language.name,
+          }
+        : null,
+      createdAt: submission.createdAt,
+    }));
+
+    return {
+      problem: {
+        id: problem.id,
+        title: problem.title,
+        slug: problem.slug,
+        question: problem.question,
+        createdAt: problem.createdAt,
+        updatedAt: problem.updatedAt,
+        createdBy: problem.createdBy?.username,
+      },
+      solutions: submissionResults,
+    };
   }
 }

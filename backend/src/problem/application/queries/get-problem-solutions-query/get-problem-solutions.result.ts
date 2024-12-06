@@ -1,3 +1,23 @@
 import { IQueryResult } from '@nestjs/cqrs';
 
-export class GetProblemSolutionsResult implements IQueryResult {}
+export class GetProblemSolutionsResult implements IQueryResult {
+  readonly problem: {
+    id: string;
+    title: string;
+    slug: string;
+    question: string;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy: string;
+  };
+
+  readonly solutions: {
+    id: string;
+    sourceCode: string;
+    language: {
+      id: number;
+      name: string;
+    };
+    createdAt: Date;
+  }[];
+}

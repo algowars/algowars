@@ -11,14 +11,6 @@ const AccountVerficiationBanner = () => {
   const { isLoading: isAuthLoading, isAuthenticated: isAuthAuthenticated } =
     useAuth0();
 
-  console.log(
-    isLoading,
-    isAuthenticated,
-    "AUTH: ",
-    isAuthLoading,
-    isAuthAuthenticated
-  );
-
   if (isLoading || isAuthLoading || !isAuthAuthenticated) {
     return null;
   }

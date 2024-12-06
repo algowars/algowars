@@ -40,7 +40,7 @@ export class ProblemEntity extends BaseEntity {
     eager: false,
     lazy: true,
   })
-  submissions?: Submission[];
+  submissions?: SubmissionEntity[];
 
   @Column({
     type: 'enum',
