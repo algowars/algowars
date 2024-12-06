@@ -55,14 +55,18 @@ export const AccountStoreProvider = ({
   } = useAuth0();
   const [store] = useState(() => accountStore);
   const [isLoading, setIsLoading] = useState(true);
-  const isAuthenticated = store.getState().account !== null;
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const findAccountBySubMutation = useFindAccountBySub({
     mutationConfig: {
       onSuccess: (account: Account) => {
         if (account) {
           store.getState().setAccount(account);
+          setIsAuthenticated(true);
         }
+        setIsLoading(false);
+      },
+      onSettled: () => {
         setIsLoading(false);
       },
     },
