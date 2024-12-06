@@ -52,50 +52,7 @@ export class SubmissionRepositoryImplementation
   }
 
   private modelToEntity(model: Submission): SubmissionEntity {
-    return {
-      id: model.getId().toString(),
-      sourceCode: model.getSourceCode(),
-      createdBy: model?.getCreatedBy()
-        ? this.accountToEntity(model.getCreatedBy())
-        : null,
-      createdAt: model.getCreatedAt(),
-      updatedAt: model.getUpdatedAt(),
-      deletedAt: model.getDeletedAt(),
-      version: model.getVersion(),
-      codeExecutionContext: model.getCodeExecutionContext(),
-      language: this.languageToEntity(model.getLanguage()),
-      results: model?.getSubmissionResults()
-        ? this.resultsToEntity(model.getSubmissionResults())
-        : [],
-    };
-  }
-
-  private languageToEntity(language: Language): LanguageEntity {
-    return {
-      id: language.getId().toNumber(),
-      name: language.getName(),
-      createdAt: language.getCreatedAt(),
-      updatedAt: language.getUpdatedAt(),
-      deletedAt: language.getDeletedAt(),
-      version: language.getVersion(),
-      isArchived: language.getIsArchived(),
-      additionalTestFiles: [],
-      setups: [],
-      initialCode: language.getInitialCode(),
-      initialSolution: language.getInitialSolution(),
-    };
-  }
-
-  private accountToEntity(account: Account): AccountEntity {
-    return {
-      id: account.getId().toString(),
-      sub: account.getSub().toString(),
-      username: account.getUsername().toString(),
-      createdAt: account.getCreatedAt(),
-      updatedAt: account.getUpdatedAt(),
-      deletedAt: account.getDeletedAt(),
-      version: account.getVersion(),
-    };
+    return this.submissionFactory.createEntityFromDomain(model);
   }
 
   private resultsToEntity(

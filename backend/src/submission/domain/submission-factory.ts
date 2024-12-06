@@ -1,20 +1,16 @@
-import { Inject } from '@nestjs/common';
+import { forwardRef, Inject } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Id, IdImplementation } from 'src/common/domain/id';
 import { Submission, SubmissionImplementation } from './submission';
-import { Account, AccountImplementation } from 'src/account/domain/account';
+import { Account } from 'src/account/domain/account';
 import { SubmissionEntity } from '../infrastructure/entities/submission.entity';
-import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
-import { Language, LanguageImplementation } from 'src/problem/domain/language';
-import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
-import { UserSubImplementation } from 'src/account/domain/user-sub';
-import { UsernameImplementation } from 'src/account/domain/username';
-import { SubmissionResultImplementation } from './submission-result';
+import { Language } from 'src/problem/domain/language';
 import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
 import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
 import { SubmissionResultFactory } from './submission-result-factory';
 import { AccountFactory } from 'src/account/domain/account-factory';
 import { LanguageFactory } from 'src/problem/domain/language-factory';
+import { ProblemFactory } from 'src/problem/domain/problem-factory';
 
 type CreateSubmissionOptions = Readonly<{
   id: Id;
@@ -34,6 +30,8 @@ export class SubmissionFactory
   @Inject() private readonly submissionResultFactory: SubmissionResultFactory;
   @Inject() private readonly accountFactory: AccountFactory;
   @Inject() private readonly languageFactory: LanguageFactory;
+  @Inject(forwardRef(() => ProblemFactory))
+  private readonly problemFactory: ProblemFactory;
 
   create(options: CreateSubmissionOptions): Submission {
     let results = [];
@@ -110,6 +108,7 @@ export class SubmissionFactory
       updatedAt: domain.getUpdatedAt(),
       deletedAt: domain.getDeletedAt(),
       version: domain.getVersion(),
+      problem: this.problemFactory.createEntityFromDomain(domain.getProblem()),
     };
   }
 }

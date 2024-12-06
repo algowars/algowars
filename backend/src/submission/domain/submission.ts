@@ -9,6 +9,7 @@ import {
 } from 'src/common/entities/base-domain';
 import { SubmissionCreatedEvent } from './events/submission-created-event';
 import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
+import { Problem } from 'src/problem/domain/problem';
 
 export type SubmissionEssentialProperties = Readonly<
   Required<{
@@ -23,6 +24,7 @@ export type SubmissionOptionalProperties = Readonly<
   Partial<{
     id: Id;
     submissionResults: SubmissionResult[];
+    problem: Problem;
   }>
 >;
 
@@ -37,6 +39,7 @@ export interface Submission extends BaseDomainAggregateRoot {
   setSubmissionResults(results: SubmissionResult[]): void;
   getLanguage(): Language;
   getCodeExecutionContext(): CodeExecutionEngine;
+  getProblem(): Problem;
   create(): void;
 }
 
@@ -49,6 +52,7 @@ export class SubmissionImplementation
   private readonly createdBy: Account;
   private readonly language: Language;
   private readonly codeExecutionContext: CodeExecutionEngine;
+  private readonly problem: Problem;
 
   constructor(properties: SubmissionProperties) {
     super(properties);
@@ -77,6 +81,10 @@ export class SubmissionImplementation
 
   getLanguage() {
     return this.language;
+  }
+
+  getProblem(): Problem {
+    return this.problem;
   }
 
   create(): void {

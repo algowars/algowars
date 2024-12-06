@@ -17,10 +17,8 @@ import { AdditionalTestFileFactory } from 'src/problem/domain/additional-test-fi
 import { AdditionalTestFileRepositoryImplementation } from './infrastructure/repositories/additional-test-file-repository-implementation';
 import { ProblemSetupRepositoryImplementation } from './infrastructure/repositories/problem-setup-repository-implementation';
 import { AccountModule } from 'src/account/account.module';
-import { domain as accountDomain } from 'src/account/account.module';
 import { SubmissionRepositoryImplementation } from 'src/submission/infrastructure/repositories/submission-repository-implementation';
-import { SubmissionFactory } from 'src/submission/domain/submission-factory';
-import { SubmissionResultFactory } from 'src/submission/domain/submission-result-factory';
+import { SubmissionModule } from 'src/submission/submission.module';
 
 export const infrastructure: Provider[] = [
   {
@@ -58,16 +56,13 @@ export const application = [...ProblemQueryHandlers, ...ProblemCommandHandlers];
 export const domain = [
   ProblemFactory,
   LanguageFactory,
-  SubmissionFactory,
-  SubmissionResultFactory,
   ProblemSetupFactory,
   TestFactory,
   AdditionalTestFileFactory,
-  ...accountDomain,
 ];
 
 @Module({
-  imports: [CqrsModule, AccountModule],
+  imports: [CqrsModule, AccountModule, SubmissionModule],
   controllers: [ProblemController],
   providers: [Logger, ...infrastructure, ...application, ...domain],
   exports: [...infrastructure, ...domain],

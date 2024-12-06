@@ -11,7 +11,7 @@ export const getProblemSolutionsBySlug = ({
   accessToken: string;
 }): Promise<any> => {
   const config: AxiosRequestConfig = {
-    url: `/api/v1/problem/solutions/${encodeURIComponent(slug)}`,
+    url: `/api/v1/problem/find/slug/${encodeURIComponent(slug)}/solutions`,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
