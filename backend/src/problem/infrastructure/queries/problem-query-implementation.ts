@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { readConnection } from 'lib/database.module';
 import { ProblemQuery } from 'src/problem/application/queries/problem-query';
 import { ProblemEntity } from '../entities/problem.entity';
@@ -9,9 +9,12 @@ import { Pagination } from 'src/common/pagination/pagination';
 import { Account } from 'src/account/domain/account';
 import { GetProblemSolutionsResult } from 'src/problem/application/queries/get-problem-solutions-query/get-problem-solutions.result';
 import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
+import { SubmissionResultFactory } from 'src/submission/domain/submission-result-factory';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
+  @Inject() private readonly submissionResultFactory: SubmissionResultFactory;
+
   async findBySlug(
     slug: string,
     languageId?: number,
@@ -106,6 +109,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
       .getRepository(SubmissionEntity)
       .createQueryBuilder('submission')
       .leftJoinAndSelect('submission.language', 'language')
+      .leftJoinAndSelect('submission.results', 'results')
       .where('submission.problemId = :problemId', { problemId: problem.id })
       .andWhere('submission.createdById = :accountId', {
         accountId: account.getId().toString(),
@@ -121,8 +125,11 @@ export class ProblemQueryImplementation implements ProblemQuery {
             name: submission.language.name,
           }
         : null,
+      statuses: submission.results?.map((result) => result.status) || [],
       createdAt: submission.createdAt,
     }));
+
+    console.log(submissionResults);
 
     return {
       problem: {

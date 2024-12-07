@@ -54,7 +54,7 @@ export const ProblemSolutions = () => {
             <Container className="py-5">
               <ProblemSolutionsContainer
                 problem={problemSolutionsQueryResult.data.problem}
-                solutions={problemSolutionsQueryResult.data.soultions ?? []}
+                solutions={problemSolutionsQueryResult.data.solutions ?? []}
               />
             </Container>
           </Layout>
