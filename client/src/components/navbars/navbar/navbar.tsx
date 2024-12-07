@@ -6,8 +6,10 @@ import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { useAccountStore } from "@/features/account/account-store.provider";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 
 export type NavbarProps = {
   isAuthenticated?: boolean;
@@ -32,6 +34,9 @@ export const Navbar = ({ isAuthenticated }: NavbarProps) => {
           </li>
         </ul>
 
+        <Button>
+          <HamburgerMenuIcon />
+        </Button>
         <ul className="flex items-center gap-5 ml-auto">
           {isAuthenticated ? (
             <>

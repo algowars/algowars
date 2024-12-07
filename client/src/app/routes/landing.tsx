@@ -12,7 +12,7 @@ export const LandingRoute = () => {
   return (
     <LandingLayout isAuthenticated={isAuthAuthenticated || isAuthenticated}>
       <section>
-        <Container className="flex flex-col items-center py-20 text-center">
+        <Container className="flex flex-col items-center py-20 text-center px-3 lg:px-0">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl max-w-4xl tracking-light font-bold mb-5">
             Battle and Compete in Fast-Paced Coding Challenges
           </h1>
