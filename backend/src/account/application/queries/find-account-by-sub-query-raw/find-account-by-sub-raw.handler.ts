@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { FindAccountBySubRawQuery } from './find-account-by-sub-raw.query';
 import { Account } from 'src/account/domain/account';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { InjectionToken } from '../../injection-token';
+import { AccountInjectionToken } from '../../injection-token';
 import { AccountQuery } from '../account-query';
 import { AccountErrorMessage } from 'src/account/domain/account-error-message';
 import { AccountFactory } from 'src/account/domain/account-factory';
@@ -11,7 +11,8 @@ import { AccountFactory } from 'src/account/domain/account-factory';
 export class FindAccountBySubRawHandler
   implements IQueryHandler<FindAccountBySubRawQuery, Account>
 {
-  @Inject(InjectionToken.ACCOUNT_QUERY) readonly accountQuery: AccountQuery;
+  @Inject(AccountInjectionToken.ACCOUNT_QUERY)
+  readonly accountQuery: AccountQuery;
   @Inject() accountFactory: AccountFactory;
 
   async execute(query: FindAccountBySubRawQuery): Promise<Account> {

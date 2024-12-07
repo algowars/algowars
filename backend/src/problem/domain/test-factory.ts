@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Test, TestImplementation } from './test';
 import { IdImplementation } from 'src/common/domain/id';
 import { TestEntity } from '../infrastructure/entities/test.entity';
@@ -18,6 +18,7 @@ export type CreateTestOptions = Readonly<{
   additionalTestFile?: CreateAdditionalTestFileOptions;
 }>;
 
+@Injectable()
 export class TestFactory implements EntityDomainFactory<Test, TestEntity> {
   @Inject()
   private readonly additionalTestFileFactory: AdditionalTestFileFactory;
@@ -33,7 +34,7 @@ export class TestFactory implements EntityDomainFactory<Test, TestEntity> {
   }
 
   createFromEntity(testEntity: TestEntity): Test {
-    if (!test) {
+    if (!testEntity) {
       return null;
     }
 

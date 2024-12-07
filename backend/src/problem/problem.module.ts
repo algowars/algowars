@@ -1,7 +1,5 @@
 import { Logger, Module, Provider } from '@nestjs/common';
 import { ProblemController } from './interface/problem.controller';
-import { InjectionToken } from './application/injection-token';
-import { InjectionToken as SubmissionInjectionToken } from 'src/submission/application/injection-token';
 import { ProblemQueryImplementation } from './infrastructure/queries/problem-query-implementation';
 import { ProblemRepositoryImplementation } from './infrastructure/repositories/problem-repository-implementation';
 import { ProblemQueryHandlers } from './application/queries';
@@ -19,30 +17,34 @@ import { ProblemSetupRepositoryImplementation } from './infrastructure/repositor
 import { AccountModule } from 'src/account/account.module';
 import { SubmissionRepositoryImplementation } from 'src/submission/infrastructure/repositories/submission-repository-implementation';
 import { SubmissionModule } from 'src/submission/submission.module';
+import { ProblemInjectionToken } from './application/injection-token';
+import { SubmissionInjectionToken } from 'src/submission/application/injection-token';
+import { SubmissionFactory } from 'src/submission/domain/submission-factory';
+import { SubmissionResultFactory } from 'src/submission/domain/submission-result-factory';
 
 export const infrastructure: Provider[] = [
   {
-    provide: InjectionToken.PROBLEM_QUERY,
+    provide: ProblemInjectionToken.PROBLEM_QUERY,
     useClass: ProblemQueryImplementation,
   },
   {
-    provide: InjectionToken.PROBLEM_REPOSITORY,
+    provide: ProblemInjectionToken.PROBLEM_REPOSITORY,
     useClass: ProblemRepositoryImplementation,
   },
   {
-    provide: InjectionToken.LANGUAGE_REPOSITORY,
+    provide: ProblemInjectionToken.LANGUAGE_REPOSITORY,
     useClass: LanguageRepositoryImplementation,
   },
   {
-    provide: InjectionToken.LANGUAGE_QUERY,
+    provide: ProblemInjectionToken.LANGUAGE_QUERY,
     useClass: LanguageQueryImplementation,
   },
   {
-    provide: InjectionToken.ADDITIONAL_TEST_FILE_REPOSITORY,
+    provide: ProblemInjectionToken.ADDITIONAL_TEST_FILE_REPOSITORY,
     useClass: AdditionalTestFileRepositoryImplementation,
   },
   {
-    provide: InjectionToken.PROBLEM_SETUP_REPOSITORY,
+    provide: ProblemInjectionToken.PROBLEM_SETUP_REPOSITORY,
     useClass: ProblemSetupRepositoryImplementation,
   },
   {
@@ -59,10 +61,12 @@ export const domain = [
   ProblemSetupFactory,
   TestFactory,
   AdditionalTestFileFactory,
+  SubmissionFactory,
+  SubmissionResultFactory,
 ];
 
 @Module({
-  imports: [CqrsModule, AccountModule, SubmissionModule],
+  imports: [CqrsModule, AccountModule],
   controllers: [ProblemController],
   providers: [Logger, ...infrastructure, ...application, ...domain],
   exports: [...infrastructure, ...domain],

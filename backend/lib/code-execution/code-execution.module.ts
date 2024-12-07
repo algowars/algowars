@@ -46,7 +46,7 @@ const codeExecutionContextProviders: Provider[] = [
         const judge0Config: Judge0ExecutionConfig = {
           apiKey: configService.get<string>('EVALUATOR_API_KEY'),
           url: configService.get<string>('EVALUATOR_URL'),
-          host: configService.get<string>('JUDGE0_HOST'),
+          host: configService.get<string>('EVALUATOR_HOST'),
           headers: {
             'Content-Type': 'application/json',
             'x-rapidapi-host': configService.get<string>('EVALUATOR_HOST'),

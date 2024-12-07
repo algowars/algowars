@@ -11,6 +11,8 @@ import { ProblemEditorFooter } from "./problem-editor-footer/problem-editor-foot
 import { useCreateSubmission } from "@/features/submission/api/create-submission";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 type ProblemEditorProps = {
   problem: Problem | undefined;
@@ -19,7 +21,21 @@ type ProblemEditorProps = {
 export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const { getAccessTokenSilently } = useAuth0();
   const [code, setCode] = useState<string>("");
-  const createSubmissionMutation = useCreateSubmission();
+  const navigate = useNavigate();
+  const createSubmissionMutation = useCreateSubmission({
+    mutationConfig: {
+      onMutate: () => {
+        toast.loading("Submitting your code...");
+      },
+      onSuccess: () => {
+        navigate("solutions");
+      },
+      onError: (error: unknown) => {
+        toast.dismiss();
+        toast.error(`Submission failed: "${error}"`);
+      },
+    },
+  });
 
   useEffect(() => {
     if (problem?.initialCode) {

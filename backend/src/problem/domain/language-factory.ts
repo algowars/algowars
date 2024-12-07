@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import {
   Language,
@@ -16,6 +16,7 @@ type CreateLanguageOptions = Readonly<{
   isAvailable?: boolean;
 }>;
 
+@Injectable()
 export class LanguageFactory
   implements EntityDomainFactory<Language, LanguageEntity>
 {

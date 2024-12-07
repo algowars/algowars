@@ -1,3 +1,5 @@
+import { SubmissionStatus } from 'src/submission/domain/submission-status';
+
 export enum SubmissionResultStatus {
   IN_QUEUE = 'In Queue',
   PROCESSING = 'Processing',
@@ -11,7 +13,7 @@ export enum SubmissionResultStatus {
 }
 
 export interface CodeExecutionEvaluationResult {
-  status: SubmissionResultStatus;
+  status: SubmissionStatus;
   stdout: string;
   summary: {
     passed: number;

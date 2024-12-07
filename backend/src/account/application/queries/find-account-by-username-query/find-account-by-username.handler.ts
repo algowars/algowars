@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { FindAccountByUsernameQuery } from './find-account-by-username.query';
 import { FindAccountByUsernameResult } from './find-account-by-username-result';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { InjectionToken } from '../../injection-token';
+import { AccountInjectionToken } from '../../injection-token';
 import { AccountQuery } from '../account-query';
 import { AccountErrorMessage } from 'src/account/domain/account-error-message';
 
@@ -11,7 +11,8 @@ export class FindAccountByUsernameHandler
   implements
     IQueryHandler<FindAccountByUsernameQuery, FindAccountByUsernameResult>
 {
-  @Inject(InjectionToken.ACCOUNT_QUERY) readonly accountQuery: AccountQuery;
+  @Inject(AccountInjectionToken.ACCOUNT_QUERY)
+  readonly accountQuery: AccountQuery;
 
   async execute(
     query: FindAccountByUsernameQuery,

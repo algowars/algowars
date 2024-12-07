@@ -1,4 +1,4 @@
-export enum InjectionToken {
+export enum ProblemInjectionToken {
   PROBLEM_QUERY = 'ProblemQuery',
   PROBLEM_REPOSITORY = 'ProblemRepository',
   INTEGRATION_EVENT_PUBLISHER = 'IntegrationEventPublisher',

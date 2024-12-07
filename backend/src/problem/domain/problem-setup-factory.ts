@@ -1,7 +1,7 @@
 import { IdImplementation } from 'src/common/domain/id';
 import { ProblemSetup, ProblemSetupImplementation } from './problem-setup';
 import { ProblemSetupEntity } from '../infrastructure/entities/problem-setup.entity';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   CreateTestOptions,
   TestFactory,
@@ -19,6 +19,7 @@ export type CreateProblemSetupOptions = Readonly<{
   solution: Submission;
 }>;
 
+@Injectable()
 export class ProblemSetupFactory
   implements EntityDomainFactory<ProblemSetup, ProblemSetupEntity>
 {

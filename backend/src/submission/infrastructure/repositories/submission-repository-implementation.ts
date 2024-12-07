@@ -5,10 +5,6 @@ import { Submission } from 'src/submission/domain/submission';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionEntity } from '../entities/submission.entity';
-import { Account } from 'src/account/domain/account';
-import { Language } from 'src/problem/domain/language';
-import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
-import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 import { SubmissionResult } from 'src/submission/domain/submission-result';
 import { SubmissionResultEntity } from '../entities/submission-result.entity';
 
@@ -26,10 +22,12 @@ export class SubmissionRepositoryImplementation
       .getRepository(SubmissionEntity)
       .findOne({
         where: { id: id.toString() },
-        relations: ['results', 'language', 'createdBy'],
+        relations: ['results', 'language', 'createdBy', 'problem'],
       });
 
-    return entity ? this.entityToModel(entity) : null;
+    const model = entity ? this.entityToModel(entity) : null;
+
+    return model;
   }
 
   async save(data: Submission | Submission[]): Promise<void> {

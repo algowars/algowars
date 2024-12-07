@@ -36,6 +36,7 @@ export interface ProblemSetup {
   getUpdatedAt(): Date;
   getDeletedAt(): Date | null;
   getSolution(): Submission;
+  setSolution(solution: Submission): void;
   getVersion(): number;
 }
 
@@ -50,7 +51,7 @@ export class ProblemSetupImplementation implements ProblemSetup {
   private readonly deletedAt: Date | null;
   private readonly version: number;
   private readonly tests: Test[];
-  private readonly solution: Submission;
+  private solution: Submission;
 
   constructor(properties: ProblemSetupProperties) {
     Object.assign(this, properties);
@@ -83,6 +84,10 @@ export class ProblemSetupImplementation implements ProblemSetup {
 
   getSolution(): Submission {
     return this.solution;
+  }
+
+  setSolution(solution: Submission): void {
+    this.solution = solution;
   }
 
   getCreatedAt() {

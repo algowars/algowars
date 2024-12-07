@@ -2,12 +2,12 @@ import { Inject, InternalServerErrorException, Logger } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { Transactional } from 'lib/transactional';
 import { SubmissionCreatedEvent } from 'src/submission/domain/events/submission-created-event';
-import { InjectionToken as SubmissionInjectionToken } from 'src/submission/application/injection-token';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { IdImplementation } from 'src/common/domain/id';
 import { CodeExecutionServiceFactory } from 'lib/code-execution/code-execution-service-factory';
 import { CodeExecutionResponse } from 'lib/code-execution/code-execution-service';
 import { CodeExecutionEvaluationResultFactory } from 'lib/code-execution/code-execution-evaluation-result-factory';
+import { SubmissionInjectionToken } from '../injection-token';
 
 @EventsHandler(SubmissionCreatedEvent)
 export class SubmissionCreatedEventHandler
@@ -45,8 +45,6 @@ export class SubmissionCreatedEventHandler
       retryDelay,
     );
 
-    console.log('RESULT: ', result);
-
     const evaluator = this.codeExecutionEvaluationResultFactory.getEvaluator(
       foundSubmission.getLanguage(),
     );
@@ -56,6 +54,7 @@ export class SubmissionCreatedEventHandler
     const submissionResult = foundSubmission.getSubmissionResults()[0];
 
     submissionResult.setStdout(evaluationResult.stdout);
+    submissionResult.setStatus(evaluationResult.status);
 
     foundSubmission.setSubmissionResults([submissionResult]);
 
@@ -76,8 +75,6 @@ export class SubmissionCreatedEventHandler
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       const response = await codeExecutionService.getSubmission(token);
-
-      console.log('RESPONSE: ', response);
 
       if (
         response.getStatus().description !== 'In Queue' &&

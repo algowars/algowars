@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProblemSolutionsQuery } from './get-problem-solutions.query';
 import { GetProblemSolutionsResult } from './get-problem-solutions.result';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { InjectionToken } from '../../injection-token';
+import { ProblemInjectionToken } from '../../injection-token';
 import { ProblemQuery } from '../problem-query';
 import { NotFound } from '@aws-sdk/client-s3';
 import { ProblemErrorMessage } from 'src/problem/domain/problem-error-message';
@@ -11,7 +11,8 @@ import { ProblemErrorMessage } from 'src/problem/domain/problem-error-message';
 export class GetProblemSolutionsHandler
   implements IQueryHandler<GetProblemSolutionsQuery, GetProblemSolutionsResult>
 {
-  @Inject(InjectionToken.PROBLEM_QUERY) readonly problemQuery: ProblemQuery;
+  @Inject(ProblemInjectionToken.PROBLEM_QUERY)
+  readonly problemQuery: ProblemQuery;
 
   async execute(
     query: GetProblemSolutionsQuery,

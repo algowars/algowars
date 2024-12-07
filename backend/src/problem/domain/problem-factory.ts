@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Problem, ProblemImplementation, ProblemProperties } from './problem';
 import { ProblemEntity } from '../infrastructure/entities/problem.entity';
@@ -25,6 +25,7 @@ export type CreateProblemOptions = Readonly<{
   status: ProblemStatus;
 }>;
 
+@Injectable()
 export class ProblemFactory
   implements EntityDomainFactory<Problem, ProblemEntity>
 {
@@ -78,6 +79,10 @@ export class ProblemFactory
   }
 
   createEntityFromDomain(domain: Problem): ProblemEntity {
+    if (!domain) {
+      return null;
+    }
+
     return {
       id: domain.getId().toString(),
       title: domain.getTitle(),

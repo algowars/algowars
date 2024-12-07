@@ -1,18 +1,20 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
-import { Id, IdImplementation } from 'src/common/domain/id';
-import { Submission, SubmissionImplementation } from './submission';
-import { Account } from 'src/account/domain/account';
-import { SubmissionEntity } from '../infrastructure/entities/submission.entity';
-import { Language } from 'src/problem/domain/language';
-import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
-import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
-import { SubmissionResultFactory } from './submission-result-factory';
 import { AccountFactory } from 'src/account/domain/account-factory';
-import { LanguageFactory } from 'src/problem/domain/language-factory';
-import { ProblemFactory } from 'src/problem/domain/problem-factory';
-import { Problem } from 'src/problem/domain/problem';
-import { ProblemEntity } from 'src/problem/infrastructure/entities/problem.entity';
+import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
+import { Id, IdImplementation } from 'src/common/domain/id';
+import {
+  Submission,
+  SubmissionImplementation,
+} from 'src/submission/domain/submission';
+import { SubmissionResultFactory } from 'src/submission/domain/submission-result-factory';
+import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
+import { LanguageFactory } from './language-factory';
+import { ProblemFactory } from './problem-factory';
+import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
+import { Account } from 'src/account/domain/account';
+import { Language } from './language';
+import { Problem } from './problem';
 
 type CreateSubmissionOptions = Readonly<{
   id: Id;
@@ -27,13 +29,16 @@ type CreateSubmissionOptions = Readonly<{
 }>;
 
 @Injectable()
-export class SubmissionFactory
+export class ProblemSubmissionFactory
   implements EntityDomainFactory<Submission, SubmissionEntity>
 {
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
+  @Inject() private readonly submissionResultFactory: SubmissionResultFactory;
   @Inject() private readonly accountFactory: AccountFactory;
   @Inject() private readonly languageFactory: LanguageFactory;
-  @Inject() private readonly submissionResultFactory: SubmissionResultFactory;
+  @Inject(forwardRef(() => ProblemFactory))
+  private readonly problemFactory: ProblemFactory;
+
   create(options: CreateSubmissionOptions): Submission {
     let results = [];
 
@@ -63,8 +68,8 @@ export class SubmissionFactory
     let results = [];
 
     if (Array.isArray(submissionEntity.results)) {
-      results = submissionEntity.results.map((result) =>
-        this.submissionResultFactory.createFromEntity(result),
+      results = submissionEntity.results.map(
+        this.submissionResultFactory.createFromEntity,
       );
     }
 
@@ -79,7 +84,7 @@ export class SubmissionFactory
       sourceCode: submissionEntity.sourceCode,
       results,
       codeExecutionContext: submissionEntity.codeExecutionContext,
-      problem: null,
+      problem: this.problemFactory.createFromEntity(submissionEntity.problem),
     });
   }
 
@@ -90,14 +95,11 @@ export class SubmissionFactory
 
     let results = [];
 
-    console.log('IN CREATE ENTITY DOMAIN: ', domain.getSubmissionResults());
-
     if (Array.isArray(domain.getSubmissionResults())) {
       results = domain
         .getSubmissionResults()
         .map(this.submissionResultFactory.createEntityFromDomain);
     }
-
     return {
       id: domain.getId().toString(),
       sourceCode: domain.getSourceCode(),
@@ -113,9 +115,7 @@ export class SubmissionFactory
       updatedAt: domain.getUpdatedAt(),
       deletedAt: domain.getDeletedAt(),
       version: domain.getVersion(),
-      problem: {
-        id: domain.getProblem().getId().toString(),
-      } as ProblemEntity,
+      problem: this.problemFactory.createEntityFromDomain(domain.getProblem()),
     };
   }
 }

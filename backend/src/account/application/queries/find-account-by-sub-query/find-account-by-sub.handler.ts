@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { FindAccountBySubQuery } from './find-account-by-sub.query';
 import { FindAccountBySubResult } from './find-account-by-sub-result';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { InjectionToken } from '../../injection-token';
+import { AccountInjectionToken } from '../../injection-token';
 import { AccountQuery } from '../account-query';
 import { AccountErrorMessage } from 'src/account/domain/account-error-message';
 
@@ -10,7 +10,8 @@ import { AccountErrorMessage } from 'src/account/domain/account-error-message';
 export class FindAccountBySubHandler
   implements IQueryHandler<FindAccountBySubQuery, FindAccountBySubResult>
 {
-  @Inject(InjectionToken.ACCOUNT_QUERY) readonly accountQuery: AccountQuery;
+  @Inject(AccountInjectionToken.ACCOUNT_QUERY)
+  readonly accountQuery: AccountQuery;
 
   async execute(query: FindAccountBySubQuery): Promise<FindAccountBySubResult> {
     const data = await this.accountQuery.findBySub(query.sub);

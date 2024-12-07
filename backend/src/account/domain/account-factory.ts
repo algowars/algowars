@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Account, AccountImplementation, AccountProperties } from './account';
 import { AccountEntity } from '../infrastructure/entities/account.entity';
@@ -13,6 +13,7 @@ export type CreateAccountOptions = Readonly<{
   sub: string;
 }>;
 
+@Injectable()
 export class AccountFactory
   implements EntityDomainFactory<Account, AccountEntity>
 {

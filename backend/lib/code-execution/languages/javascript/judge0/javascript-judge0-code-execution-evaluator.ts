@@ -5,6 +5,7 @@ import {
 } from 'lib/code-execution/code-execution-evaluation-result';
 import { CodeExecutionResponse } from 'lib/code-execution/code-execution-service';
 import { Judge0CodeExecutionEvaluator } from 'lib/code-execution/judge0/judge0-code-execution-evaluator';
+import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 @Injectable()
 export class JavaScriptJudge0CodeExecutionEvaluator
@@ -49,8 +50,8 @@ export class JavaScriptJudge0CodeExecutionEvaluator
     // Determine the evaluation status based on results
     const status =
       summary.failed > 0
-        ? SubmissionResultStatus.WRONG_ANSWER
-        : SubmissionResultStatus.ACCEPTED;
+        ? SubmissionStatus.WRONG_ANSWER
+        : SubmissionStatus.ACCEPTED;
 
     return {
       status,
