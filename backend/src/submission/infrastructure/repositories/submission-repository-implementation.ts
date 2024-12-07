@@ -5,10 +5,6 @@ import { Submission } from 'src/submission/domain/submission';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionEntity } from '../entities/submission.entity';
-import { Account } from 'src/account/domain/account';
-import { Language } from 'src/problem/domain/language';
-import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
-import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
 import { SubmissionResult } from 'src/submission/domain/submission-result';
 import { SubmissionResultEntity } from '../entities/submission-result.entity';
 
@@ -26,10 +22,12 @@ export class SubmissionRepositoryImplementation
       .getRepository(SubmissionEntity)
       .findOne({
         where: { id: id.toString() },
-        relations: ['results', 'language', 'createdBy'],
+        relations: ['results', 'language', 'createdBy', 'problem'],
       });
 
-    return entity ? this.entityToModel(entity) : null;
+    const model = entity ? this.entityToModel(entity) : null;
+
+    return model;
   }
 
   async save(data: Submission | Submission[]): Promise<void> {
@@ -52,50 +50,7 @@ export class SubmissionRepositoryImplementation
   }
 
   private modelToEntity(model: Submission): SubmissionEntity {
-    return {
-      id: model.getId().toString(),
-      sourceCode: model.getSourceCode(),
-      createdBy: model?.getCreatedBy()
-        ? this.accountToEntity(model.getCreatedBy())
-        : null,
-      createdAt: model.getCreatedAt(),
-      updatedAt: model.getUpdatedAt(),
-      deletedAt: model.getDeletedAt(),
-      version: model.getVersion(),
-      codeExecutionContext: model.getCodeExecutionContext(),
-      language: this.languageToEntity(model.getLanguage()),
-      results: model?.getSubmissionResults()
-        ? this.resultsToEntity(model.getSubmissionResults())
-        : [],
-    };
-  }
-
-  private languageToEntity(language: Language): LanguageEntity {
-    return {
-      id: language.getId().toNumber(),
-      name: language.getName(),
-      createdAt: language.getCreatedAt(),
-      updatedAt: language.getUpdatedAt(),
-      deletedAt: language.getDeletedAt(),
-      version: language.getVersion(),
-      isArchived: language.getIsArchived(),
-      additionalTestFiles: [],
-      setups: [],
-      initialCode: language.getInitialCode(),
-      initialSolution: language.getInitialSolution(),
-    };
-  }
-
-  private accountToEntity(account: Account): AccountEntity {
-    return {
-      id: account.getId().toString(),
-      sub: account.getSub().toString(),
-      username: account.getUsername().toString(),
-      createdAt: account.getCreatedAt(),
-      updatedAt: account.getUpdatedAt(),
-      deletedAt: account.getDeletedAt(),
-      version: account.getVersion(),
-    };
+    return this.submissionFactory.createEntityFromDomain(model);
   }
 
   private resultsToEntity(

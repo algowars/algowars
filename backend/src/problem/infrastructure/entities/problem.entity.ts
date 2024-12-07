@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { ProblemSetupEntity } from './problem-setup.entity';
 import { ProblemStatus } from 'src/problem/domain/problem-status';
+import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
 
 @Entity('problem')
 export class ProblemEntity extends BaseEntity {
@@ -31,7 +32,14 @@ export class ProblemEntity extends BaseEntity {
     cascade: true,
     lazy: true,
   })
-  setups: Promise<ProblemSetupEntity[]>;
+  setups?: Promise<ProblemSetupEntity[]>;
+
+  @OneToMany(() => SubmissionEntity, (submission) => submission.problem, {
+    cascade: true,
+    eager: false,
+    lazy: true,
+  })
+  submissions?: SubmissionEntity[];
 
   @Column({
     type: 'enum',

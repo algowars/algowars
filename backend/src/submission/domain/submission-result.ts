@@ -1,8 +1,40 @@
+import {
+  BaseDomain,
+  BaseDomainImplementation,
+  BaseDomainProperties,
+} from 'src/common/entities/base-domain';
 import { SubmissionStatus } from './submission-status';
 
-export type SubmissionResultProperties = Readonly<{ token: string }>;
+export type SubmissionResultEssentialProperties = Readonly<
+  Required<{
+    token: string;
+  }>
+>;
 
-export interface SubmissionResult {
+export type SubmissionResultOptionalProperties = Readonly<
+  Partial<{
+    token: string;
+    sourceCode?: string;
+    languageId?: number;
+    stdin?: string;
+    stdout?: string;
+    time?: string;
+    memory?: number;
+    stderr?: string;
+    expectedOutput?: string;
+    message?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date | null;
+    version?: number;
+    status: SubmissionStatus;
+  }>
+>;
+export type SubmissionResultProperties = SubmissionResultEssentialProperties &
+  SubmissionResultOptionalProperties &
+  BaseDomainProperties;
+
+export interface SubmissionResult extends BaseDomain {
   getToken(): string;
   getSourceCode(): string;
   getLanguageId(): number;
@@ -18,7 +50,10 @@ export interface SubmissionResult {
   setStatus(newStatus: SubmissionStatus): void;
 }
 
-export class SubmissionResultImplementation implements SubmissionResult {
+export class SubmissionResultImplementation
+  extends BaseDomainImplementation
+  implements SubmissionResult
+{
   private readonly token: string;
   private readonly sourceCode: string;
   private readonly language_id: number;
@@ -32,6 +67,7 @@ export class SubmissionResultImplementation implements SubmissionResult {
   private status: SubmissionStatus;
 
   constructor(properties: SubmissionResultProperties) {
+    super(properties);
     Object.assign(this, properties);
   }
 

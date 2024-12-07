@@ -1,4 +1,4 @@
-export enum InjectionToken {
+export enum SubmissionInjectionToken {
   SUBMISSION_QUERY = 'SubmissionQuery',
   SUBMISSION_REPOSITORY = 'SubmissionRepository',
   INTEGRATION_EVENT_PUBLISHER = 'IntegrationEventPublisher',

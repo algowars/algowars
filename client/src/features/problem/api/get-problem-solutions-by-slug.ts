@@ -2,6 +2,8 @@ import { api } from "@/lib/api-client";
 import { QueryConfig } from "@/lib/react-query";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { AxiosRequestConfig } from "axios";
+import { Problem } from "../models/problem.model";
+import { Submission } from "@/features/submission/models/submission.model";
 
 export const getProblemSolutionsBySlug = ({
   slug,
@@ -9,9 +11,16 @@ export const getProblemSolutionsBySlug = ({
 }: {
   slug: string;
   accessToken: string;
-}): Promise<any> => {
+}): Promise<{
+  problem: Problem;
+  solutions: Submission[];
+} | null> => {
+  if (!accessToken) {
+    return Promise.resolve(null);
+  }
+
   const config: AxiosRequestConfig = {
-    url: `/api/v1/problem/solutions/${encodeURIComponent(slug)}`,
+    url: `/api/v1/problem/find/slug/${encodeURIComponent(slug)}/solutions`,
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

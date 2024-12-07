@@ -2,8 +2,6 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateProblemCommand } from './create-problem.command';
 import { Id } from 'src/common/domain/id';
 import { Inject, NotFoundException } from '@nestjs/common';
-import { InjectionToken } from '../../injection-token';
-import { InjectionToken as SubmissionInjectionToken } from 'src/submission/application/injection-token';
 import { ProblemRepository } from 'src/problem/domain/problem-repository';
 import { ProblemFactory } from 'src/problem/domain/problem-factory';
 import { Transactional } from 'lib/transactional';
@@ -14,18 +12,20 @@ import { SubmissionRepository } from 'src/submission/domain/submission-repositor
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { ProblemStatus } from 'src/problem/domain/problem-status';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
+import { ProblemInjectionToken } from '../../injection-token';
+import { SubmissionInjectionToken } from 'src/submission/application/injection-token';
 
 @CommandHandler(CreateProblemCommand)
 export class CreateProblemHandler
   implements ICommandHandler<CreateProblemCommand, Id>
 {
-  @Inject(InjectionToken.PROBLEM_REPOSITORY)
+  @Inject(ProblemInjectionToken.PROBLEM_REPOSITORY)
   private readonly problemRepository: ProblemRepository;
   @Inject()
   private readonly problemFactory: ProblemFactory;
-  @Inject(InjectionToken.LANGUAGE_REPOSITORY)
+  @Inject(ProblemInjectionToken.LANGUAGE_REPOSITORY)
   private readonly languageRepository: LanguageRepository;
-  @Inject(InjectionToken.ADDITIONAL_TEST_FILE_REPOSITORY)
+  @Inject(ProblemInjectionToken.ADDITIONAL_TEST_FILE_REPOSITORY)
   private readonly additionalTestFileRepository: AdditionalTestFileRepository;
   @Inject()
   private readonly contextFactory: CodeExecutionContextFactory;
@@ -62,26 +62,6 @@ ${command.createProblemRequest.test}`,
     );
 
     const executionResult = await executionContext.execute(buildRequest);
-
-    const submissionId = await this.submissionRepository.newId();
-    const submission = this.submissionFactory.create({
-      id: submissionId,
-      language,
-      sourceCode: command.createProblemRequest.solution,
-      createdBy: command.account,
-      results: [
-        {
-          ...executionResult,
-          status: SubmissionStatus.POLLING,
-        },
-      ],
-      codeExecutionContext: executionContext.getEngine(),
-    });
-    await this.submissionRepository.save(submission);
-
-    submission.create();
-    submission.commit();
-
     const problemId = await this.problemRepository.newId();
 
     const problem = this.problemFactory.create({
@@ -93,7 +73,7 @@ ${command.createProblemRequest.test}`,
           problemId,
           languageId: language.getId().toNumber(),
           initialCode: command.createProblemRequest.initialCode,
-          solution: submission,
+          solution: null,
           tests: [
             {
               id: await this.problemRepository.newId(),
@@ -115,6 +95,29 @@ ${command.createProblemRequest.test}`,
       ],
       status: ProblemStatus.PENDING,
     });
+
+    const submissionId = await this.submissionRepository.newId();
+    const submission = this.submissionFactory.create({
+      id: submissionId,
+      language,
+      sourceCode: command.createProblemRequest.solution,
+      createdBy: command.account,
+      results: [
+        {
+          ...executionResult,
+          status: SubmissionStatus.POLLING,
+        },
+      ],
+      codeExecutionContext: executionContext.getEngine(),
+      problem,
+    });
+
+    problem.getSetups()[0].setSolution(submission);
+
+    await this.submissionRepository.save(submission);
+
+    submission.create();
+    submission.commit();
 
     await this.problemRepository.save(problem);
 

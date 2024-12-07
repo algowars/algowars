@@ -34,6 +34,13 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
     return entity ? this.entityToModel(entity) : null;
   }
 
+  async findBySlug(slug: string): Promise<Problem | null> {
+    const entity = await readConnection
+      .getRepository(ProblemEntity)
+      .findOneBy({ slug });
+    return entity ? this.entityToModel(entity) : null;
+  }
+
   private modelToEntity(model: Problem): ProblemEntity {
     const problem = new ProblemEntity();
     problem.id = model.getId().toString();

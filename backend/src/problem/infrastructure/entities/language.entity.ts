@@ -32,11 +32,11 @@ export class LanguageEntity extends BaseEntity {
   @OneToMany(() => ProblemSetupEntity, (setup) => setup.language, {
     lazy: true,
   })
-  readonly setups: ProblemSetupEntity[];
+  readonly setups?: ProblemSetupEntity[];
 
   @OneToMany(
     () => AdditionalTestFileEntity,
     (additionalTestFiles) => additionalTestFiles.language,
   )
-  readonly additionalTestFiles: AdditionalTestFileEntity[];
+  readonly additionalTestFiles?: AdditionalTestFileEntity[];
 }

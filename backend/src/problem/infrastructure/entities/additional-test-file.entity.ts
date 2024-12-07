@@ -7,7 +7,6 @@ import {
 } from 'typeorm';
 import { TestEntity } from './test.entity';
 import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
-import { Language } from 'src/problem/domain/language';
 import { BaseEntity } from 'src/common/entities/base-entity';
 
 @Entity('additional-test-files')
@@ -24,7 +23,7 @@ export class AdditionalTestFileEntity extends BaseEntity {
   @ManyToOne(() => LanguageEntity, (language) => language.additionalTestFiles, {
     nullable: false,
   })
-  language: Language;
+  language: LanguageEntity;
 
   @Column({ nullable: false })
   initialTestFile: string;
@@ -32,5 +31,5 @@ export class AdditionalTestFileEntity extends BaseEntity {
   @OneToMany(() => TestEntity, (test) => test.additionalTestFile, {
     lazy: true,
   })
-  tests: TestEntity[];
+  tests?: TestEntity[];
 }

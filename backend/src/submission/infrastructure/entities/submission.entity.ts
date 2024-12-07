@@ -10,6 +10,7 @@ import {
 import { SubmissionResultEntity } from './submission-result.entity';
 import { BaseEntity } from 'src/common/entities/base-entity';
 import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
+import { ProblemEntity } from 'src/problem/infrastructure/entities/problem.entity';
 
 @Entity('submission')
 export class SubmissionEntity extends BaseEntity {
@@ -21,6 +22,9 @@ export class SubmissionEntity extends BaseEntity {
 
   @ManyToOne(() => LanguageEntity, (language) => language.submissions)
   language?: LanguageEntity;
+
+  @ManyToOne(() => ProblemEntity, (problem) => problem.submissions)
+  problem: ProblemEntity;
 
   @OneToMany(
     () => SubmissionResultEntity,

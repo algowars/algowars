@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Test, TestImplementation } from './test';
 import { IdImplementation } from 'src/common/domain/id';
 import { TestEntity } from '../infrastructure/entities/test.entity';
@@ -6,6 +6,7 @@ import {
   AdditionalTestFileFactory,
   CreateAdditionalTestFileOptions,
 } from './additional-test-file-factory';
+import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
 
 export type CreateTestOptions = Readonly<{
   id: string;
@@ -17,7 +18,8 @@ export type CreateTestOptions = Readonly<{
   additionalTestFile?: CreateAdditionalTestFileOptions;
 }>;
 
-export class TestFactory {
+@Injectable()
+export class TestFactory implements EntityDomainFactory<Test, TestEntity> {
   @Inject()
   private readonly additionalTestFileFactory: AdditionalTestFileFactory;
 
@@ -32,6 +34,10 @@ export class TestFactory {
   }
 
   createFromEntity(testEntity: TestEntity): Test {
+    if (!testEntity) {
+      return null;
+    }
+
     return new TestImplementation({
       ...testEntity,
       id: new IdImplementation(testEntity.id),
@@ -41,5 +47,23 @@ export class TestFactory {
           )
         : undefined,
     });
+  }
+
+  createEntityFromDomain(domain: Test): TestEntity {
+    if (!domain) {
+      return null;
+    }
+
+    return {
+      id: domain.getId().toString(),
+      code: domain.getCode(),
+      additionalTestFile: this.additionalTestFileFactory.createEntityFromDomain(
+        domain.getAdditionalTestFile(),
+      ),
+      createdAt: domain.getCreatedAt(),
+      updatedAt: domain.getUpdatedAt(),
+      deletedAt: domain.getDeletedAt(),
+      version: domain.getVersion(),
+    };
   }
 }

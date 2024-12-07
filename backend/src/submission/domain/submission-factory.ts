@@ -1,16 +1,17 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Id, IdImplementation } from 'src/common/domain/id';
 import { Submission, SubmissionImplementation } from './submission';
-import { Account, AccountImplementation } from 'src/account/domain/account';
+import { Account } from 'src/account/domain/account';
 import { SubmissionEntity } from '../infrastructure/entities/submission.entity';
-import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
-import { Language, LanguageImplementation } from 'src/problem/domain/language';
-import { LanguageEntity } from 'src/problem/infrastructure/entities/language.entity';
-import { UserSubImplementation } from 'src/account/domain/user-sub';
-import { UsernameImplementation } from 'src/account/domain/username';
-import { SubmissionResultImplementation } from './submission-result';
+import { Language } from 'src/problem/domain/language';
 import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
+import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
+import { SubmissionResultFactory } from './submission-result-factory';
+import { AccountFactory } from 'src/account/domain/account-factory';
+import { LanguageFactory } from 'src/problem/domain/language-factory';
+import { Problem } from 'src/problem/domain/problem';
+import { ProblemEntity } from 'src/problem/infrastructure/entities/problem.entity';
 
 type CreateSubmissionOptions = Readonly<{
   id: Id;
@@ -21,20 +22,23 @@ type CreateSubmissionOptions = Readonly<{
     token: string;
   }[];
   codeExecutionContext: CodeExecutionEngine;
+  problem: Problem;
 }>;
 
-export class SubmissionFactory {
+@Injectable()
+export class SubmissionFactory
+  implements EntityDomainFactory<Submission, SubmissionEntity>
+{
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
-
+  @Inject() private readonly accountFactory: AccountFactory;
+  @Inject() private readonly languageFactory: LanguageFactory;
+  @Inject() private readonly submissionResultFactory: SubmissionResultFactory;
   create(options: CreateSubmissionOptions): Submission {
-    const results = Array.isArray(options.results)
-      ? options.results.map(
-          (result) =>
-            new SubmissionResultImplementation({
-              token: result.token,
-            }),
-        )
-      : null;
+    let results = [];
+
+    if (Array.isArray(options.results)) {
+      results = options.results.map(this.submissionResultFactory.create);
+    }
 
     return this.eventPublisher.mergeObjectContext(
       new SubmissionImplementation({
@@ -49,45 +53,68 @@ export class SubmissionFactory {
   }
 
   createFromEntity(submissionEntity: SubmissionEntity): Submission {
+    if (!submissionEntity) {
+      return null;
+    }
+
     const id = new IdImplementation(submissionEntity.id);
+
+    let results = [];
+
+    if (Array.isArray(submissionEntity.results)) {
+      results = submissionEntity.results.map((result) =>
+        this.submissionResultFactory.createFromEntity(result),
+      );
+    }
 
     return this.create({
       id,
-      createdBy: submissionEntity?.createdBy
-        ? this.mapAccountEntityToDomain(submissionEntity.createdBy)
-        : null,
-      language: submissionEntity?.language
-        ? this.mapLanguageEntityToDomain(submissionEntity.language)
-        : null,
+      createdBy: this.accountFactory.createFromEntity(
+        submissionEntity.createdBy,
+      ),
+      language: this.languageFactory.createFromEntity(
+        submissionEntity.language,
+      ),
       sourceCode: submissionEntity.sourceCode,
-      results:
-        submissionEntity?.results.map((result) => ({
-          token: result.token,
-        })) ?? [],
+      results,
       codeExecutionContext: submissionEntity.codeExecutionContext,
+      problem: null,
     });
   }
 
-  private mapLanguageEntityToDomain(language: LanguageEntity): Language {
-    return new LanguageImplementation({
-      id: new IdImplementation(language.id),
-      name: language.name,
-      version: language.version,
-      createdAt: language.createdAt,
-      updatedAt: language.updatedAt,
-      deletedAt: language.deletedAt,
-    });
-  }
+  createEntityFromDomain(domain: Submission): SubmissionEntity {
+    if (!domain) {
+      return null;
+    }
 
-  private mapAccountEntityToDomain(accountEntity: AccountEntity): Account {
-    return new AccountImplementation({
-      id: new IdImplementation(accountEntity.id),
-      sub: new UserSubImplementation(accountEntity.sub),
-      username: new UsernameImplementation(accountEntity.username),
-      createdAt: accountEntity.createdAt,
-      updatedAt: accountEntity.updatedAt,
-      deletedAt: accountEntity.deletedAt,
-      version: accountEntity.version,
-    });
+    let results = [];
+
+    console.log('IN CREATE ENTITY DOMAIN: ', domain.getSubmissionResults());
+
+    if (Array.isArray(domain.getSubmissionResults())) {
+      results = domain
+        .getSubmissionResults()
+        .map(this.submissionResultFactory.createEntityFromDomain);
+    }
+
+    return {
+      id: domain.getId().toString(),
+      sourceCode: domain.getSourceCode(),
+      language: this.languageFactory.createEntityFromDomain(
+        domain.getLanguage(),
+      ),
+      results,
+      createdBy: this.accountFactory.createEntityFromDomain(
+        domain.getCreatedBy(),
+      ),
+      codeExecutionContext: domain.getCodeExecutionContext(),
+      createdAt: domain.getCreatedAt(),
+      updatedAt: domain.getUpdatedAt(),
+      deletedAt: domain.getDeletedAt(),
+      version: domain.getVersion(),
+      problem: {
+        id: domain.getProblem().getId().toString(),
+      } as ProblemEntity,
+    };
   }
 }

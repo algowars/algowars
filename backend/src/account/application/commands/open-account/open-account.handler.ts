@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { OpenAccountCommand } from './open-account.command';
 import { ConflictException, Inject } from '@nestjs/common';
-import { InjectionToken } from '../../injection-token';
+import { AccountInjectionToken } from '../../injection-token';
 import { AccountRepository } from 'src/account/domain/account-repository';
 import { AccountFactory } from 'src/account/domain/account-factory';
 import { Transactional } from 'lib/transactional';
@@ -11,7 +11,7 @@ import { Id } from 'src/common/domain/id';
 export class OpenAccountHandler
   implements ICommandHandler<OpenAccountCommand, Id>
 {
-  @Inject(InjectionToken.ACCOUNT_REPOSITORY)
+  @Inject(AccountInjectionToken.ACCOUNT_REPOSITORY)
   private readonly accountRepository: AccountRepository;
   @Inject()
   private readonly accountFactory: AccountFactory;

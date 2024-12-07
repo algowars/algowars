@@ -27,6 +27,8 @@ import { CreateProblemSetupRequest } from './dto/request/create-problem-setup.dt
 import { GetProblemSetupResponse } from './dto/response/get-problem-setup-response.dto';
 import { GetProblemSetupQuery } from '../application/queries/get-problem-setup-query/get-problem-setup.query';
 import { FindProblemBySlugRequestQuery } from './dto/request/find-problem-by-slug-request-query.dto';
+import { GetProblemSolutionsResponse } from './dto/response/get-problem-solutions-response.dto';
+import { GetProblemSolutionsQuery } from '../application/queries/get-problem-solutions-query/get-problem-solutions.query';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -51,6 +53,19 @@ export class ProblemController {
   ): Promise<FindProblemBySlugResponseDto> {
     return this.queryBus.execute(
       new FindProblemBySlugQuery(param.slug, query.languageId),
+    );
+  }
+
+  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
+  @Get('find/slug/:slug/solutions')
+  async getProblemSolutionsBySlug(
+    @Param() param: FindProblemBySlugRequestParam,
+    @Req() request: Request,
+  ): Promise<GetProblemSolutionsResponse> {
+    const account = request?.account;
+
+    return this.queryBus.execute(
+      new GetProblemSolutionsQuery(param.slug, account),
     );
   }
 

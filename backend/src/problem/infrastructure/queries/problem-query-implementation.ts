@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { readConnection } from 'lib/database.module';
 import { ProblemQuery } from 'src/problem/application/queries/problem-query';
 import { ProblemEntity } from '../entities/problem.entity';
@@ -6,9 +6,15 @@ import { FindProblemBySlugResult } from 'src/problem/application/queries/find-pr
 import { PageResult } from 'src/common/pagination/page-result';
 import { GetProblemsPageableResult } from 'src/problem/application/queries/get-problems-pageable-query/get-problems-pageable-result';
 import { Pagination } from 'src/common/pagination/pagination';
+import { Account } from 'src/account/domain/account';
+import { GetProblemSolutionsResult } from 'src/problem/application/queries/get-problem-solutions-query/get-problem-solutions.result';
+import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
+import { SubmissionResultFactory } from 'src/submission/domain/submission-result-factory';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
+  @Inject() private readonly submissionResultFactory: SubmissionResultFactory;
+
   async findBySlug(
     slug: string,
     languageId?: number,
@@ -16,6 +22,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
     const query = readConnection
       .getRepository(ProblemEntity)
       .createQueryBuilder('problem')
+      .leftJoinAndSelect('problem.createdBy', 'createdBy')
       .andWhere('problem.slug = :slug', { slug });
 
     if (languageId) {
@@ -42,6 +49,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
       updatedAt: result.updatedAt,
       deletedAt: result.deletedAt,
       initialCode: setup ? setup.initialCode : '',
+      createdBy: result.createdBy?.username,
     };
   }
 
@@ -80,5 +88,60 @@ export class ProblemQueryImplementation implements ProblemQuery {
     );
 
     return pageResult;
+  }
+
+  async findBySlugWithSolutions(
+    slug: string,
+    account: Account,
+  ): Promise<GetProblemSolutionsResult | null> {
+    const problem = await readConnection
+      .getRepository(ProblemEntity)
+      .createQueryBuilder('problem')
+      .leftJoinAndSelect('problem.createdBy', 'createdBy')
+      .where('problem.slug = :slug', { slug })
+      .getOne();
+
+    if (!problem) {
+      return null;
+    }
+
+    const submissions = await readConnection
+      .getRepository(SubmissionEntity)
+      .createQueryBuilder('submission')
+      .leftJoinAndSelect('submission.language', 'language')
+      .leftJoinAndSelect('submission.results', 'results')
+      .where('submission.problemId = :problemId', { problemId: problem.id })
+      .andWhere('submission.createdById = :accountId', {
+        accountId: account.getId().toString(),
+      })
+      .getMany();
+
+    const submissionResults = submissions.map((submission) => ({
+      id: submission.id,
+      sourceCode: submission.sourceCode,
+      language: submission.language
+        ? {
+            id: submission.language.id,
+            name: submission.language.name,
+          }
+        : null,
+      statuses: submission.results?.map((result) => result.status) || [],
+      createdAt: submission.createdAt,
+    }));
+
+    console.log(submissionResults);
+
+    return {
+      problem: {
+        id: problem.id,
+        title: problem.title,
+        slug: problem.slug,
+        question: problem.question,
+        createdAt: problem.createdAt,
+        updatedAt: problem.updatedAt,
+        createdBy: problem.createdBy?.username,
+      },
+      solutions: submissionResults,
+    };
   }
 }

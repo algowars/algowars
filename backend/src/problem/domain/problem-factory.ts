@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Problem, ProblemImplementation, ProblemProperties } from './problem';
 import { ProblemEntity } from '../infrastructure/entities/problem.entity';
@@ -13,6 +13,7 @@ import {
   CreateAccountOptions,
 } from 'src/account/domain/account-factory';
 import { ProblemStatus } from './problem-status';
+import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
 
 export type CreateProblemOptions = Readonly<{
   id: string;
@@ -24,7 +25,10 @@ export type CreateProblemOptions = Readonly<{
   status: ProblemStatus;
 }>;
 
-export class ProblemFactory {
+@Injectable()
+export class ProblemFactory
+  implements EntityDomainFactory<Problem, ProblemEntity>
+{
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
   @Inject()
   private readonly problemSetupFactory: ProblemSetupFactory;
@@ -51,6 +55,10 @@ export class ProblemFactory {
   }
 
   createFromEntity(problemEntity: ProblemEntity): Problem {
+    if (!problemEntity) {
+      return null;
+    }
+
     let setups = [];
     if (Array.isArray(problemEntity.setups)) {
       setups = problemEntity.setups.map((setup) =>
@@ -70,7 +78,32 @@ export class ProblemFactory {
     );
   }
 
+  createEntityFromDomain(domain: Problem): ProblemEntity {
+    if (!domain) {
+      return null;
+    }
+
+    return {
+      id: domain.getId().toString(),
+      title: domain.getTitle(),
+      question: domain.getQuestion(),
+      slug: domain.getSlug(),
+      createdBy: this.accountFactory.createEntityFromDomain(
+        domain.getCreatedBy(),
+      ),
+      status: domain.getStatus(),
+      createdAt: domain.getCreatedAt(),
+      updatedAt: domain.getUpdatedAt(),
+      deletedAt: domain.getDeletedAt(),
+      version: domain.getVersion(),
+    };
+  }
+
   async reconstituteFromEntity(problemEntity: ProblemEntity): Promise<Problem> {
+    if (!problemEntity) {
+      return null;
+    }
+
     let setups = [];
     if (Array.isArray(problemEntity.setups)) {
       setups = problemEntity.setups.map((setup) =>

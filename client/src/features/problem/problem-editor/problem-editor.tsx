@@ -11,6 +11,8 @@ import { ProblemEditorFooter } from "./problem-editor-footer/problem-editor-foot
 import { useCreateSubmission } from "@/features/submission/api/create-submission";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 type ProblemEditorProps = {
   problem: Problem | undefined;
@@ -19,7 +21,21 @@ type ProblemEditorProps = {
 export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const { getAccessTokenSilently } = useAuth0();
   const [code, setCode] = useState<string>("");
-  const createSubmissionMutation = useCreateSubmission();
+  const navigate = useNavigate();
+  const createSubmissionMutation = useCreateSubmission({
+    mutationConfig: {
+      onMutate: () => {
+        toast.loading("Submitting your code...");
+      },
+      onSuccess: () => {
+        navigate("solutions");
+      },
+      onError: (error: unknown) => {
+        toast.dismiss();
+        toast.error(`Submission failed: "${error}"`);
+      },
+    },
+  });
 
   useEffect(() => {
     if (problem?.initialCode) {
@@ -54,8 +70,8 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={55} minSize={10}>
             <Card className="h-full overflow-auto">
-              <div className="p-5 border-b">
-                <h4 className="text-xl font-semibold">Code</h4>
+              <div className="p-2">
+                <h4 className="font-semibold">Code</h4>
               </div>
               <CodeEditor
                 code={code}
@@ -69,11 +85,19 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
             <ResizablePanelGroup direction="vertical">
               <ResizablePanel defaultSize={100} minSize={15}>
                 <Card className="h-full">
-                  <div className="p-5 border-b">
-                    <h2 className="text-2xl font-semibold">{problem.title}</h2>
-                    <ProblemEditorCreatedBy createdBy={problem.createdBy} />
+                  <div className="p-2 border-b">
+                    <h4 className="font-semibold">Description</h4>
                   </div>
-                  <div className="p-5">{problem.question}</div>
+                  <div className="p-5">
+                    <div className="mb-3">
+                      <h2 className="text-2xl font-semibold mb-1">
+                        {problem.title}
+                      </h2>
+                      <ProblemEditorCreatedBy createdBy={problem.createdBy} />
+                    </div>
+
+                    {problem.question}
+                  </div>
                 </Card>
               </ResizablePanel>
               {/* <ResizableHandle className="p-3 bg-inherit hover:bg-muted" /> */}

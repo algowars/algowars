@@ -14,4 +14,6 @@ export class FindProblemBySlugResponseDto extends FindProblemBySlugResult {
   readonly updatedAt: Date;
 
   readonly deletedAt: Date;
+
+  readonly createdBy: string;
 }

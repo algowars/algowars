@@ -33,6 +33,11 @@ export const routerConfig = {
     path: "/app/problem/:slug",
     execute: (subPath: string) => `/app/problem/${encodeURIComponent(subPath)}`,
   },
+  problemSolutions: {
+    path: "/app/problem/:slug/solutions",
+    execute: (subPath: string) =>
+      `/app/problem/${encodeURIComponent(subPath)}/solutions`,
+  },
 };
 
 export const createAppRouter = () => {
@@ -58,6 +63,15 @@ export const createAppRouter = () => {
       path: routerConfig.appRoot.path,
       element: <ProtectedRoute component={AppRoot} />,
       children: [
+        {
+          path: routerConfig.problemSolutions.path,
+          lazy: async () => {
+            const { ProblemSolutions } = await import(
+              "./routes/app/problem/solutions"
+            );
+            return { Component: ProblemSolutions };
+          },
+        },
         {
           path: routerConfig.problem.path,
           lazy: async () => {

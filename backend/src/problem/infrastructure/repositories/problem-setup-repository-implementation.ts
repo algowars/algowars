@@ -31,7 +31,7 @@ export class ProblemSetupRepositoryImplementation
     return entity ? this.entityToModel(entity) : null;
   }
 
-  private entityToModel(entity: ProblemSetupEntity): Promise<ProblemSetup> {
+  private entityToModel(entity: ProblemSetupEntity): ProblemSetup {
     return this.problemSetupFactory.createFromEntity(entity);
   }
 }
