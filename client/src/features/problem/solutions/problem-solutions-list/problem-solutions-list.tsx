@@ -20,7 +20,7 @@ const ProblemSolutionsList = ({ solutions }: ProblemSolutionsListProps) => {
   }
 
   return (
-    <ul>
+    <ul className="flex flex-col gap-5">
       {solutions.map((solution) => (
         <li key={solution.id}>
           <Card className="p-5">

@@ -9,6 +9,7 @@ import { createStore, StoreApi } from "zustand";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useFindAccountBySub } from "./api/find-account-by-sub";
 import { Account } from "./models/account.model";
+import { AxiosError } from "axios";
 
 export interface AccountStoreState {
   account: Account | null;
@@ -20,6 +21,7 @@ interface AccountStoreContextState {
   store: StoreApi<AccountStoreState> | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  status: string | null;
 }
 
 const accountStore = createStore<AccountStoreState>((set) => ({
@@ -35,6 +37,7 @@ const initialAccountStoreContextState: AccountStoreContextState = {
   store: null,
   isLoading: true,
   isAuthenticated: false,
+  status: null,
 };
 
 const AccountStoreContext = createContext<AccountStoreContextState>(
@@ -66,11 +69,16 @@ export const AccountStoreProvider = ({
         }
         setIsLoading(false);
       },
+      onError: (error) => {
+        console.log("ERROR: ", error);
+      },
       onSettled: () => {
         setIsLoading(false);
       },
     },
   });
+
+  console.log("MUTATION: ", findAccountBySubMutation);
 
   useEffect(() => {
     (async () => {
@@ -82,11 +90,13 @@ export const AccountStoreProvider = ({
       }
     })();
   }, [isAuthAuthenticated, isAuthLoading]);
+  const error = findAccountBySubMutation?.error as AxiosError;
 
   const value = {
     store,
     isLoading,
     isAuthenticated,
+    status: error?.code ?? null,
   };
 
   return (

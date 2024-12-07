@@ -7,11 +7,17 @@ import { X } from "lucide-react";
 
 const AccountVerficiationBanner = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
-  const { isLoading, isAuthenticated } = useAccountStore();
+  const { isLoading, isAuthenticated, status } = useAccountStore();
   const { isLoading: isAuthLoading, isAuthenticated: isAuthAuthenticated } =
     useAuth0();
 
-  if (isLoading || isAuthLoading || !isAuthAuthenticated) {
+  console.log(isLoading, isAuthenticated, status);
+  if (
+    isLoading ||
+    isAuthLoading ||
+    !isAuthAuthenticated ||
+    status === "ERR_NETWORK"
+  ) {
     return null;
   }
 

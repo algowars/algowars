@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Id, IdImplementation } from 'src/common/domain/id';
 import { Submission, SubmissionImplementation } from './submission';
@@ -10,7 +10,6 @@ import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
 import { SubmissionResultFactory } from './submission-result-factory';
 import { AccountFactory } from 'src/account/domain/account-factory';
 import { LanguageFactory } from 'src/problem/domain/language-factory';
-import { ProblemFactory } from 'src/problem/domain/problem-factory';
 import { Problem } from 'src/problem/domain/problem';
 import { ProblemEntity } from 'src/problem/infrastructure/entities/problem.entity';
 

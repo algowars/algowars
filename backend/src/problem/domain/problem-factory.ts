@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Problem, ProblemImplementation, ProblemProperties } from './problem';
 import { ProblemEntity } from '../infrastructure/entities/problem.entity';

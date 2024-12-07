@@ -10,7 +10,6 @@ import {
 import { ProblemSetupEntity } from './problem-setup.entity';
 import { ProblemStatus } from 'src/problem/domain/problem-status';
 import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
-import { Submission } from 'src/submission/domain/submission';
 
 @Entity('problem')
 export class ProblemEntity extends BaseEntity {

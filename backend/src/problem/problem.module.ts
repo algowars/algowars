@@ -16,7 +16,6 @@ import { AdditionalTestFileRepositoryImplementation } from './infrastructure/rep
 import { ProblemSetupRepositoryImplementation } from './infrastructure/repositories/problem-setup-repository-implementation';
 import { AccountModule } from 'src/account/account.module';
 import { SubmissionRepositoryImplementation } from 'src/submission/infrastructure/repositories/submission-repository-implementation';
-import { SubmissionModule } from 'src/submission/submission.module';
 import { ProblemInjectionToken } from './application/injection-token';
 import { SubmissionInjectionToken } from 'src/submission/application/injection-token';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';

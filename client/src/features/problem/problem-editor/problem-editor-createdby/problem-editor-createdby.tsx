@@ -2,7 +2,7 @@ import { routerConfig } from "@/app/router";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
-import { CircleUserRound, User, UserRound } from "lucide-react";
+import { CircleUserRound } from "lucide-react";
 
 type ProblemEditorCreatedByProps = {
   createdBy?: string | undefined;

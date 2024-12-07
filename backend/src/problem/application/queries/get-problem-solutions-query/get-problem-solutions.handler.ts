@@ -4,7 +4,6 @@ import { GetProblemSolutionsResult } from './get-problem-solutions.result';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { ProblemInjectionToken } from '../../injection-token';
 import { ProblemQuery } from '../problem-query';
-import { NotFound } from '@aws-sdk/client-s3';
 import { ProblemErrorMessage } from 'src/problem/domain/problem-error-message';
 
 @QueryHandler(GetProblemSolutionsQuery)

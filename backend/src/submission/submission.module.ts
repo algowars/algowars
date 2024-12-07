@@ -1,4 +1,4 @@
-import { forwardRef, Logger, Module, Provider } from '@nestjs/common';
+import { Logger, Module, Provider } from '@nestjs/common';
 import { SubmissionController } from './interface/submission.controller';
 import { SubmissionCommandHandlers } from './application/commands';
 import { SubmissionFactory } from './domain/submission-factory';
