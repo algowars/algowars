@@ -1,4 +1,3 @@
-import { routerConfig } from "@/app/router";
 import {
   Sheet,
   SheetContent,
@@ -7,7 +6,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { Link } from "react-router-dom";
 
 type NavbarMenuProps = {
   className?: string;

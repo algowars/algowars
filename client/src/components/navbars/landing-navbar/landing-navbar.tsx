@@ -6,9 +6,7 @@ import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
-import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { NavbarMenu } from "../navbar-menu/navbar-menu";
 
 type LandingNavbarProps = {
