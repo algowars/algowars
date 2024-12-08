@@ -9,7 +9,7 @@ export const DashboardRoute = () => {
   return (
     <Layout isAuthenticated={isAuthenticated}>
       <Container className="py-5">
-        <Card className="flex flex-col gap-5 p-5">
+        <Card className="flex flex-col gap-5 p-5 rounded-none lg:rounded-lg">
           <h3 className="text-3xl font-bold">Problems</h3>
           <ProblemsTable />
         </Card>

@@ -6,10 +6,9 @@ import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
-import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { useAccountStore } from "@/features/account/account-store.provider";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { NavbarMenu } from "../navbar-menu/navbar-menu";
 
 export type NavbarProps = {
   isAuthenticated?: boolean;
@@ -22,22 +21,18 @@ export const Navbar = ({ isAuthenticated }: NavbarProps) => {
 
   return (
     <nav>
-      <Container className="flex items-center py-3">
+      <Container className="flex items-center py-3 px-3 lg:px-0">
         <ul className="flex items-center gap-5">
           <li>
             <Link to={routerConfig.root.path}>
               <Logo />
             </Link>
           </li>
+        </ul>
+        <ul className="hidden lg:flex items-center gap-5 ml-auto">
           <li>
             <Link to={routerConfig.root.path}>Home</Link>
           </li>
-        </ul>
-
-        <Button>
-          <HamburgerMenuIcon />
-        </Button>
-        <ul className="flex items-center gap-5 ml-auto">
           {isAuthenticated ? (
             <>
               {roles.includes("Admin") ? (
@@ -71,6 +66,7 @@ export const Navbar = ({ isAuthenticated }: NavbarProps) => {
             </>
           )}
         </ul>
+        <NavbarMenu className="lg:hidden ml-auto" />
       </Container>
     </nav>
   );
