@@ -43,6 +43,7 @@ type UseGetInitialProblemCreationOptions = {
 export const useGetInitialProblemCreation = ({
   languageId,
   accessToken,
+  queryConfig,
 }: UseGetInitialProblemCreationOptions) => {
   return useQuery({
     ...getInitialProblemCreationQueryOptions(languageId, accessToken ?? ""),

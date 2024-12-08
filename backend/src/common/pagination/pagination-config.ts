@@ -4,6 +4,6 @@ export interface PaginationConfig<T> {
   page: number;
   size: number;
   timestamp: Date;
-  resultsTransformer(result: BaseEntity[]): T[];
+  resultsTransformer(result: BaseEntity[]): T[] | Promise<T[]>;
   relations?: string[];
 }

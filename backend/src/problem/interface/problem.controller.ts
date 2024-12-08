@@ -29,6 +29,9 @@ import { GetProblemSetupQuery } from '../application/queries/get-problem-setup-q
 import { FindProblemBySlugRequestQuery } from './dto/request/find-problem-by-slug-request-query.dto';
 import { GetProblemSolutionsResponse } from './dto/response/get-problem-solutions-response.dto';
 import { GetProblemSolutionsQuery } from '../application/queries/get-problem-solutions-query/get-problem-solutions.query';
+import { GetProblemWithStatusesParam } from './dto/request/get-problem-with-statuses.dto';
+import { GetProblemWithStatusesQuery } from '../application/queries/get-problem-with-statuses/get-problem-with-statuses.query';
+import { GetProblemWithStatusesResult } from '../application/queries/get-problem-with-statuses/get-problem-with-statuses-result';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -92,5 +95,35 @@ export class ProblemController {
     );
 
     return id.toString();
+  }
+
+  @UseGuards(PermissionsGuard([ProblemPermissions.LIST_PROBLEM]))
+  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
+  @Get('/statuses')
+  async getProblemWithStatuses(
+    @Query() query: GetProblemWithStatusesParam,
+  ): Promise<{
+    results: GetProblemWithStatusesResult;
+    page: number;
+    size: number;
+    totalPages: number;
+  }> {
+    const result: PageResult<GetProblemWithStatusesResult> =
+      await this.queryBus.execute(
+        new GetProblemWithStatusesQuery(
+          query.page,
+          query.size,
+          query.timestamp,
+        ),
+      );
+
+    console.log('RESULT: ', JSON.stringify(result));
+
+    return {
+      results: result.getResults(),
+      page: result.getPage(),
+      size: result.getSize(),
+      totalPages: result.getTotalPages(),
+    };
   }
 }

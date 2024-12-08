@@ -1,4 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { readConnection } from 'lib/database.module';
 import { ProblemQuery } from 'src/problem/application/queries/problem-query';
 import { ProblemEntity } from '../entities/problem.entity';
@@ -10,6 +14,8 @@ import { Account } from 'src/account/domain/account';
 import { GetProblemSolutionsResult } from 'src/problem/application/queries/get-problem-solutions-query/get-problem-solutions.result';
 import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
 import { SubmissionResultFactory } from 'src/submission/domain/submission-result-factory';
+import { GetProblemWithStatusesResult } from 'src/problem/application/queries/get-problem-with-statuses/get-problem-with-statuses-result';
+import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
@@ -129,8 +135,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
       createdAt: submission.createdAt,
     }));
 
-    console.log(submissionResults);
-
     return {
       problem: {
         id: problem.id,
@@ -143,5 +147,83 @@ export class ProblemQueryImplementation implements ProblemQuery {
       },
       solutions: submissionResults,
     };
+  }
+
+  async getAsAdmin(
+    page: number,
+    size: number,
+    timestamp: Date,
+  ): Promise<PageResult<GetProblemWithStatusesResult>> {
+    const pageResult = await Pagination.paginate<GetProblemWithStatusesResult>(
+      ProblemEntity,
+      {
+        page,
+        size,
+        timestamp,
+        resultsTransformer: async (results: ProblemEntity[]) => {
+          return await Promise.all(
+            results.map(
+              async (
+                problemEntity,
+              ): Promise<{
+                id: string;
+                slug: string;
+                title: string;
+                createdAt: Date;
+                setupStatuses: {
+                  name: string;
+                  status: SubmissionStatus;
+                }[];
+              }> => {
+                console.log(problemEntity, await problemEntity?.setups);
+                const setups = await problemEntity?.setups;
+                const createdBy = problemEntity?.createdBy;
+
+                const setupStatuses = await Promise.all(
+                  setups.map((setup) => {
+                    if (setup?.solution) {
+                      return {
+                        name: setup.language.name,
+                        status: SubmissionEntity.getOverallStatus(
+                          setup.solution,
+                        ),
+                      };
+                    }
+                    throw new InternalServerErrorException(
+                      'Solution is not joined on setup in getAsAdmin',
+                    );
+                  }),
+                );
+
+                const result = {
+                  id: problemEntity.id,
+                  slug: problemEntity.slug,
+                  title: problemEntity.title,
+                  createdAt: problemEntity.createdAt,
+                  setupStatuses,
+                  status: problemEntity.status,
+                };
+
+                if (createdBy) {
+                  result['createdBy'] = {
+                    username: problemEntity?.createdBy.username,
+                  };
+                }
+
+                return result;
+              },
+            ),
+          );
+        },
+        relations: [
+          'createdBy',
+          'setups',
+          'setups.solution',
+          'setups.solution.results',
+        ],
+      },
+    );
+
+    return pageResult;
   }
 }

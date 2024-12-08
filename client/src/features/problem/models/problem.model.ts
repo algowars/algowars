@@ -1,3 +1,5 @@
+import { ProblemStatus } from "./problem-status";
+
 export interface Problem {
   id: string;
   title: string;
@@ -5,4 +7,5 @@ export interface Problem {
   question: string;
   createdBy?: string;
   initialCode?: string;
+  status?: ProblemStatus;
 }

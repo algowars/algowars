@@ -11,6 +11,7 @@ import { SubmissionResultEntity } from './submission-result.entity';
 import { BaseEntity } from 'src/common/entities/base-entity';
 import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
 import { ProblemEntity } from 'src/problem/infrastructure/entities/problem.entity';
+import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 @Entity('submission')
 export class SubmissionEntity extends BaseEntity {
@@ -38,4 +39,31 @@ export class SubmissionEntity extends BaseEntity {
 
   @ManyToOne(() => AccountEntity, (account) => account.submissions)
   createdBy?: AccountEntity;
+
+  /**
+   * Get the overall status of the submission based on the statuses of its results.
+   * Precedence order: Failure > Processing > Accepted
+   */
+  public static getOverallStatus(
+    submission: SubmissionEntity,
+  ): SubmissionStatus | null {
+    if (!submission?.results || submission?.results.length === 0) {
+      return null;
+    }
+
+    let hasFailed = false;
+    let status: SubmissionStatus;
+
+    for (const result of submission.results) {
+      if (hasFailed) {
+        if (result.status !== SubmissionStatus.ACCEPTED) {
+          status = result.status;
+        }
+      } else {
+        status = result.status;
+      }
+    }
+
+    return submission.results[0].status;
+  }
 }

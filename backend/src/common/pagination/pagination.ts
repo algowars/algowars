@@ -44,7 +44,7 @@ export class Pagination {
     const totalPages = Math.ceil(total / size);
 
     return new PageResultImplementation<T>(
-      resultsTransformer(results),
+      await resultsTransformer(results),
       page,
       size,
       totalPages,
