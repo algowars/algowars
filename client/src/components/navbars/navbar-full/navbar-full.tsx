@@ -8,6 +8,7 @@ import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 import { Link } from "@/components/ui/link";
 import { useAccountStore } from "@/features/account/account-store.provider";
+import { NavbarMenu } from "../navbar-menu/navbar-menu";
 
 export type NavbarFullProps = {
   isAuthenticated?: boolean;
@@ -27,12 +28,12 @@ export const NavbarFull = ({ isAuthenticated }: NavbarFullProps) => {
               <Logo />
             </Link>
           </li>
+        </ul>
+
+        <ul className="hidden sm:flex items-center gap-5 ml-auto">
           <li>
             <Link to={routerConfig.root.path}>Home</Link>
           </li>
-        </ul>
-
-        <ul className="flex items-center gap-5 ml-auto">
           {isAuthenticated ? (
             <>
               {roles.includes("Admin") ? (
@@ -66,6 +67,7 @@ export const NavbarFull = ({ isAuthenticated }: NavbarFullProps) => {
             </>
           )}
         </ul>
+        <NavbarMenu className="ml-auto sm:hidden" />
       </Container>
     </nav>
   );

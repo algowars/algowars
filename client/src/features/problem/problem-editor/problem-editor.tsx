@@ -66,7 +66,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
 
   return (
     <>
-      <div className="grow pb-5 px-5">
+      <div className="grow pb-5 px-2 lg:px-5">
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={55} minSize={10}>
             <Card className="h-full overflow-auto">

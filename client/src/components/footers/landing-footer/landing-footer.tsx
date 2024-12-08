@@ -7,7 +7,7 @@ import { Link } from "@/components/ui/link";
 export const LandingFooter = () => {
   return (
     <footer className="bg-foreground">
-      <Container className="py-10 grid grid-cols-12 gap-5">
+      <Container className="px-3 lg:px-0 py-10 grid grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-5">
         <div className="col-span-4 flex flex-col gap-5">
           <Logo className="text-background" />
           <p className="text-muted">Online coding competitions.</p>
@@ -34,7 +34,7 @@ export const LandingFooter = () => {
             </li>
           </ul>
         </div>
-        <div className="col-span-2 flex flex-col gap-5">
+        <div className="col-span-1 lg:col-span-2 flex flex-col gap-5">
           <h4 className="text-background font-semibold">Resources</h4>
           <ul className="text-muted flex flex-col gap-2">
             <li>
@@ -84,7 +84,7 @@ export const LandingFooter = () => {
         </div>
       </Container>
       <div className="border-t border-muted-foreground">
-        <Container className="py-5 flex items-center gap-5">
+        <Container className="py-5 flex items-center gap-5 px-3 lg:px-0">
           <p className="text-muted text-sm font-semibold">&copy; Algowars</p>
           <a
             href="https://github.com/algowars/algowars"
