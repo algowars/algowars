@@ -22,7 +22,7 @@ type CreateSubmissionOptions = Readonly<{
     token: string;
   }[];
   codeExecutionContext: CodeExecutionEngine;
-  problem: Problem;
+  problem?: Problem;
 }>;
 
 @Injectable()
@@ -88,8 +88,6 @@ export class SubmissionFactory
     }
 
     let results = [];
-
-    console.log('IN CREATE ENTITY DOMAIN: ', domain.getSubmissionResults());
 
     if (Array.isArray(domain.getSubmissionResults())) {
       results = domain

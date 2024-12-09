@@ -96,6 +96,12 @@ export class ProblemFactory
       updatedAt: domain.getUpdatedAt(),
       deletedAt: domain.getDeletedAt(),
       version: domain.getVersion(),
+      setups:
+        domain
+          .getSetups()
+          ?.map((setup) =>
+            this.problemSetupFactory.createEntityFromDomain(setup),
+          ) ?? [],
     };
   }
 

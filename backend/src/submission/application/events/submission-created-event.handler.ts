@@ -30,6 +30,10 @@ export class SubmissionCreatedEventHandler
       new IdImplementation(event.submissionId),
     );
 
+    if (!foundSubmission) {
+      throw new InternalServerErrorException('Submission cannot be found');
+    }
+
     if (!foundSubmission.getLanguage()) {
       throw new InternalServerErrorException(
         'Language cannot be found from submission',

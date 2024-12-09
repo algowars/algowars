@@ -86,6 +86,9 @@ export const AdminCreateProblemForm = ({
         toast("Problem Created");
         navigate("/app/admin");
       },
+      onMutate: () => {
+        toast("Loading...");
+      },
     },
   });
 
@@ -203,8 +206,12 @@ export const AdminCreateProblemForm = ({
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-fit">
-            Create Problem
+          <Button
+            type="submit"
+            className="w-fit"
+            disabled={createProblemMutation.isPending}
+          >
+            {createProblemMutation.isPending ? "Loading..." : "Create Problem"}
           </Button>
         </form>
       </Form>

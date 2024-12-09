@@ -14,6 +14,8 @@ import { ProblemStatus } from 'src/problem/domain/problem-status';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 import { ProblemInjectionToken } from '../../injection-token';
 import { SubmissionInjectionToken } from 'src/submission/application/injection-token';
+import { ProblemSetupFactory } from 'src/problem/domain/problem-setup-factory';
+import { ProblemSetupRepository } from 'src/problem/domain/problem-setup-repository';
 
 @CommandHandler(CreateProblemCommand)
 export class CreateProblemHandler
@@ -23,6 +25,10 @@ export class CreateProblemHandler
   private readonly problemRepository: ProblemRepository;
   @Inject()
   private readonly problemFactory: ProblemFactory;
+  @Inject()
+  private readonly problemSetupFactory: ProblemSetupFactory;
+  @Inject(ProblemInjectionToken.PROBLEM_SETUP_REPOSITORY)
+  private readonly problemSetupRepository: ProblemSetupRepository;
   @Inject(ProblemInjectionToken.LANGUAGE_REPOSITORY)
   private readonly languageRepository: LanguageRepository;
   @Inject(ProblemInjectionToken.ADDITIONAL_TEST_FILE_REPOSITORY)
@@ -68,33 +74,11 @@ ${command.createProblemRequest.test}`,
       ...command.createProblemRequest,
       id: problemId,
       createdBy: command.account,
-      setups: [
-        {
-          problemId,
-          languageId: language.getId().toNumber(),
-          initialCode: command.createProblemRequest.initialCode,
-          solution: null,
-          tests: [
-            {
-              id: await this.problemRepository.newId(),
-              code: command.createProblemRequest.test,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-              deletedAt: null,
-              version: 0,
-              additionalTestFile: {
-                id: additionalTestFile.getId(),
-                fileName: additionalTestFile.getFileName(),
-                language: additionalTestFile.getLanguage(),
-                initialTestFile: additionalTestFile.getInitialTestFile(),
-                name: additionalTestFile.getName(),
-              },
-            },
-          ],
-        },
-      ],
+      setups: [],
       status: ProblemStatus.PENDING,
     });
+
+    await this.problemRepository.save(problem);
 
     const submissionId = await this.submissionRepository.newId();
     const submission = this.submissionFactory.create({
@@ -112,14 +96,36 @@ ${command.createProblemRequest.test}`,
       problem,
     });
 
-    problem.getSetups()[0].setSolution(submission);
-
     await this.submissionRepository.save(submission);
+
+    const setup = this.problemSetupFactory.create({
+      problemId,
+      languageId: language.getId().toNumber(),
+      initialCode: command.createProblemRequest.initialCode,
+      solution: submission,
+      tests: [
+        {
+          id: await this.problemRepository.newId(),
+          code: command.createProblemRequest.test,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          deletedAt: null,
+          version: 0,
+          additionalTestFile: {
+            id: additionalTestFile.getId(),
+            fileName: additionalTestFile.getFileName(),
+            language: additionalTestFile.getLanguage(),
+            initialTestFile: additionalTestFile.getInitialTestFile(),
+            name: additionalTestFile.getName(),
+          },
+        },
+      ],
+    });
+
+    await this.problemSetupRepository.save(setup);
 
     submission.create();
     submission.commit();
-
-    await this.problemRepository.save(problem);
 
     problem.commit();
 

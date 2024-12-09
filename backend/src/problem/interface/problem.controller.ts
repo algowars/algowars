@@ -117,8 +117,6 @@ export class ProblemController {
         ),
       );
 
-    console.log('RESULT: ', JSON.stringify(result));
-
     return {
       results: result.getResults(),
       page: result.getPage(),

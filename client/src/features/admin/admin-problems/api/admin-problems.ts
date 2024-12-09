@@ -22,7 +22,7 @@ export const getAdminProblems = ({
       setupStatuses: {
         name: string;
         status: SubmissionStatus;
-      };
+      }[];
     }
   >
 > => {

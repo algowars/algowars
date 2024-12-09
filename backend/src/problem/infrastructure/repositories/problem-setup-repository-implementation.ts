@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { readConnection } from 'lib/database.module';
+import { readConnection, writeConnection } from 'lib/database.module';
 import { ProblemSetup } from 'src/problem/domain/problem-setup';
 import { ProblemSetupFactory } from 'src/problem/domain/problem-setup-factory';
 import { ProblemSetupRepository } from 'src/problem/domain/problem-setup-repository';
@@ -29,6 +29,19 @@ export class ProblemSetupRepositoryImplementation
     await entity.language;
 
     return entity ? this.entityToModel(entity) : null;
+  }
+
+  async save(data: ProblemSetup): Promise<void> {
+    const models = Array.isArray(data) ? data : [data];
+    const entities = models.map((model) => this.modelToEntity(model));
+
+    await writeConnection.manager
+      .getRepository(ProblemSetupEntity)
+      .save(entities);
+  }
+
+  private modelToEntity(model: ProblemSetup): ProblemSetupEntity {
+    return this.problemSetupFactory.createEntityFromDomain(model);
   }
 
   private entityToModel(entity: ProblemSetupEntity): ProblemSetup {

@@ -73,7 +73,9 @@ export class ProblemSetupFactory
     let tests = [];
 
     if (Array.isArray(domain.getTests())) {
-      tests = domain.getTests().map(this.testFactory.createEntityFromDomain);
+      tests = domain
+        .getTests()
+        .map((test) => this.testFactory.createEntityFromDomain(test));
     }
 
     return {

@@ -7,7 +7,7 @@ import {
   AdditionalTestFileImplementation,
 } from './additional-test-file';
 import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { LanguageFactory } from './language-factory';
 
 export type CreateAdditionalTestFileOptions = Readonly<{
@@ -18,6 +18,7 @@ export type CreateAdditionalTestFileOptions = Readonly<{
   name: string;
 }>;
 
+@Injectable()
 export class AdditionalTestFileFactory
   implements EntityDomainFactory<AdditionalTestFile, AdditionalTestFileEntity>
 {

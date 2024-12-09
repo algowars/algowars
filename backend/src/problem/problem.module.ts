@@ -7,7 +7,6 @@ import { ProblemFactory } from './domain/problem-factory';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ProblemCommandHandlers } from './application/commands';
 import { LanguageRepositoryImplementation } from './infrastructure/repositories/language-repository-implementation';
-import { LanguageFactory } from './domain/language-factory';
 import { LanguageQueryImplementation } from './infrastructure/queries/language-query-implementation';
 import { ProblemSetupFactory } from './domain/problem-setup-factory';
 import { TestFactory } from 'src/problem/domain/test-factory';
@@ -20,6 +19,7 @@ import { ProblemInjectionToken } from './application/injection-token';
 import { SubmissionInjectionToken } from 'src/submission/application/injection-token';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { SubmissionResultFactory } from 'src/submission/domain/submission-result-factory';
+import { LanguageFactory } from './domain/language-factory';
 
 export const infrastructure: Provider[] = [
   {
@@ -58,8 +58,8 @@ export const domain = [
   ProblemFactory,
   LanguageFactory,
   ProblemSetupFactory,
-  TestFactory,
   AdditionalTestFileFactory,
+  TestFactory,
   SubmissionFactory,
   SubmissionResultFactory,
 ];

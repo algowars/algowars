@@ -56,8 +56,6 @@ ${setup.getTests()[0].getCode()}`,
     );
     const executionResult = await executionContext.execute(builtRequest);
 
-    console.log('EXECUTION RESULT: ', executionResult);
-
     const submissionId = await this.submissionRepository.newId();
     const submission = this.submissionFactory.create({
       id: submissionId,

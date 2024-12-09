@@ -32,7 +32,7 @@ export class ProblemEntity extends BaseEntity {
     cascade: true,
     lazy: true,
   })
-  setups?: Promise<ProblemSetupEntity[]>;
+  setups?: ProblemSetupEntity[];
 
   @OneToMany(() => SubmissionEntity, (submission) => submission.problem, {
     cascade: true,

@@ -52,9 +52,9 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
     problem.title = model.getTitle();
     problem.question = model.getQuestion();
     problem.slug = model.getSlug();
-    problem.setups = Promise.resolve(
-      model.getSetups().map((setup) => this.setupModelToEntity(setup)),
-    );
+    problem.setups = model
+      .getSetups()
+      .map((setup) => this.setupModelToEntity(setup));
     problem.status = model.getStatus();
 
     return problem;
@@ -72,6 +72,10 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
   }
 
   private solutionToEntity(model: Submission): SubmissionEntity {
+    if (!model) {
+      return null;
+    }
+
     const solution = new SubmissionEntity();
     solution.id = model.getId().toString();
     return solution;

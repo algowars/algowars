@@ -175,7 +175,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
                   status: SubmissionStatus;
                 }[];
               }> => {
-                console.log(problemEntity, await problemEntity?.setups);
                 const setups = await problemEntity?.setups;
                 const createdBy = problemEntity?.createdBy;
 

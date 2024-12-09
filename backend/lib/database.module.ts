@@ -16,7 +16,6 @@ import {
   QueryRunner,
   Repository,
   SelectQueryBuilder,
-  ValueTransformer,
 } from 'typeorm';
 
 import { v4 } from 'uuid';

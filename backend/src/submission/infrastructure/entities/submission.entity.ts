@@ -24,8 +24,10 @@ export class SubmissionEntity extends BaseEntity {
   @ManyToOne(() => LanguageEntity, (language) => language.submissions)
   language?: LanguageEntity;
 
-  @ManyToOne(() => ProblemEntity, (problem) => problem.submissions)
-  problem: ProblemEntity;
+  @ManyToOne(() => ProblemEntity, (problem) => problem.submissions, {
+    nullable: true,
+  })
+  problem?: ProblemEntity;
 
   @OneToMany(
     () => SubmissionResultEntity,

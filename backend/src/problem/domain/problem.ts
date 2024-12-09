@@ -36,6 +36,7 @@ export interface Problem extends BaseDomainAggregateRoot {
   getCreatedBy(): Account;
   getSetups(): ProblemSetup[];
   getStatus(): ProblemStatus;
+  setStatus(newStatus: ProblemStatus): void;
   hasSetups(): boolean;
 }
 
@@ -49,7 +50,7 @@ export class ProblemImplementation
   private readonly exampleTestcases: ExampleTestcase[];
   private readonly createdBy: Account;
   private readonly setups?: ProblemSetup[];
-  private readonly status: ProblemStatus;
+  private status: ProblemStatus;
 
   constructor(properties: ProblemProperties) {
     super(properties);
@@ -87,5 +88,9 @@ export class ProblemImplementation
 
   getStatus(): ProblemStatus {
     return this.status;
+  }
+
+  setStatus(newStatus: ProblemStatus): void {
+    this.status = newStatus;
   }
 }
