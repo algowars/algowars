@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
       .inTable('languages')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
-    table.text('initial_test_files').notNullable();
+    table.text('initial_test_file').notNullable();
     table.dateTime('deleted_at').nullable().defaultTo(null);
     table.integer('version').defaultTo(0);
     table.timestamps(true, true);

@@ -16,6 +16,13 @@ export async function up(knex: Knex): Promise<void> {
       .inTable('languages')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
+    table
+      .uuid('solution_id')
+      .notNullable()
+      .references('id')
+      .inTable('submissions')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.text('initial_code').notNullable();
     table.dateTime('deleted_at').nullable().defaultTo(null);
     table.increments('version').defaultTo(0);
