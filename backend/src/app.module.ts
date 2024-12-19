@@ -1,14 +1,12 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ProblemModule } from './problem/problem.module';
-import { DatabaseModule } from '../lib/database.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import { AccountModule } from './account/account.module';
 import { RequestStorageMiddleware } from 'lib/request-storage-middleware';
-import { SubmissionModule } from './submission/submission.module';
 import { CodeExecutionModule } from 'lib/code-execution/code-execution.module';
 import { S3Module } from 'lib/s3.module';
+import { DatabaseModule } from 'lib/database.module';
+import { AccountModule } from './account/account.module';
 
 @Module({
   imports: [
@@ -18,10 +16,8 @@ import { S3Module } from 'lib/s3.module';
     DatabaseModule,
     S3Module,
     CodeExecutionModule,
-    ProblemModule,
     ThrottlerModule.forRoot(),
     AccountModule,
-    SubmissionModule,
   ],
   providers: [
     {

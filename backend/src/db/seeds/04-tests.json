@@ -1,0 +1,11 @@
+[
+  {
+    "id": "2f176e33-7ed8-4fbf-a5b3-1c3eca9fe43a",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('isEven should return \"true\" for even numbers', () => {\n  assert.is(isEven(2), \"true\");\n  assert.is(isEven(4), \"true\");\n  assert.is(isEven(0), \"true\");\n});\n\ntest('isEven should return \"false\" for odd numbers', () => {\n  assert.is(isEven(1), \"false\");\n  assert.is(isEven(3), \"false\");\n  assert.is(isEven(-1), \"false\");\n});\n\ntest('isEven should handle negative even numbers', () => {\n  assert.is(isEven(-2), \"true\");\n  assert.is(isEven(-4), \"true\");\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  }
+]

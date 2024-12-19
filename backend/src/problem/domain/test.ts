@@ -1,4 +1,3 @@
-import { Id } from 'src/common/domain/id';
 import {
   BaseDomain,
   BaseDomainImplementation,
@@ -6,26 +5,14 @@ import {
 } from 'src/common/entities/base-domain';
 import { AdditionalTestFile } from './additional-test-file';
 
-export type TestEssentialProperties = Readonly<
-  Required<{
-    id: Id;
-    code: string;
-  }>
->;
-
-export type TestOptionalProperties = Readonly<
-  Partial<{
-    additionalTestFile: AdditionalTestFile;
-  }>
->;
-
-export type TestProperties = TestEssentialProperties &
-  TestOptionalProperties &
-  BaseDomainProperties;
+export interface TestProperties extends BaseDomainProperties {
+  code: string;
+  additionalTestFile: AdditionalTestFile;
+}
 
 export interface Test extends BaseDomain {
   getCode(): string;
-  getAdditionalTestFile(): AdditionalTestFile;
+  getAdditionalTestFile(): AdditionalTestFile | null;
 }
 
 export class TestImplementation
@@ -33,19 +20,18 @@ export class TestImplementation
   implements Test
 {
   private readonly code: string;
-  private readonly additionalTestFile: AdditionalTestFile;
+  private readonly additionalTestFile: AdditionalTestFile | null;
 
   constructor(properties: TestProperties) {
     super(properties);
     Object.assign(this, properties);
-    this.additionalTestFile = properties.additionalTestFile;
   }
 
   getCode(): string {
     return this.code;
   }
 
-  getAdditionalTestFile(): AdditionalTestFile {
-    return this.additionalTestFile;
+  getAdditionalTestFile(): AdditionalTestFile | null {
+    return this.additionalTestFile ?? null;
   }
 }

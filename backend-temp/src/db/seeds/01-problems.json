@@ -1,0 +1,12 @@
+[
+  {
+    "id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
+    "title": "Is Even",
+    "question": "If the value of the number being passed into the function is even, return \"true\", else return \"false\"",
+    "slug": "is-even",
+    "status": "Accepted",
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  }
+]

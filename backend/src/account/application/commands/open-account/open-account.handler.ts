@@ -4,8 +4,9 @@ import { ConflictException, Inject } from '@nestjs/common';
 import { AccountInjectionToken } from '../../injection-token';
 import { AccountRepository } from 'src/account/domain/account-repository';
 import { AccountFactory } from 'src/account/domain/account-factory';
-import { Transactional } from 'lib/transactional';
 import { Id } from 'src/common/domain/id';
+import { Account } from 'src/account/domain/account';
+import { Username } from 'src/account/domain/username';
 
 @CommandHandler(OpenAccountCommand)
 export class OpenAccountHandler
@@ -16,26 +17,17 @@ export class OpenAccountHandler
   @Inject()
   private readonly accountFactory: AccountFactory;
 
-  @Transactional()
   async execute(command: OpenAccountCommand): Promise<Id> {
     const account = this.accountFactory.create({
       ...command,
       id: await this.accountRepository.newId(),
     });
 
-    const foundAccountBySub = await this.accountRepository.findBySub(
-      account.getSub(),
-    );
-
-    if (foundAccountBySub) {
+    if (!this.doesAccountExist(account)) {
       throw new ConflictException('Account already exists.');
     }
 
-    const foundAccountByUsername = await this.accountRepository.findByUsername(
-      account.getUsername(),
-    );
-
-    if (foundAccountByUsername) {
+    if (!this.doesUsernameExist(account.getUsername())) {
       throw new ConflictException('Username already in use.');
     }
 
@@ -46,5 +38,20 @@ export class OpenAccountHandler
     account.commit();
 
     return account.getId();
+  }
+
+  private async doesAccountExist(account: Account): Promise<boolean> {
+    const foundAccountBySub = await this.accountRepository.findBySub(
+      account.getSub(),
+    );
+
+    return !!foundAccountBySub;
+  }
+
+  private async doesUsernameExist(username: Username): Promise<boolean> {
+    const foundAccountByUsername =
+      await this.accountRepository.findByUsername(username);
+
+    return !!foundAccountByUsername;
   }
 }
