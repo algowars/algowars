@@ -2,12 +2,6 @@ import { ProtectedRoute } from "@/components/auth/protected-route/protected-rout
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AppRoot } from "./routes/app/root";
-import { ProfileRoute } from "./routes/app/profile";
-import { ProfileBioRoute } from "./routes/app/profile/bio";
-import { PermissionProtectedRoute } from "@/components/auth/permission-protected-route/permission-protected-route";
-import { AdminRoute } from "./routes/app/admin";
-import { AdminCreateProblemRoute } from "./routes/app/admin/create-problem";
 
 export const routerConfig = {
   root: {
@@ -18,25 +12,28 @@ export const routerConfig = {
     execute: (subPath: string) => `/profile/${encodeURIComponent(subPath)}`,
   },
   appRoot: {
-    path: "/app",
+    path: "/",
   },
   accountSetup: {
-    path: "/app/account/setup",
+    path: "/account/setup",
   },
   admin: {
-    path: "/app/admin",
+    path: "/admin",
   },
   adminCreateProblem: {
-    path: "/app/admin/create-problem",
+    path: "/admin/create-problem",
   },
   problem: {
-    path: "/app/problem/:slug",
-    execute: (subPath: string) => `/app/problem/${encodeURIComponent(subPath)}`,
+    path: "/problem/:slug",
+    execute: (subPath: string) => `/problem/${encodeURIComponent(subPath)}`,
   },
   problemSolutions: {
-    path: "/app/problem/:slug/solutions",
+    path: "/problem/:slug/solutions",
     execute: (subPath: string) =>
-      `/app/problem/${encodeURIComponent(subPath)}/solutions`,
+      `/problem/${encodeURIComponent(subPath)}/solutions`,
+  },
+  notFound: {
+    path: "*",
   },
 };
 
@@ -46,76 +43,114 @@ export const createAppRouter = () => {
       path: routerConfig.root.path,
       lazy: async () => {
         const { LandingRoute } = await import("./routes/landing");
+
         return { Component: LandingRoute };
       },
     },
     {
-      path: routerConfig.profile.path,
-      element: <ProfileRoute />,
-      children: [
-        {
-          path: routerConfig.profile.path,
-          element: <ProfileBioRoute />,
-        },
-      ],
+      path: routerConfig.appRoot.path,
+      lazy: async () => {
+        const { DashboardRoute } = await import("./routes/app/dashboard");
+        return { Component: DashboardRoute };
+      },
     },
     {
-      path: routerConfig.appRoot.path,
-      element: <ProtectedRoute component={AppRoot} />,
-      children: [
-        {
-          path: routerConfig.problemSolutions.path,
-          lazy: async () => {
-            const { ProblemSolutions } = await import(
-              "./routes/app/problem/solutions"
-            );
-            return { Component: ProblemSolutions };
-          },
-        },
-        {
-          path: routerConfig.problem.path,
-          lazy: async () => {
-            const { ProblemRoute } = await import("./routes/app/problem");
-            return { Component: ProblemRoute };
-          },
-        },
-        {
-          path: routerConfig.appRoot.path,
-          lazy: async () => {
-            const { DashboardRoute } = await import("./routes/app/dashboard");
-            return { Component: DashboardRoute };
-          },
-        },
-        {
-          path: routerConfig.accountSetup.path,
-          lazy: async () => {
-            const { AccountSetupRoute } = await import(
-              "./routes/app/account/setup"
-            );
-            return { Component: AccountSetupRoute };
-          },
-        },
-        {
-          path: routerConfig.admin.path,
-          element: (
-            <PermissionProtectedRoute
-              component={AdminRoute}
-              allowedPermissions={["Admin"]}
-            />
+      path: routerConfig.accountSetup.path,
+      lazy: async () => {
+        const { AccountSetupRoute } = await import(
+          "./routes/app/account/setup"
+        );
+
+        return {
+          Component: (props: object) => (
+            <ProtectedRoute component={AccountSetupRoute} {...props} />
           ),
-        },
-        {
-          path: routerConfig.adminCreateProblem.path,
-          element: (
-            <PermissionProtectedRoute
-              component={AdminCreateProblemRoute}
-              allowedPermissions={["Admin"]}
-            />
-          ),
-        },
-      ],
+        };
+      },
+    },
+    {
+      path: routerConfig.notFound.path,
+      lazy: async () => {
+        const { NotFoundRoute } = await import("./routes/app/not-found");
+        return { Component: NotFoundRoute };
+      },
     },
   ]);
+  // return createBrowserRouter([
+  //   {
+  //     path: routerConfig.root.path,
+  //     lazy: async () => {
+  //       const { LandingRoute } = await import("./routes/landing");
+  //       return { Component: LandingRoute };
+  //     },
+  //   },
+  //   {
+  //     path: routerConfig.profile.path,
+  //     element: <ProfileRoute />,
+  //     children: [
+  //       {
+  //         path: routerConfig.profile.path,
+  //         element: <ProfileBioRoute />,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     path: routerConfig.appRoot.path,
+  //     element: <ProtectedRoute component={AppRoot} />,
+  //     children: [
+  //       {
+  //         path: routerConfig.problemSolutions.path,
+  //         lazy: async () => {
+  //           const { ProblemSolutions } = await import(
+  //             "./routes/app/problem/solutions"
+  //           );
+  //           return { Component: ProblemSolutions };
+  //         },
+  //       },
+  //       {
+  //         path: routerConfig.problem.path,
+  //         lazy: async () => {
+  //           const { ProblemRoute } = await import("./routes/app/problem");
+  //           return { Component: ProblemRoute };
+  //         },
+  //       },
+  //       {
+  //         path: routerConfig.appRoot.path,
+  //         lazy: async () => {
+  //           const { DashboardRoute } = await import("./routes/app/dashboard");
+  //           return { Component: DashboardRoute };
+  //         },
+  //       },
+  //       {
+  //         path: routerConfig.accountSetup.path,
+  //         lazy: async () => {
+  //           const { AccountSetupRoute } = await import(
+  //             "./routes/app/account/setup"
+  //           );
+  //           return { Component: AccountSetupRoute };
+  //         },
+  //       },
+  //       {
+  //         path: routerConfig.admin.path,
+  //         element: (
+  //           <PermissionProtectedRoute
+  //             component={AdminRoute}
+  //             allowedPermissions={["Admin"]}
+  //           />
+  //         ),
+  //       },
+  //       {
+  //         path: routerConfig.adminCreateProblem.path,
+  //         element: (
+  //           <PermissionProtectedRoute
+  //             component={AdminCreateProblemRoute}
+  //             allowedPermissions={["Admin"]}
+  //           />
+  //         ),
+  //       },
+  //     ],
+  //   },
+  // ]);
 };
 
 export const AppRouter = () => {

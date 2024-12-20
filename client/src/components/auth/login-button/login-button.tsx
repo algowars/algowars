@@ -15,7 +15,7 @@ export const LoginButton = ({
   const handleLogin = () => {
     loginWithRedirect({
       appState: {
-        returnTo: location.pathname === "/" ? "/app" : location.pathname,
+        returnTo: location.pathname,
       },
       authorizationParams: {
         prompt: "login",

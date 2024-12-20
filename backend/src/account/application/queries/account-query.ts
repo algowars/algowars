@@ -4,5 +4,5 @@ import { AccountEntity } from 'src/account/infrastructure/entities/account.entit
 
 export interface AccountQuery {
   findBySub(sub: string): Promise<Account | null>;
-  findByUsername(username: Username): Promise<Account | null>;
+  findByUsername(username: string): Promise<Account | null>;
 }

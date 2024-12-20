@@ -15,7 +15,7 @@ export const SignupButton = ({
   const handleSignup = () => {
     loginWithRedirect({
       appState: {
-        returnTo: "/profile",
+        returnTo: "/account/setup",
       },
       authorizationParams: {
         prompt: "login",

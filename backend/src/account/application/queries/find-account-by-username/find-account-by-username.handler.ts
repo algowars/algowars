@@ -18,9 +18,7 @@ export class FindAccountByUsernameHandler
   async execute(
     query: FindAccountByUsernameQuery,
   ): Promise<FindAccountByUsernameResult> {
-    const data = await this.accountQuery.findByUsername(
-      new UsernameImplementation(query.username),
-    );
+    const data = await this.accountQuery.findByUsername(query.username);
     if (!data) {
       throw new NotFoundException(AccountErrorMessage.ACCOUNT_NOT_FOUND);
     }

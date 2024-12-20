@@ -10,14 +10,14 @@ import { Username } from 'src/account/domain/username';
 
 @CommandHandler(OpenAccountCommand)
 export class OpenAccountHandler
-  implements ICommandHandler<OpenAccountCommand, Id>
+  implements ICommandHandler<OpenAccountCommand, Account>
 {
   @Inject(AccountInjectionToken.ACCOUNT_REPOSITORY)
   private readonly accountRepository: AccountRepository;
   @Inject()
   private readonly accountFactory: AccountFactory;
 
-  async execute(command: OpenAccountCommand): Promise<Id> {
+  async execute(command: OpenAccountCommand): Promise<Account> {
     const account = this.accountFactory.create({
       ...command,
       id: await this.accountRepository.newId(),
@@ -37,7 +37,7 @@ export class OpenAccountHandler
 
     account.commit();
 
-    return account.getId();
+    return account;
   }
 
   private async doesAccountExist(account: Account): Promise<boolean> {

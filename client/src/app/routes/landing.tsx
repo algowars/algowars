@@ -4,10 +4,15 @@ import { Container } from "@/components/container";
 import { LandingLayout } from "@/components/layouts/landing-layout";
 import { useAccountStore } from "@/features/account/account-store.provider";
 import { useAuth0 } from "@auth0/auth0-react";
+import { DashboardRoute } from "./app/dashboard";
 
 export const LandingRoute = () => {
-  const { isAuthenticated: isAuthAuthenticated } = useAuth0();
+  const { isAuthenticated: isAuthAuthenticated, isLoading } = useAuth0();
   const { isAuthenticated } = useAccountStore();
+
+  if (!isLoading && isAuthAuthenticated) {
+    return <DashboardRoute />;
+  }
 
   return (
     <LandingLayout isAuthenticated={isAuthAuthenticated || isAuthenticated}>

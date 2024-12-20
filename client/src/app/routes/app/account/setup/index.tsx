@@ -1,3 +1,4 @@
+import { routerConfig } from "@/app/router";
 import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
 import { Container } from "@/components/container";
 import { Layout } from "@/components/layouts/layout/layout";
@@ -15,7 +16,7 @@ export const AccountSetupRoute = () => {
 
   if (!isAuthLoading && isAuthAuthenticated) {
     if (!isLoading && isAuthenticated) {
-      navigate("/app");
+      navigate(routerConfig.appRoot.path);
     }
   }
 
