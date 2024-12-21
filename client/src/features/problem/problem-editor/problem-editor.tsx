@@ -70,7 +70,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={55} minSize={10}>
             <Card className="h-full overflow-auto">
-              <div className="p-2">
+              <div className="p-2 border-b">
                 <h4 className="font-semibold">Code</h4>
               </div>
               <CodeEditor
@@ -84,7 +84,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
           <ResizablePanel defaultSize={45} minSize={10}>
             <ResizablePanelGroup direction="vertical">
               <ResizablePanel defaultSize={100} minSize={15}>
-                <Card className="h-full bg-zinc-900">
+                <Card className="h-full bg-zinc-900 overflow-auto">
                   <div className="p-2 border-b bg-background">
                     <h4 className="font-semibold">Description</h4>
                   </div>
