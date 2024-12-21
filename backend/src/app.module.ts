@@ -7,6 +7,7 @@ import { CodeExecutionModule } from 'lib/code-execution/code-execution.module';
 import { S3Module } from 'lib/s3.module';
 import { DatabaseModule } from 'lib/database.module';
 import { AccountModule } from './account/account.module';
+import { ProblemModule } from './problem/problem.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AccountModule } from './account/account.module';
     CodeExecutionModule,
     ThrottlerModule.forRoot(),
     AccountModule,
+    ProblemModule,
   ],
   providers: [
     {

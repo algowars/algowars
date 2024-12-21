@@ -8,10 +8,10 @@ import { Language } from './language';
 import { Test } from './test';
 
 export interface ProblemSetupProperties extends BaseDomainProperties {
-  problem: Problem;
-  language: Language;
+  problem?: Problem;
+  language?: Language;
   initialCode: string;
-  tests: Test[];
+  tests?: Test[];
 }
 
 export interface ProblemSetup extends BaseDomain {

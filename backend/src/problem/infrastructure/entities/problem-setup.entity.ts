@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
 
-export interface ProblemSetup extends BaseEntity {
+export interface ProblemSetupEntity extends BaseEntity {
   problem_id: string;
   language_id: string;
   solution_id: string;

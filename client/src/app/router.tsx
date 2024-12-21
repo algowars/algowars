@@ -75,6 +75,14 @@ export const createAppRouter = () => {
         return { Component: NotFoundRoute };
       },
     },
+    {
+      path: routerConfig.problem.path,
+      lazy: async () => {
+        const { ProblemRoute } = await import("./routes/app/problem");
+
+        return { Component: ProblemRoute };
+      },
+    },
   ]);
   // return createBrowserRouter([
   //   {
