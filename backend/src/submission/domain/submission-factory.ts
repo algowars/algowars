@@ -1,18 +1,18 @@
-import { Account } from 'src/account/domain/account';
-import { Id, IdImplementation } from 'src/common/domain/id';
-import { ProblemStatus } from './problem-status';
 import { Inject, Injectable } from '@nestjs/common';
+import { CodeExecutionEngines } from 'lib/code-execution/code-execution-engines';
+import { Account } from 'src/account/domain/account';
 import { EntityDomainFactory } from 'src/common/domain/entity-domain-factory';
-import { Problem, ProblemImplementation } from './problem';
+import { Language } from 'src/problem/domain/language';
+import { Submission, SubmissionImplementation } from './submission';
 import { EventPublisher } from '@nestjs/cqrs';
+import { Id, IdImplementation } from 'src/common/domain/id';
 
-export interface CreateProblemOptions {
+export interface CreateSubmissionOptions {
   id: string | Id;
-  title: string;
-  slug: string;
-  question: string;
+  sourceCode: string;
+  codeExecutionEngine: CodeExecutionEngines;
   createdBy: Account;
-  status: ProblemStatus;
+  language: Language;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -20,14 +20,14 @@ export interface CreateProblemOptions {
 }
 
 @Injectable()
-export class ProblemFactory implements EntityDomainFactory<Problem> {
+export class SubmissionFactory implements EntityDomainFactory<Submission> {
   @Inject(EventPublisher) private readonly eventPublisher: EventPublisher;
 
-  create(options: CreateProblemOptions): Problem {
+  create(options: CreateSubmissionOptions): Submission {
     const id = this.createId(options.id);
 
     return this.eventPublisher.mergeObjectContext(
-      new ProblemImplementation({
+      new SubmissionImplementation({
         ...options,
         id,
       }),

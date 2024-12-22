@@ -8,6 +8,7 @@ import { S3Module } from 'lib/s3.module';
 import { DatabaseModule } from 'lib/database.module';
 import { AccountModule } from './account/account.module';
 import { ProblemModule } from './problem/problem.module';
+import { SubmissionModule } from './submission/submission.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProblemModule } from './problem/problem.module';
     ThrottlerModule.forRoot(),
     AccountModule,
     ProblemModule,
+    SubmissionModule,
   ],
   providers: [
     {
