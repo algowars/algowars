@@ -30,6 +30,11 @@ export class LanguageImplementation
   private readonly initialCode: string;
   private readonly initialSolution: string;
 
+  constructor(properties: LanguageProperties) {
+    super(properties);
+    Object.assign(this, properties);
+  }
+
   getName(): string {
     return this.name;
   }

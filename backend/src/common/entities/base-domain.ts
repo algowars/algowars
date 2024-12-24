@@ -2,11 +2,11 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import { Id } from '../domain/id';
 
 export interface BaseDomainProperties {
-  id: Id;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
-  version: number;
+  id?: Id;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+  version?: number;
 }
 
 export interface BaseDomain {

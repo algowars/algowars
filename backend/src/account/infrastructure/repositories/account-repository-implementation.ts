@@ -12,7 +12,6 @@ import { Aliases } from 'src/db/aliases';
 
 export class AccountRepositoryImplementation implements AccountRepository {
   constructor(
-    private readonly accountFactory: AccountFactory,
     @InjectConnection(DatabaseInjectionToken.WRITE_CONNECTION)
     private readonly knexConnection: Knex,
   ) {}

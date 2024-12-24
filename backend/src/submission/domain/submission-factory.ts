@@ -6,6 +6,8 @@ import { Language } from 'src/problem/domain/language';
 import { Submission, SubmissionImplementation } from './submission';
 import { EventPublisher } from '@nestjs/cqrs';
 import { Id, IdImplementation } from 'src/common/domain/id';
+import { SubmissionResult } from './submission-result';
+import { SubmissionStatus } from './submission-status';
 
 export interface CreateSubmissionOptions {
   id: string | Id;
@@ -17,6 +19,8 @@ export interface CreateSubmissionOptions {
   updatedAt: Date;
   deletedAt: Date | null;
   version: number;
+  results: SubmissionResult[];
+  status: SubmissionStatus;
 }
 
 @Injectable()

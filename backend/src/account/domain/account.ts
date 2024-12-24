@@ -6,15 +6,10 @@ import {
 import { UserSub } from './user-sub';
 import { Username } from './username';
 
-export type AccountEssentialProperties = Readonly<
-  Required<{
-    sub: UserSub;
-    username: Username;
-  }>
->;
-
-export type AccountProperties = AccountEssentialProperties &
-  BaseDomainProperties;
+export interface AccountProperties extends BaseDomainProperties {
+  sub?: UserSub;
+  username?: Username;
+}
 
 export interface Account extends BaseDomainAggregateRoot {
   getSub: () => UserSub;
