@@ -7,6 +7,7 @@ import { SubmissionCommandHandlers } from './application/commands';
 import { SubmissionInjectionToken } from './application/injection-token';
 import { SubmissionFactory } from './domain/submission-factory';
 import { SubmissionRepositoryImplementation } from './infrastructure/repositories/submission-repository-implementation';
+import { ProblemModule } from 'src/problem/problem.module';
 
 export const infrastructure: Provider[] = [
   {
@@ -27,6 +28,7 @@ const domain = [SubmissionFactory];
       timeout: 5000,
       maxRedirects: 5,
     }),
+    ProblemModule,
   ],
   controllers: [SubmissionController],
   providers: [Logger, ...infrastructure, ...application, ...domain],

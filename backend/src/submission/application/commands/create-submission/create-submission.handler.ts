@@ -62,13 +62,15 @@ export class CreateSubmissionHandler
       setupAggregate.getTests()[0].getAdditionalTestFile(),
     );
 
-    const submissionId = await this.submissionRepository.newId();
-    const submission = this.submissionFactory.create({
-      id: submissionId,
-      sourceCode: command.request.sourceCode,
-      codeExecutionEngine: executionContext.getEngine(),
-      createdBy: command.account,
-    });
+    const submission = await this.createSubmission(
+      setupAggregate.getLanguage(),
+      command.request.sourceCode,
+      command.account,
+      results,
+      setupAggregate.getProblem(),
+    );
+
+    return submission.getId();
   }
 
   private getProblem(slug: string): Promise<Problem> {
@@ -113,7 +115,12 @@ export class CreateSubmissionHandler
       language,
       sourceCode,
       createdBy,
-      results,
+      results: [
+        {
+          ...results,
+          status: SubmissionStatus.POLLING,
+        },
+      ],
       status: SubmissionStatus.POLLING,
       createdAt: new Date(),
       updatedAt: new Date(),

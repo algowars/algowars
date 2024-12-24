@@ -37,12 +37,10 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
       return null;
     }
 
-    const account = await this.knexConnection(Aliases.ACCOUNTS)
+    await this.knexConnection(Aliases.ACCOUNTS)
       .select<AccountEntity>('username')
       .where({ id: entity.created_by_id })
       .first();
-
-    return this.entityToModel(entity, account);
   }
 
   async findBySlug(slug: string, select = '*'): Promise<Problem | null> {
