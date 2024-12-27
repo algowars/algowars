@@ -19,6 +19,7 @@ import { Account } from 'src/account/domain/account';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 import { CodeExecutionEngines } from 'lib/code-execution/code-execution-engines';
 import { Submission } from 'src/submission/domain/submission';
+import { SubmissionResultImplementation } from 'src/submission/domain/submission-result';
 
 @CommandHandler(CreateSubmissionCommand)
 export class CreateSubmissionHandler
@@ -116,10 +117,10 @@ export class CreateSubmissionHandler
       sourceCode,
       createdBy,
       results: [
-        {
+        new SubmissionResultImplementation({
           ...results,
           status: SubmissionStatus.POLLING,
-        },
+        }),
       ],
       status: SubmissionStatus.POLLING,
       createdAt: new Date(),
@@ -127,10 +128,12 @@ export class CreateSubmissionHandler
       deletedAt: null,
       version: 1,
       codeExecutionEngine: CodeExecutionEngines.JUDGE0,
+      problem,
     });
 
     await this.submissionRepository.save(submission);
 
+    submission.create();
     submission.commit();
 
     return submission;

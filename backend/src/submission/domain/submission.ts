@@ -10,6 +10,7 @@ import { Language } from 'src/problem/domain/language';
 import { SubmissionResult } from './submission-result';
 import { SubmissionStatus } from './submission-status';
 import { Problem } from 'src/problem/domain/problem';
+import { SubmissionCreatedEvent } from './events/submission-created-event';
 
 export interface SubmissionProperties extends BaseDomainProperties {
   sourceCode: string;
@@ -28,6 +29,9 @@ export interface Submission extends BaseDomainAggregateRoot {
   getLanguage(): Language;
   getProblem(): Problem;
   getResults(): SubmissionResult[];
+  setResult(index: number, result: SubmissionResult): void;
+  setResults(newResults: SubmissionResult[]): void;
+  create(): void;
 }
 
 export class SubmissionImplementation
@@ -39,11 +43,15 @@ export class SubmissionImplementation
   private readonly createdBy: Account;
   private readonly language: Language;
   private readonly problem: Problem;
-  private readonly results: SubmissionResult[];
+  private results: SubmissionResult[];
 
   constructor(properties: SubmissionProperties) {
     super(properties);
     Object.assign(this, properties);
+  }
+
+  create(): void {
+    this.apply(new SubmissionCreatedEvent(this.getId()));
   }
 
   getSourceCode(): string {
@@ -68,5 +76,18 @@ export class SubmissionImplementation
 
   getResults(): SubmissionResult[] {
     return this.results;
+  }
+
+  setResult(index: number, result: SubmissionResult): number {
+    if (index > this.results.length || index < this.results.length) {
+      return -1;
+    }
+
+    this.results[index] = result;
+    return 0;
+  }
+
+  setResults(results: SubmissionResult[]): void {
+    this.results = results;
   }
 }

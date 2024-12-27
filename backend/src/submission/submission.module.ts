@@ -11,6 +11,7 @@ import { ProblemInjectionToken } from 'src/problem/application/injection-token';
 import { ProblemRepositoryImplementation } from 'src/problem/infrastructure/repositories/problem-repository-implementation';
 import { ProblemSetupRepositoryImplementation } from 'src/problem/infrastructure/repositories/problem-setup-repository-implementation';
 import { AccountModule } from 'src/account/account.module';
+import { SubmissionEventHandlers } from './application/events';
 
 export const infrastructure: Provider[] = [
   {
@@ -27,7 +28,10 @@ export const infrastructure: Provider[] = [
   },
 ];
 
-export const application = [...SubmissionCommandHandlers];
+export const application = [
+  ...SubmissionCommandHandlers,
+  ...SubmissionEventHandlers,
+];
 
 export const domain = [SubmissionFactory];
 

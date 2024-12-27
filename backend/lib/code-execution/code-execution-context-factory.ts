@@ -10,6 +10,7 @@ export class CodeExecutionContextFactory {
   ) {}
 
   createContext(language: Language): CodeExecutionContext {
+    console.log('LANGUAGE: ', language);
     switch (language.getId().toNumber()) {
       case CodeExecutionContextFactory.JAVASCRIPT_LANGUAGE_ID:
         return this.jsJudge0ExecutionContext;

@@ -26,8 +26,6 @@ export class AccountAuthorizationGuard implements CanActivate {
 
     const account = await this.accountQuery.findBySub(sub);
 
-    console.log('FOUND ACCOUNT: ', account);
-
     if (!account) {
       throw new UnauthorizedError('Account not found');
     }

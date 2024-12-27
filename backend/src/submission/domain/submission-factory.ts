@@ -32,8 +32,6 @@ export class SubmissionFactory implements EntityDomainFactory<Submission> {
   create(options: CreateSubmissionOptions): Submission {
     const id = this.createId(options.id);
 
-    console.log('OPTIONS: ', options);
-
     return this.eventPublisher.mergeObjectContext(
       new SubmissionImplementation({
         ...options,
