@@ -3,6 +3,7 @@ export interface Id {
   toNumber(): number;
   equals(id: Id): boolean;
   rawEquals(id: string): boolean;
+  getValue(): string | number;
 }
 
 export class IdImplementation implements Id {
@@ -28,6 +29,10 @@ export class IdImplementation implements Id {
       );
     }
     return numValue;
+  }
+
+  getValue(): string | number {
+    return this.value;
   }
 
   rawEquals(id: string): boolean {

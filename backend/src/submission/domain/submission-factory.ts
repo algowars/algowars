@@ -8,6 +8,7 @@ import { EventPublisher } from '@nestjs/cqrs';
 import { Id, IdImplementation } from 'src/common/domain/id';
 import { SubmissionResult } from './submission-result';
 import { SubmissionStatus } from './submission-status';
+import { Problem } from 'src/problem/domain/problem';
 
 export interface CreateSubmissionOptions {
   id: string | Id;
@@ -21,6 +22,7 @@ export interface CreateSubmissionOptions {
   version: number;
   results: SubmissionResult[];
   status: SubmissionStatus;
+  problem?: Problem;
 }
 
 @Injectable()
@@ -29,6 +31,8 @@ export class SubmissionFactory implements EntityDomainFactory<Submission> {
 
   create(options: CreateSubmissionOptions): Submission {
     const id = this.createId(options.id);
+
+    console.log('OPTIONS: ', options);
 
     return this.eventPublisher.mergeObjectContext(
       new SubmissionImplementation({

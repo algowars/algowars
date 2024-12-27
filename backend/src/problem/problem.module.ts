@@ -8,6 +8,12 @@ import { ProblemController } from './interface/problem.controller';
 import { ProblemQueryImplementation } from './infrastructure/queries/problem-query-implementation';
 import { ProblemRepositoryImplementation } from './infrastructure/repositories/problem-repository-implementation';
 import { ProblemSetupRepositoryImplementation } from './infrastructure/repositories/problem-setup-repository-implementation';
+import { LanguageQueryImplementation } from './infrastructure/queries/language-query-implementation';
+import { LanguageRepositoryImplementation } from './infrastructure/repositories/language-repository-implementation';
+import { SubmissionInjectionToken } from 'src/submission/application/injection-token';
+import { SubmissionRepositoryImplementation } from 'src/submission/infrastructure/repositories/submission-repository-implementation';
+import { SubmissionFactory } from 'src/submission/domain/submission-factory';
+import { AccountModule } from 'src/account/account.module';
 
 const infrastructure: Provider[] = [
   {
@@ -22,14 +28,26 @@ const infrastructure: Provider[] = [
     provide: ProblemInjectionToken.PROBLEM_SETUP_REPOSITORY,
     useClass: ProblemSetupRepositoryImplementation,
   },
+  {
+    provide: ProblemInjectionToken.LANGUAGE_QUERY,
+    useClass: LanguageQueryImplementation,
+  },
+  {
+    provide: ProblemInjectionToken.LANGUAGE_REPOSITORY,
+    useClass: LanguageRepositoryImplementation,
+  },
+  {
+    provide: SubmissionInjectionToken.SUBMISSION_REPOSITORY,
+    useClass: SubmissionRepositoryImplementation,
+  },
 ];
 
 export const application = [...ProblemQueryHandlers, ...ProblemCommandHandlers];
 
-export const domain = [ProblemFactory];
+export const domain = [ProblemFactory, SubmissionFactory];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, AccountModule],
   controllers: [ProblemController],
   providers: [Logger, ...infrastructure, ...application, ...domain],
   exports: [...infrastructure, ...domain],

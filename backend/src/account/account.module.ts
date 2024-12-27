@@ -27,5 +27,6 @@ const domain = [AccountFactory];
   imports: [CqrsModule],
   controllers: [AccountController],
   providers: [Logger, ...infrastructure, ...application, ...domain],
+  exports: [...infrastructure, ...application, ...domain],
 })
 export class AccountModule {}

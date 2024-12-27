@@ -1,3 +1,4 @@
+import { PermissionProtectedRoute } from "@/components/auth/permission-protected-route/permission-protected-route";
 import { ProtectedRoute } from "@/components/auth/protected-route/protected-route";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -83,82 +84,41 @@ export const createAppRouter = () => {
         return { Component: ProblemRoute };
       },
     },
+    {
+      path: routerConfig.admin.path,
+      lazy: async () => {
+        const { AdminRoute } = await import("./routes/app/admin");
+
+        return {
+          Component: (props: object) => (
+            <PermissionProtectedRoute
+              component={AdminRoute}
+              {...props}
+              allowedPermissions={["Admin"]}
+            />
+          ),
+        };
+      },
+    },
+    {
+      path: routerConfig.adminCreateProblem.path,
+      lazy: async () => {
+        const { AdminCreateProblemRoute } = await import(
+          "./routes/app/admin/create-problem"
+        );
+
+        return {
+          Component: (props: object) => (
+            <PermissionProtectedRoute
+              component={AdminCreateProblemRoute}
+              {...props}
+              allowedPermissions={["Admin"]}
+            />
+          ),
+        };
+      },
+    },
   ]);
-  // return createBrowserRouter([
-  //   {
-  //     path: routerConfig.root.path,
-  //     lazy: async () => {
-  //       const { LandingRoute } = await import("./routes/landing");
-  //       return { Component: LandingRoute };
-  //     },
-  //   },
-  //   {
-  //     path: routerConfig.profile.path,
-  //     element: <ProfileRoute />,
-  //     children: [
-  //       {
-  //         path: routerConfig.profile.path,
-  //         element: <ProfileBioRoute />,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     path: routerConfig.appRoot.path,
-  //     element: <ProtectedRoute component={AppRoot} />,
-  //     children: [
-  //       {
-  //         path: routerConfig.problemSolutions.path,
-  //         lazy: async () => {
-  //           const { ProblemSolutions } = await import(
-  //             "./routes/app/problem/solutions"
-  //           );
-  //           return { Component: ProblemSolutions };
-  //         },
-  //       },
-  //       {
-  //         path: routerConfig.problem.path,
-  //         lazy: async () => {
-  //           const { ProblemRoute } = await import("./routes/app/problem");
-  //           return { Component: ProblemRoute };
-  //         },
-  //       },
-  //       {
-  //         path: routerConfig.appRoot.path,
-  //         lazy: async () => {
-  //           const { DashboardRoute } = await import("./routes/app/dashboard");
-  //           return { Component: DashboardRoute };
-  //         },
-  //       },
-  //       {
-  //         path: routerConfig.accountSetup.path,
-  //         lazy: async () => {
-  //           const { AccountSetupRoute } = await import(
-  //             "./routes/app/account/setup"
-  //           );
-  //           return { Component: AccountSetupRoute };
-  //         },
-  //       },
-  //       {
-  //         path: routerConfig.admin.path,
-  //         element: (
-  //           <PermissionProtectedRoute
-  //             component={AdminRoute}
-  //             allowedPermissions={["Admin"]}
-  //           />
-  //         ),
-  //       },
-  //       {
-  //         path: routerConfig.adminCreateProblem.path,
-  //         element: (
-  //           <PermissionProtectedRoute
-  //             component={AdminCreateProblemRoute}
-  //             allowedPermissions={["Admin"]}
-  //           />
-  //         ),
-  //       },
-  //     ],
-  //   },
-  // ]);
 };
 
 export const AppRouter = () => {
