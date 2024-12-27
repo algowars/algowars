@@ -6,4 +6,5 @@ export interface PaginationConfig<T> {
   timestamp: Date;
   resultsTransformer(result: BaseEntity[]): T[];
   relations?: string[];
+  filters?: Partial<Record<keyof T, any>>;
 }

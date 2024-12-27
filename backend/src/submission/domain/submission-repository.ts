@@ -4,7 +4,7 @@ import { SubmissionResult } from './submission-result';
 
 export interface SubmissionRepository {
   newId(): Promise<Id>;
-  save(submission: Submission | Submission[]): Promise<void>;
+  save(data: Submission | Submission[]): Promise<void>;
   findById(id: Id): Promise<Submission | null>;
-  updateSubmissionResult(submissionResult: SubmissionResult): Promise<void>;
+  updateResult(result: SubmissionResult): Promise<void>;
 }

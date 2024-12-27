@@ -1,7 +1,7 @@
 import { AuthProvider } from "@/components/auth/auth-provider/auth-provider";
 import { MainErrorFallback } from "@/components/error/main-error-fallback";
+import { PageLoader } from "@/components/loader/page-loader/page-loader";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { Spinner } from "@/components/ui/spinner";
 import { AccountStoreProvider } from "@/features/account/account-store.provider";
 import { queryConfig } from "@/lib/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -23,13 +23,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   );
 
   return (
-    <Suspense
-      fallback={
-        <div className="flex h-screen items-center justify-center">
-          <Spinner size="xl" />
-        </div>
-      }
-    >
+    <Suspense fallback={<PageLoader />}>
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
         <HelmetProvider>
           <AuthProvider>

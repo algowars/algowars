@@ -1,13 +1,13 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { Id } from '../domain/id';
 
-export type BaseDomainProperties = {
-  id: Id;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
-  version: number;
-};
+export interface BaseDomainProperties {
+  id?: Id;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+  version?: number;
+}
 
 export interface BaseDomain {
   compareId(id: Id): boolean;

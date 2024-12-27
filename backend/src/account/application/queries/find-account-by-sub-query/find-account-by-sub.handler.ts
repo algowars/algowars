@@ -19,6 +19,14 @@ export class FindAccountBySubHandler
       throw new NotFoundException(AccountErrorMessage.ACCOUNT_NOT_FOUND);
     }
 
-    return data;
+    return {
+      id: data.getId().toString(),
+      sub: data.getSub().toString(),
+      username: data.getUsername().toString(),
+      createdAt: data.getCreatedAt(),
+      updatedAt: data.getUpdatedAt(),
+      deletedAt: data.getDeletedAt(),
+      version: data.getVersion(),
+    };
   }
 }

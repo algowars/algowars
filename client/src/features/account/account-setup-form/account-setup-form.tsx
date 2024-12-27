@@ -17,6 +17,8 @@ import { openAccountSchema, useOpenAccount } from "../api/open-account";
 import { toast } from "sonner";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { Account } from "../models/account.model";
+import { useAccountStore } from "../account-store.provider";
 
 type AccountSetupFormProps = {
   className?: string;
@@ -25,6 +27,7 @@ type AccountSetupFormProps = {
 export const AccountSetupForm = ({ className }: AccountSetupFormProps) => {
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
+  const { store, setIsAuthenticated } = useAccountStore();
 
   const form = useForm<z.infer<typeof openAccountSchema>>({
     resolver: zodResolver(openAccountSchema),
@@ -35,8 +38,10 @@ export const AccountSetupForm = ({ className }: AccountSetupFormProps) => {
 
   const openAccountMutation = useOpenAccount({
     mutationConfig: {
-      onSuccess: () => {
+      onSuccess: (data: Account) => {
         toast("Account Created");
+        store?.getState().setAccount(data);
+        setIsAuthenticated(true);
         navigate("/");
       },
     },

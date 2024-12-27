@@ -1,14 +1,14 @@
 import { Logger, Module, Provider } from '@nestjs/common';
-import { AccountController } from './interface/account.controller';
 import { AccountInjectionToken } from './application/injection-token';
 import { AccountQueryImplementation } from './infrastructure/queries/account-query-implementation';
+import { AccountRepositoryImplementation } from './infrastructure/repositories/account-repository-implementation';
 import { AccountQueryHandlers } from './application/queries';
+import { AccountCommandHandlers } from './application/commands';
 import { AccountFactory } from './domain/account-factory';
 import { CqrsModule } from '@nestjs/cqrs';
-import { AccountRepositoryImplementation } from './infrastructure/repositories/account-repository-implementation';
-import { AccountCommandHandlers } from './application/commands';
+import { AccountController } from './interface/account.controller';
 
-export const infrastructure: Provider[] = [
+const infrastructure: Provider[] = [
   {
     provide: AccountInjectionToken.ACCOUNT_QUERY,
     useClass: AccountQueryImplementation,
@@ -19,14 +19,14 @@ export const infrastructure: Provider[] = [
   },
 ];
 
-export const application = [...AccountQueryHandlers, ...AccountCommandHandlers];
+const application = [...AccountQueryHandlers, ...AccountCommandHandlers];
 
-export const domain = [AccountFactory];
+const domain = [AccountFactory];
 
 @Module({
   imports: [CqrsModule],
   controllers: [AccountController],
   providers: [Logger, ...infrastructure, ...application, ...domain],
-  exports: [...infrastructure, ...domain],
+  exports: [...infrastructure, ...application, ...domain],
 })
 export class AccountModule {}

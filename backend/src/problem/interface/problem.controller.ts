@@ -9,9 +9,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { FindProblemBySlugQuery } from '../application/queries/find-problem-by-slug-query/find-problem-by-slug.query';
+import { GetProblemsPageableParam } from './dto/request/get-problems-pageable-param.dto';
+import { PageResult } from 'src/common/pagination/page-result';
+import { GetProblemsPaginatedResponse } from './dto/response/get-problems-paginated-response.dto';
+import { GetProblemsPageableQuery } from '../application/queries/get-problems-pageable-query/get-problems-pageable.query';
 import { FindProblemBySlugRequestParam } from './dto/request/find-problem-by-slug-request-param.dto';
+import { FindProblemBySlugRequestQuery } from './dto/request/find-problem-by-slug-request-query.dto';
 import { FindProblemBySlugResponseDto } from './dto/response/find-problem-by-slug-response.dto';
+import { FindProblemBySlugQuery } from '../application/queries/find-problem-by-slug-query/find-problem-by-slug.query';
+import { CreateProblemSetupRequest } from './dto/request/create-problem-setup.dto';
+import { GetProblemSetupResponse } from './dto/response/get-problem-setup-response.dto';
+import { GetProblemSetupQuery } from '../application/queries/get-problem-setup-query/get-problem-setup.query';
 import { PermissionsGuard } from 'src/auth/permission.guard';
 import { ProblemPermissions } from '../application/permissions/problem-permissions';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
@@ -19,16 +27,6 @@ import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard'
 import { CreateProblemRequest } from './dto/request/create-problem.dto';
 import { CreateProblemCommand } from '../application/commands/create-problem/create-problem.command';
 import { Request } from 'express';
-import { GetProblemsPageableParam } from './dto/request/get-problems-pageable-param.dto';
-import { PageResult } from 'src/common/pagination/page-result';
-import { GetProblemsPaginatedResponse } from './dto/response/get-problems-paginated-response.dto';
-import { GetProblemsPageableQuery } from '../application/queries/get-problems-pageable-query/get-problems-pageable.query';
-import { CreateProblemSetupRequest } from './dto/request/create-problem-setup.dto';
-import { GetProblemSetupResponse } from './dto/response/get-problem-setup-response.dto';
-import { GetProblemSetupQuery } from '../application/queries/get-problem-setup-query/get-problem-setup.query';
-import { FindProblemBySlugRequestQuery } from './dto/request/find-problem-by-slug-request-query.dto';
-import { GetProblemSolutionsResponse } from './dto/response/get-problem-solutions-response.dto';
-import { GetProblemSolutionsQuery } from '../application/queries/get-problem-solutions-query/get-problem-solutions.query';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -53,19 +51,6 @@ export class ProblemController {
   ): Promise<FindProblemBySlugResponseDto> {
     return this.queryBus.execute(
       new FindProblemBySlugQuery(param.slug, query.languageId),
-    );
-  }
-
-  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
-  @Get('find/slug/:slug/solutions')
-  async getProblemSolutionsBySlug(
-    @Param() param: FindProblemBySlugRequestParam,
-    @Req() request: Request,
-  ): Promise<GetProblemSolutionsResponse> {
-    const account = request?.account;
-
-    return this.queryBus.execute(
-      new GetProblemSolutionsQuery(param.slug, account),
     );
   }
 

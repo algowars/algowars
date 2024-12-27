@@ -1,108 +1,66 @@
-import { Submission } from 'src/submission/domain/submission';
-import { Language } from './language';
+import {
+  BaseDomain,
+  BaseDomainImplementation,
+  BaseDomainProperties,
+} from 'src/common/entities/base-domain';
 import { Problem } from './problem';
-import { Id } from 'src/common/domain/id';
-import { Test } from 'src/problem/domain/test';
+import { Language } from './language';
+import { Test } from './test';
+import { Submission } from 'src/submission/domain/submission';
 
-export type ProblemSetupEssentialProperties = Readonly<
-  Required<{
-    problemId: Id;
-    languageId: Id;
-    initialCode: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-    version: number;
-    tests: Test[];
-    solution: Submission;
-  }>
->;
-
-export type ProblemSetupOptionalProperties = Readonly<
-  Partial<{ language: Language; problem: Problem }>
->;
-
-export type ProblemSetupProperties = ProblemSetupEssentialProperties &
-  ProblemSetupOptionalProperties;
-
-export interface ProblemSetup {
-  getProblemId(): Id;
-  getLanguageId(): Id;
-  getProblem(): Problem;
-  getLanguage(): Language;
-  getTests(): Test[];
-  getInitialCode(): string;
-  getCreatedAt(): Date;
-  getUpdatedAt(): Date;
-  getDeletedAt(): Date | null;
-  getSolution(): Submission;
-  setSolution(solution: Submission): void;
-  getVersion(): number;
+export interface ProblemSetupProperties extends BaseDomainProperties {
+  problem?: Problem;
+  language?: Language;
+  initialCode: string;
+  tests?: Test[];
+  solution?: Submission | null;
 }
 
-export class ProblemSetupImplementation implements ProblemSetup {
-  private readonly problemId: Id;
-  private readonly languageId: Id;
+export interface ProblemSetup extends BaseDomain {
+  getProblem(): Problem;
+  getLanguage(): Language;
+  getInitialCode(): string;
+  getTests(): Test[];
+  getSolution(): Submission | null;
+  setSolution(submission: Submission): void;
+}
+
+export class ProblemSetupImplementation
+  extends BaseDomainImplementation
+  implements ProblemSetup
+{
   private readonly problem: Problem;
   private readonly language: Language;
   private readonly initialCode: string;
-  private readonly createdAt: Date;
-  private readonly updatedAt: Date;
-  private readonly deletedAt: Date | null;
-  private readonly version: number;
   private readonly tests: Test[];
-  private solution: Submission;
+  private solution: Submission | null;
 
   constructor(properties: ProblemSetupProperties) {
+    super(properties);
     Object.assign(this, properties);
-    this.tests = properties.tests;
-  }
-
-  getProblemId(): Id {
-    return this.problemId;
   }
 
   getProblem(): Problem {
     return this.problem;
   }
 
-  getLanguageId(): Id {
-    return this.languageId;
-  }
-
   getLanguage(): Language {
     return this.language;
-  }
-
-  getTests(): Test[] {
-    return this.tests;
   }
 
   getInitialCode(): string {
     return this.initialCode;
   }
 
-  getSolution(): Submission {
+  getTests(): Test[] {
+    return this.tests ?? [];
+  }
+
+  getSolution(): Submission | null {
     return this.solution;
   }
 
-  setSolution(solution: Submission): void {
-    this.solution = solution;
-  }
-
-  getCreatedAt() {
-    return this.createdAt;
-  }
-
-  getDeletedAt() {
-    return this.deletedAt;
-  }
-
-  getUpdatedAt() {
-    return this.updatedAt;
-  }
-
-  getVersion() {
-    return this.version;
+  setSolution(submission: Submission): void {
+    this.solution = submission;
   }
 }

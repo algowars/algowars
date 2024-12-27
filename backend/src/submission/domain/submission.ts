@@ -1,47 +1,36 @@
+import { CodeExecutionContext } from 'lib/code-execution/code-execution-context';
+import { CodeExecutionEngines } from 'lib/code-execution/code-execution-engines';
 import { Account } from 'src/account/domain/account';
-import { Id } from 'src/common/domain/id';
-import { SubmissionResult } from './submission-result';
-import { Language } from 'src/problem/domain/language';
 import {
   BaseDomainAggregateRoot,
   BaseDomainAggregateRootImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
-import { SubmissionCreatedEvent } from './events/submission-created-event';
-import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
-import { Problem } from 'src/problem/domain/problem';
+import { Language } from 'src/problem/domain/language';
+import { SubmissionResult } from './submission-result';
 import { SubmissionStatus } from './submission-status';
+import { Problem } from 'src/problem/domain/problem';
+import { SubmissionCreatedEvent } from './events/submission-created-event';
 
-export type SubmissionEssentialProperties = Readonly<
-  Required<{
-    createdBy: Account;
-    language: Language;
-    sourceCode: string;
-    codeExecutionContext: CodeExecutionEngine;
-  }>
->;
-
-export type SubmissionOptionalProperties = Readonly<
-  Partial<{
-    id: Id;
-    submissionResults: SubmissionResult[];
-    problem: Problem;
-  }>
->;
-
-export type SubmissionProperties = SubmissionEssentialProperties &
-  SubmissionOptionalProperties &
-  BaseDomainProperties;
+export interface SubmissionProperties extends BaseDomainProperties {
+  sourceCode: string;
+  codeExecutionEngine: CodeExecutionEngines;
+  createdBy: Account;
+  language: Language;
+  results: SubmissionResult[];
+  status: SubmissionStatus;
+  problem?: Problem;
+}
 
 export interface Submission extends BaseDomainAggregateRoot {
-  getCreatedBy(): Account;
   getSourceCode(): string;
-  getSubmissionResults(): SubmissionResult[];
-  setSubmissionResults(results: SubmissionResult[]): void;
+  getCodeExecutionEngine(): CodeExecutionEngines;
+  getCreatedBy(): Account;
   getLanguage(): Language;
-  getCodeExecutionContext(): CodeExecutionEngine;
   getProblem(): Problem;
-  getAggregateStatus(): SubmissionStatus;
+  getResults(): SubmissionResult[];
+  setResult(index: number, result: SubmissionResult): void;
+  setResults(newResults: SubmissionResult[]): void;
   create(): void;
 }
 
@@ -50,38 +39,34 @@ export class SubmissionImplementation
   implements Submission
 {
   private readonly sourceCode: string;
-  private submissionResults: SubmissionResult[];
+  private readonly codeExecutionEngine: CodeExecutionEngines;
   private readonly createdBy: Account;
   private readonly language: Language;
-  private readonly codeExecutionContext: CodeExecutionEngine;
   private readonly problem: Problem;
+  private results: SubmissionResult[];
 
   constructor(properties: SubmissionProperties) {
     super(properties);
     Object.assign(this, properties);
   }
 
-  getCreatedBy() {
-    return this.createdBy;
+  create(): void {
+    this.apply(new SubmissionCreatedEvent(this.getId()));
   }
 
-  getCodeExecutionContext(): CodeExecutionEngine {
-    return this.codeExecutionContext;
-  }
-
-  getSourceCode() {
+  getSourceCode(): string {
     return this.sourceCode;
   }
 
-  getSubmissionResults() {
-    return this.submissionResults;
+  getCodeExecutionEngine(): CodeExecutionEngines {
+    return this.codeExecutionEngine;
   }
 
-  setSubmissionResults(results: SubmissionResult[]): void {
-    this.submissionResults = results;
+  getCreatedBy(): Account {
+    return this.createdBy;
   }
 
-  getLanguage() {
+  getLanguage(): Language {
     return this.language;
   }
 
@@ -89,43 +74,20 @@ export class SubmissionImplementation
     return this.problem;
   }
 
-  getAggregateStatus(): SubmissionStatus {
-    if (!this.submissionResults || this.submissionResults.length === 0) {
-      throw new Error('No submission results available to aggregate status.');
-    }
-
-    // Priority order of statuses
-    const statusPriority = [
-      SubmissionStatus.INTERNAL_ERROR,
-      SubmissionStatus.EXEC_FORMAT_ERROR,
-      SubmissionStatus.RUNTIME_ERROR,
-      SubmissionStatus.COMPILATION_ERROR,
-      SubmissionStatus.TIME_LIMIT_EXCEEDED,
-      SubmissionStatus.WRONG_ANSWER,
-      SubmissionStatus.PROCESSING,
-      SubmissionStatus.IN_QUEUE,
-      SubmissionStatus.POLLING_ERROR,
-      SubmissionStatus.POLLING,
-      SubmissionStatus.ACCEPTED,
-    ];
-
-    // Find the most critical status by priority
-    let finalStatus: SubmissionStatus = SubmissionStatus.ACCEPTED;
-
-    for (const result of this.submissionResults) {
-      const resultStatus = result.getStatus();
-      const resultPriority = statusPriority.indexOf(resultStatus);
-      const finalPriority = statusPriority.indexOf(finalStatus);
-
-      if (resultPriority < finalPriority) {
-        finalStatus = resultStatus;
-      }
-    }
-
-    return finalStatus;
+  getResults(): SubmissionResult[] {
+    return this.results;
   }
 
-  create(): void {
-    this.apply(new SubmissionCreatedEvent(this.getId().toString()));
+  setResult(index: number, result: SubmissionResult): number {
+    if (index > this.results.length || index < this.results.length) {
+      return -1;
+    }
+
+    this.results[index] = result;
+    return 0;
+  }
+
+  setResults(results: SubmissionResult[]): void {
+    this.results = results;
   }
 }

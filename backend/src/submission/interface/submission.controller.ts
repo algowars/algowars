@@ -3,9 +3,9 @@ import { CommandBus } from '@nestjs/cqrs';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { CreateSubmissionRequest } from './dto/request/create-submission-request.dto';
 import { Request } from 'express';
+import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard';
 import { CreateSubmissionCommand } from '../application/commands/create-submission/create-submission.command';
 import { Id } from 'src/common/domain/id';
-import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard';
 
 @Controller('v1/submission')
 export class SubmissionController {

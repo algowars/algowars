@@ -1,6 +1,8 @@
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -21,6 +23,7 @@ interface AccountStoreContextState {
   store: StoreApi<AccountStoreState> | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   status: string | null;
 }
 
@@ -37,6 +40,7 @@ const initialAccountStoreContextState: AccountStoreContextState = {
   store: null,
   isLoading: true,
   isAuthenticated: false,
+  setIsAuthenticated: () => null,
   status: null,
 };
 
@@ -69,16 +73,11 @@ export const AccountStoreProvider = ({
         }
         setIsLoading(false);
       },
-      onError: (error) => {
-        console.log("ERROR: ", error);
-      },
       onSettled: () => {
         setIsLoading(false);
       },
     },
   });
-
-  console.log("MUTATION: ", findAccountBySubMutation);
 
   useEffect(() => {
     (async () => {
@@ -92,10 +91,12 @@ export const AccountStoreProvider = ({
   }, [isAuthAuthenticated, isAuthLoading]);
   const error = findAccountBySubMutation?.error as AxiosError;
 
+  const account = store?.getState().account;
   const value = {
     store,
     isLoading,
     isAuthenticated,
+    setIsAuthenticated,
     status: error?.code ?? null,
   };
 

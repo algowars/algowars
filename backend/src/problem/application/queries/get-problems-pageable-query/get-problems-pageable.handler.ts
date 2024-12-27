@@ -2,9 +2,8 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProblemsPageableQuery } from './get-problems-pageable.query';
 import { GetProblemsPageableResult } from './get-problems-pageable-result';
 import { Inject } from '@nestjs/common';
-import { ProblemQuery } from '../problem-query';
-import { PageResult } from 'src/common/pagination/page-result';
 import { ProblemInjectionToken } from '../../injection-token';
+import { ProblemQuery } from '../problem-query';
 
 @QueryHandler(GetProblemsPageableQuery)
 export class GetProblemsPageableHandler
@@ -15,7 +14,7 @@ export class GetProblemsPageableHandler
 
   async execute(
     query: GetProblemsPageableQuery,
-  ): Promise<PageResult<GetProblemsPageableResult>> {
+  ): Promise<GetProblemsPageableResult> {
     return this.problemQuery.getPageable(
       query.page,
       query.size,

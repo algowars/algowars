@@ -1,7 +1,7 @@
 import { Id, IdImplementation } from 'src/common/domain/id';
 import { AccountImplementation } from './account';
-import { UsernameImplementation } from './username';
 import { UserSubImplementation } from './user-sub';
+import { UsernameImplementation } from './username';
 
 describe('Account', () => {
   it('should compare id', () => {

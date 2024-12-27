@@ -1,21 +1,15 @@
-import { Username } from './username';
-import { UserSub } from './user-sub';
-import { AccountOpenedEvent } from './events/account-opened.event';
 import {
   BaseDomainAggregateRoot,
   BaseDomainAggregateRootImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
+import { UserSub } from './user-sub';
+import { Username } from './username';
 
-export type AccountEssentialProperties = Readonly<
-  Required<{
-    sub: UserSub;
-    username: Username;
-  }>
->;
-
-export type AccountProperties = AccountEssentialProperties &
-  BaseDomainProperties;
+export interface AccountProperties extends BaseDomainProperties {
+  sub?: UserSub;
+  username?: Username;
+}
 
 export interface Account extends BaseDomainAggregateRoot {
   getSub: () => UserSub;
@@ -44,6 +38,6 @@ export class AccountImplementation
   }
 
   open(): void {
-    this.apply(new AccountOpenedEvent(this.getId()));
+    // this.apply(new AccountOpenedEvent(this.getId()));
   }
 }

@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './http-exception.filter';
-import * as nocache from 'nocache';
+import nocache from 'nocache';
 import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

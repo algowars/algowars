@@ -5,34 +5,23 @@ import {
 } from 'src/common/entities/base-domain';
 import { SubmissionStatus } from './submission-status';
 
-export type SubmissionResultEssentialProperties = Readonly<
-  Required<{
-    token: string;
-  }>
->;
-
-export type SubmissionResultOptionalProperties = Readonly<
-  Partial<{
-    token: string;
-    sourceCode?: string;
-    languageId?: number;
-    stdin?: string;
-    stdout?: string;
-    time?: string;
-    memory?: number;
-    stderr?: string;
-    expectedOutput?: string;
-    message?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    deletedAt?: Date | null;
-    version?: number;
-    status: SubmissionStatus;
-  }>
->;
-export type SubmissionResultProperties = SubmissionResultEssentialProperties &
-  SubmissionResultOptionalProperties &
-  BaseDomainProperties;
+export interface SubmissionResultProperties extends BaseDomainProperties {
+  token: string;
+  sourceCode?: string;
+  languageId?: number;
+  stdin?: string;
+  stdout?: string;
+  time?: string;
+  memory?: number;
+  stderr?: string;
+  expectedOutput?: string;
+  message?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+  version?: number;
+  status: SubmissionStatus;
+}
 
 export interface SubmissionResult extends BaseDomain {
   getToken(): string;

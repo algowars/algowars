@@ -8,16 +8,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { OpenAccountRequest } from './dto/request/open-account-request.dto';
 import { OpenAccountCommand } from '../application/commands/open-account/open-account.command';
 import { Id } from 'src/common/domain/id';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { Request } from 'express';
-import { FindAccountBySubResponseDto } from './dto/response/find-account-by-sub-response.dto';
 import { FindAccountBySubQuery } from '../application/queries/find-account-by-sub-query/find-account-by-sub.query';
+import { OpenAccountRequest } from './dto/request/open-account-request.dto';
 import { FindAccountByUsername } from './dto/request/find-account-by-username.dto';
-import { FindAccountByUsernameResult } from '../application/queries/find-account-by-username-query/find-account-by-username-result';
-import { FindAccountByUsernameQuery } from '../application/queries/find-account-by-username-query/find-account-by-username.query';
+import { FindAccountBySubResponseDto } from './dto/response/find-account-by-sub-response.dto';
+import { FindAccountByUsernameQuery } from '../application/queries/find-account-by-username/find-account-by-username.query';
+import { FindAccountByUsernameResult } from '../application/queries/find-account-by-username/find-account-by-username-result';
+import { Account } from '../domain/account';
 
 @Controller('v1/account')
 export class AccountController {
@@ -31,14 +32,22 @@ export class AccountController {
   async openAccount(
     @Body() body: OpenAccountRequest,
     @Req() request: Request,
-  ): Promise<string> {
+  ): Promise<{
+    id: string;
+    username: string;
+    createdAt: Date;
+  }> {
     const sub = request.auth.payload.sub;
 
-    const id = await this.commandBus.execute<OpenAccountCommand, Id>(
+    const account = await this.commandBus.execute<OpenAccountCommand, Account>(
       new OpenAccountCommand(sub, body.username),
     );
 
-    return id.toString();
+    return {
+      id: account.getId().toString(),
+      username: account.getUsername().toString(),
+      createdAt: account.getCreatedAt(),
+    };
   }
 
   @Get('find/username/:username')

@@ -3,25 +3,17 @@ import {
   BaseDomainImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
-import { Language } from 'src/problem/domain/language';
 
-export type AdditionalTestFileEssentialProperties = Readonly<
-  Required<{
-    fileName: string;
-    language: Language;
-    initialTestFile: string;
-    name: string;
-  }>
->;
-
-export type AdditionalTestFileProperties =
-  AdditionalTestFileEssentialProperties & BaseDomainProperties;
+export interface AdditionalTestFileProperties extends BaseDomainProperties {
+  fileName: string;
+  name: string;
+  initialTestFile: string;
+}
 
 export interface AdditionalTestFile extends BaseDomain {
   getFileName(): string;
-  getLanguage(): Language;
-  getInitialTestFile(): string;
   getName(): string;
+  getInitialTestFile(): string;
 }
 
 export class AdditionalTestFileImplementation
@@ -29,9 +21,8 @@ export class AdditionalTestFileImplementation
   implements AdditionalTestFile
 {
   private readonly fileName: string;
-  private readonly language: Language;
-  private readonly initialTestFile: string;
   private readonly name: string;
+  private readonly initialTestFile: string;
 
   constructor(properties: AdditionalTestFileProperties) {
     super(properties);
@@ -42,15 +33,11 @@ export class AdditionalTestFileImplementation
     return this.fileName;
   }
 
-  getLanguage(): Language {
-    return this.language;
+  getName(): string {
+    return this.name;
   }
 
   getInitialTestFile(): string {
     return this.initialTestFile;
-  }
-
-  getName(): string {
-    return this.name;
   }
 }

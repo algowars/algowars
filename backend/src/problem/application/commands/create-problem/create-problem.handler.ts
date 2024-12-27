@@ -1,19 +1,30 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateProblemCommand } from './create-problem.command';
-import { Id } from 'src/common/domain/id';
+import { Id, IdImplementation } from 'src/common/domain/id';
+import { Language } from 'src/problem/domain/language';
+import { AdditionalTestFile } from 'src/problem/domain/additional-test-file';
 import { Inject, NotFoundException } from '@nestjs/common';
+import { ProblemInjectionToken } from '../../injection-token';
+import { LanguageRepository } from 'src/problem/domain/language-repository';
+import { CodeExecutionContextFactory } from 'lib/code-execution/code-execution-context-factory';
+import { Problem } from 'src/problem/domain/problem';
+import { CreateProblemRequest } from 'src/problem/interface/dto/request/create-problem.dto';
 import { ProblemRepository } from 'src/problem/domain/problem-repository';
 import { ProblemFactory } from 'src/problem/domain/problem-factory';
-import { Transactional } from 'lib/transactional';
-import { LanguageRepository } from 'src/problem/domain/language-repository';
-import { AdditionalTestFileRepository } from 'src/problem/domain/additional-test-file-repository';
-import { CodeExecutionContextFactory } from 'lib/code-execution/code-execution-context-factory';
+import { Account } from 'src/account/domain/account';
+import {
+  ProblemSetup,
+  ProblemSetupImplementation,
+} from 'src/problem/domain/problem-setup';
+import { ProblemStatus } from 'src/problem/domain/problem-status';
+import { Submission } from 'src/submission/domain/submission';
+import { SubmissionInjectionToken } from 'src/submission/application/injection-token';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
-import { ProblemStatus } from 'src/problem/domain/problem-status';
+import { CodeExecutionEngines } from 'lib/code-execution/code-execution-engines';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
-import { ProblemInjectionToken } from '../../injection-token';
-import { SubmissionInjectionToken } from 'src/submission/application/injection-token';
+import { TestImplementation } from 'src/problem/domain/test';
+import { SubmissionResultImplementation } from 'src/submission/domain/submission-result';
 
 @CommandHandler(CreateProblemCommand)
 export class CreateProblemHandler
@@ -25,34 +36,35 @@ export class CreateProblemHandler
   private readonly problemFactory: ProblemFactory;
   @Inject(ProblemInjectionToken.LANGUAGE_REPOSITORY)
   private readonly languageRepository: LanguageRepository;
-  @Inject(ProblemInjectionToken.ADDITIONAL_TEST_FILE_REPOSITORY)
-  private readonly additionalTestFileRepository: AdditionalTestFileRepository;
-  @Inject()
-  private readonly contextFactory: CodeExecutionContextFactory;
   @Inject(SubmissionInjectionToken.SUBMISSION_REPOSITORY)
   private readonly submissionRepository: SubmissionRepository;
   @Inject()
   private readonly submissionFactory: SubmissionFactory;
+  @Inject()
+  private readonly contextFactory: CodeExecutionContextFactory;
 
-  @Transactional()
   async execute(command: CreateProblemCommand): Promise<Id> {
-    const language = await this.languageRepository.findById(
+    const languageId = new IdImplementation(
       command.createProblemRequest.languageId,
     );
+    const additionalTestFileId = new IdImplementation(
+      command.createProblemRequest.additionalTestFileId,
+    );
+
+    const { language, additionalTestFile } =
+      await this.getLanguageWithAdditionalTestFile(
+        languageId,
+        additionalTestFileId,
+      );
 
     if (!language) {
       throw new NotFoundException('Language not found');
     }
 
-    const additionalTestFile = await this.additionalTestFileRepository.findById(
-      command.createProblemRequest.additionalTestFileId,
-    );
-
     if (!additionalTestFile) {
-      throw new NotFoundException('Additional Test File not found');
+      throw new NotFoundException('Additional test file not found');
     }
 
-    // create submission and run submission
     const executionContext = this.contextFactory.createContext(language);
 
     const buildRequest = await executionContext.build(
@@ -62,67 +74,124 @@ ${command.createProblemRequest.test}`,
     );
 
     const executionResult = await executionContext.execute(buildRequest);
-    const problemId = await this.problemRepository.newId();
 
-    const problem = this.problemFactory.create({
-      ...command.createProblemRequest,
-      id: problemId,
-      createdBy: command.account,
-      setups: [
-        {
-          problemId,
-          languageId: language.getId().toNumber(),
-          initialCode: command.createProblemRequest.initialCode,
-          solution: null,
-          tests: [
-            {
-              id: await this.problemRepository.newId(),
-              code: command.createProblemRequest.test,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-              deletedAt: null,
-              version: 0,
-              additionalTestFile: {
-                id: additionalTestFile.getId(),
-                fileName: additionalTestFile.getFileName(),
-                language: additionalTestFile.getLanguage(),
-                initialTestFile: additionalTestFile.getInitialTestFile(),
-                name: additionalTestFile.getName(),
-              },
-            },
-          ],
-        },
-      ],
-      status: ProblemStatus.PENDING,
-    });
+    const problem = await this.createProblem(
+      command.createProblemRequest,
+      command.account,
+    );
 
-    const submissionId = await this.submissionRepository.newId();
-    const submission = this.submissionFactory.create({
-      id: submissionId,
-      language,
-      sourceCode: command.createProblemRequest.solution,
-      createdBy: command.account,
-      results: [
-        {
-          ...executionResult,
-          status: SubmissionStatus.POLLING,
-        },
-      ],
-      codeExecutionContext: executionContext.getEngine(),
+    const setups = await this.createSetup(
       problem,
-    });
+      language,
+      additionalTestFile,
+      command.createProblemRequest,
+    );
 
-    problem.getSetups()[0].setSolution(submission);
+    const submission = await this.createSubmission(
+      language,
+      problem,
+      `${command.createProblemRequest.solution}
+${command.createProblemRequest.test}`,
+      command.account,
+      executionContext.getEngine(),
+      executionResult,
+    );
 
-    await this.submissionRepository.save(submission);
+    setups.setSolution(submission);
 
-    submission.create();
-    submission.commit();
+    await this.problemRepository.saveAggregate(problem, setups, submission);
 
-    await this.problemRepository.save(problem);
+    // submission.create();
+    // submission.commit();
 
     problem.commit();
 
     return problem.getId();
+  }
+
+  private getLanguageWithAdditionalTestFile(
+    languageId: Id,
+    additionalTestFileId: Id,
+  ): Promise<{
+    language: Language;
+    additionalTestFile: AdditionalTestFile;
+  }> {
+    return this.languageRepository.findByIdWithTestFile(
+      languageId,
+      additionalTestFileId,
+    );
+  }
+
+  private async createProblem(
+    createProblemRequest: CreateProblemRequest,
+    account: Account,
+  ): Promise<Problem> {
+    const problemId = await this.problemRepository.newId();
+
+    return this.problemFactory.create({
+      ...createProblemRequest,
+      id: problemId,
+      createdBy: account,
+      status: ProblemStatus.PENDING,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      deletedAt: null,
+      version: 1,
+    });
+  }
+
+  private async createSetup(
+    problem: Problem,
+    language: Language,
+    additionalTestFile: AdditionalTestFile,
+    createProblemRequest: CreateProblemRequest,
+  ): Promise<ProblemSetup> {
+    return new ProblemSetupImplementation({
+      problem,
+      language,
+      initialCode: createProblemRequest.initialCode,
+      tests: [
+        new TestImplementation({
+          id: new IdImplementation(await this.problemRepository.newId()),
+          code: createProblemRequest.test,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          deletedAt: null,
+          version: 0,
+          additionalTestFile,
+        }),
+      ],
+    });
+  }
+
+  private async createSubmission(
+    language: Language,
+    problem: Problem,
+    sourceCode: string,
+    createdBy: Account,
+    codeExecutionContext: CodeExecutionEngines,
+    executionResult: any,
+  ): Promise<Submission> {
+    const submissionId = await this.submissionRepository.newId();
+
+    return this.submissionFactory.create({
+      id: submissionId,
+      language,
+      sourceCode,
+      createdBy,
+      codeExecutionEngine: codeExecutionContext,
+      problem,
+      status: SubmissionStatus.POLLING,
+      results: [
+        new SubmissionResultImplementation({
+          ...executionResult,
+          status: SubmissionStatus.POLLING,
+        }),
+      ],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      deletedAt: null,
+      version: 0,
+    });
   }
 }

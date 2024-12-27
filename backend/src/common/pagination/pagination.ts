@@ -1,47 +1,37 @@
-import { readConnection } from 'lib/database.module';
-import { BaseEntity } from '../entities/base-entity';
 import { PaginationConfig } from './pagination-config';
-import {
-  EntityTarget,
-  LessThan,
-  FindOptionsWhere,
-  FindOptionsOrder,
-} from 'typeorm';
+
 import { PageResultImplementation } from './page-result';
+import { Knex } from 'knex';
 
 export class Pagination {
   public static async paginate<T>(
-    entity: EntityTarget<BaseEntity & { createdAt: Date }>,
-    paginationConfig: PaginationConfig<T>,
+    knex: Knex,
+    tableName: string,
+    { page, size, timestamp, filters, resultsTransformer }: PaginationConfig<T>,
   ) {
-    const repository = readConnection.getRepository<
-      BaseEntity & { createdAt: Date }
-    >(entity);
+    if (page < 1 || size < 1) {
+      throw new Error('Page and size must be greater than 0');
+    }
 
-    const { page, size, timestamp, resultsTransformer, relations } =
-      paginationConfig;
-    const skip = (page - 1) * size;
-    const take = size;
+    let query = knex(tableName).select('*');
 
-    const whereCondition = timestamp
-      ? ({ createdAt: LessThan(timestamp) } as FindOptionsWhere<
-          BaseEntity & { createdAt: Date }
-        >)
-      : undefined;
+    if (filters) {
+      query = query.where(filters);
+    }
 
-    const orderCondition = { createdAt: 'DESC' } as FindOptionsOrder<
-      BaseEntity & { createdAt: Date }
-    >;
+    if (timestamp) {
+      query = query.where('created_at', '>=', timestamp);
+    }
 
-    const [results, total] = await repository.findAndCount({
-      where: whereCondition,
-      skip,
-      take,
-      relations: relations ?? [],
-      order: orderCondition,
-    });
+    const offset = (page - 1) * size;
 
-    const totalPages = Math.ceil(total / size);
+    const [{ count }] = await knex(tableName)
+      .count('* as count')
+      .where(filters || {});
+    const totalItems = Number(count);
+    const totalPages = Math.ceil(totalItems / size);
+
+    const results = await query.offset(offset).limit(size);
 
     return new PageResultImplementation<T>(
       resultsTransformer(results),

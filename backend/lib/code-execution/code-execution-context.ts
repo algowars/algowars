@@ -1,5 +1,5 @@
 import { AdditionalTestFile } from 'src/problem/domain/additional-test-file';
-import { CodeExecutionEngine } from './code-execution-engines';
+import { CodeExecutionEngines } from './code-execution-engines';
 
 export interface CodeExecutionContext {
   build(
@@ -8,7 +8,7 @@ export interface CodeExecutionContext {
     input?: string,
   ): Promise<any>;
 
-  getEngine(): CodeExecutionEngine;
+  getEngine(): CodeExecutionEngines;
 
   execute(codeExecutionRequest: {}): Promise<any>;
 }

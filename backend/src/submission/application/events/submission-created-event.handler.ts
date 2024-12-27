@@ -1,6 +1,5 @@
 import { Inject, InternalServerErrorException, Logger } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { Transactional } from 'lib/transactional';
 import { SubmissionCreatedEvent } from 'src/submission/domain/events/submission-created-event';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { IdImplementation } from 'src/common/domain/id';
@@ -24,10 +23,9 @@ export class SubmissionCreatedEventHandler
   @Inject()
   private readonly codeExecutionEvaluationResultFactory: CodeExecutionEvaluationResultFactory;
 
-  @Transactional()
   async handle(event: SubmissionCreatedEvent): Promise<void> {
     const foundSubmission = await this.submissionRepository.findById(
-      new IdImplementation(event.submissionId),
+      event.submissionId,
     );
 
     if (!foundSubmission.getLanguage()) {
@@ -40,7 +38,7 @@ export class SubmissionCreatedEventHandler
     const retryDelay = 4_000;
 
     const result = await this.pollForRequest(
-      foundSubmission.getSubmissionResults()[0].getToken(),
+      foundSubmission.getResults()[0].getToken(),
       maxRetries,
       retryDelay,
     );
@@ -51,14 +49,14 @@ export class SubmissionCreatedEventHandler
 
     const evaluationResult = evaluator.evaluate(result);
 
-    const submissionResult = foundSubmission.getSubmissionResults()[0];
+    const submissionResult = foundSubmission.getResults()[0];
 
     submissionResult.setStdout(evaluationResult.stdout);
     submissionResult.setStatus(evaluationResult.status);
 
-    foundSubmission.setSubmissionResults([submissionResult]);
+    foundSubmission.setResults([submissionResult]);
 
-    await this.submissionRepository.updateSubmissionResult(submissionResult);
+    await this.submissionRepository.updateResult(submissionResult);
 
     this.logger.log(
       `Execution result: ${JSON.stringify(result)}, updatedSubmission: ${foundSubmission}`,

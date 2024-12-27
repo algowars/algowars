@@ -1,10 +1,10 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { FindProblemBySlugQuery } from './find-problem-by-slug.query';
-import { Inject, NotFoundException } from '@nestjs/common';
-import { ProblemErrorMessage } from 'src/problem/domain/problem-error-message';
-import { ProblemInjectionToken } from '../../injection-token';
 import { FindProblemBySlugResult } from './find-problem-by-slug-result';
+import { Inject, NotFoundException } from '@nestjs/common';
+import { ProblemInjectionToken } from '../../injection-token';
 import { ProblemQuery } from '../problem-query';
+import { FindProblemBySlugQuery } from './find-problem-by-slug.query';
+import { ProblemErrorMessage } from 'src/problem/domain/problem-error-message';
 
 @QueryHandler(FindProblemBySlugQuery)
 export class FindProblemBySlugHandler
@@ -16,15 +16,30 @@ export class FindProblemBySlugHandler
   async execute(
     query: FindProblemBySlugQuery,
   ): Promise<FindProblemBySlugResult> {
-    const data = await this.problemQuery.findBySlug(
-      query.slug,
-      query.languageId,
-    );
+    const problem = await this.problemQuery.findBySlug(query.slug);
 
-    if (!data) {
+    if (!problem) {
       throw new NotFoundException(ProblemErrorMessage.PROBLEM_NOT_FOUND);
     }
 
-    return data;
+    const setup = await this.problemQuery.findSetup(
+      problem.getId().toString(),
+      query.languageId,
+    );
+
+    if (!setup) {
+      throw new NotFoundException(ProblemErrorMessage.SETUP_NOT_FOUND);
+    }
+
+    return {
+      id: problem.getId().toString(),
+      title: problem.getTitle(),
+      slug: problem.getSlug(),
+      initialCode: setup.getInitialCode(),
+      question: problem.getQuestion(),
+      createdAt: problem.getCreatedAt(),
+      updatedAt: problem.getUpdatedAt(),
+      createdBy: problem.getCreatedBy()?.getUsername().toString() ?? '',
+    };
   }
 }

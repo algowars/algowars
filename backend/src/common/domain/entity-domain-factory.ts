@@ -1,5 +1,3 @@
-export interface EntityDomainFactory<IDomain, IEntity> {
+export interface EntityDomainFactory<IDomain> {
   create(options: any): IDomain;
-  createFromEntity(entity: IEntity): IDomain;
-  createEntityFromDomain(domain: IDomain): IEntity;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CodeExecutionContext } from 'lib/code-execution/code-execution-context';
-import { CodeExecutionEngine } from 'lib/code-execution/code-execution-engines';
+import { CodeExecutionEngines } from 'lib/code-execution/code-execution-engines';
 import {
   CodeExecutionRequest,
   CodeExecutionRequestImplementation,
@@ -52,8 +52,8 @@ export class JavaScriptJudge0CodeExecutionContext
     }
   }
 
-  getEngine(): CodeExecutionEngine {
-    return CodeExecutionEngine.JUDGE0;
+  getEngine(): CodeExecutionEngines {
+    return CodeExecutionEngines.JUDGE0;
   }
 
   async execute(request: CodeExecutionRequest): Promise<CodeExecutionResponse> {

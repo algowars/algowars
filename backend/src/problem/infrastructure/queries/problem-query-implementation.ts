@@ -1,147 +1,125 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { readConnection } from 'lib/database.module';
+import { Injectable } from '@nestjs/common';
+import { Knex } from 'knex';
+import { DatabaseInjectionToken } from 'lib/database.module';
+import { InjectConnection } from 'nest-knexjs';
+import { Aliases } from 'src/db/aliases';
 import { ProblemQuery } from 'src/problem/application/queries/problem-query';
+import { Problem, ProblemImplementation } from 'src/problem/domain/problem';
 import { ProblemEntity } from '../entities/problem.entity';
-import { FindProblemBySlugResult } from 'src/problem/application/queries/find-problem-by-slug-query/find-problem-by-slug-result';
-import { PageResult } from 'src/common/pagination/page-result';
-import { GetProblemsPageableResult } from 'src/problem/application/queries/get-problems-pageable-query/get-problems-pageable-result';
-import { Pagination } from 'src/common/pagination/pagination';
-import { Account } from 'src/account/domain/account';
-import { GetProblemSolutionsResult } from 'src/problem/application/queries/get-problem-solutions-query/get-problem-solutions.result';
-import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
-import { SubmissionResultFactory } from 'src/submission/domain/submission-result-factory';
+import { IdImplementation } from 'src/common/domain/id';
+import {
+  PageResult,
+  PageResultImplementation,
+} from 'src/common/pagination/page-result';
+import {
+  ProblemSetup,
+  ProblemSetupImplementation,
+} from 'src/problem/domain/problem-setup';
+import { ProblemSetupEntity } from '../entities/problem-setup.entity';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
-  @Inject() private readonly submissionResultFactory: SubmissionResultFactory;
+  constructor(
+    @InjectConnection(DatabaseInjectionToken.READ_CONNECTION)
+    private readonly knexConnection: Knex,
+  ) {}
 
-  async findBySlug(
-    slug: string,
-    languageId?: number,
-  ): Promise<FindProblemBySlugResult | null> {
-    const query = readConnection
-      .getRepository(ProblemEntity)
-      .createQueryBuilder('problem')
-      .leftJoinAndSelect('problem.createdBy', 'createdBy')
-      .andWhere('problem.slug = :slug', { slug });
+  async findBySlug(slug: string, select = '*'): Promise<Problem | null> {
+    const entity = await this.knexConnection(Aliases.PROBLEMS)
+      .select<ProblemEntity>(`problems.${select}`, 'accounts.username')
+      .join('accounts', 'problems.created_by_id', 'accounts.id')
+      .where({ slug })
+      .first();
 
-    if (languageId) {
-      query.leftJoinAndSelect('problem.setups', 'setup');
-      query.andWhere('setup.languageId = :languageId', { languageId });
+    if (!entity) {
+      return null;
     }
 
-    const result = await query.getOne();
-
-    let setup = null;
-
-    if (languageId) {
-      const setups = await result.setups;
-
-      setup = setups.find((setup) => setup.languageId === languageId);
-    }
-
-    return {
-      id: result.id,
-      title: result.title,
-      slug: result.slug,
-      question: result.question,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
-      deletedAt: result.deletedAt,
-      initialCode: setup ? setup.initialCode : '',
-      createdBy: result.createdBy?.username,
-    };
+    return new ProblemImplementation({
+      id: new IdImplementation(entity.id),
+      title: entity.title,
+      question: entity.question,
+      slug: entity.slug,
+      status: entity.status,
+      createdAt: entity.created_at,
+      updatedAt: entity.updated_at,
+      deletedAt: entity.deleted_at,
+      version: entity.version,
+    });
   }
 
   async getPageable(
     page: number,
     size: number,
     timestamp: Date,
-  ): Promise<PageResult<GetProblemsPageableResult>> {
-    const pageResult = await Pagination.paginate<GetProblemsPageableResult>(
-      ProblemEntity,
-      {
-        page,
-        size,
-        timestamp,
-        resultsTransformer: (results: ProblemEntity[]) => {
-          return results.map((problemEntity) => {
-            const createdBy = problemEntity?.createdBy;
+  ): Promise<PageResult<Problem>> {
+    const offset = (page - 1) * size;
 
-            const result: GetProblemsPageableResult = {
-              id: problemEntity.id,
-              slug: problemEntity.slug,
-              title: problemEntity.title,
-              createdAt: problemEntity.createdAt,
-            };
+    const query = this.knexConnection(Aliases.PROBLEMS)
+      .select<ProblemEntity[]>('*')
+      .where('created_at', '<', timestamp)
+      .orderBy('created_at', 'desc')
+      .offset(offset)
+      .limit(size);
 
-            if (createdBy) {
-              result['createdBy'] = {
-                username: problemEntity?.createdBy.username,
-              };
-            }
-            return result;
-          });
-        },
-        relations: ['createdBy'],
-      },
+    const [results, total] = await Promise.all([
+      query,
+      this.knexConnection(Aliases.PROBLEMS)
+        .where('created_at', '<', timestamp)
+        .count<{ count: number }>({ count: '*' })
+        .first(),
+    ]);
+
+    const totalRecords = total?.count ?? 0;
+    const totalPages = Math.ceil(totalRecords / size);
+
+    const formattedResults = results.map(
+      (entity) =>
+        new ProblemImplementation({
+          id: new IdImplementation(entity.id),
+          title: entity.title,
+          question: entity.question,
+          slug: entity.slug,
+          status: entity.status,
+          createdAt: entity.created_at,
+          updatedAt: entity.updated_at,
+          deletedAt: entity.deleted_at,
+          version: entity.version,
+        }),
     );
 
-    return pageResult;
+    return new PageResultImplementation<Problem>(
+      formattedResults,
+      page,
+      size,
+      totalPages,
+    );
   }
 
-  async findBySlugWithSolutions(
-    slug: string,
-    account: Account,
-  ): Promise<GetProblemSolutionsResult | null> {
-    const problem = await readConnection
-      .getRepository(ProblemEntity)
-      .createQueryBuilder('problem')
-      .leftJoinAndSelect('problem.createdBy', 'createdBy')
-      .where('problem.slug = :slug', { slug })
-      .getOne();
+  async findSetup(
+    problemId: string,
+    languageId: number,
+    select = '*',
+  ): Promise<ProblemSetup | null> {
+    const entity = await this.knexConnection<ProblemSetupEntity>(
+      Aliases.PROBLEM_SETUPS,
+    )
+      .select(select)
+      .where('problem_id', problemId)
+      .andWhere('language_id', languageId)
+      .first();
 
-    if (!problem) {
+    if (!entity) {
       return null;
     }
 
-    const submissions = await readConnection
-      .getRepository(SubmissionEntity)
-      .createQueryBuilder('submission')
-      .leftJoinAndSelect('submission.language', 'language')
-      .leftJoinAndSelect('submission.results', 'results')
-      .where('submission.problemId = :problemId', { problemId: problem.id })
-      .andWhere('submission.createdById = :accountId', {
-        accountId: account.getId().toString(),
-      })
-      .getMany();
-
-    const submissionResults = submissions.map((submission) => ({
-      id: submission.id,
-      sourceCode: submission.sourceCode,
-      language: submission.language
-        ? {
-            id: submission.language.id,
-            name: submission.language.name,
-          }
-        : null,
-      statuses: submission.results?.map((result) => result.status) || [],
-      createdAt: submission.createdAt,
-    }));
-
-    console.log(submissionResults);
-
-    return {
-      problem: {
-        id: problem.id,
-        title: problem.title,
-        slug: problem.slug,
-        question: problem.question,
-        createdAt: problem.createdAt,
-        updatedAt: problem.updatedAt,
-        createdBy: problem.createdBy?.username,
-      },
-      solutions: submissionResults,
-    };
+    return new ProblemSetupImplementation({
+      id: new IdImplementation(entity.id),
+      initialCode: entity.initial_code,
+      createdAt: entity.created_at,
+      updatedAt: entity.updated_at,
+      deletedAt: entity.deleted_at,
+      version: entity.version,
+    });
   }
 }

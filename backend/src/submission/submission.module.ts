@@ -1,34 +1,44 @@
+import { HttpModule } from '@nestjs/axios';
 import { Logger, Module, Provider } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
+import { CodeExecutionModule } from 'lib/code-execution/code-execution.module';
 import { SubmissionController } from './interface/submission.controller';
 import { SubmissionCommandHandlers } from './application/commands';
-import { SubmissionFactory } from './domain/submission-factory';
-import { CqrsModule } from '@nestjs/cqrs';
-import { SubmissionRepositoryImplementation } from './infrastructure/repositories/submission-repository-implementation';
-import { ProblemModule } from 'src/problem/problem.module';
-import { HttpModule } from '@nestjs/axios';
-import { SubmissionEventHandlers } from './application/events';
-import { SubmissionResultFactory } from './domain/submission-result-factory';
-import { AccountModule } from 'src/account/account.module';
 import { SubmissionInjectionToken } from './application/injection-token';
-import { ProblemFactory } from 'src/problem/domain/problem-factory';
-import { CodeExecutionModule } from 'lib/code-execution/code-execution.module';
+import { SubmissionFactory } from './domain/submission-factory';
+import { SubmissionRepositoryImplementation } from './infrastructure/repositories/submission-repository-implementation';
+import { ProblemInjectionToken } from 'src/problem/application/injection-token';
+import { ProblemRepositoryImplementation } from 'src/problem/infrastructure/repositories/problem-repository-implementation';
+import { ProblemSetupRepositoryImplementation } from 'src/problem/infrastructure/repositories/problem-setup-repository-implementation';
+import { AccountModule } from 'src/account/account.module';
+import { SubmissionEventHandlers } from './application/events';
 
 export const infrastructure: Provider[] = [
   {
     provide: SubmissionInjectionToken.SUBMISSION_REPOSITORY,
     useClass: SubmissionRepositoryImplementation,
   },
+  {
+    provide: ProblemInjectionToken.PROBLEM_REPOSITORY,
+    useClass: ProblemRepositoryImplementation,
+  },
+  {
+    provide: ProblemInjectionToken.PROBLEM_SETUP_REPOSITORY,
+    useClass: ProblemSetupRepositoryImplementation,
+  },
 ];
 
-const application = [...SubmissionCommandHandlers, ...SubmissionEventHandlers];
+export const application = [
+  ...SubmissionCommandHandlers,
+  ...SubmissionEventHandlers,
+];
 
-const domain = [SubmissionFactory, SubmissionResultFactory, ProblemFactory];
+export const domain = [SubmissionFactory];
 
 @Module({
   imports: [
     CqrsModule,
     CodeExecutionModule,
-    ProblemModule,
     AccountModule,
     HttpModule.register({
       timeout: 5000,

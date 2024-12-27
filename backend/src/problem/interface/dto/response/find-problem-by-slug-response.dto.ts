@@ -1,6 +1,4 @@
-import { FindProblemBySlugResult } from 'src/problem/application/queries/find-problem-by-slug-query/find-problem-by-slug-result';
-
-export class FindProblemBySlugResponseDto extends FindProblemBySlugResult {
+export class FindProblemBySlugResponseDto {
   readonly id: string;
 
   readonly title: string;

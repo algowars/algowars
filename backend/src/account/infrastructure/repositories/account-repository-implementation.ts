@@ -1,16 +1,20 @@
-import { Inject } from '@nestjs/common';
-import { EntityId, writeConnection } from 'lib/database.module';
-import { Account, AccountProperties } from 'src/account/domain/account';
+import { DatabaseInjectionToken, EntityId } from 'lib/database.module';
+import { Account, AccountImplementation } from 'src/account/domain/account';
 import { AccountFactory } from 'src/account/domain/account-factory';
 import { AccountRepository } from 'src/account/domain/account-repository';
 import { AccountEntity } from '../entities/account.entity';
 import { Id, IdImplementation } from 'src/common/domain/id';
-import { Username } from 'src/account/domain/username';
-import { UserSub } from 'src/account/domain/user-sub';
-import { FindOptionsWhere } from 'typeorm';
+import { Username, UsernameImplementation } from 'src/account/domain/username';
+import { UserSub, UserSubImplementation } from 'src/account/domain/user-sub';
+import { InjectConnection } from 'nest-knexjs';
+import { Knex } from 'knex';
+import { Aliases } from 'src/db/aliases';
 
 export class AccountRepositoryImplementation implements AccountRepository {
-  @Inject() private readonly accountFactory: AccountFactory;
+  constructor(
+    @InjectConnection(DatabaseInjectionToken.WRITE_CONNECTION)
+    private readonly knexConnection: Knex,
+  ) {}
 
   async newId(): Promise<Id> {
     return new IdImplementation(new EntityId().toString());
@@ -18,55 +22,70 @@ export class AccountRepositoryImplementation implements AccountRepository {
 
   async save(data: Account | Account[]): Promise<void> {
     const models = Array.isArray(data) ? data : [data];
-    const entities = models.map((model) => this.modelToEntity(model));
-    await writeConnection.manager.getRepository(AccountEntity).save(entities);
-  }
-
-  async findBy(
-    findOptions: FindOptionsWhere<AccountEntity>,
-  ): Promise<Account | null> {
-    const entity = await writeConnection.manager
-      .getRepository(AccountEntity)
-      .findOneBy(findOptions);
-
-    return entity ? this.entityToModel(entity) : null;
-  }
-
-  async findById(id: Id): Promise<Account | null> {
-    const entity = await writeConnection.manager
-      .getRepository(AccountEntity)
-      .findOneBy({ id: id.toString() });
-    return entity ? this.entityToModel(entity) : null;
-  }
-
-  async findByUsername(username: Username): Promise<Account | null> {
-    const entity = await writeConnection.manager
-      .getRepository(AccountEntity)
-      .findOneBy({ username: username.toString() });
-
-    return entity ? this.entityToModel(entity) : null;
-  }
-
-  async findBySub(sub: UserSub): Promise<Account | null> {
-    const entity = await writeConnection.manager
-      .getRepository(AccountEntity)
-      .findOneBy({ sub: sub.toString() });
-
-    return entity ? this.entityToModel(entity) : null;
-  }
-
-  private modelToEntity(model: Account): AccountEntity {
-    const properties = JSON.parse(JSON.stringify(model)) as AccountProperties;
-
-    return {
-      ...properties,
+    const entities: AccountEntity[] = models.map((model) => ({
       id: model.getId().toString(),
-      userSub: model.getSub().toString(),
+      sub: model.getSub().toString(),
       username: model.getUsername().toString(),
-    } as unknown as AccountEntity;
+      deleted_at: model.getDeletedAt() ?? null,
+      created_at: model.getCreatedAt(),
+      updated_at: model.getUpdatedAt(),
+      version: model.getVersion(),
+    }));
+
+    await this.knexConnection(Aliases.ACCOUNTS).insert(entities);
   }
 
-  private entityToModel(entity: AccountEntity): Account {
-    return this.accountFactory.createFromEntity(entity);
+  async findById(id: Id, select = '*'): Promise<Account | null> {
+    const entity = await this.knexConnection(Aliases.ACCOUNTS)
+      .select<AccountEntity>(select)
+      .where({ id: id.toString() })
+      .first();
+
+    if (!entity) {
+      return null;
+    }
+
+    return this.entityToModel(entity);
+  }
+
+  async findByUsername(
+    username: Username,
+    select = '*',
+  ): Promise<Account | null> {
+    const entity = await this.knexConnection(Aliases.ACCOUNTS)
+      .select<AccountEntity>(select)
+      .where({ username })
+      .first();
+
+    if (!entity) {
+      return null;
+    }
+
+    return this.entityToModel(entity);
+  }
+
+  async findBySub(sub: UserSub, select = '*'): Promise<Account | null> {
+    const entity = await this.knexConnection(Aliases.ACCOUNTS)
+      .select<AccountEntity>(select)
+      .where({ sub })
+      .first();
+
+    if (!entity) {
+      return null;
+    }
+
+    return this.entityToModel(entity);
+  }
+
+  private entityToModel(account: AccountEntity): Account {
+    return new AccountImplementation({
+      id: new IdImplementation(account.id),
+      sub: new UserSubImplementation(account.sub),
+      username: new UsernameImplementation(account.username),
+      createdAt: account.created_at,
+      updatedAt: account.updated_at,
+      deletedAt: account.deleted_at,
+      version: account.version,
+    });
   }
 }

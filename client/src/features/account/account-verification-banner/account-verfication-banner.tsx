@@ -4,14 +4,21 @@ import { Link } from "@/components/ui/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { routerConfig } from "@/app/router";
 
 const AccountVerficiationBanner = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const { isLoading, isAuthenticated, status } = useAccountStore();
+  const navigate = useNavigate();
   const { isLoading: isAuthLoading, isAuthenticated: isAuthAuthenticated } =
     useAuth0();
 
-  console.log(isLoading, isAuthenticated, status);
+  const redirectToAccountSetup = () => {
+    setIsOpen(false);
+    navigate(routerConfig.accountSetup.path);
+  };
+
   if (
     isLoading ||
     isAuthLoading ||
@@ -34,9 +41,13 @@ const AccountVerficiationBanner = () => {
       <span className="ml-auto">
         Your account is not finished being setup. To finish setting up your
         account{" "}
-        <Link to="app/account/setup" className="underline underline-offset-3">
+        <Button
+          variant="link"
+          className="text-background px-1"
+          onClick={redirectToAccountSetup}
+        >
           Click Here
-        </Link>
+        </Button>
       </span>
 
       <Button

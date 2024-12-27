@@ -1,20 +1,22 @@
-import { Inject } from '@nestjs/common';
-import { EntityId, readConnection, writeConnection } from 'lib/database.module';
-import { Problem } from 'src/problem/domain/problem';
-import { ProblemFactory } from 'src/problem/domain/problem-factory';
+import { Knex } from 'knex';
+import { DatabaseInjectionToken, EntityId } from 'lib/database.module';
+import { InjectConnection } from 'nest-knexjs';
+import { Aliases } from 'src/db/aliases';
+import { Problem, ProblemImplementation } from 'src/problem/domain/problem';
 import { ProblemRepository } from 'src/problem/domain/problem-repository';
 import { ProblemEntity } from '../entities/problem.entity';
-import { ProblemSetup } from 'src/problem/domain/problem-setup';
-import { ProblemSetupEntity } from '../entities/problem-setup.entity';
-import { Test } from 'src/problem/domain/test';
-import { TestEntity } from '../entities/test.entity';
-import { AdditionalTestFileEntity } from '../entities/additional-test-file.entity';
+import { IdImplementation } from 'src/common/domain/id';
 import { AccountEntity } from 'src/account/infrastructure/entities/account.entity';
+import { AccountImplementation } from 'src/account/domain/account';
+import { UsernameImplementation } from 'src/account/domain/username';
 import { Submission } from 'src/submission/domain/submission';
-import { SubmissionEntity } from 'src/submission/infrastructure/entities/submission.entity';
+import { ProblemSetup } from 'src/problem/domain/problem-setup';
 
 export class ProblemRepositoryImplementation implements ProblemRepository {
-  @Inject() private readonly problemFactory: ProblemFactory;
+  constructor(
+    @InjectConnection(DatabaseInjectionToken.WRITE_CONNECTION)
+    private readonly knexConnection: Knex,
+  ) {}
 
   async newId(): Promise<string> {
     return new EntityId().toString();
@@ -22,80 +24,131 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
 
   async save(data: Problem | Problem[]): Promise<void> {
     const models = Array.isArray(data) ? data : [data];
-    const entities = models.map((model) => this.modelToEntity(model));
+    const entities = models.map((model) => ({}));
 
-    await writeConnection.manager.getRepository(ProblemEntity).save(entities);
+    await this.knexConnection(Aliases.PROBLEMS).insert(entities);
   }
 
-  async findById(id: string): Promise<Problem | null> {
-    const entity = await readConnection
-      .getRepository(ProblemEntity)
-      .findOneBy({ id });
-    return entity ? this.entityToModel(entity) : null;
+  async saveAggregate(
+    problem: Problem,
+    problemSetup: ProblemSetup,
+    submission: Submission,
+  ): Promise<void> {
+    await this.knexConnection.transaction(async (trx) => {
+      const problemEntity = {
+        id: problem.getId().getValue(),
+        title: problem.getTitle(),
+        question: problem.getQuestion(),
+        slug: problem.getSlug(),
+        status: problem.getStatus(),
+        created_by_id: problem.getCreatedBy().getId().getValue(),
+      };
+
+      await trx(Aliases.PROBLEMS).insert(problemEntity);
+
+      const submissionEntity = {
+        id: submission.getId().getValue(),
+        source_code: submission.getSourceCode(),
+        language_id: submission.getLanguage().getId().getValue(),
+        created_by_id: submission.getCreatedBy().getId().getValue(),
+        problem_id: problem.getId().getValue(),
+        code_execution_context: submission.getCodeExecutionEngine(),
+      };
+
+      await trx(Aliases.SUBMISSIONS).insert(submissionEntity);
+
+      const problemSetupEntity = {
+        problem_id: problemSetup.getProblem().getId().getValue(),
+        language_id: problemSetup.getLanguage().getId().getValue(),
+        initial_code: problemSetup.getInitialCode(),
+        solution_id: submission.getId().getValue(),
+      };
+
+      await trx(Aliases.PROBLEM_SETUPS).insert(problemSetupEntity);
+
+      const tests = problemSetup.getTests().map((test) => ({
+        id: new EntityId().toString(),
+        code: test.getCode(),
+        problem_id: problem.getId().getValue(),
+        language_id: problemSetup.getLanguage().getId().getValue(),
+        additional_test_file_id:
+          test.getAdditionalTestFile()?.getId().getValue() ?? null,
+      }));
+
+      if (tests.length > 0) {
+        await trx(Aliases.TESTS).insert(tests);
+      }
+
+      const submissionResults = submission.getResults().map((result) => ({
+        token: result.getToken(),
+        source_code: result.getSourceCode(),
+        language_id: result.getLanguageId(),
+        stdin: result.getStdin(),
+        stdout: result.getStdout(),
+        time: result.getTime(),
+        memory: result.getMemory(),
+        stderr: result.getStderr(),
+        expected_output: result.getExpectedOutput(),
+        message: result.getMessage(),
+        submission_id: submission.getId().getValue(),
+        status: result.getStatus(),
+      }));
+
+      if (submissionResults.length > 0) {
+        await trx(Aliases.SUBMISSION_RESULTS).insert(submissionResults);
+      }
+    });
   }
 
-  async findBySlug(slug: string): Promise<Problem | null> {
-    const entity = await readConnection
-      .getRepository(ProblemEntity)
-      .findOneBy({ slug });
-    return entity ? this.entityToModel(entity) : null;
+  async findById(id: string, select = '*'): Promise<Problem | null> {
+    const entity = await this.knexConnection(Aliases.PROBLEMS)
+      .select<ProblemEntity>(select)
+      .where({ id })
+      .first();
+
+    if (!entity) {
+      return null;
+    }
+
+    const account = await this.knexConnection(Aliases.ACCOUNTS)
+      .select<AccountEntity>('username')
+      .where({ id: entity.created_by_id })
+      .first();
+
+    return this.entityToModel(entity, account);
   }
 
-  private modelToEntity(model: Problem): ProblemEntity {
-    const problem = new ProblemEntity();
-    problem.id = model.getId().toString();
+  async findBySlug(slug: string, select = '*'): Promise<Problem | null> {
+    const entity = await this.knexConnection(Aliases.PROBLEMS)
+      .select<ProblemEntity>(select)
+      .where({ slug })
+      .first();
 
-    const createdBy = new AccountEntity();
-    createdBy.id = model.getCreatedBy().getId().toString();
+    if (!entity) {
+      return null;
+    }
 
-    problem.createdBy = createdBy;
-    problem.title = model.getTitle();
-    problem.question = model.getQuestion();
-    problem.slug = model.getSlug();
-    problem.setups = Promise.resolve(
-      model.getSetups().map((setup) => this.setupModelToEntity(setup)),
-    );
-    problem.status = model.getStatus();
+    const account = await this.knexConnection(Aliases.ACCOUNTS)
+      .select<AccountEntity>('username')
+      .where({ id: entity.created_by_id })
+      .first();
 
-    return problem;
+    return this.entityToModel(entity, account);
   }
 
-  private setupModelToEntity(model: ProblemSetup): ProblemSetupEntity {
-    const setup = new ProblemSetupEntity();
-    setup.problemId = model.getProblemId().toString();
-    setup.languageId = model.getLanguageId().toNumber();
-    setup.initialCode = model.getInitialCode();
-    setup.tests = model.getTests().map((test) => this.testModelToEntity(test));
-    setup.solution = this.solutionToEntity(model.getSolution());
-
-    return setup;
-  }
-
-  private solutionToEntity(model: Submission): SubmissionEntity {
-    const solution = new SubmissionEntity();
-    solution.id = model.getId().toString();
-    return solution;
-  }
-
-  private testModelToEntity(model: Test): TestEntity {
-    const test = new TestEntity();
-    test.id = model.getId().toString();
-    test.code = model.getCode();
-
-    const additionalTestFile = new AdditionalTestFileEntity();
-    additionalTestFile.id = model.getAdditionalTestFile().getId().toString();
-    additionalTestFile.fileName = model.getAdditionalTestFile().getFileName();
-    additionalTestFile.name = model.getAdditionalTestFile().getName();
-    additionalTestFile.initialTestFile = model
-      .getAdditionalTestFile()
-      .getInitialTestFile();
-
-    test.additionalTestFile = additionalTestFile;
-
-    return test;
-  }
-
-  private entityToModel(entity: ProblemEntity): Problem {
-    return this.problemFactory.createFromEntity(entity);
+  private entityToModel(
+    problem: ProblemEntity,
+    createdBy: AccountEntity,
+  ): Problem {
+    return new ProblemImplementation({
+      id: new IdImplementation(problem.id),
+      title: problem.title,
+      question: problem.question,
+      slug: problem.slug,
+      status: problem.status,
+      createdBy: new AccountImplementation({
+        username: new UsernameImplementation(createdBy.username),
+      }),
+    });
   }
 }

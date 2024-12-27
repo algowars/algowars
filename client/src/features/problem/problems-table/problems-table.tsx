@@ -55,6 +55,7 @@ export const ProblemsTable = () => {
                 onClick={() =>
                   navigate(routerConfig.problem.execute(problem.slug))
                 }
+                className="hover:cursor-pointer"
               >
                 <TableCell>{problem.title}</TableCell>
               </TableRow>

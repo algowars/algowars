@@ -1,3 +1,4 @@
+import { routerConfig } from "@/app/router";
 import { Container } from "@/components/container";
 import { Layout } from "@/components/layouts/layout/layout";
 import { PageLoader } from "@/components/loader/page-loader/page-loader";
@@ -24,7 +25,7 @@ export const AdminRoute = () => {
           <Card className="w-full p-5 flex flex-col gap-5">
             <h1 className="text-3xl font-bold">Admin Panel</h1>
             <Link
-              to="/app/admin/create-problem"
+              to={routerConfig.adminCreateProblem.path}
               className={cn(buttonVariants({ variant: "default" }), "w-fit")}
             >
               Create Problem

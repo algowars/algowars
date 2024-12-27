@@ -1,8 +1,0 @@
-import { BaseEntity } from 'src/common/entities/base-entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
-@Entity('{{name}}')
-export class {{properCase name}}Entity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-}
