@@ -8,8 +8,8 @@ export interface LanguageProperties extends BaseDomainProperties {
   name: string;
   isArchived: boolean;
   isAvailable: boolean;
-  initialCode: string;
-  initialSolution: string;
+  initialCode?: string;
+  initialSolution?: string;
 }
 
 export interface Language extends BaseDomain {

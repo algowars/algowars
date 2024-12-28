@@ -9,7 +9,7 @@ import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
 
-export const ProblemSolutions = () => {
+export const ProblemSolutionsRoute = () => {
   const { isAuthenticated: isAuthAuthenticated, getAccessTokenSilently } =
     useAuth0();
   const { isAuthenticated } = useAccountStore();

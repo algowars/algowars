@@ -8,4 +8,9 @@ export interface Submission {
   language: Language;
   results: SubmissionResult[];
   statuses?: SubmissionStatus[];
+  status?: SubmissionStatus;
+  createdBy?: {
+    username: string;
+  };
+  createdAt: Date;
 }

@@ -27,6 +27,8 @@ import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard'
 import { CreateProblemRequest } from './dto/request/create-problem.dto';
 import { CreateProblemCommand } from '../application/commands/create-problem/create-problem.command';
 import { Request } from 'express';
+import { GetProblemSolutionsQuery } from '../application/queries/get-problem-solutions-query/get-problem-solutions.query';
+import { GetProblemSolutionsResult } from '../application/queries/get-problem-solutions-query/get-problem-solutions-result';
 
 @Controller('v1/problem')
 export class ProblemController {
@@ -51,6 +53,19 @@ export class ProblemController {
   ): Promise<FindProblemBySlugResponseDto> {
     return this.queryBus.execute(
       new FindProblemBySlugQuery(param.slug, query.languageId),
+    );
+  }
+
+  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
+  @Get('find/slug/:slug/solutions')
+  async getProblemSolutions(
+    @Param() param: FindProblemBySlugRequestParam,
+    @Req() request: Request,
+  ): Promise<GetProblemSolutionsResult> {
+    const account = request?.account;
+
+    return this.queryBus.execute(
+      new GetProblemSolutionsQuery(param.slug, account),
     );
   }
 
