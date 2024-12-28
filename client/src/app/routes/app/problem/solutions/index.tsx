@@ -7,15 +7,33 @@ import { ProblemSolutionsContainer } from "@/features/problem/solutions/problem-
 import { useAuth0 } from "@auth0/auth0-react";
 import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export const ProblemSolutionsRoute = () => {
-  const { isAuthenticated: isAuthAuthenticated, getAccessTokenSilently } =
-    useAuth0();
-  const { isAuthenticated } = useAccountStore();
+  const {
+    isAuthenticated: isAuthAuthenticated,
+    isLoading: isAuthLoading,
+    getAccessTokenSilently,
+  } = useAuth0();
+  const { isAuthenticated, isLoading } = useAccountStore();
   const [accessToken, setAccessToken] = useState<string>("");
+  const navigate = useNavigate();
 
   const { slug } = useParams();
+
+  const problemSolutionsQueryResult = useGetProblemSolutionsBySlug({
+    slug: slug ?? "",
+    accessToken,
+  });
+
+  useEffect(() => {
+    if (problemSolutionsQueryResult.error) {
+      toast.error(
+        `Error getting solutions: "${problemSolutionsQueryResult.error}"`
+      );
+    }
+  }, [problemSolutionsQueryResult.error]);
 
   useEffect(() => {
     if (isAuthenticated && isAuthAuthenticated) {
@@ -23,12 +41,7 @@ export const ProblemSolutionsRoute = () => {
         setAccessToken((await getAccessTokenSilently()) ?? "");
       })();
     }
-  }, [isAuthAuthenticated, isAuthAuthenticated, getAccessTokenSilently]);
-
-  const problemSolutionsQueryResult = useGetProblemSolutionsBySlug({
-    slug: slug ?? "",
-    accessToken,
-  });
+  }, [isAuthAuthenticated, isAuthenticated, getAccessTokenSilently]);
 
   if (!slug || !problemSolutionsQueryResult.data) {
     return null;
