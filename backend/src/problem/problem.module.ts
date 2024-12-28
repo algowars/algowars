@@ -14,7 +14,6 @@ import { SubmissionInjectionToken } from 'src/submission/application/injection-t
 import { SubmissionRepositoryImplementation } from 'src/submission/infrastructure/repositories/submission-repository-implementation';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
 import { AccountModule } from 'src/account/account.module';
-import { SubmissionQueryImplementation } from 'src/submission/infrastructure/queries/submission-query-implementation';
 
 const infrastructure: Provider[] = [
   {
@@ -40,10 +39,6 @@ const infrastructure: Provider[] = [
   {
     provide: SubmissionInjectionToken.SUBMISSION_REPOSITORY,
     useClass: SubmissionRepositoryImplementation,
-  },
-  {
-    provide: SubmissionInjectionToken.SUBMISSION_QUERY,
-    useClass: SubmissionQueryImplementation,
   },
 ];
 

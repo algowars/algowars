@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseInjectionToken } from 'lib/database.module';
 import { AccountQuery } from 'src/account/application/queries/account-query';
+import { FindAccountBySubResult } from 'src/account/application/queries/find-account-by-sub-query/find-account-by-sub-result';
 import { AccountEntity } from '../entities/account.entity';
 import { Knex } from 'knex';
 import { InjectConnection } from 'nest-knexjs';

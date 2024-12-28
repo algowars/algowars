@@ -4,6 +4,7 @@ import { ConflictException, Inject } from '@nestjs/common';
 import { AccountInjectionToken } from '../../injection-token';
 import { AccountRepository } from 'src/account/domain/account-repository';
 import { AccountFactory } from 'src/account/domain/account-factory';
+import { Id } from 'src/common/domain/id';
 import { Account } from 'src/account/domain/account';
 import { Username } from 'src/account/domain/username';
 

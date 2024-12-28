@@ -16,8 +16,6 @@ import {
   ProblemSetupImplementation,
 } from 'src/problem/domain/problem-setup';
 import { ProblemSetupEntity } from '../entities/problem-setup.entity';
-import { AccountImplementation } from 'src/account/domain/account';
-import { UsernameImplementation } from 'src/account/domain/username';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
@@ -28,7 +26,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
 
   async findBySlug(slug: string, select = '*'): Promise<Problem | null> {
     const entity = await this.knexConnection(Aliases.PROBLEMS)
-      .select(`problems.${select}`, 'accounts.username')
+      .select<ProblemEntity>(`problems.${select}`, 'accounts.username')
       .join('accounts', 'problems.created_by_id', 'accounts.id')
       .where({ slug })
       .first();
@@ -47,9 +45,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
       updatedAt: entity.updated_at,
       deletedAt: entity.deleted_at,
       version: entity.version,
-      createdBy: new AccountImplementation({
-        username: new UsernameImplementation(entity.username),
-      }),
     });
   }
 
