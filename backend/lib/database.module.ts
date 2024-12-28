@@ -25,6 +25,7 @@ export class EntityId extends String {
       {
         useFactory: (configService: ConfigService) => {
           console.log(
+            'IN HERE',
             configService.get('NODE_ENV'),
             config[configService.get('NODE_ENV')] ?? config.development,
           );
