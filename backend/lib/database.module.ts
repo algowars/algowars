@@ -24,7 +24,7 @@ export class EntityId extends String {
     KnexModule.forRootAsync(
       {
         useFactory: (configService: ConfigService) => ({
-          config: config[configService.get('NODE_ENV')],
+          config: config[configService.get('NODE_ENV')] ?? config.development,
         }),
         inject: [ConfigService],
       },
@@ -33,7 +33,7 @@ export class EntityId extends String {
     KnexModule.forRootAsync(
       {
         useFactory: (configService: ConfigService) => ({
-          config: config[configService.get('NODE_ENV')],
+          config: config[configService.get('NODE_ENV')] ?? config.development,
         }),
         inject: [ConfigService],
       },
