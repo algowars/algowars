@@ -1,7 +1,8 @@
-import { ComponentType } from "react";
+import { ComponentType, useEffect } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { useAuthPermissions } from "../permissions/use-auth-permissions";
 import { PageLoader } from "@/components/loader/page-loader/page-loader";
+import { useNavigate } from "react-router-dom";
 
 export type PermissionProtectedRouteProps = {
   component: ComponentType<object>;

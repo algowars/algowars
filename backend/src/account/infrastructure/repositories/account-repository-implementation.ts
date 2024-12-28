@@ -1,5 +1,6 @@
 import { DatabaseInjectionToken, EntityId } from 'lib/database.module';
 import { Account, AccountImplementation } from 'src/account/domain/account';
+import { AccountFactory } from 'src/account/domain/account-factory';
 import { AccountRepository } from 'src/account/domain/account-repository';
 import { AccountEntity } from '../entities/account.entity';
 import { Id, IdImplementation } from 'src/common/domain/id';

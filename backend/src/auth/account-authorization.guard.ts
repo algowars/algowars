@@ -4,9 +4,11 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 import { UnauthorizedError } from 'express-oauth2-jwt-bearer';
 import { AccountInjectionToken } from 'src/account/application/injection-token';
 import { AccountQuery } from 'src/account/application/queries/account-query';
+import { FindAccountBySubQuery } from 'src/account/application/queries/find-account-by-sub-query/find-account-by-sub.query';
 
 @Injectable()
 export class AccountAuthorizationGuard implements CanActivate {
