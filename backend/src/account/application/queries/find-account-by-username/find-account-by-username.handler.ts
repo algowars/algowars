@@ -5,7 +5,6 @@ import { Inject, NotFoundException } from '@nestjs/common';
 import { AccountInjectionToken } from '../../injection-token';
 import { AccountQuery } from '../account-query';
 import { AccountErrorMessage } from 'src/account/domain/account-error-message';
-import { UsernameImplementation } from 'src/account/domain/username';
 
 @QueryHandler(FindAccountByUsernameQuery)
 export class FindAccountByUsernameHandler

@@ -7,18 +7,14 @@ import { ProblemSolutionsContainer } from "@/features/problem/solutions/problem-
 import { useAuth0 } from "@auth0/auth0-react";
 import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const ProblemSolutionsRoute = () => {
-  const {
-    isAuthenticated: isAuthAuthenticated,
-    isLoading: isAuthLoading,
-    getAccessTokenSilently,
-  } = useAuth0();
-  const { isAuthenticated, isLoading } = useAccountStore();
+  const { isAuthenticated: isAuthAuthenticated, getAccessTokenSilently } =
+    useAuth0();
+  const { isAuthenticated } = useAccountStore();
   const [accessToken, setAccessToken] = useState<string>("");
-  const navigate = useNavigate();
 
   const { slug } = useParams();
 

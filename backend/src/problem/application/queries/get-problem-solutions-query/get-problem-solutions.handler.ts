@@ -30,8 +30,6 @@ export class GetProblemSolutionsHandler
       problem.getId(),
     );
 
-    console.log(submissions);
-
     return {
       problem: {
         title: problem.getTitle(),

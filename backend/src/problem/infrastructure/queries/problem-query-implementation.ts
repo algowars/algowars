@@ -37,8 +37,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
       return null;
     }
 
-    console.log('ENTITY: ', entity);
-
     return new ProblemImplementation({
       id: new IdImplementation(entity.id),
       title: entity.title,

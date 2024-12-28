@@ -132,7 +132,7 @@ export class SubmissionRepositoryImplementation
     const submissionResults: SubmissionResultEntity[] = [];
 
     for (const submission of models) {
-      let results = submission.getResults();
+      const results = submission.getResults();
 
       for (const result of results) {
         submissionResults.push({
