@@ -23,9 +23,15 @@ export class EntityId extends String {
     }),
     KnexModule.forRootAsync(
       {
-        useFactory: (configService: ConfigService) => ({
-          config: config[configService.get('NODE_ENV')] ?? config.development,
-        }),
+        useFactory: (configService: ConfigService) => {
+          console.log(
+            configService.get('NODE_ENV'),
+            config[configService.get('NODE_ENV')] ?? config.development,
+          );
+          return {
+            config: config[configService.get('NODE_ENV')] ?? config.development,
+          };
+        },
         inject: [ConfigService],
       },
       DatabaseInjectionToken.READ_CONNECTION,
