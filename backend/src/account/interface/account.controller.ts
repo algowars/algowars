@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { OpenAccountCommand } from '../application/commands/open-account/open-account.command';
-import { Id } from 'src/common/domain/id';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { Request } from 'express';
 import { FindAccountBySubQuery } from '../application/queries/find-account-by-sub-query/find-account-by-sub.query';
