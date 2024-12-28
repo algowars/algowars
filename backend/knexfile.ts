@@ -20,6 +20,10 @@ const config = {
       password: DATABASE_PASSWORD,
       host: DATABASE_HOST,
       port: DATABASE_PORT,
+      ssl: { rejectUnauthorized: false },
+      extra: {
+        useIPv6: false,
+      },
     },
     migrations: {
       directory: path.resolve(__dirname, 'src', 'db', 'migrations'),
