@@ -61,3 +61,8 @@ dist-ssr
 
 .env
 /backend/.env
+
+# Supabase
+.branches
+.temp
+.env
