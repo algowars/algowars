@@ -8,8 +8,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
-export const ProblemSolutions = () => {
+export const ProblemSolutionsRoute = () => {
   const { isAuthenticated: isAuthAuthenticated, getAccessTokenSilently } =
     useAuth0();
   const { isAuthenticated } = useAccountStore();
@@ -17,18 +18,26 @@ export const ProblemSolutions = () => {
 
   const { slug } = useParams();
 
+  const problemSolutionsQueryResult = useGetProblemSolutionsBySlug({
+    slug: slug ?? "",
+    accessToken,
+  });
+
+  useEffect(() => {
+    if (problemSolutionsQueryResult.error) {
+      toast.error(
+        `Error getting solutions: "${problemSolutionsQueryResult.error}"`
+      );
+    }
+  }, [problemSolutionsQueryResult.error]);
+
   useEffect(() => {
     if (isAuthenticated && isAuthAuthenticated) {
       (async () => {
         setAccessToken((await getAccessTokenSilently()) ?? "");
       })();
     }
-  }, [isAuthAuthenticated, isAuthAuthenticated, getAccessTokenSilently]);
-
-  const problemSolutionsQueryResult = useGetProblemSolutionsBySlug({
-    slug: slug ?? "",
-    accessToken,
-  });
+  }, [isAuthAuthenticated, isAuthenticated, getAccessTokenSilently]);
 
   if (!slug || !problemSolutionsQueryResult.data) {
     return null;

@@ -24,7 +24,7 @@ export class ProblemRepositoryImplementation implements ProblemRepository {
 
   async save(data: Problem | Problem[]): Promise<void> {
     const models = Array.isArray(data) ? data : [data];
-    const entities = models.map((model) => ({}));
+    const entities = models.map(() => ({}));
 
     await this.knexConnection(Aliases.PROBLEMS).insert(entities);
   }

@@ -42,7 +42,7 @@ export const getProblemSolutionsBySlugQueryOptions = (
 type UseGetProblemSolutionsBySlugOptions = {
   slug: string;
   accessToken: string;
-  queryConfig?: QueryConfig<typeof getProblemSolutionsBySlug>;
+  queryConfig?: QueryConfig<typeof getProblemSolutionsBySlugQueryOptions>;
 };
 
 export const useGetProblemSolutionsBySlug = ({

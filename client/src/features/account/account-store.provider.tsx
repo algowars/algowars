@@ -91,7 +91,7 @@ export const AccountStoreProvider = ({
   }, [isAuthAuthenticated, isAuthLoading]);
   const error = findAccountBySubMutation?.error as AxiosError;
 
-  const account = store?.getState().account;
+  // const account = store?.getState().account;
   const value = {
     store,
     isLoading,
