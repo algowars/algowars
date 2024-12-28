@@ -63,7 +63,6 @@
     "plop": "^4.0.1",
     "prettier": "^3.0.0",
     "source-map-support": "^0.5.21",
-    "supabase": "^2.1.1",
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",
