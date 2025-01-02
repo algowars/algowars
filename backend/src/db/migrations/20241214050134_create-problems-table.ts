@@ -1,5 +1,5 @@
 import type { Knex } from 'knex';
-import { ProblemStatus } from 'src/problem/domain/problem-status';
+import { ProblemStatus } from '../../problem/domain/problem-status';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('problems', (table) => {
