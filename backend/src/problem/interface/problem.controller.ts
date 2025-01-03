@@ -54,6 +54,9 @@ export class ProblemController {
     );
   }
 
+  @Get("find/slug/:slug/solutions")
+  async getProblemSolutionsBySlug(): Promise<
+
   @UseGuards(PermissionsGuard([ProblemPermissions.CREATE_PROBLEM]))
   @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
   @Get('create/setup')

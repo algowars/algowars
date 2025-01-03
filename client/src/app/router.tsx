@@ -118,6 +118,20 @@ export const createAppRouter = () => {
         };
       },
     },
+    {
+      path: routerConfig.problemSolutions.path,
+      lazy: async () => {
+        const { ProblemSolutionsRoute } = await import(
+          "./routes/app/problem/solutions"
+        );
+
+        return {
+          Component: (props: object) => (
+            <ProtectedRoute component={ProblemSolutionsRoute} {...props} />
+          ),
+        };
+      },
+    },
   ]);
 };
 
