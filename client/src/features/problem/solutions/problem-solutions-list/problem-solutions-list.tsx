@@ -24,11 +24,17 @@ const ProblemSolutionsList = ({ solutions }: ProblemSolutionsListProps) => {
       {solutions.map((solution) => (
         <li key={solution.id}>
           <Card className="p-5">
-            {solution?.statuses?.length ? (
-              <h4 className="mb-2">
-                <SubmissionStatusView status={solution.statuses[0]} />
-              </h4>
-            ) : null}
+            <div className="mb-2 flex">
+              {solution?.status?.length ? (
+                <h4>
+                  <SubmissionStatusView status={solution.status} />
+                </h4>
+              ) : null}
+              <p className="text-muted-foreground font-semibold ml-auto">
+                CreatedBy: {solution.createdBy}
+              </p>
+            </div>
+
             <div className="overflow-hidden rounded-lg">
               <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
                 {solution.sourceCode}

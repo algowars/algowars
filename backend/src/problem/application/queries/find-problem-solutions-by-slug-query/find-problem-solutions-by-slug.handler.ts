@@ -29,14 +29,22 @@ export class FindProblemSolutionsBySlugHandler
     const submissions = await this.problemQuery.getSolutions(problem.getId());
 
     return {
-      id: problem.getId().toString(),
-      title: problem.getTitle(),
-      slug: problem.getSlug(),
-      question: problem.getQuestion(),
-      createdAt: problem.getCreatedAt(),
-      createdBy: problem.getCreatedBy()?.getUsername().toString() ?? '',
+      problem: {
+        id: problem.getId().toString(),
+        title: problem.getTitle(),
+        slug: problem.getSlug(),
+        question: problem.getQuestion(),
+        createdAt: problem.getCreatedAt(),
+        createdBy: problem.getCreatedBy()?.getUsername().toString() ?? '',
+      },
       submissions: submissions?.map((submission) => ({
-        solution: submission.getSourceCode(),
+        sourceCode: submission.getSourceCode(),
+        language: submission.getLanguage()
+          ? {
+              id: submission.getLanguage().getId().toNumber(),
+              name: submission.getLanguage().getName(),
+            }
+          : null,
         createdBy: submission.getCreatedBy()?.getUsername().toString() ?? '',
         createdAt: submission.getCreatedAt(),
         status: submission.getAggregateStatus(),

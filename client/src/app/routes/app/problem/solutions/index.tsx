@@ -54,7 +54,7 @@ export const ProblemSolutionsRoute = () => {
             <Container className="py-5">
               <ProblemSolutionsContainer
                 problem={problemSolutionsQueryResult.data.problem}
-                solutions={problemSolutionsQueryResult.data.solutions ?? []}
+                solutions={problemSolutionsQueryResult.data.submissions ?? []}
               />
             </Container>
           </Layout>

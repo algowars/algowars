@@ -13,7 +13,7 @@ export const getProblemSolutionsBySlug = ({
   accessToken: string;
 }): Promise<{
   problem: Problem;
-  solutions: Submission[];
+  submissions: Submission[];
 } | null> => {
   if (!accessToken) {
     return Promise.resolve(null);
