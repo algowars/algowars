@@ -17,7 +17,7 @@ export interface SubmissionProperties extends BaseDomainProperties {
   createdBy: Account;
   language: Language;
   results: SubmissionResult[];
-  status: SubmissionStatus;
+  status?: SubmissionStatus;
   problem?: Problem;
 }
 
@@ -28,6 +28,7 @@ export interface Submission extends BaseDomainAggregateRoot {
   getLanguage(): Language;
   getProblem(): Problem;
   getResults(): SubmissionResult[];
+  getAggregateStatus(): SubmissionStatus;
   setResult(index: number, result: SubmissionResult): void;
   setResults(newResults: SubmissionResult[]): void;
   create(): void;
@@ -88,5 +89,35 @@ export class SubmissionImplementation
 
   setResults(results: SubmissionResult[]): void {
     this.results = results;
+  }
+
+  getAggregateStatus(): SubmissionStatus {
+    const statusPrecedence: SubmissionStatus[] = [
+      SubmissionStatus.INTERNAL_ERROR,
+      SubmissionStatus.POLLING_ERROR,
+      SubmissionStatus.EXEC_FORMAT_ERROR,
+      SubmissionStatus.RUNTIME_ERROR,
+      SubmissionStatus.COMPILATION_ERROR,
+      SubmissionStatus.TIME_LIMIT_EXCEEDED,
+      SubmissionStatus.WRONG_ANSWER,
+      SubmissionStatus.PROCESSING,
+      SubmissionStatus.IN_QUEUE,
+      SubmissionStatus.POLLING,
+      SubmissionStatus.ACCEPTED,
+    ];
+
+    let worstStatus: SubmissionStatus = SubmissionStatus.ACCEPTED;
+
+    for (const result of this.results) {
+      const resultStatus = result.getStatus();
+      if (
+        statusPrecedence.indexOf(resultStatus) <
+        statusPrecedence.indexOf(worstStatus)
+      ) {
+        worstStatus = resultStatus;
+      }
+    }
+
+    return worstStatus;
   }
 }

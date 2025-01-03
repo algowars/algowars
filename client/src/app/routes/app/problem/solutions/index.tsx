@@ -9,7 +9,7 @@ import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
 
-export const ProblemSolutions = () => {
+export const ProblemSolutionsRoute = () => {
   const { isAuthenticated: isAuthAuthenticated, getAccessTokenSilently } =
     useAuth0();
   const { isAuthenticated } = useAccountStore();
@@ -23,7 +23,7 @@ export const ProblemSolutions = () => {
         setAccessToken((await getAccessTokenSilently()) ?? "");
       })();
     }
-  }, [isAuthAuthenticated, isAuthAuthenticated, getAccessTokenSilently]);
+  }, [isAuthAuthenticated, getAccessTokenSilently, isAuthenticated]);
 
   const problemSolutionsQueryResult = useGetProblemSolutionsBySlug({
     slug: slug ?? "",
@@ -54,7 +54,7 @@ export const ProblemSolutions = () => {
             <Container className="py-5">
               <ProblemSolutionsContainer
                 problem={problemSolutionsQueryResult.data.problem}
-                solutions={problemSolutionsQueryResult.data.solutions ?? []}
+                solutions={problemSolutionsQueryResult.data.submissions ?? []}
               />
             </Container>
           </Layout>

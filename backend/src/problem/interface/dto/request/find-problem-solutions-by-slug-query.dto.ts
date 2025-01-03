@@ -1,1 +1,1 @@
-export class FindProblemSolutionsBySlugQuery {}
+export class FindProblemSolutionsBySlugQueryDto {}

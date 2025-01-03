@@ -7,5 +7,6 @@ export interface Submission {
   sourceCode: string;
   language: Language;
   results: SubmissionResult[];
-  statuses?: SubmissionStatus[];
+  status?: SubmissionStatus;
+  createdBy?: string;
 }
