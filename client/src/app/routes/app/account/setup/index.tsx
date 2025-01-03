@@ -6,6 +6,7 @@ import { PageLoader } from "@/components/loader/page-loader/page-loader";
 import { AccountSetupForm } from "@/features/account/account-setup-form/account-setup-form";
 import { useAccountStore } from "@/features/account/account-store.provider";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const AccountSetupRoute = () => {
@@ -15,14 +16,22 @@ export const AccountSetupRoute = () => {
   const navigate = useNavigate();
   useAuthPermissions();
 
+  useEffect(() => {
+    if (!isAuthLoading && isAuthAuthenticated) {
+      if (!isLoading && isAuthenticated) {
+        navigate(routerConfig.appRoot.path);
+      }
+    }
+  }, [
+    isAuthAuthenticated,
+    isAuthLoading,
+    isAuthenticated,
+    isLoading,
+    navigate,
+  ]);
+
   if (isAuthLoading || isLoading) {
     return <PageLoader />;
-  }
-
-  if (!isAuthLoading && isAuthAuthenticated) {
-    if (!isLoading && isAuthenticated) {
-      navigate(routerConfig.appRoot.path);
-    }
   }
 
   return (
