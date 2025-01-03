@@ -23,7 +23,7 @@ export const ProblemSolutionsRoute = () => {
         setAccessToken((await getAccessTokenSilently()) ?? "");
       })();
     }
-  }, [isAuthAuthenticated, isAuthAuthenticated, getAccessTokenSilently]);
+  }, [isAuthAuthenticated, getAccessTokenSilently, isAuthenticated]);
 
   const problemSolutionsQueryResult = useGetProblemSolutionsBySlug({
     slug: slug ?? "",

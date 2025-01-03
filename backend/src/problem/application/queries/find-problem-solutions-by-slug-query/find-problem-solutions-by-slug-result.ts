@@ -1,4 +1,5 @@
 import { IQueryResult } from '@nestjs/cqrs';
+import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 export class FindProblemSolutionsBySlugResult implements IQueryResult {
   readonly id: string;
@@ -7,9 +8,10 @@ export class FindProblemSolutionsBySlugResult implements IQueryResult {
   readonly question: string;
   readonly createdAt: Date;
   readonly createdBy: string;
-  readonly solutions: {
+  readonly submissions: {
     solution: string;
     createdBy: string;
     createdAt: Date;
+    status: SubmissionStatus;
   }[];
 }

@@ -1,6 +1,8 @@
+import { Id } from 'src/common/domain/id';
 import { PageResult } from 'src/common/pagination/page-result';
 import { Problem } from 'src/problem/domain/problem';
 import { ProblemSetup } from 'src/problem/domain/problem-setup';
+import { Submission } from 'src/submission/domain/submission';
 
 export interface ProblemQuery {
   findBySlug(slug: string, select?: string): Promise<Problem | null>;
@@ -10,6 +12,8 @@ export interface ProblemQuery {
     size: number,
     timestamp: Date,
   ): Promise<PageResult<Problem>>;
+
+  getSolutions(problemId: Id): Promise<Submission[]>;
 
   findSetup(
     problemId: string,
