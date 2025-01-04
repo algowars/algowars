@@ -81,7 +81,7 @@ export class Judge0CodeExecutionService implements CodeExecutionService {
         description: string;
       };
       time?: string;
-      memory?: string;
+      memory?: number;
     }>(config);
     return new CodeExecutionResponseImplementation({
       token: data.token,
@@ -99,7 +99,7 @@ export class Judge0CodeExecutionService implements CodeExecutionService {
   }
 
   private decode(bytes: string): string {
-    let escaped = escape(atob(bytes));
+    const escaped = escape(atob(bytes));
     try {
       return decodeURIComponent(escaped);
     } catch {

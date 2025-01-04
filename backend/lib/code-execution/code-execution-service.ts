@@ -61,7 +61,7 @@ export interface CodeExecutionResponse {
     description: string;
   };
   getTime(): string | undefined;
-  getMemory(): string | undefined;
+  getMemory(): number | undefined;
 }
 
 export class CodeExecutionResponseImplementation
@@ -76,7 +76,7 @@ export class CodeExecutionResponseImplementation
     description: string;
   };
   private readonly time?: string;
-  private readonly memory?: string;
+  private readonly memory?: number;
 
   constructor(properties: {
     token: string;
@@ -88,7 +88,7 @@ export class CodeExecutionResponseImplementation
       description: string;
     };
     time?: string;
-    memory?: string;
+    memory?: number;
   }) {
     Object.assign(this, properties);
   }
@@ -105,7 +105,7 @@ export class CodeExecutionResponseImplementation
     return this.compileOut;
   }
 
-  getMemory(): string | undefined {
+  getMemory(): number | undefined {
     return this.memory;
   }
 

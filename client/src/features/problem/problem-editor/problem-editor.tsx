@@ -12,7 +12,7 @@ import { useCreateSubmission } from "@/features/submission/api/create-submission
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { ProblemEditorResult } from "./problem-editor-result/problem-editor-result";
 
 type ProblemEditorProps = {
   problem: Problem | undefined;
@@ -21,14 +21,16 @@ type ProblemEditorProps = {
 export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const { getAccessTokenSilently } = useAuth0();
   const [code, setCode] = useState<string>("");
-  const navigate = useNavigate();
+  const [submissionId, setSubmissionId] = useState<string>("");
   const createSubmissionMutation = useCreateSubmission({
     mutationConfig: {
       onMutate: () => {
         toast.loading("Submitting your code...");
       },
-      onSuccess: () => {
-        navigate("solutions");
+      onSuccess: (data: string) => {
+        if (data) {
+          setSubmissionId(data);
+        }
       },
       onError: (error: unknown) => {
         toast.dismiss();
@@ -83,7 +85,10 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
           <ResizableHandle className="p-2 bg-inherit hover:bg-muted" />
           <ResizablePanel defaultSize={45} minSize={10}>
             <ResizablePanelGroup direction="vertical">
-              <ResizablePanel defaultSize={100} minSize={15}>
+              <ResizablePanel
+                defaultSize={submissionId ? 60 : 100}
+                minSize={15}
+              >
                 <Card className="h-full bg-zinc-900 overflow-auto">
                   <div className="p-2 border-b bg-background">
                     <h4 className="font-semibold">Description</h4>
@@ -100,21 +105,25 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                   </div>
                 </Card>
               </ResizablePanel>
-              {/* <ResizableHandle className="p-3 bg-inherit hover:bg-muted" /> */}
-              <ResizablePanel defaultSize={0}>
+              {submissionId ? (
+                <ResizableHandle className="p-3 bg-inherit hover:bg-muted" />
+              ) : null}
+              <ResizablePanel
+                defaultSize={submissionId ? 40 : 0}
+                minSize={submissionId ? 40 : 0}
+              >
                 <Card className="h-full">
-                  <div className="p-5 border-b">
-                    <h2 className="text-2xl font-semibold">{problem.title}</h2>
-                    <ProblemEditorCreatedBy createdBy={problem.createdBy} />
-                  </div>
-                  <div className="p-5">{problem.question}</div>
+                  <ProblemEditorResult submissionId={submissionId} />
                 </Card>
               </ResizablePanel>
             </ResizablePanelGroup>
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
-      <ProblemEditorFooter onSubmit={createSubmission} />
+      <ProblemEditorFooter
+        onSubmit={createSubmission}
+        createSubmissionMutation={createSubmissionMutation}
+      />
     </>
   );
 };

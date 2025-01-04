@@ -1,5 +1,4 @@
 import { AxiosRequestConfig } from "axios";
-import { Submission } from "../models/submission.model";
 import { api } from "@/lib/api-client";
 import { MutationConfig } from "@/lib/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,7 +13,7 @@ export const createSubmission = ({
     languageId?: number;
   };
   accessToken: string;
-}): Promise<Submission> => {
+}): Promise<string> => {
   data["languageId"] = 93;
   const config: AxiosRequestConfig = {
     url: "/api/v1/submission",

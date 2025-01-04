@@ -12,6 +12,7 @@ import { ProblemRepositoryImplementation } from 'src/problem/infrastructure/repo
 import { ProblemSetupRepositoryImplementation } from 'src/problem/infrastructure/repositories/problem-setup-repository-implementation';
 import { AccountModule } from 'src/account/account.module';
 import { SubmissionEventHandlers } from './application/events';
+import { SubmissionGateway } from './interface/submission.gateway';
 
 export const infrastructure: Provider[] = [
   {
@@ -46,7 +47,13 @@ export const domain = [SubmissionFactory];
     }),
   ],
   controllers: [SubmissionController],
-  providers: [Logger, ...infrastructure, ...application, ...domain],
+  providers: [
+    Logger,
+    SubmissionGateway,
+    ...infrastructure,
+    ...application,
+    ...domain,
+  ],
   exports: [...infrastructure, ...domain],
 })
 export class SubmissionModule {}
