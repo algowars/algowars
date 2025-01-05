@@ -39,6 +39,9 @@ export const LandingNavbar = ({ isAuthenticated }: LandingNavbarProps) => {
           ) : (
             <>
               <li>
+                <Link to={routerConfig.dashboard.path}>Home</Link>
+              </li>
+              <li>
                 <LoginButton variant="outline" className="w-24" />
               </li>
               <li>

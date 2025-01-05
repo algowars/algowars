@@ -15,9 +15,10 @@ import { FindAccountBySubQuery } from '../application/queries/find-account-by-su
 import { OpenAccountRequest } from './dto/request/open-account-request.dto';
 import { FindAccountByUsername } from './dto/request/find-account-by-username.dto';
 import { FindAccountBySubResponseDto } from './dto/response/find-account-by-sub-response.dto';
-import { FindAccountByUsernameQuery } from '../application/queries/find-account-by-username/find-account-by-username.query';
-import { FindAccountByUsernameResult } from '../application/queries/find-account-by-username/find-account-by-username-result';
 import { Account } from '../domain/account';
+import { FindProfileInformationResult } from '../application/queries/find-profile-information-query/find-profile-information-result';
+import { FindProfileInformationQuery } from '../application/queries/find-profile-information-query/find-profile-information.query';
+import { UsernameImplementation } from '../domain/username';
 
 @Controller('v1/account')
 export class AccountController {
@@ -49,12 +50,14 @@ export class AccountController {
     };
   }
 
-  @Get('find/username/:username')
-  async findAccountByUsername(
+  @Get('find/username/:username/profile')
+  async getProfileInformation(
     @Param() param: FindAccountByUsername,
-  ): Promise<FindAccountByUsernameResult> {
+  ): Promise<FindProfileInformationResult> {
     return this.queryBus.execute(
-      new FindAccountByUsernameQuery(param.username),
+      new FindProfileInformationQuery(
+        new UsernameImplementation(param.username),
+      ),
     );
   }
 

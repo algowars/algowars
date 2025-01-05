@@ -1,7 +1,7 @@
 import { Spinner } from "@/components/ui/spinner";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Outlet } from "react-router-dom";
+import { ProfileBioRoute } from "./bio";
 
 export const ProfileRoute = () => {
   return (
@@ -17,7 +17,7 @@ export const ProfileRoute = () => {
           key={location.pathname}
           fallback={<div>Something went wrong!</div>}
         >
-          <Outlet />
+          <ProfileBioRoute />
         </ErrorBoundary>
       </Suspense>
     </div>

@@ -6,8 +6,8 @@ import {
 
 export interface LanguageProperties extends BaseDomainProperties {
   name: string;
-  isArchived: boolean;
-  isAvailable: boolean;
+  isArchived?: boolean;
+  isAvailable?: boolean;
   initialCode?: string;
   initialSolution?: string;
 }
