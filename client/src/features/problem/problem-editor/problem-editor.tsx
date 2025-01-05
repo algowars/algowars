@@ -15,6 +15,8 @@ import { toast } from "sonner";
 import { io, Socket } from "socket.io-client";
 import { ProblemEditorResult } from "./problem-editor-result/problem-editor-result";
 import { env } from "@/config/env";
+import { LoginButton } from "@/components/auth/login-button";
+import { SignupButton } from "@/components/auth/signup-button";
 
 type ProblemEditorProps = {
   problem: Problem | undefined;
@@ -33,6 +35,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const { getAccessTokenSilently } = useAuth0();
   const [code, setCode] = useState<string>("");
   const [submissionId, setSubmissionId] = useState<string>("");
+  const { isAuthenticated } = useAuth0();
   const [submissionUpdate, setSubmissionUpdate] =
     useState<SubmissionUpdate | null>(null);
 
@@ -159,6 +162,23 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                   />
                 </Card>
               </ResizablePanel>
+              {!isAuthenticated ? (
+                <ResizablePanel defaultSize={20} minSize={20} className="mt-4">
+                  <Card className="bg-zinc-900 p-5 h-full flex flex-col gap-5 overflow-auto">
+                    <p className="text-semibold">
+                      You need to log in or setup your account to submit code
+                    </p>
+                    <ul className="flex gap-5 items-center">
+                      <li>
+                        <LoginButton variant="default" className="w-28" />
+                      </li>
+                      <li>
+                        <SignupButton variant="secondary" className="w-28" />
+                      </li>
+                    </ul>
+                  </Card>
+                </ResizablePanel>
+              ) : null}
             </ResizablePanelGroup>
           </ResizablePanel>
         </ResizablePanelGroup>

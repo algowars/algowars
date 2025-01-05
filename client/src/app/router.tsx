@@ -15,6 +15,9 @@ export const routerConfig = {
   appRoot: {
     path: "/",
   },
+  dashboard: {
+    path: "/dashboard",
+  },
   accountSetup: {
     path: "/account/setup",
   },
@@ -50,6 +53,13 @@ export const createAppRouter = () => {
     },
     {
       path: routerConfig.appRoot.path,
+      lazy: async () => {
+        const { DashboardRoute } = await import("./routes/app/dashboard");
+        return { Component: DashboardRoute };
+      },
+    },
+    {
+      path: routerConfig.dashboard.path,
       lazy: async () => {
         const { DashboardRoute } = await import("./routes/app/dashboard");
         return { Component: DashboardRoute };
