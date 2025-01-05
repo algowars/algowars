@@ -13,7 +13,7 @@ import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { WsExceptionFilter } from 'src/ws-exception.filter';
 import { SubmissionStatus } from '../domain/submission-status';
 import { FindSubmissionByIdQuery } from '../application/queries/find-submission-by-id/find-submission-by-id.query';
-import { Submission, SubmissionImplementation } from '../domain/submission';
+import { Submission } from '../domain/submission';
 
 @UseFilters(WsExceptionFilter)
 @WebSocketGateway({
@@ -50,7 +50,6 @@ export class SubmissionGateway
 
     const pollSubmission = async () => {
       try {
-        // Fetch the submission using the CQRS query
         const submission: Submission = await this.queryBus.execute(
           new FindSubmissionByIdQuery(submissionId),
         );
@@ -63,16 +62,13 @@ export class SubmissionGateway
           return;
         }
 
-        // Get the aggregate status
         const aggregateStatus = submission.getAggregateStatus();
 
-        // Get stdout for all results
         const stdouts = submission
           .getResults()
           .map((result) => result.getStdout())
           .filter((stdout) => stdout !== null); // Filter out null values
 
-        // Emit the current status and stdout(s) to the client
         socket.emit('submissionUpdate', {
           status: aggregateStatus,
           stdout: stdouts,
@@ -92,7 +88,6 @@ export class SubmissionGateway
           return;
         }
 
-        // Continue polling after a delay
         setTimeout(pollSubmission, 2000); // Poll every 2 seconds
       } catch (error) {
         this.logger.error(
@@ -105,7 +100,6 @@ export class SubmissionGateway
       }
     };
 
-    // Start polling
     pollSubmission();
   }
 

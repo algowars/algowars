@@ -14,12 +14,9 @@ export class FindSubmissionByIdHandler
   private readonly submissionQuery: SubmissionQuery;
 
   async execute(query: FindSubmissionByIdQuery): Promise<Submission> {
-    console.log('QUERY: ', query);
     const foundSubmission = await this.submissionQuery.findById(
       new IdImplementation(query.id),
     );
-
-    console.log('FOUND SUBMISSION: ', foundSubmission);
 
     if (!foundSubmission) {
       throw new NotFoundException('Submission not found.');

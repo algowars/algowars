@@ -15,7 +15,7 @@ export const ProblemEditorResult = ({
   }
 
   return (
-    <div className="p-5">
+    <div className="p-5 bg-zinc-900">
       {submissionUpdate ? (
         <div>
           <h3 className="text-xl font-semibold mb-3">

@@ -146,13 +146,13 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                 </Card>
               </ResizablePanel>
               {submissionId ? (
-                <ResizableHandle className="p-3 bg-inherit hover:bg-muted" />
+                <ResizableHandle className="p-2 bg-inherit hover:bg-muted" />
               ) : null}
               <ResizablePanel
                 defaultSize={submissionId ? 40 : 0}
                 minSize={submissionId ? 40 : 0}
               >
-                <Card className="h-full overflow-auto">
+                <Card className="h-full overflow-auto bg-zinc-900">
                   <ProblemEditorResult
                     submissionId={submissionId}
                     submissionUpdate={submissionUpdate}
