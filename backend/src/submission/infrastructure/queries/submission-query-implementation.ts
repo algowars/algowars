@@ -123,6 +123,7 @@ export class SubmissionQueryImplementation implements SubmissionQuery {
         's.code_execution_context',
         's.problem_id',
         's.created_by_id',
+        's.created_at',
         'p.title as problem_title',
         'p.slug as problem_slug',
         'sr.token as result_token',
@@ -171,6 +172,7 @@ export class SubmissionQueryImplementation implements SubmissionQuery {
                 })
               : undefined,
             results: [],
+            createdAt: row.created_at,
           }),
           results: [],
         });

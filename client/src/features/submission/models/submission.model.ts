@@ -9,4 +9,5 @@ export interface Submission {
   results: SubmissionResult[];
   status?: SubmissionStatus;
   createdBy?: string;
+  createdAt: Date;
 }
