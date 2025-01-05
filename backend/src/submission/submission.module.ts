@@ -13,6 +13,8 @@ import { ProblemSetupRepositoryImplementation } from 'src/problem/infrastructure
 import { AccountModule } from 'src/account/account.module';
 import { SubmissionEventHandlers } from './application/events';
 import { SubmissionGateway } from './interface/submission.gateway';
+import { SubmissionQueryHandlers } from './application/queries';
+import { SubmissionQueryImplementation } from './infrastructure/queries/submission-query-implementation';
 
 export const infrastructure: Provider[] = [
   {
@@ -27,10 +29,15 @@ export const infrastructure: Provider[] = [
     provide: ProblemInjectionToken.PROBLEM_SETUP_REPOSITORY,
     useClass: ProblemSetupRepositoryImplementation,
   },
+  {
+    provide: SubmissionInjectionToken.SUBMISSION_QUERY,
+    useClass: SubmissionQueryImplementation,
+  },
 ];
 
 export const application = [
   ...SubmissionCommandHandlers,
+  ...SubmissionQueryHandlers,
   ...SubmissionEventHandlers,
 ];
 

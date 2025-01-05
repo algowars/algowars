@@ -1,4 +1,5 @@
 import { Logger, UseFilters, UseGuards } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -10,6 +11,9 @@ import { Server, Socket } from 'socket.io';
 import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { WsExceptionFilter } from 'src/ws-exception.filter';
+import { SubmissionStatus } from '../domain/submission-status';
+import { FindSubmissionByIdQuery } from '../application/queries/find-submission-by-id/find-submission-by-id.query';
+import { Submission, SubmissionImplementation } from '../domain/submission';
 
 @UseFilters(WsExceptionFilter)
 @WebSocketGateway({
@@ -24,6 +28,8 @@ export class SubmissionGateway
   @WebSocketServer() server: Server;
 
   private readonly logger = new Logger('SubmissionGateway');
+
+  constructor(private readonly queryBus: QueryBus) {}
 
   async onModuleInit(): Promise<void> {
     this.logger.log('ChatGateway initialized');
@@ -41,6 +47,66 @@ export class SubmissionGateway
   @SubscribeMessage('subscribeToSubmission')
   async handleSubscribe(socket: Socket, submissionId: string): Promise<void> {
     this.logger.log(`Client subscribed to submission: "${submissionId}"`);
+
+    const pollSubmission = async () => {
+      try {
+        // Fetch the submission using the CQRS query
+        const submission: Submission = await this.queryBus.execute(
+          new FindSubmissionByIdQuery(submissionId),
+        );
+
+        if (!submission) {
+          socket.emit('submissionUpdate', {
+            status: 'Error',
+            message: `Submission with ID ${submissionId} not found.`,
+          });
+          return;
+        }
+
+        // Get the aggregate status
+        const aggregateStatus = submission.getAggregateStatus();
+
+        // Get stdout for all results
+        const stdouts = submission
+          .getResults()
+          .map((result) => result.getStdout())
+          .filter((stdout) => stdout !== null); // Filter out null values
+
+        // Emit the current status and stdout(s) to the client
+        socket.emit('submissionUpdate', {
+          status: aggregateStatus,
+          stdout: stdouts,
+        });
+
+        // Check if polling should stop
+        if (
+          [
+            SubmissionStatus.ACCEPTED,
+            SubmissionStatus.WRONG_ANSWER,
+            SubmissionStatus.COMPILATION_ERROR,
+            SubmissionStatus.INTERNAL_ERROR,
+            SubmissionStatus.RUNTIME_ERROR,
+          ].includes(aggregateStatus)
+        ) {
+          this.logger.log(`Polling stopped for submission: ${submissionId}`);
+          return;
+        }
+
+        // Continue polling after a delay
+        setTimeout(pollSubmission, 2000); // Poll every 2 seconds
+      } catch (error) {
+        this.logger.error(
+          `Error while polling submission ${submissionId}: ${error.message}`,
+        );
+        socket.emit('submissionUpdate', {
+          status: 'Error',
+          message: 'An error occurred while fetching submission status.',
+        });
+      }
+    };
+
+    // Start polling
+    pollSubmission();
   }
 
   @SubscribeMessage('submissionUpdate')

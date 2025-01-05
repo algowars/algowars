@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { SubmissionStatus } from "@/features/submission/models/submission-status";
 import { useAuth0 } from "@auth0/auth0-react";
 import { UseMutationResult } from "@tanstack/react-query";
 import { Lock } from "lucide-react";
@@ -19,11 +20,16 @@ type ProblemEditorFooterProps = {
     },
     unknown
   >;
+  submissionUpdate: {
+    status: string;
+    stdout: string[];
+  } | null;
 };
 
 export const ProblemEditorFooter = ({
   onSubmit,
   createSubmissionMutation,
+  submissionUpdate,
 }: ProblemEditorFooterProps) => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth0();
@@ -45,16 +51,15 @@ export const ProblemEditorFooter = ({
             View Solutions
           </Button>
         </li>
-        {/* <li>
-          <Button variant="secondary" className="w-28">
-            Run
-          </Button>
-        </li> */}
         <li>
           <Button
             className="w-28"
             onClick={() => onSubmit()}
-            disabled={createSubmissionMutation.isPending || !isAuthenticated}
+            disabled={
+              createSubmissionMutation.isPending ||
+              !isAuthenticated ||
+              submissionUpdate?.status === SubmissionStatus.POLLING
+            }
           >
             {!isAuthenticated ? <Lock size={16} className="mr-2" /> : null}
             {createSubmissionMutation.isPending ? "Loading" : "Submit"}

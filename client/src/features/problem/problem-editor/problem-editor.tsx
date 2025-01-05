@@ -12,16 +12,30 @@ import { useCreateSubmission } from "@/features/submission/api/create-submission
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "sonner";
+import { io, Socket } from "socket.io-client";
 import { ProblemEditorResult } from "./problem-editor-result/problem-editor-result";
+import { env } from "@/config/env";
 
 type ProblemEditorProps = {
   problem: Problem | undefined;
 };
 
+type SubmissionUpdate = {
+  status: string;
+  stdout: string[];
+};
+
+const socket: Socket = io(`${env.API_URL}/submission`, {
+  autoConnect: false,
+});
+
 export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const { getAccessTokenSilently } = useAuth0();
   const [code, setCode] = useState<string>("");
   const [submissionId, setSubmissionId] = useState<string>("");
+  const [submissionUpdate, setSubmissionUpdate] =
+    useState<SubmissionUpdate | null>(null);
+
   const createSubmissionMutation = useCreateSubmission({
     mutationConfig: {
       onMutate: () => {
@@ -44,6 +58,32 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
       setCode(problem?.initialCode);
     }
   }, [problem?.initialCode]);
+
+  useEffect(() => {
+    if (!submissionId) {
+      return;
+    }
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+
+    socket.emit("subscribeToSubmission", submissionId);
+
+    const handleSubmissionUpdate = (data: SubmissionUpdate) => {
+      setSubmissionUpdate(data);
+    };
+
+    socket.on("submissionUpdate", handleSubmissionUpdate);
+
+    return () => {
+      socket.off("submissionUpdate", handleSubmissionUpdate);
+      socket.emit("unsubscribeFromSubmission", submissionId);
+      if (socket.connected) {
+        socket.disconnect();
+      }
+    };
+  }, [submissionId]);
 
   if (!problem) {
     return null;
@@ -112,8 +152,11 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                 defaultSize={submissionId ? 40 : 0}
                 minSize={submissionId ? 40 : 0}
               >
-                <Card className="h-full">
-                  <ProblemEditorResult submissionId={submissionId} />
+                <Card className="h-full overflow-auto">
+                  <ProblemEditorResult
+                    submissionId={submissionId}
+                    submissionUpdate={submissionUpdate}
+                  />
                 </Card>
               </ResizablePanel>
             </ResizablePanelGroup>
@@ -122,6 +165,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
       </div>
       <ProblemEditorFooter
         onSubmit={createSubmission}
+        submissionUpdate={submissionUpdate}
         createSubmissionMutation={createSubmissionMutation}
       />
     </>
