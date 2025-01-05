@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAccountStore } from "@/features/account/account-store.provider";
+import { UserSubmissions } from "@/features/submission/user-submissions/user-submissions";
 
 export const ProfileBioRoute = () => {
   const { isAuthenticated: isAuthAuthenticated } = useAuth0();
@@ -34,12 +35,18 @@ export const ProfileBioRoute = () => {
 
   return (
     <Layout isAuthenticated={isAuthAuthenticated || isAuthenticated}>
-      <Container className="py-12">
-        <Card className="p-5 flex flex-col gap-5">
-          <h2>{account.username}</h2>
+      <Container className="py-6 flex flex-col gap-5">
+        <Card className="p-5 flex flex-col gap-5 bg-zinc-900 mb-5">
+          <h2 className="font-bold text-2xl">{account.username}</h2>
 
-          <p>Created on {dayjs(account.createdAt).format("DD/MM/YYYY")}</p>
+          <p className="text-muted-foreground font-semibold">
+            Created on {dayjs(account.createdAt).format("DD/MM/YYYY")}
+          </p>
         </Card>
+        <Card className="p-5 bg-zinc-900">
+          <h3 className="text-xl font-bold">Submissions</h3>
+        </Card>
+        <UserSubmissions username={account.username} />
       </Container>
     </Layout>
   );

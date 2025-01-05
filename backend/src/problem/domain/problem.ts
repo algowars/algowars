@@ -9,8 +9,8 @@ import {
 export interface ProblemProperties extends BaseDomainProperties {
   title: string;
   slug: string;
-  question: string;
-  status: ProblemStatus;
+  question?: string;
+  status?: ProblemStatus;
   createdBy?: Account;
 }
 

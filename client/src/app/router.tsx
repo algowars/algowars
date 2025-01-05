@@ -132,12 +132,23 @@ export const createAppRouter = () => {
         };
       },
     },
+    {
+      path: routerConfig.profile.path,
+      lazy: async () => {
+        const { ProfileRoute } = await import("./routes/app/profile");
+
+        return {
+          Component: ProfileRoute,
+        };
+      },
+    },
   ]);
 };
 
 export const AppRouter = () => {
   const queryClient = useQueryClient();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const router = useMemo(() => createAppRouter(), [queryClient]);
 
   return <RouterProvider router={router} />;

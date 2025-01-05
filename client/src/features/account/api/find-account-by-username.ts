@@ -10,7 +10,7 @@ export const findAccountByUsername = ({
   username: string;
 }): Promise<Account> => {
   const config: AxiosRequestConfig = {
-    url: `/api/v1/account/find/username/${encodeURIComponent(username)}`,
+    url: `/api/v1/account/find/username/${encodeURIComponent(username)}/profile`,
   };
 
   return api(config);
