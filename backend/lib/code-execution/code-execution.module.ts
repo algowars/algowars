@@ -11,6 +11,7 @@ import {
 import { CodeExecutionServiceFactory } from './code-execution-service-factory';
 import { CodeExecutionEvaluationResultFactory } from './code-execution-evaluation-result-factory';
 import { JavaScriptJudge0CodeExecutionEvaluator } from './languages/javascript/judge0/javascript-judge0-code-execution-evaluator';
+import { Judge0CodeExecutionServiceMock } from './judge0/judge0-code-execution-service-mock';
 
 const codeExecutionContextProviders: Provider[] = [
   {
@@ -43,6 +44,10 @@ const codeExecutionContextProviders: Provider[] = [
     {
       provide: Judge0CodeExecutionService,
       useFactory: (httpService: HttpService, configService: ConfigService) => {
+        if (configService.get<string>('MOCK_JUDGE0_SERVER') === 'true') {
+          return new Judge0CodeExecutionServiceMock();
+        }
+
         const judge0Config: Judge0ExecutionConfig = {
           apiKey: configService.get<string>('EVALUATOR_API_KEY'),
           url: configService.get<string>('EVALUATOR_URL'),
