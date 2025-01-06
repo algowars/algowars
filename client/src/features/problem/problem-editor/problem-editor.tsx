@@ -17,6 +17,14 @@ import { ProblemEditorResult } from "./problem-editor-result/problem-editor-resu
 import { env } from "@/config/env";
 import { LoginButton } from "@/components/auth/login-button";
 import { SignupButton } from "@/components/auth/signup-button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Tag } from "lucide-react";
+import { ProblemEditorTags } from "./problem-editor-tags/problem-editor-tags";
 
 type ProblemEditorProps = {
   problem: Problem | undefined;
@@ -132,7 +140,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                 defaultSize={submissionId ? 60 : 100}
                 minSize={15}
               >
-                <Card className="h-full bg-zinc-900 overflow-auto">
+                <Card className="h-full bg-zinc-900 overflow-auto flex flex-col">
                   <div className="p-2 border-b bg-background">
                     <h4 className="font-semibold">Description</h4>
                   </div>
@@ -146,6 +154,25 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
 
                     {problem.question}
                   </div>
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="mt-auto border-t"
+                  >
+                    <AccordionItem value="tags">
+                      <AccordionTrigger className="p-5">
+                        <span className="flex items-center gap-1">
+                          <Tag size={16} /> Tags
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <ProblemEditorTags tags={problem.tags ?? []} />
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                  <p className="text-muted-foreground p-5 text-sm">
+                    &copy; 2025 Algowars
+                  </p>
                 </Card>
               </ResizablePanel>
               {submissionId ? (

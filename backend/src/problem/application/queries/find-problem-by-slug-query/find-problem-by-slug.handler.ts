@@ -40,6 +40,10 @@ export class FindProblemBySlugHandler
       createdAt: problem.getCreatedAt(),
       updatedAt: problem.getUpdatedAt(),
       createdBy: problem.getCreatedBy()?.getUsername().toString() ?? '',
+      tags: problem.getTags()?.map((tag) => ({
+        id: tag.getId()?.toNumber(),
+        name: tag.getName(),
+      })),
     };
   }
 }

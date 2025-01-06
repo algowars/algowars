@@ -5,6 +5,7 @@ import {
   BaseDomainAggregateRootImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
+import { Tag } from './tag';
 
 export interface ProblemProperties extends BaseDomainProperties {
   title: string;
@@ -12,6 +13,7 @@ export interface ProblemProperties extends BaseDomainProperties {
   question?: string;
   status?: ProblemStatus;
   createdBy?: Account;
+  tags?: Tag[];
 }
 
 export interface Problem extends BaseDomainAggregateRoot {
@@ -20,6 +22,7 @@ export interface Problem extends BaseDomainAggregateRoot {
   getSlug(): string;
   getCreatedBy(): Account;
   getStatus(): ProblemStatus;
+  getTags(): Tag[];
 }
 
 export class ProblemImplementation
@@ -31,6 +34,7 @@ export class ProblemImplementation
   private readonly slug: string;
   private readonly createdBy?: Account;
   private readonly status: ProblemStatus;
+  private readonly tags: Tag[];
 
   constructor(properties: ProblemProperties) {
     super(properties);
@@ -55,5 +59,9 @@ export class ProblemImplementation
 
   getStatus(): ProblemStatus {
     return this.status;
+  }
+
+  getTags(): Tag[] {
+    return this.tags;
   }
 }

@@ -5,7 +5,6 @@ import { InjectConnection } from 'nest-knexjs';
 import { Aliases } from 'src/db/aliases';
 import { ProblemQuery } from 'src/problem/application/queries/problem-query';
 import { Problem, ProblemImplementation } from 'src/problem/domain/problem';
-import { ProblemEntity } from '../entities/problem.entity';
 import { Id, IdImplementation } from 'src/common/domain/id';
 import {
   PageResult,
@@ -25,6 +24,7 @@ import { AccountImplementation } from 'src/account/domain/account';
 import { UsernameImplementation } from 'src/account/domain/username';
 import { SubmissionResultImplementation } from 'src/submission/domain/submission-result';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
+import { TagImplementation } from 'src/problem/domain/tag';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
@@ -34,17 +34,34 @@ export class ProblemQueryImplementation implements ProblemQuery {
   ) {}
 
   async findBySlug(slug: string, select = '*'): Promise<Problem | null> {
-    const entity = await this.knexConnection(Aliases.PROBLEMS)
-      .select(`problems.${select}`, 'accounts.username', {
-        account_id: 'accounts.id',
-      })
+    const rawResults = await this.knexConnection(Aliases.PROBLEMS)
+      .select(
+        `problems.${select}`,
+        'accounts.username',
+        'accounts.id as account_id',
+        'tags.id as tag_id',
+        'tags.name as tag_name',
+      )
       .join('accounts', 'problems.created_by_id', 'accounts.id')
-      .where({ slug })
-      .first();
+      .leftJoin('problem_tags', 'problems.id', 'problem_tags.problem_id')
+      .leftJoin('tags', 'problem_tags.tag_id', 'tags.id')
+      .where({ slug });
 
-    if (!entity) {
+    if (!rawResults.length) {
       return null;
     }
+
+    const entity = rawResults[0];
+
+    const tags = rawResults
+      .filter((row) => row.tag_id && row.tag_name)
+      .map(
+        (row) =>
+          new TagImplementation({
+            id: new IdImplementation(row.tag_id),
+            name: row.tag_name,
+          }),
+      );
 
     let createdBy = null;
 
@@ -66,6 +83,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
       deletedAt: entity.deleted_at,
       version: entity.version,
       createdBy,
+      tags: tags,
     });
   }
 
@@ -76,26 +94,51 @@ export class ProblemQueryImplementation implements ProblemQuery {
   ): Promise<PageResult<Problem>> {
     const offset = (page - 1) * size;
 
-    const query = this.knexConnection(Aliases.PROBLEMS)
-      .select<ProblemEntity[]>('*')
-      .where('created_at', '<', timestamp)
-      .orderBy('created_at', 'desc')
+    const rawResults = await this.knexConnection(Aliases.PROBLEMS)
+      .select('problems.*', 'tags.id as tag_id', 'tags.name as tag_name')
+      .leftJoin('problem_tags', 'problems.id', 'problem_tags.problem_id')
+      .leftJoin('tags', 'problem_tags.tag_id', 'tags.id')
+      .where('problems.created_at', '<', timestamp)
+      .orderBy('problems.created_at', 'desc')
       .offset(offset)
       .limit(size);
 
-    const [results, total] = await Promise.all([
-      query,
-      this.knexConnection(Aliases.PROBLEMS)
-        .where('created_at', '<', timestamp)
-        .count<{ count: number }>({ count: '*' })
-        .first(),
-    ]);
+    if (!rawResults.length) {
+      return new PageResultImplementation<Problem>([], page, size, 0);
+    }
+
+    const total = await this.knexConnection(Aliases.PROBLEMS)
+      .where('created_at', '<', timestamp)
+      .count<{ count: number }>({ count: '*' })
+      .first();
 
     const totalRecords = total?.count ?? 0;
     const totalPages = Math.ceil(totalRecords / size);
 
-    const formattedResults = results.map(
-      (entity) =>
+    const problemsById = rawResults.reduce((acc, row) => {
+      const problemId = row.id;
+
+      if (!acc[problemId]) {
+        acc[problemId] = {
+          entity: row,
+          tags: [],
+        };
+      }
+
+      if (row.tag_id && row.tag_name) {
+        acc[problemId].tags.push(
+          new TagImplementation({
+            id: new IdImplementation(row.tag_id),
+            name: row.tag_name,
+          }),
+        );
+      }
+
+      return acc;
+    }, {});
+
+    const formattedResults = Object.values(problemsById).map(
+      ({ entity, tags }: any) =>
         new ProblemImplementation({
           id: new IdImplementation(entity.id),
           title: entity.title,
@@ -106,6 +149,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
           updatedAt: entity.updated_at,
           deletedAt: entity.deleted_at,
           version: entity.version,
+          tags,
         }),
     );
 
@@ -121,7 +165,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
     const rawResults = await this.knexConnection(Aliases.SUBMISSIONS)
       .select(
         `${Aliases.SUBMISSIONS}.id as submission_id`,
-        `${Aliases.LANGUAGES}.id as language_id`, // Include the language ID
+        `${Aliases.LANGUAGES}.id as language_id`,
         `${Aliases.LANGUAGES}.name as language_name`,
         `${Aliases.LANGUAGES}.is_available as is_language_available`,
         `${Aliases.LANGUAGES}.is_archived as is_language_archived`,
@@ -148,7 +192,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
       .where(`${Aliases.SUBMISSIONS}.problem_id`, problemId.getValue())
       .andWhere(`${Aliases.SUBMISSIONS}.deleted_at`, null);
 
-    // Group by submission_id
     const groupedResults = rawResults.reduce((acc, row) => {
       const submissionId = row.submission_id;
 
@@ -156,7 +199,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
         acc[submissionId] = {
           submissionId,
           language: {
-            id: row.language_id, // Ensure id is included
+            id: row.language_id,
             name: row.language_name,
             isAvailable: row.is_language_available,
             isArchived: row.is_language_archived,
@@ -168,7 +211,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
         };
       }
 
-      // Add result status to results array
       if (row.result_status) {
         acc[submissionId].results.push({ status: row.result_status });
       }
@@ -176,7 +218,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
       return acc;
     }, {});
 
-    // Map to Submission aggregates
     return Object.values(groupedResults).map((result: any) => {
       const language = new LanguageImplementation({
         id: new IdImplementation(result.language.id),

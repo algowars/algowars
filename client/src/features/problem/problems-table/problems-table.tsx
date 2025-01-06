@@ -46,6 +46,7 @@ export const ProblemsTable = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
+              <TableHead>Tags</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -58,6 +59,9 @@ export const ProblemsTable = () => {
                 className="hover:cursor-pointer"
               >
                 <TableCell>{problem.title}</TableCell>
+                <TableCell>
+                  {problem?.tags?.map((tag) => tag.name).join(", ")}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

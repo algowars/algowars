@@ -7,4 +7,6 @@ export enum Aliases {
   SUBMISSIONS = 'submissions',
   SUBMISSION_RESULTS = 'submission_results',
   PROBLEM_SETUPS = 'problem_setups',
+  TAGS = 'tags',
+  PROBLEM_TAGS = 'problem_tags',
 }
