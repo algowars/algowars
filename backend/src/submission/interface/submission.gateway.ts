@@ -18,9 +18,7 @@ import { Submission } from '../domain/submission';
 @UseFilters(WsExceptionFilter)
 @WebSocketGateway({
   namespace: 'submission',
-  cors: {
-    origin: '*',
-  },
+  cors: true,
 })
 export class SubmissionGateway
   implements OnGatewayConnection, OnGatewayDisconnect
