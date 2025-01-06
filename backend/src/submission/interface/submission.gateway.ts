@@ -18,7 +18,11 @@ import { Submission } from '../domain/submission';
 @UseFilters(WsExceptionFilter)
 @WebSocketGateway({
   namespace: 'submission',
-  cors: true,
+  cors: {
+    origin: ['https://algowars.netlify.app'],
+    credentials: true,
+  },
+  transports: ['websocket', 'polling'],
 })
 export class SubmissionGateway
   implements OnGatewayConnection, OnGatewayDisconnect
