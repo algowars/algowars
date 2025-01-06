@@ -46,6 +46,8 @@ async function bootstrap() {
 
   app.use(nocache());
 
+  console.log('ORIGINS: ', configService.get('CLIENT_ORIGIN_URLS').split(','));
+
   app.enableCors({
     origin: configService.get<string>('CLIENT_ORIGIN_URLS').split(','),
     methods: ['GET', 'POST', 'PUT'],
