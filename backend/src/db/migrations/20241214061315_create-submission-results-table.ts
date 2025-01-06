@@ -1,5 +1,5 @@
 import type { Knex } from 'knex';
-import { SubmissionStatus } from 'src/submission/domain/submission-status';
+import { SubmissionStatus } from '../../submission/domain/submission-status';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('submission_results', (table) => {
