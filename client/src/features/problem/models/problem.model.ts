@@ -8,4 +8,5 @@ export interface Problem {
   createdBy?: string;
   initialCode?: string;
   tags?: Tag[];
+  difficulty: number;
 }

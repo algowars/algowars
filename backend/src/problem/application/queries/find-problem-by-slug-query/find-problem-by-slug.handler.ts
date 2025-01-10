@@ -44,6 +44,7 @@ export class FindProblemBySlugHandler
         id: tag.getId()?.toNumber(),
         name: tag.getName(),
       })),
+      difficulty: problem.getDifficulty(),
     };
   }
 }

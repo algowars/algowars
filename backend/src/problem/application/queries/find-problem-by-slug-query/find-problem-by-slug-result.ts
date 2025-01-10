@@ -13,4 +13,5 @@ export class FindProblemBySlugResult implements IQueryResult {
     id: number;
     name: string;
   }[];
+  readonly difficulty: number;
 }

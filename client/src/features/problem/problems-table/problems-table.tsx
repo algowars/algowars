@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
 import { routerConfig } from "@/app/router";
+import { DifficultyBadge } from "@/components/difficulty-badge/difficulty-badge";
 
 export const ProblemsTable = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ export const ProblemsTable = () => {
             <TableRow>
               <TableHead>Title</TableHead>
               <TableHead>Tags</TableHead>
+              <TableHead>Difficulty</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -61,6 +63,9 @@ export const ProblemsTable = () => {
                 <TableCell>{problem.title}</TableCell>
                 <TableCell>
                   {problem?.tags?.map((tag) => tag.name).join(", ")}
+                </TableCell>
+                <TableCell>
+                  <DifficultyBadge difficulty={problem.difficulty} />
                 </TableCell>
               </TableRow>
             ))}
