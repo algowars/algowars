@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/accordion";
 import { Tag } from "lucide-react";
 import { ProblemEditorTags } from "./problem-editor-tags/problem-editor-tags";
+import { DifficultyBadge } from "@/components/difficulty-badge/difficulty-badge";
 
 type ProblemEditorProps = {
   problem: Problem | undefined;
@@ -149,7 +150,16 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                       <h2 className="text-2xl font-semibold mb-1">
                         {problem.title}
                       </h2>
-                      <ProblemEditorCreatedBy createdBy={problem.createdBy} />
+                      <ul className="flex items-center gap-4">
+                        <li>
+                          <DifficultyBadge difficulty={problem.difficulty} />
+                        </li>
+                        <li>
+                          <ProblemEditorCreatedBy
+                            createdBy={problem.createdBy}
+                          />
+                        </li>
+                      </ul>
                     </div>
 
                     {problem.question}

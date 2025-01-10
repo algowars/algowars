@@ -14,16 +14,24 @@ import { WsExceptionFilter } from 'src/ws-exception.filter';
 import { SubmissionStatus } from '../domain/submission-status';
 import { FindSubmissionByIdQuery } from '../application/queries/find-submission-by-id/find-submission-by-id.query';
 import { Submission } from '../domain/submission';
+import { ConfigService } from '@nestjs/config';
+
+export const createWebSocketGatewayOptions = (configService: ConfigService) => {
+  const clientOrigins = configService.get<string>('CLIENT_ORIGIN_URLS');
+  const originsArray = clientOrigins ? clientOrigins.split(',') : [];
+
+  return {
+    namespace: 'submission',
+    cors: {
+      origin: originsArray,
+      credentials: true,
+    },
+    transports: ['websocket', 'polling'],
+  };
+};
 
 @UseFilters(WsExceptionFilter)
-@WebSocketGateway({
-  namespace: 'submission',
-  cors: {
-    origin: ['https://algowars.netlify.app'],
-    credentials: true,
-  },
-  transports: ['websocket', 'polling'],
-})
+@WebSocketGateway(createWebSocketGatewayOptions(new ConfigService()))
 export class SubmissionGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {

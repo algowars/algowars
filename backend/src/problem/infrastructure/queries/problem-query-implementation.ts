@@ -84,6 +84,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
       version: entity.version,
       createdBy,
       tags: tags,
+      difficulty: entity.difficulty,
     });
   }
 
@@ -150,6 +151,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
           deletedAt: entity.deleted_at,
           version: entity.version,
           tags,
+          difficulty: entity.difficulty,
         }),
     );
 

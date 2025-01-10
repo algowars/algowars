@@ -14,6 +14,7 @@ export interface ProblemProperties extends BaseDomainProperties {
   status?: ProblemStatus;
   createdBy?: Account;
   tags?: Tag[];
+  difficulty?: number;
 }
 
 export interface Problem extends BaseDomainAggregateRoot {
@@ -23,6 +24,8 @@ export interface Problem extends BaseDomainAggregateRoot {
   getCreatedBy(): Account;
   getStatus(): ProblemStatus;
   getTags(): Tag[];
+  getDifficulty(): number;
+  setDifficulty(newDifficulty: number): void;
 }
 
 export class ProblemImplementation
@@ -35,6 +38,7 @@ export class ProblemImplementation
   private readonly createdBy?: Account;
   private readonly status: ProblemStatus;
   private readonly tags: Tag[];
+  private difficulty: number;
 
   constructor(properties: ProblemProperties) {
     super(properties);
@@ -59,6 +63,18 @@ export class ProblemImplementation
 
   getStatus(): ProblemStatus {
     return this.status;
+  }
+
+  getDifficulty(): number {
+    return this.difficulty;
+  }
+
+  setDifficulty(newDifficulty: number): void {
+    if (newDifficulty < 0) {
+      throw new Error('new Difficulty rating needs to be greated than zero.');
+    }
+
+    this.difficulty = newDifficulty;
   }
 
   getTags(): Tag[] {
