@@ -6,5 +6,13 @@
     "initial_code": "function isEven(n){\n  \n}",
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "problem_id": "f7c98a3e-c9e8-4baf-b5d2-28df4ecfd9f1",
+    "language_id": 93,
+    "solution_id": "9dfc3a5e-1e4e-4b6b-a38a-7b8e109f4e16",
+    "initial_code": "/**\n * Write a function that takes a string and returns the count of vowels (a, e, i, o, u) in the string.\n * The input will only contain lowercase letters and spaces.\n *\n * @param {string} str - The input string.\n * @returns {number} The number of vowels in the input string.\n */\nfunction vowelCount(str) {\n  // Your code here\n}",
+    "deleted_at": null,
+    "version": 1
   }
 ]

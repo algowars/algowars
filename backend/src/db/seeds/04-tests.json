@@ -7,5 +7,14 @@
     "language_id": 93,
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "id": "5a6c13ab-d3f9-4ed8-a7c8-bdf64a9e1b32",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('vowelCount should return the correct number of vowels', () => {\n  assert.is(vowelCount(\"hello world\"), 3); // 'e', 'o', 'o'\n  assert.is(vowelCount(\"codewars\"), 3);    // 'o', 'e', 'a'\n  assert.is(vowelCount(\"a e i o u\"), 5);   // All vowels\n  assert.is(vowelCount(\"\"), 0);            // No vowels\n});\n\ntest('vowelCount should handle strings without vowels', () => {\n  assert.is(vowelCount(\"rhythm\"), 0);      // No vowels\n  assert.is(vowelCount(\"gym\"), 0);         // No vowels\n});\n\ntest.run();",
+    "additional_test_file_id": "f8a34e16-5c0b-4c88-84c7-e451a5796127",
+    "problem_id": "f7c98a3e-c9e8-4baf-b5d2-28df4ecfd9f1",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
   }
 ]

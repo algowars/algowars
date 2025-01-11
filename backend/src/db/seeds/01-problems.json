@@ -9,5 +9,16 @@
     "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "id": "f7c98a3e-c9e8-4baf-b5d2-28df4ecfd9f1",
+    "title": "Vowel Count",
+    "question": "Write a function that takes a string and returns the count of vowels (a, e, i, o, u) in the string. The input will only contain lowercase letters and spaces.",
+    "slug": "vowel-count",
+    "status": "Accepted",
+    "difficulty": 400,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
   }
 ]

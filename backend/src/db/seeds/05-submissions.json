@@ -8,5 +8,14 @@
     "problem_id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "id": "9dfc3a5e-1e4e-4b6b-a38a-7b8e109f4e16",
+    "source_code": "function vowelCount(str) {\n  return (str.match(/[aeiou]/g) || []).length;\n}",
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "problem_id": "f7c98a3e-c9e8-4baf-b5d2-28df4ecfd9f1",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
   }
 ]
