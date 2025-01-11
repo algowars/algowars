@@ -8,6 +8,7 @@ import { UserSub, UserSubImplementation } from 'src/account/domain/user-sub';
 import { InjectConnection } from 'nest-knexjs';
 import { Knex } from 'knex';
 import { Aliases } from 'src/db/aliases';
+import { GameModes } from 'src/elo/domain/game-mode';
 
 export class AccountRepositoryImplementation implements AccountRepository {
   constructor(
@@ -21,17 +22,29 @@ export class AccountRepositoryImplementation implements AccountRepository {
 
   async save(data: Account | Account[]): Promise<void> {
     const models = Array.isArray(data) ? data : [data];
-    const entities: AccountEntity[] = models.map((model) => ({
-      id: model.getId().toString(),
-      sub: model.getSub().toString(),
-      username: model.getUsername().toString(),
-      deleted_at: model.getDeletedAt() ?? null,
-      created_at: model.getCreatedAt(),
-      updated_at: model.getUpdatedAt(),
-      version: model.getVersion(),
-    }));
+    await this.knexConnection.transaction(async (trx) => {
+      const entities: AccountEntity[] = models.map((model) => ({
+        id: model.getId().toString(),
+        sub: model.getSub().toString(),
+        username: model.getUsername().toString(),
+        deleted_at: model.getDeletedAt() ?? null,
+        created_at: model.getCreatedAt(),
+        updated_at: model.getUpdatedAt(),
+        version: model.getVersion(),
+      }));
 
-    await this.knexConnection(Aliases.ACCOUNTS).insert(entities);
+      await trx(Aliases.ACCOUNTS).insert(entities);
+
+      for (const entity of entities) {
+        const playerElo = {
+          player_id: entity.id,
+          game_mode: GameModes.STANDARD,
+          elo: 0,
+        };
+
+        await trx('player_elos').insert(playerElo);
+      }
+    });
   }
 
   async findById(id: Id, select = '*'): Promise<Account | null> {

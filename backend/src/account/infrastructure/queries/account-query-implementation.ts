@@ -9,6 +9,8 @@ import { Account, AccountImplementation } from 'src/account/domain/account';
 import { IdImplementation } from 'src/common/domain/id';
 import { UserSubImplementation } from 'src/account/domain/user-sub';
 import { UsernameImplementation } from 'src/account/domain/username';
+import { AccountEloImplementation } from 'src/account/domain/account-elo';
+import { GameModes } from 'src/elo/domain/game-mode';
 
 @Injectable()
 export class AccountQueryImplementation implements AccountQuery {
@@ -27,6 +29,18 @@ export class AccountQueryImplementation implements AccountQuery {
       return null;
     }
 
+    const elos = await this.knexConnection('player_elos')
+      .select('*')
+      .where({ player_id: entity.id });
+
+    const eloInstances = elos.map(
+      (elo) =>
+        new AccountEloImplementation({
+          gameMode: elo.game_mode as GameModes,
+          elo: elo.elo,
+        }),
+    );
+
     return new AccountImplementation({
       id: new IdImplementation(entity.id),
       sub: new UserSubImplementation(entity.sub),
@@ -35,6 +49,7 @@ export class AccountQueryImplementation implements AccountQuery {
       updatedAt: entity.updated_at,
       deletedAt: entity.deleted_at,
       version: entity.version,
+      elos: eloInstances,
     });
   }
 
@@ -51,6 +66,18 @@ export class AccountQueryImplementation implements AccountQuery {
       return null;
     }
 
+    const elos = await this.knexConnection('player_elos')
+      .select('*')
+      .where({ player_id: entity.id });
+
+    const eloInstances = elos.map(
+      (elo) =>
+        new AccountEloImplementation({
+          gameMode: elo.game_mode as GameModes,
+          elo: elo.elo,
+        }),
+    );
+
     return new AccountImplementation({
       id: new IdImplementation(entity.id),
       sub: new UserSubImplementation(entity.sub),
@@ -59,6 +86,7 @@ export class AccountQueryImplementation implements AccountQuery {
       updatedAt: entity.updated_at,
       deletedAt: entity.deleted_at,
       version: entity.version,
+      elos: eloInstances,
     });
   }
 }
