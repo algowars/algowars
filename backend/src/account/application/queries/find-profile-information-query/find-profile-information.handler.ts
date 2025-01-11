@@ -28,6 +28,12 @@ export class FindProfileInformationHandler
     return {
       username: data.getUsername().toString(),
       createdAt: data.getCreatedAt(),
+      ranks: Array.isArray(data.getElos())
+        ? data.getElos().map((elo) => ({
+            gameMode: elo.getGameMode(),
+            elo: elo.getElo(),
+          }))
+        : [],
     };
   }
 }

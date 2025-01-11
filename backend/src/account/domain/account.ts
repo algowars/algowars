@@ -5,16 +5,19 @@ import {
 } from 'src/common/entities/base-domain';
 import { UserSub } from './user-sub';
 import { Username } from './username';
+import { AccountElo } from './account-elo';
 
 export interface AccountProperties extends BaseDomainProperties {
   sub?: UserSub;
   username?: Username;
+  elos?: AccountElo[];
 }
 
 export interface Account extends BaseDomainAggregateRoot {
-  getSub: () => UserSub;
-  getUsername: () => Username;
-  open: () => void;
+  getSub(): UserSub;
+  getUsername(): Username;
+  open(): void;
+  getElos(): AccountElo[];
 }
 
 export class AccountImplementation
@@ -23,6 +26,7 @@ export class AccountImplementation
 {
   private readonly sub: UserSub;
   private readonly username: Username;
+  private readonly elos: AccountElo[];
 
   constructor(properties: AccountProperties) {
     super(properties);
@@ -35,6 +39,10 @@ export class AccountImplementation
 
   getUsername(): Username {
     return this.username;
+  }
+
+  getElos(): AccountElo[] {
+    return this.elos;
   }
 
   open(): void {
