@@ -6,6 +6,7 @@ import { AccountRepository } from 'src/account/domain/account-repository';
 import { AccountFactory } from 'src/account/domain/account-factory';
 import { Account } from 'src/account/domain/account';
 import { Username } from 'src/account/domain/username';
+import { v4 as uuidv4 } from 'uuid';
 
 @CommandHandler(OpenAccountCommand)
 export class OpenAccountHandler
@@ -17,8 +18,12 @@ export class OpenAccountHandler
   private readonly accountFactory: AccountFactory;
 
   async execute(command: OpenAccountCommand): Promise<Account> {
+    const username = command.username
+      ? command.username
+      : this.generateUsername();
     const account = this.accountFactory.create({
       ...command,
+      username,
       id: await this.accountRepository.newId(),
     });
 
@@ -52,5 +57,9 @@ export class OpenAccountHandler
       await this.accountRepository.findByUsername(username);
 
     return !!foundAccountByUsername;
+  }
+
+  private generateUsername(): string {
+    return `usr_${uuidv4().replace(/-/g, '')}`;
   }
 }
