@@ -7,17 +7,12 @@ import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 import { Link } from "@/components/ui/link";
-import { useAccountStore } from "@/features/account/account-store.provider";
 import { NavbarMenu } from "../navbar-menu/navbar-menu";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export type NavbarProps = {
-  isAuthenticated?: boolean;
-};
-
-export const Navbar = ({ isAuthenticated }: NavbarProps) => {
-  const { store } = useAccountStore();
-  const profileUrl = store?.getState().account?.username ?? "";
+export const Navbar = () => {
   const { roles } = useAuthPermissions();
+  const { isAuthenticated } = useAuth0();
 
   return (
     <nav>
@@ -40,11 +35,6 @@ export const Navbar = ({ isAuthenticated }: NavbarProps) => {
                   <Link to={routerConfig.admin.path}>Admin</Link>
                 </li>
               ) : null}
-              <li>
-                <Link to={routerConfig.profile.execute(profileUrl)}>
-                  Profile
-                </Link>
-              </li>
               <li>
                 <LogoutButton>Sign Out</LogoutButton>
               </li>

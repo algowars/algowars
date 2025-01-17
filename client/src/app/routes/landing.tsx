@@ -2,20 +2,18 @@ import { LoginButton } from "@/components/auth/login-button";
 import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { LandingLayout } from "@/components/layouts/landing-layout";
-import { useAccountStore } from "@/features/account/account-store.provider";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DashboardRoute } from "./app/dashboard";
 
 export const LandingRoute = () => {
-  const { isAuthenticated: isAuthAuthenticated, isLoading } = useAuth0();
-  const { isAuthenticated } = useAccountStore();
+  const { isAuthenticated, isLoading } = useAuth0();
 
-  if (!isLoading && isAuthAuthenticated) {
+  if (!isLoading && isAuthenticated) {
     return <DashboardRoute />;
   }
 
   return (
-    <LandingLayout isAuthenticated={isAuthAuthenticated || isAuthenticated}>
+    <LandingLayout>
       <section>
         <Container className="flex flex-col items-center py-20 text-center px-3 lg:px-0">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl max-w-4xl tracking-light font-bold mb-5">

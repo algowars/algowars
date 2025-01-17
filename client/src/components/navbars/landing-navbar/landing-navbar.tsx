@@ -8,13 +8,11 @@ import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 import { Link } from "@/components/ui/link";
 import { NavbarMenu } from "../navbar-menu/navbar-menu";
+import { useAuth0 } from "@auth0/auth0-react";
 
-type LandingNavbarProps = {
-  isAuthenticated?: boolean;
-};
-
-export const LandingNavbar = ({ isAuthenticated }: LandingNavbarProps) => {
+export const LandingNavbar = () => {
   const { roles } = useAuthPermissions();
+  const { isAuthenticated } = useAuth0();
   return (
     <nav>
       <Container className="flex items-center py-3 px-3 lg:px-0">

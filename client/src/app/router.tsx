@@ -18,9 +18,6 @@ export const routerConfig = {
   dashboard: {
     path: "/dashboard",
   },
-  accountSetup: {
-    path: "/account/setup",
-  },
   admin: {
     path: "/admin",
   },
@@ -63,20 +60,6 @@ export const createAppRouter = () => {
       lazy: async () => {
         const { DashboardRoute } = await import("./routes/app/dashboard");
         return { Component: DashboardRoute };
-      },
-    },
-    {
-      path: routerConfig.accountSetup.path,
-      lazy: async () => {
-        const { AccountSetupRoute } = await import(
-          "./routes/app/account/setup"
-        );
-
-        return {
-          Component: (props: object) => (
-            <ProtectedRoute component={AccountSetupRoute} {...props} />
-          ),
-        };
       },
     },
     {
