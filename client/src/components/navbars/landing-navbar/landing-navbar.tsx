@@ -1,39 +1,66 @@
 import { routerConfig } from "@/app/router";
 import { LoginButton } from "@/components/auth/login-button";
 import { LogoutButton } from "@/components/auth/logout-button";
-import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
 import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 import { Link } from "@/components/ui/link";
 import { NavbarMenu } from "../navbar-menu/navbar-menu";
+import { AccountStatus, useAccount } from "@/features/account/account.provider";
+import { buttonVariants } from "@/components/ui/button";
+import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
 
-type LandingNavbarProps = {
-  isAuthenticated?: boolean;
-};
-
-export const LandingNavbar = ({ isAuthenticated }: LandingNavbarProps) => {
+export const LandingNavbar = () => {
+  const { status, account } = useAccount();
+  const profileUrl = account
+    ? routerConfig.profile.execute(account.username)
+    : "";
   const { roles } = useAuthPermissions();
+
   return (
     <nav>
       <Container className="flex items-center py-3 px-3 lg:px-0">
-        <Link to={routerConfig.root.path}>
-          <Logo />
-        </Link>
-        <ul className="hidden sm:flex items-center gap-5 ml-auto">
-          {isAuthenticated ? (
+        <ul className="flex items-center gap-5">
+          <li>
+            <Link to={routerConfig.root.path}>
+              <Logo />
+            </Link>
+          </li>
+        </ul>
+        <ul className="hidden lg:flex items-center gap-5 ml-auto">
+          {status === AccountStatus.FullyAuthenticated ? (
             <>
-              {roles.includes("Admin") ? (
-                <li>
-                  <Link to={routerConfig.admin.path}>Admin</Link>
-                </li>
-              ) : null}
               <li>
                 <Link to={routerConfig.appRoot.path}>Home</Link>
               </li>
+              {roles.includes("Admin") && (
+                <li>
+                  <Link to={routerConfig.admin.path}>Admin</Link>
+                </li>
+              )}
               <li>
-                <LogoutButton>Sign Out</LogoutButton>
+                <Link to={profileUrl}>Profile</Link>
+              </li>
+              <li>
+                <LogoutButton />
+              </li>
+            </>
+          ) : status === AccountStatus.PartiallyAuthenticated ? (
+            <>
+              <li>
+                <Link to={routerConfig.root.path}>Home</Link>
+              </li>
+              <li>
+                <Link
+                  to="/account/setup"
+                  className={buttonVariants({ variant: "outline" })}
+                >
+                  Finish Setting Up Account
+                </Link>
+              </li>
+              <li>
+                <LogoutButton>Log Out</LogoutButton>
               </li>
             </>
           ) : (
@@ -47,13 +74,11 @@ export const LandingNavbar = ({ isAuthenticated }: LandingNavbarProps) => {
               <li>
                 <SignupButton className="w-24" />
               </li>
-              <li>
-                <ModeToggle />
-              </li>
             </>
           )}
         </ul>
-        <NavbarMenu className="ml-auto sm:hidden" />
+        <ModeToggle className="ml-3" />
+        <NavbarMenu className="lg:hidden ml-auto" />
       </Container>
     </nav>
   );

@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { Account } from "../models/account.model";
-import { useAccountStore } from "../account-store.provider";
+import { useAccount, AccountStatus } from "@/features/account/account.provider";
 
 type AccountSetupFormProps = {
   className?: string;
@@ -27,7 +27,7 @@ type AccountSetupFormProps = {
 export const AccountSetupForm = ({ className }: AccountSetupFormProps) => {
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
-  const { store, setIsAuthenticated } = useAccountStore();
+  const { status, changeAccount } = useAccount();
 
   const form = useForm<z.infer<typeof openAccountSchema>>({
     resolver: zodResolver(openAccountSchema),
@@ -40,16 +40,17 @@ export const AccountSetupForm = ({ className }: AccountSetupFormProps) => {
     mutationConfig: {
       onSuccess: (data: Account) => {
         toast("Account Created");
-        store?.getState().setAccount(data);
-        setIsAuthenticated(true);
+        changeAccount(data);
         navigate("/");
       },
     },
   });
 
   const onSubmit = async (values: z.infer<typeof openAccountSchema>) => {
-    const accessToken = await getAccessTokenSilently();
-    openAccountMutation.mutate({ data: values, accessToken });
+    if (status === AccountStatus.PartiallyAuthenticated) {
+      const accessToken = await getAccessTokenSilently();
+      openAccountMutation.mutate({ data: values, accessToken });
+    }
   };
 
   return (
@@ -85,8 +86,14 @@ export const AccountSetupForm = ({ className }: AccountSetupFormProps) => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
-            Submit
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={openAccountMutation.isPending}
+          >
+            {openAccountMutation.isPending
+              ? "Creating Account..."
+              : "Create Account"}
           </Button>
         </form>
       </Form>

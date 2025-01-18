@@ -1,33 +1,25 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { useAccountStore } from "../account-store.provider";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { routerConfig } from "@/app/router";
+import { AccountStatus, useAccount } from "../account.provider";
 
 const AccountVerficiationBanner = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
-  const { isLoading, isAuthenticated, status } = useAccountStore();
   const navigate = useNavigate();
-  const { isLoading: isAuthLoading, isAuthenticated: isAuthAuthenticated } =
-    useAuth0();
+  const { isLoading, status } = useAccount();
 
   const redirectToAccountSetup = () => {
     setIsOpen(false);
     navigate(routerConfig.accountSetup.path);
   };
 
-  if (
-    isLoading ||
-    isAuthLoading ||
-    !isAuthAuthenticated ||
-    status === "ERR_NETWORK"
-  ) {
+  if (isLoading) {
     return null;
   }
 
-  if (isAuthAuthenticated && isAuthenticated) {
+  if (status !== AccountStatus.PartiallyAuthenticated) {
     return null;
   }
 

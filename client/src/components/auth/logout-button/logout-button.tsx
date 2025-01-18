@@ -6,7 +6,10 @@ export type LogoutButtonProps = {
   children?: ReactNode;
 };
 
-export const LogoutButton = ({ children, ...props }: LogoutButtonProps) => {
+export const LogoutButton = ({
+  children = "Log Out",
+  ...props
+}: LogoutButtonProps) => {
   const { logout } = useAuth0();
 
   const handleLogout = () => {

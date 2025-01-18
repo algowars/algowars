@@ -5,17 +5,12 @@ import { Spinner } from "@/components/ui/spinner";
 import { useFindAccountByUsername } from "@/features/account/api/find-account-by-username";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useAccountStore } from "@/features/account/account-store.provider";
 import { UserSubmissions } from "@/features/submission/user-submissions/user-submissions";
 import { GameModes } from "@/features/game/models/game-modes";
 import { AccountElo } from "@/features/account/models/account-elo";
 import { PlayerRankBadge } from "@/components/player-rank-badge/player-rank-badge";
 
 export const ProfileBioRoute = () => {
-  const { isAuthenticated: isAuthAuthenticated } = useAuth0();
-  const { isAuthenticated } = useAccountStore();
-
   const { username } = useParams();
 
   const accountQuery = useFindAccountByUsername({
@@ -43,7 +38,7 @@ export const ProfileBioRoute = () => {
     : null;
 
   return (
-    <Layout isAuthenticated={isAuthAuthenticated || isAuthenticated}>
+    <Layout>
       <Container className="py-6 flex flex-col gap-5">
         <Card className="p-5 flex flex-col gap-5 bg-zinc-900 mb-5">
           <h2 className="font-bold text-2xl">{account.username}</h2>

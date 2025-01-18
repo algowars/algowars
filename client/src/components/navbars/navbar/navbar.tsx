@@ -7,16 +7,15 @@ import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 import { Link } from "@/components/ui/link";
-import { useAccountStore } from "@/features/account/account-store.provider";
 import { NavbarMenu } from "../navbar-menu/navbar-menu";
+import { AccountStatus, useAccount } from "@/features/account/account.provider";
+import { buttonVariants } from "@/components/ui/button";
 
-export type NavbarProps = {
-  isAuthenticated?: boolean;
-};
-
-export const Navbar = ({ isAuthenticated }: NavbarProps) => {
-  const { store } = useAccountStore();
-  const profileUrl = store?.getState().account?.username ?? "";
+export const Navbar = () => {
+  const { status, account } = useAccount();
+  const profileUrl = account
+    ? routerConfig.profile.execute(account.username)
+    : "";
   const { roles } = useAuthPermissions();
 
   return (
@@ -33,23 +32,32 @@ export const Navbar = ({ isAuthenticated }: NavbarProps) => {
           <li>
             <Link to={routerConfig.root.path}>Home</Link>
           </li>
-          {isAuthenticated ? (
+          {status === AccountStatus.FullyAuthenticated ? (
             <>
-              {roles.includes("Admin") ? (
+              {roles.includes("Admin") && (
                 <li>
                   <Link to={routerConfig.admin.path}>Admin</Link>
                 </li>
-              ) : null}
+              )}
               <li>
-                <Link to={routerConfig.profile.execute(profileUrl)}>
-                  Profile
+                <Link to={profileUrl}>Profile</Link>
+              </li>
+              <li>
+                <LogoutButton />
+              </li>
+            </>
+          ) : status === AccountStatus.PartiallyAuthenticated ? (
+            <>
+              <li>
+                <Link
+                  to="/finish-setup"
+                  className={buttonVariants({ variant: "outline" })}
+                >
+                  Finish Setting Up Account
                 </Link>
               </li>
               <li>
-                <LogoutButton>Sign Out</LogoutButton>
-              </li>
-              <li>
-                <ModeToggle />
+                <LogoutButton />
               </li>
             </>
           ) : (
@@ -60,12 +68,10 @@ export const Navbar = ({ isAuthenticated }: NavbarProps) => {
               <li>
                 <SignupButton className="w-24" />
               </li>
-              <li>
-                <ModeToggle />
-              </li>
             </>
           )}
         </ul>
+        <ModeToggle className="ml-3" />
         <NavbarMenu className="lg:hidden ml-auto" />
       </Container>
     </nav>

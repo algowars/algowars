@@ -1,14 +1,18 @@
 import { AxiosRequestConfig } from "axios";
 import { Account } from "../models/account.model";
 import { api } from "@/lib/api-client";
-import { MutationConfig } from "@/lib/react-query";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { QueryConfig } from "@/lib/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export const findAccountBySub = ({
   accessToken,
 }: {
-  accessToken: string;
+  accessToken: string | null;
 }): Promise<Account> => {
+  if (!accessToken) {
+    return Promise.reject(new Error("Access token is null"));
+  }
+
   const config: AxiosRequestConfig = {
     url: "/api/v1/account/find/sub",
     headers: {
@@ -19,25 +23,24 @@ export const findAccountBySub = ({
   return api(config);
 };
 
+export const getAccountBySubQueryOptions = (accessToken: string | null) => {
+  return {
+    queryKey: ["accountBySub", accessToken],
+    queryFn: () => findAccountBySub({ accessToken }),
+  };
+};
+
 type UseFindAccountBySubOptions = {
-  mutationConfig?: MutationConfig<typeof findAccountBySub>;
+  accessToken: string | null;
+  queryConfig?: QueryConfig<typeof findAccountBySub>;
 };
 
 export const useFindAccountBySub = ({
-  mutationConfig,
-}: UseFindAccountBySubOptions = {}) => {
-  const queryClient = useQueryClient();
-
-  const { onSuccess, ...restConfig } = mutationConfig || {};
-
-  return useMutation({
-    onSuccess: (...args) => {
-      queryClient.invalidateQueries({
-        queryKey: ["find-account-by-sub"],
-      });
-      onSuccess?.(...args);
-    },
-    ...restConfig,
-    mutationFn: findAccountBySub,
+  accessToken,
+  queryConfig,
+}: UseFindAccountBySubOptions) => {
+  return useQuery({
+    ...getAccountBySubQueryOptions(accessToken),
+    ...queryConfig,
   });
 };
