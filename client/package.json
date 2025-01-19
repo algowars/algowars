@@ -19,6 +19,9 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@hookform/resolvers": "^3.9.0",
     "@mdxeditor/editor": "^3.11.5",
     "@mswjs/data": "^0.16.2",
