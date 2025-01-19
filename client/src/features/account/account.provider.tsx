@@ -139,8 +139,6 @@ export function AccountProvider({ children, ...props }: AccountProviderProps) {
     changeAccount,
   };
 
-  console.log("AccountProvider", value);
-
   return (
     <AccountProviderContext.Provider {...props} value={value}>
       {children}

@@ -1,3 +1,4 @@
+import { routerConfig } from "@/app/router";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { ReactNode } from "react";
@@ -15,7 +16,7 @@ export const SignupButton = ({
   const handleSignup = () => {
     loginWithRedirect({
       appState: {
-        returnTo: "/account/setup",
+        returnTo: routerConfig.accountSetup.path,
       },
       authorizationParams: {
         prompt: "login",

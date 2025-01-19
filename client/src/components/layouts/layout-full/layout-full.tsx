@@ -6,22 +6,27 @@ import { ReactNode } from "react";
 
 export type LayoutFullProps = {
   children?: ReactNode;
-  isAuthenticated?: boolean;
   className?: string;
+  parentClassName?: string;
 };
 
 export const LayoutFull = ({
   children,
-  isAuthenticated,
   className,
+  parentClassName,
 }: LayoutFullProps) => {
   return (
     <>
       <Head title="Algowars" />
-      <div className="flex flex-col min-h-screen bg-background">
+      <div
+        className={cn(
+          "flex flex-col min-h-screen bg-zinc-100 dark:bg-background",
+          parentClassName
+        )}
+      >
         <header>
           <AccountVerficiationBanner />
-          <NavbarFull isAuthenticated={isAuthenticated} />
+          <NavbarFull />
         </header>
         <main className={cn("grow", className)}>{children}</main>
       </div>

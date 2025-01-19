@@ -53,7 +53,7 @@ export const LandingNavbar = () => {
               </li>
               <li>
                 <Link
-                  to="/account/setup"
+                  to={routerConfig.accountSetup.path}
                   className={buttonVariants({ variant: "outline" })}
                 >
                   Finish Setting Up Account

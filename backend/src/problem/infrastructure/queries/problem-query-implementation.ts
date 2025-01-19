@@ -242,7 +242,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
       );
 
       return new SubmissionImplementation({
-        id: result.submissionId,
+        id: new IdImplementation(result.submissionId),
         sourceCode: result.sourceCode,
         codeExecutionEngine: result.codeExecutionEngine,
         createdBy,

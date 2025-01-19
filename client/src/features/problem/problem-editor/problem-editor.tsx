@@ -15,8 +15,6 @@ import { toast } from "sonner";
 import { io, Socket } from "socket.io-client";
 import { ProblemEditorResult } from "./problem-editor-result/problem-editor-result";
 import { env } from "@/config/env";
-import { LoginButton } from "@/components/auth/login-button";
-import { SignupButton } from "@/components/auth/signup-button";
 import {
   Accordion,
   AccordionContent,
@@ -26,6 +24,8 @@ import {
 import { Tag } from "lucide-react";
 import { ProblemEditorTags } from "./problem-editor-tags/problem-editor-tags";
 import { DifficultyBadge } from "@/components/difficulty-badge/difficulty-badge";
+import { AccountStatus, useAccount } from "@/features/account/account.provider";
+import AuthenticatedComponent from "@/components/auth/authenticated-component/authenticated-component";
 
 type ProblemEditorProps = {
   problem: Problem | undefined;
@@ -44,7 +44,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const { getAccessTokenSilently } = useAuth0();
   const [code, setCode] = useState<string>("");
   const [submissionId, setSubmissionId] = useState<string>("");
-  const { isAuthenticated } = useAuth0();
+  const { status } = useAccount();
   const [submissionUpdate, setSubmissionUpdate] =
     useState<SubmissionUpdate | null>(null);
 
@@ -123,14 +123,14 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
       <div className="grow pb-5 px-2 lg:px-5">
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={55} minSize={10}>
-            <Card className="h-full overflow-auto">
+            <Card className="h-full max-h-full overflow-hidden">
               <div className="p-2 border-b">
                 <h4 className="font-semibold">Code</h4>
               </div>
               <CodeEditor
                 code={code}
                 changeCode={changeCode}
-                className="h-full"
+                className="h-full overflow-auto"
               />
             </Card>
           </ResizablePanel>
@@ -141,7 +141,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                 defaultSize={submissionId ? 60 : 100}
                 minSize={15}
               >
-                <Card className="h-full bg-zinc-900 overflow-auto flex flex-col">
+                <Card className="h-full dark:bg-zinc-900 overflow-auto flex flex-col">
                   <div className="p-2 border-b bg-background">
                     <h4 className="font-semibold">Description</h4>
                   </div>
@@ -199,20 +199,10 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                   />
                 </Card>
               </ResizablePanel>
-              {!isAuthenticated ? (
+              {status !== AccountStatus.FullyAuthenticated ? (
                 <ResizablePanel defaultSize={20} minSize={20} className="mt-4">
-                  <Card className="bg-zinc-900 p-5 h-full flex flex-col gap-5 overflow-auto">
-                    <p className="text-semibold">
-                      You need to log in or setup your account to submit code
-                    </p>
-                    <ul className="flex gap-5 items-center">
-                      <li>
-                        <LoginButton variant="default" className="w-28" />
-                      </li>
-                      <li>
-                        <SignupButton variant="secondary" className="w-28" />
-                      </li>
-                    </ul>
+                  <Card className="dark:bg-zinc-900 p-5 h-full flex flex-col gap-5 overflow-auto">
+                    <AuthenticatedComponent></AuthenticatedComponent>
                   </Card>
                 </ResizablePanel>
               ) : null}

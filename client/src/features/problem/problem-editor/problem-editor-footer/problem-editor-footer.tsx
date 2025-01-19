@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { useAccount } from "@/features/account/account.provider";
 import { SubmissionStatus } from "@/features/submission/models/submission-status";
-import { useAuth0 } from "@auth0/auth0-react";
 import { UseMutationResult } from "@tanstack/react-query";
 import { Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -31,8 +31,8 @@ export const ProblemEditorFooter = ({
   createSubmissionMutation,
   submissionUpdate,
 }: ProblemEditorFooterProps) => {
+  const { isAuthenticated } = useAccount();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth0();
 
   const viewSolutions = () => {
     navigate("solutions");

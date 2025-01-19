@@ -1,7 +1,7 @@
 import { Container } from "@/components/container";
 import { Layout } from "@/components/layouts/layout/layout";
 import { Spinner } from "@/components/ui/spinner";
-import { useAccountStore } from "@/features/account/account-store.provider";
+import { useAccount } from "@/features/account/account.provider";
 import { useGetProblemSolutionsBySlug } from "@/features/problem/api/get-problem-solutions-by-slug";
 import { ProblemSolutionsContainer } from "@/features/problem/solutions/problem-solutions";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -10,20 +10,19 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
 
 export const ProblemSolutionsRoute = () => {
-  const { isAuthenticated: isAuthAuthenticated, getAccessTokenSilently } =
-    useAuth0();
-  const { isAuthenticated } = useAccountStore();
+  const { isAuthenticated } = useAccount();
+  const { getAccessTokenSilently } = useAuth0();
   const [accessToken, setAccessToken] = useState<string>("");
 
   const { slug } = useParams();
 
   useEffect(() => {
-    if (isAuthenticated && isAuthAuthenticated) {
+    if (isAuthenticated) {
       (async () => {
         setAccessToken((await getAccessTokenSilently()) ?? "");
       })();
     }
-  }, [isAuthAuthenticated, getAccessTokenSilently, isAuthenticated]);
+  }, [getAccessTokenSilently, isAuthenticated]);
 
   const problemSolutionsQueryResult = useGetProblemSolutionsBySlug({
     slug: slug ?? "",
@@ -47,10 +46,7 @@ export const ProblemSolutionsRoute = () => {
           key={location.pathname}
           fallback={<div>Something went wrong!</div>}
         >
-          <Layout
-            isAuthenticated={isAuthAuthenticated}
-            className="flex flex-col h-[1px]"
-          >
+          <Layout className="flex flex-col h-[1px]">
             <Container className="py-5">
               <ProblemSolutionsContainer
                 problem={problemSolutionsQueryResult.data.problem}

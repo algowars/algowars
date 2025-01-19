@@ -20,7 +20,7 @@ export const NavbarFull = () => {
 
   return (
     <nav>
-      <Container className="flex items-center py-3 px-3 lg:px-0">
+      <Container className="flex items-center py-3 px-5 max-w-full">
         <ul className="flex items-center gap-5">
           <li>
             <Link to={routerConfig.root.path}>
@@ -28,7 +28,7 @@ export const NavbarFull = () => {
             </Link>
           </li>
         </ul>
-        <ul className="hidden lg:flex items-center gap-5 ml-auto">
+        <ul className="hidden sm:flex items-center gap-5 ml-auto">
           <li>
             <Link to={routerConfig.root.path}>Home</Link>
           </li>
