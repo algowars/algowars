@@ -27,6 +27,7 @@ export async function up(knex: Knex): Promise<void> {
     table.dateTime('deleted_at').nullable().defaultTo(null);
     table.increments('version').defaultTo(0);
     table.timestamps(true, true);
+    table.primary(['problem_id', 'language_id']);
   });
 }
 
