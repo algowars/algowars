@@ -5,21 +5,18 @@ import { PageLoader } from "@/components/loader/page-loader/page-loader";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
-import { useAccountStore } from "@/features/account/account-store.provider";
+import { useAccount } from "@/features/account/account.provider";
 import { cn } from "@/lib/utils";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export const AdminRoute = () => {
-  const { isAuthenticated: isAuthAuthenticated, isLoading: isAuthLoading } =
-    useAuth0();
-  const { isAuthenticated, isLoading } = useAccountStore();
+  const { isLoading } = useAccount();
 
-  if (isAuthLoading || isLoading) {
+  if (isLoading) {
     return <PageLoader />;
   }
 
   return (
-    <Layout isAuthenticated={isAuthAuthenticated || isAuthenticated}>
+    <Layout>
       <section>
         <Container className="flex items-center py-8">
           <Card className="w-full p-5 flex flex-col gap-5">

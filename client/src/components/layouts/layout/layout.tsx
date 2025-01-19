@@ -9,14 +9,12 @@ import { ReactNode } from "react";
 export type LayoutProps = {
   children?: ReactNode;
   className?: string;
-  isAuthenticated?: boolean;
   hideBanners?: boolean;
 };
 
 export const Layout = ({
   children,
   className,
-  isAuthenticated,
   hideBanners = false,
 }: LayoutProps) => {
   return (
@@ -27,7 +25,7 @@ export const Layout = ({
       >
         <header>
           {!hideBanners ? <AccountVerficiationBanner /> : null}
-          <Navbar isAuthenticated={isAuthenticated} />
+          <Navbar />
         </header>
         <main className="grow">{children}</main>
         <Toaster />

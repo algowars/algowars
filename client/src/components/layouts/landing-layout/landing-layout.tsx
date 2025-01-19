@@ -6,20 +6,16 @@ import { ReactNode } from "react";
 
 export type LandingLayoutProps = {
   children?: ReactNode;
-  isAuthenticated?: boolean;
 };
 
-export const LandingLayout = ({
-  children,
-  isAuthenticated,
-}: LandingLayoutProps) => {
+export const LandingLayout = ({ children }: LandingLayoutProps) => {
   return (
     <>
       <Head title="Algowars" />
       <div className="flex flex-col min-h-screen bg-background">
         <header>
           <AccountVerficiationBanner />
-          <LandingNavbar isAuthenticated={isAuthenticated} />
+          <LandingNavbar />
         </header>
         <main className="grow">{children}</main>
         <LandingFooter />
