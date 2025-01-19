@@ -52,6 +52,9 @@ export const LandingNavbar = () => {
                 <Link to={routerConfig.root.path}>Home</Link>
               </li>
               <li>
+                <Link to={routerConfig.dashboard.path}>Dashboard</Link>
+              </li>
+              <li>
                 <Link
                   to={routerConfig.accountSetup.path}
                   className={buttonVariants({ variant: "outline" })}
