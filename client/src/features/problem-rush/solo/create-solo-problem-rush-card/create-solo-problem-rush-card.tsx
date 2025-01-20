@@ -11,7 +11,7 @@ export const CreateSoloProblemRushCard = () => {
         <h3 className="text-3xl font-bold mb-1">Solo Problem Rush</h3>
         <p className="text-muted-foreground max-w-xl">
           Fast paced gamemode where you solve algorithm questions as fast as you
-          can withing a time limit.
+          can within a time limit.
         </p>
       </div>
       <AuthenticatedComponent

@@ -40,6 +40,9 @@ export const Navbar = () => {
                 </li>
               )}
               <li>
+                <Link to={routerConfig.soloRush.path}>Rush</Link>
+              </li>
+              <li>
                 <Link to={profileUrl}>Profile</Link>
               </li>
               <li>
