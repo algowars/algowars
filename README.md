@@ -5,4 +5,4 @@ Algowars core application
 
 [docs](https://docs-algowars.netlify.app/)
 
-[deployed site](https://algowars.netlify.app/)
+[deployed site](https://algowars.dev)
