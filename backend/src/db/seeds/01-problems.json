@@ -1,0 +1,46 @@
+[
+  {
+    "id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
+    "title": "Is Even",
+    "question": "If the value of the number being passed into the function is even, return \"true\", else return \"false\"",
+    "slug": "is-even",
+    "status": "Accepted",
+    "difficulty": 300,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "46070217-1aa3-420a-83e3-0b39b3d9c2af",
+    "title": "Fibonacci Sequence",
+    "question": "Return the nth number in the Fibonacci sequence.",
+    "slug": "fibonacci-sequence",
+    "status": "Accepted",
+    "difficulty": 500,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "7224c3f8-4395-4a3d-845d-f1999cbabfa8",
+    "title": "Palindrome Check",
+    "question": "Check if the given string is a palindrome.",
+    "slug": "palindrome-check",
+    "status": "Accepted",
+    "difficulty": 400,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "49ae4175-629c-49b2-a25c-c700e112d15b",
+    "title": "Two Sum",
+    "question": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
+    "slug": "two-sum",
+    "status": "Accepted",
+    "difficulty": 600,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  }
+]

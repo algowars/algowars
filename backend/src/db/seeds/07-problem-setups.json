@@ -1,0 +1,34 @@
+[
+  {
+    "problem_id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
+    "language_id": 93,
+    "solution_id": "c02b2e96-2b9e-4139-b694-90a2c65b92ba",
+    "initial_code": "function isEven(n){\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "problem_id": "46070217-1aa3-420a-83e3-0b39b3d9c2af",
+    "language_id": 93,
+    "solution_id": "8861caac-8156-4e64-8a91-912e4a8431f7",
+    "initial_code": "function fibonacci(n) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "problem_id": "7224c3f8-4395-4a3d-845d-f1999cbabfa8",
+    "language_id": 93,
+    "solution_id": "9f61206d-7da6-4094-9639-a06524b192a8",
+    "initial_code": "function palindromeCheck(str) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "problem_id": "49ae4175-629c-49b2-a25c-c700e112d15b",
+    "language_id": 93,
+    "solution_id": "35a20c46-31bc-452d-be7a-4ea2c471534d",
+    "initial_code": "function twoSum(nums, target) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  }
+]

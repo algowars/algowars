@@ -1,0 +1,50 @@
+name: Backend CI
+on:
+  push:
+    branches: ["*"]
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+  pull_request:
+    branches: [master]
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+jobs:
+  all-cli-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "./backend"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Set environment variables
+        run: mv .env.example .env
+      - name: Install dependencies
+        run: npm install
+      - name: Build application
+        run: npm run build
+      - name: Run tests
+        run: npm run test
+      - name: Run linter
+        run: yarn lint
+  # e2e:
+  #   timeout-minutes: 60
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: ./backend
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: lts/*
+  #     - name: Set environment variables
+  #       run: mv .env.example-e2e .env
+  #     - name: Install dependencies
+  #       run: npm run install
+  #     - name: Run tests
+  #       run: npm run test:e2e

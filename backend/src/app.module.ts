@@ -1,36 +1,39 @@
-import { Module } from '@nestjs/common';
-import { ProblemModule } from './problem/problem.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import schemas from './db';
-import { CommonModule } from './common/common.module';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
+import { RequestStorageMiddleware } from 'lib/request-storage-middleware';
+import { CodeExecutionModule } from 'lib/code-execution/code-execution.module';
+import { S3Module } from 'lib/s3.module';
+import { DatabaseModule } from 'lib/database.module';
 import { AccountModule } from './account/account.module';
+import { ProblemModule } from './problem/problem.module';
+import { SubmissionModule } from './submission/submission.module';
+import { EloModule } from './elo/elo.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('POSTGRESQL_HOST'),
-        port: +configService.get<number>('POSTGRESQL_PORT'),
-        username: configService.get('POSTGRESQL_USERNAME'),
-        password: configService.get('POSTGRESQL_PASSWORD'),
-        database: configService.get('POSTGRESQL_NAME'),
-        ssl: {
-          rejectUnauthorized: true,
-          ca: configService.get('POSTGRESQL_CERT'),
-        },
-        synchronize: configService.get('SYNCHRONIZE_DATABASE') === 'true',
-        entities: schemas,
-      }),
-      inject: [ConfigService],
-    }),
-    ProblemModule,
-    CommonModule,
+    DatabaseModule,
+    S3Module,
+    CodeExecutionModule,
+    ThrottlerModule.forRoot(),
     AccountModule,
+    ProblemModule,
+    SubmissionModule,
+    EloModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestStorageMiddleware).forRoutes('');
+  }
+}

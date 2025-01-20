@@ -1,0 +1,8 @@
+{
+  "label": "Domain Logic",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "The Domain Logic section outlines the core business rules and processes that define each domain in our system. Each domain encapsulates specific behaviors and responsibilities, ensuring that the code reflects real-world concepts and maintains separation of concerns."
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "c02b2e96-2b9e-4139-b694-90a2c65b92ba",
+    "source_code": "function isEven(n){\n  return n % 2 === 0 ? \"true\" : \"false\"\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "8861caac-8156-4e64-8a91-912e4a8431f7",
+    "source_code": "function fibonacci(n) {\n  if (n <= 1) return n;\n  return fibonacci(n - 1) + fibonacci(n - 2);\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "46070217-1aa3-420a-83e3-0b39b3d9c2af",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "9f61206d-7da6-4094-9639-a06524b192a8",
+    "source_code": "function palindromeCheck(str) {\n  return str === str.split('').reverse().join('');\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "7224c3f8-4395-4a3d-845d-f1999cbabfa8",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "35a20c46-31bc-452d-be7a-4ea2c471534d",
+    "source_code": "function twoSum(nums, target) {\n  const map = new Map();\n  for (let i = 0; i < nums.length; i++) {\n    const complement = target - nums[i];\n    if (map.has(complement)) {\n      return [map.get(complement), i];\n    }\n    map.set(nums[i], i);\n  }\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "49ae4175-629c-49b2-a25c-c700e112d15b",
+    "deleted_at": null,
+    "version": 1
+  }
+]

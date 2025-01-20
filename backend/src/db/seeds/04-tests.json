@@ -1,0 +1,38 @@
+[
+  {
+    "id": "2f176e33-7ed8-4fbf-a5b3-1c3eca9fe43a",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('isEven should return \"true\" for even numbers', () => {\n  assert.is(isEven(2), \"true\");\n  assert.is(isEven(4), \"true\");\n  assert.is(isEven(0), \"true\");\n});\n\ntest('isEven should return \"false\" for odd numbers', () => {\n  assert.is(isEven(1), \"false\");\n  assert.is(isEven(3), \"false\");\n  assert.is(isEven(-1), \"false\");\n});\n\ntest('isEven should handle negative even numbers', () => {\n  assert.is(isEven(-2), \"true\");\n  assert.is(isEven(-4), \"true\");\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "c994434e-daad-4dd9-ad3c-294ba1962964",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('fibonacci should return correct Fibonacci number', () => {\n  assert.is(fibonacci(0), 0);\n  assert.is(fibonacci(1), 1);\n  assert.is(fibonacci(2), 1);\n  assert.is(fibonacci(3), 2);\n  assert.is(fibonacci(10), 55);\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "46070217-1aa3-420a-83e3-0b39b3d9c2af",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "5dfaf1c0-76ad-4899-9151-8fadecfbff34",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('palindromeCheck should return true for palindromes', () => {\n  assert.is(palindromeCheck('racecar'), true);\n  assert.is(palindromeCheck('madam'), true);\n  assert.is(palindromeCheck(''), true);\n});\n\ntest('palindromeCheck should return false for non-palindromes', () => {\n  assert.is(palindromeCheck('hello'), false);\n  assert.is(palindromeCheck('world'), false);\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "7224c3f8-4395-4a3d-845d-f1999cbabfa8",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "4960c3f6-5e5c-4489-9924-f0312a1f5b97",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('twoSum should return correct indices', () => {\n  assert.equal(twoSum([2, 7, 11, 15], 9), [0, 1]);\n  assert.equal(twoSum([3, 2, 4], 6), [1, 2]);\n  assert.equal(twoSum([3, 3], 6), [0, 1]);\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "49ae4175-629c-49b2-a25c-c700e112d15b",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  }
+]

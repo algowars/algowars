@@ -1,0 +1,8 @@
+{
+  "label": "Contributing",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Welcome to the contributing guide for our project! This section provides the necessary guidelines for contributing code, reporting issues, and improving the documentation. By following these standards, we ensure that all contributions remain consistent and of high quality."
+  }
+}
