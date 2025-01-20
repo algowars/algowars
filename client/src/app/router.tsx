@@ -10,7 +10,7 @@ export const routerConfig = {
   },
   profile: {
     path: "/profile/:username",
-    execute: (subPath: string) => `/profile/${encodeURIComponent(subPath)}`,
+    execute: (username: string) => `/profile/${encodeURIComponent(username)}`,
   },
   appRoot: {
     path: "/",
@@ -29,12 +29,15 @@ export const routerConfig = {
   },
   problem: {
     path: "/problem/:slug",
-    execute: (subPath: string) => `/problem/${encodeURIComponent(subPath)}`,
+    execute: (slug: string) => `/problem/${encodeURIComponent(slug)}`,
   },
   problemSolutions: {
     path: "/problem/:slug/solutions",
-    execute: (subPath: string) =>
-      `/problem/${encodeURIComponent(subPath)}/solutions`,
+    execute: (slug: string) => `/problem/${encodeURIComponent(slug)}/solutions`,
+  },
+  soloRush: {
+    path: "/rush/solo/",
+    execute: (rushId: string) => `/rush/solo/${encodeURIComponent(rushId)}`,
   },
   notFound: {
     path: "*",
@@ -149,6 +152,18 @@ export const createAppRouter = () => {
 
         return {
           Component: ProfileRoute,
+        };
+      },
+    },
+    {
+      path: routerConfig.soloRush.path,
+      lazy: async () => {
+        const { SoloRushRoute } = await import("./routes/app/rush/solo");
+
+        return {
+          Component: (props: object) => (
+            <ProtectedRoute component={SoloRushRoute} {...props} />
+          ),
         };
       },
     },
