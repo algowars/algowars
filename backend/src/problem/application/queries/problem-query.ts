@@ -19,4 +19,13 @@ export interface ProblemQuery {
     problemId: string,
     languageId: number,
   ): Promise<ProblemSetup | null>;
+
+  getProblemWithinRange(
+    minDifficulty: number,
+    maxDifficulty: number,
+  ): Promise<Problem | null>;
+
+  getTotalProblems(): Promise<number>;
+
+  getHighestRatedProblem(): Promise<Problem>;
 }

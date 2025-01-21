@@ -8,8 +8,8 @@ import {
 import { Tag } from './tag';
 
 export interface ProblemProperties extends BaseDomainProperties {
-  title: string;
-  slug: string;
+  title?: string;
+  slug?: string;
   question?: string;
   status?: ProblemStatus;
   createdBy?: Account;

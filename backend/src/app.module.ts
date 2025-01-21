@@ -10,6 +10,7 @@ import { AccountModule } from './account/account.module';
 import { ProblemModule } from './problem/problem.module';
 import { SubmissionModule } from './submission/submission.module';
 import { EloModule } from './elo/elo.module';
+import { GameModule } from './game/game.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { EloModule } from './elo/elo.module';
     ProblemModule,
     SubmissionModule,
     EloModule,
+    GameModule,
   ],
   providers: [
     {
