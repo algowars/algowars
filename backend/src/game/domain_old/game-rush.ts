@@ -8,7 +8,7 @@ import { Account } from 'src/account/domain/account';
 import { RushProblem } from './rush-problem';
 import { ProblemRushStatus } from './problem-rush-status';
 
-export interface ProblemRushProperties extends BaseDomainProperties {
+export interface GameRushProperties extends BaseDomainProperties {
   gameMode?: ProblemRushGameMode;
   problems: RushProblem[];
   createBy?: Account;
@@ -16,7 +16,7 @@ export interface ProblemRushProperties extends BaseDomainProperties {
   startedAt?: Date;
 }
 
-export interface IProblemRush extends BaseDomainAggregateRoot {
+export interface IGameRush extends BaseDomainAggregateRoot {
   getGameMode(): ProblemRushGameMode;
   getCreatedBy(): Account;
   getProblems(): RushProblem[];
@@ -27,7 +27,7 @@ export interface IProblemRush extends BaseDomainAggregateRoot {
 
 export class ProblemRush
   extends BaseDomainAggregateRootImplementation
-  implements IProblemRush
+  implements IGameRush
 {
   private readonly gameMode: ProblemRushGameMode;
   private readonly createdBy: Account;
@@ -35,7 +35,7 @@ export class ProblemRush
   private readonly gameStatus: ProblemRushStatus;
   private startedAt: Date;
 
-  constructor(properties: ProblemRushProperties) {
+  constructor(properties: GameRushProperties) {
     super(properties);
     Object.assign(this, properties);
   }

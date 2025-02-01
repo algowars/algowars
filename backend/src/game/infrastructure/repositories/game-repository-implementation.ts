@@ -2,8 +2,8 @@ import { Knex } from 'knex';
 import { DatabaseInjectionToken, EntityId } from 'lib/database.module';
 import { InjectConnection } from 'nest-knexjs';
 import { Id, IdImplementation } from 'src/common/domain/id';
-import { IGameRepository } from 'src/game/domain/game-repository';
-import { IRushProblem } from 'src/game/domain/rush-problem';
+import { IGameRepository } from 'src/game/domain_old/game-repository';
+import { IRushProblem } from 'src/game/domain_old/rush-problem';
 
 export class GameRepository implements IGameRepository {
   constructor(
