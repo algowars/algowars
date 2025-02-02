@@ -1,3 +1,3 @@
-export enum GameModes {
+export enum GameMode {
   STANDARD = "Standard",
 }

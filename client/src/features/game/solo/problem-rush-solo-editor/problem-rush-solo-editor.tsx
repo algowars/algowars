@@ -24,6 +24,8 @@ export const ProblemRushSoloEditor = ({
 }: ProblemRushSoloEditorProps) => {
   const [code, setCode] = useState<string>("");
 
+  console.log(rushId, code);
+
   function changeCode(newCode: string): void {
     setCode(newCode);
   }

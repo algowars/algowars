@@ -1,6 +1,6 @@
 import { LayoutFull } from "@/components/layouts/layout-full";
 import { Spinner } from "@/components/ui/spinner";
-import { ProblemRushSoloEditor } from "@/features/problem-rush/solo/problem-rush-solo-editor/problem-rush-solo-editor";
+import { ProblemRushSoloEditor } from "@/features/game/solo/problem-rush-solo-editor/problem-rush-solo-editor";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useParams } from "react-router-dom";
