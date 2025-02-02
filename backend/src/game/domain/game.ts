@@ -1,8 +1,10 @@
 import { Account } from 'src/account/domain/account';
 import { GameMode } from './game-mode';
 import { Lobby } from './lobby';
+import { Id } from 'src/common/domain/id';
 
 export interface GameProperties {
+  id: Id;
   createdBy: Account;
   gameMode: GameMode;
   startedAt?: Date;
@@ -15,6 +17,7 @@ export interface GameProperties {
 }
 
 export abstract class Game {
+  public readonly id: Id;
   public readonly createdBy: Account;
   public readonly gameMode: GameMode;
   public readonly createdAt: Date;
@@ -23,11 +26,15 @@ export abstract class Game {
   public lobby: Lobby;
 
   constructor(properties: GameProperties) {
-    if (!this.gameMode) {
+    if (!properties.gameMode) {
       throw new Error('Game mode must be provided');
     }
 
     Object.assign(this, properties);
+  }
+
+  getId(): Id {
+    return this.id;
   }
 
   public startGame(): void {

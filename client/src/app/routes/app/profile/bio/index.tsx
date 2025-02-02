@@ -6,7 +6,7 @@ import { useFindAccountByUsername } from "@/features/account/api/find-account-by
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { UserSubmissions } from "@/features/submission/user-submissions/user-submissions";
-import { GameModes } from "@/features/game/models/game-modes";
+import { GameModes } from "@/features/game/models/game-mode";
 import { AccountElo } from "@/features/account/models/account-elo";
 import { PlayerRankBadge } from "@/components/player-rank-badge/player-rank-badge";
 

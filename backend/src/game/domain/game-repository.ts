@@ -10,5 +10,6 @@ export interface GameRepository {
     account: Account,
     gameMode: GameMode,
     gameType: GameType,
+    maxPlayers: number,
   ): Promise<Game>;
 }

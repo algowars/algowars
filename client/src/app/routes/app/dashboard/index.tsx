@@ -1,7 +1,7 @@
 import { Container } from "@/components/container";
 import { Layout } from "@/components/layouts/layout/layout";
 import { Card } from "@/components/ui/card";
-import { CreateSoloProblemRushCard } from "@/features/problem-rush/solo/create-solo-problem-rush-card/create-solo-problem-rush-card";
+import { CreateSoloProblemRushCard } from "@/features/game/solo/create-solo-problem-rush-card/create-solo-problem-rush-card";
 import { ProblemsTable } from "@/features/problem/problems-table/problems-table";
 
 export const DashboardRoute = () => {

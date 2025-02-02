@@ -1,9 +1,10 @@
 import { Account } from 'src/account/domain/account';
 import { Game } from './game';
 import { RushGameImplementation } from './rush/rush-game';
-import { Id } from 'src/common/domain/id';
+import { Id, IdImplementation } from 'src/common/domain/id';
 import { Lobby } from './lobby';
 import { GameMode } from './game-mode';
+import { Injectable } from '@nestjs/common';
 
 export enum GameType {
   RUSH = 'Rush',
@@ -21,8 +22,10 @@ export interface GameFactoryOptions {
   startedAt?: Date;
 }
 
+@Injectable()
 export class GameFactory {
   public create({
+    id,
     gameType,
     createdBy,
     gameMode,
@@ -38,9 +41,18 @@ export class GameFactory {
           createdAt,
           updatedAt,
           lobby,
+          id: this.createId(id),
         });
       default:
         throw new Error(`Unown game type: ${gameType}`);
     }
+  }
+
+  private createId(id: string | Id): Id {
+    if (typeof id === 'string') {
+      return new IdImplementation(id);
+    }
+
+    return id;
   }
 }

@@ -29,6 +29,7 @@ export class GameRepositoryImplementation implements GameRepository {
     account: Account,
     gameMode: GameMode,
     gameType: GameType,
+    maxPlayers: number,
   ): Promise<Game> {
     const gameId = await this.newId();
     const lobbyId = await this.newId();
@@ -36,40 +37,35 @@ export class GameRepositoryImplementation implements GameRepository {
 
     try {
       await trx('lobbies').insert({
-        id: lobbyId,
-        max_players: 10,
-        version: 0,
+        id: lobbyId.toString(),
+        max_players: maxPlayers,
+      });
+
+      await trx('lobby_players').insert({
+        lobby_id: lobbyId.toString(),
+        account_id: account.getId().toString(),
       });
 
       await trx('games').insert({
         id: gameId.toString(),
-        created_by_id: account.getId().getValue(),
-        lobby_id: lobbyId,
+        created_by_id: account.getId().toString(),
+        lobby_id: lobbyId.toString(),
         game_mode: gameMode,
         game_type: gameType,
-        version: 0,
       });
 
-      const gameRecord = await trx('games')
-        .select('*')
-        .where({ id: gameId.toString() })
-        .first();
-
-      await trx.commit();
-
       const lobby: Lobby = this.lobbyFactory.create({
-        id: lobbyId.toString(),
-        maxPlayers: 10,
+        id: lobbyId,
+        maxPlayers: maxPlayers,
         players: [],
       });
 
       const game: Game = this.gameFactory.create({
-        id: gameRecord.id,
+        id: gameId,
         gameType: gameType,
         createdBy: account,
-        createdAt: gameRecord.created_at,
+        createdAt: new Date(),
         gameMode: gameMode,
-        startedAt: new Date(gameRecord.created_at),
         lobby,
       });
 
