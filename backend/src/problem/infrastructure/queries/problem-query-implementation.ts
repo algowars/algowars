@@ -25,6 +25,7 @@ import { UsernameImplementation } from 'src/account/domain/username';
 import { SubmissionResultImplementation } from 'src/submission/domain/submission-result';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 import { TagImplementation } from 'src/problem/domain/tag';
+import { ProblemEntity } from '../entities/problem.entity';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
@@ -277,6 +278,49 @@ export class ProblemQueryImplementation implements ProblemQuery {
       updatedAt: entity.updated_at,
       deletedAt: entity.deleted_at,
       version: entity.version,
+    });
+  }
+
+  async getProblemWithinRange(
+    minDifficulty: number,
+    maxDifficulty: number,
+  ): Promise<Problem | null> {
+    const entity = await this.knexConnection<ProblemEntity>('problems')
+      .select('id', 'difficulty')
+      .where('difficulty', '>=', minDifficulty)
+      .andWhere('difficulty', '<=', maxDifficulty)
+      .orderByRaw('RANDOM()')
+      .first();
+
+    if (!entity) {
+      return null;
+    }
+
+    return new ProblemImplementation({
+      id: entity.id,
+      difficulty: entity.difficulty,
+    });
+  }
+
+  async getTotalProblems(): Promise<number> {
+    const result = await this.knexConnection('problems').count('* as count');
+
+    return result ? Number(result[0].count) : 0;
+  }
+
+  async getHighestRatedProblem(): Promise<Problem> {
+    const entity = await this.knexConnection<Problem>('problems')
+      .select('id', 'difficulty')
+      .orderBy('difficulty', 'desc')
+      .first();
+
+    if (!entity) {
+      throw new Error('No problems found');
+    }
+
+    return new ProblemImplementation({
+      id: entity.id,
+      difficulty: entity.difficulty,
     });
   }
 }
