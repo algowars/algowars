@@ -26,7 +26,7 @@ export const SoloRushRoute = () => {
           fallback={<div>Something went wrong!</div>}
         >
           <LayoutFull className="flex flex-col h-[1px]">
-            <ProblemRushSoloEditor rushId={rushId} />
+            <ProblemRushSoloEditor rushId={rushId ?? ""} />
           </LayoutFull>
         </ErrorBoundary>
       </Suspense>
