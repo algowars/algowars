@@ -5,10 +5,13 @@ import { Lobby } from './lobby';
 export interface GameProperties {
   createdBy: Account;
   gameMode: GameMode;
-  createdAt: Date;
   startedAt?: Date;
   finishedAt?: Date;
   lobby: Lobby;
+  createdAt: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
+  version?: number;
 }
 
 export abstract class Game {

@@ -3,6 +3,7 @@ import { Game } from './game';
 import { RushGameImplementation } from './rush/rush-game';
 import { Id } from 'src/common/domain/id';
 import { Lobby } from './lobby';
+import { GameMode } from './game-mode';
 
 export enum GameType {
   RUSH = 'Rush',
@@ -13,18 +14,29 @@ export interface GameFactoryOptions {
   id: string | Id;
   gameType: GameType;
   createdBy: Account;
-  startedAt?: Date;
+  gameMode: GameMode;
   lobby: Lobby;
+  createdAt: Date;
+  updatedAt?: Date;
+  startedAt?: Date;
 }
 
 export class GameFactory {
-  public static createGame({ gameType, createdBy, gameMode, lobby }): Game {
+  public create({
+    gameType,
+    createdBy,
+    gameMode,
+    lobby,
+    createdAt,
+    updatedAt,
+  }: GameFactoryOptions): Game {
     switch (gameType) {
       case GameType.RUSH:
         return new RushGameImplementation({
           createdBy,
           gameMode,
-          createdAt: new Date(),
+          createdAt,
+          updatedAt,
           lobby,
         });
       default:

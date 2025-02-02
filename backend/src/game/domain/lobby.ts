@@ -2,8 +2,9 @@ import { Account } from 'src/account/domain/account';
 import { Id } from 'src/common/domain/id';
 
 export interface LobbyProperties {
+  id: Id;
   maxPlayers: number;
-  players: Account[];
+  players?: Account[];
 }
 
 export interface Lobby {
@@ -20,7 +21,8 @@ export class LobbyImplementation implements Lobby {
   private players: Account[];
 
   constructor(properties: LobbyProperties) {
-    Object.assign(this, properties);
+    const players = properties?.players ? properties.players : [];
+    Object.assign(this, { ...properties, players });
   }
 
   getMaxPlayers(): number {
