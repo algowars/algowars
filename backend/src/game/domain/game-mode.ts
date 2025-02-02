@@ -1,5 +1,5 @@
 export enum GameMode {
-  SOLO = 'solo',
-  DUEL = 'duel',
-  FFA = 'ffa',
+  SOLO = 'Solo',
+  DUEL = 'Duel',
+  FFA = 'Free-For-All',
 }

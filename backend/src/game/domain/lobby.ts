@@ -12,6 +12,7 @@ export interface Lobby {
   addPlayer(player: Account): void;
   getPlayers(): Account[];
   removePlayer(playerId: Id): void;
+  isReady(): boolean;
 }
 
 export class LobbyImplementation implements Lobby {
@@ -43,5 +44,9 @@ export class LobbyImplementation implements Lobby {
 
   getPlayers(): Account[] {
     return this.players;
+  }
+
+  isReady(): boolean {
+    return true;
   }
 }

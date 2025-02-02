@@ -3,8 +3,8 @@ import {
   BaseDomainAggregateRootImplementation,
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
-import { GameMode } from './game-mode';
 import { Account } from 'src/account/domain/account';
+import { GameMode } from '../game-mode';
 
 export interface RushProperties extends BaseDomainProperties {
   gameMode: GameMode;
@@ -22,4 +22,11 @@ export class RushImplementation
 {
   private readonly gameMode: GameMode;
   private readonly createdBy: Account;
+
+  getGameMode() {
+    return this.gameMode;
+  }
+  getCreatedBy(): Account {
+    return this.createdBy;
+  }
 }

@@ -54,12 +54,12 @@ export abstract class Game {
   }
 
   /**
-   * Called when the game starts. Concrete classes can override to add behavior.
+   * Called when the game starts
    */
   protected abstract onStart(): void;
 
   /**
-   * Called when the game finishes. Concrete classes can override to add behavior.
+   * Called when the game finishes
    */
   protected abstract onFinish(): void;
 }
