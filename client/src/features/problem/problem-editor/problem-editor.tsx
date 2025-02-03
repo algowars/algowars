@@ -26,12 +26,14 @@ import { ProblemEditorTags } from "./problem-editor-tags/problem-editor-tags";
 import { DifficultyBadge } from "@/components/difficulty-badge/difficulty-badge";
 import { AccountStatus, useAccount } from "@/features/account/account.provider";
 import AuthenticatedComponent from "@/components/auth/authenticated-component/authenticated-component";
+import { useMediaQuery } from "react-responsive";
+import { ProblemEditorMobile } from "../problem-editor-mobile/problem-editor-mobile";
 
-type ProblemEditorProps = {
+export type ProblemEditorProps = {
   problem: Problem | undefined;
 };
 
-type SubmissionUpdate = {
+export type SubmissionUpdate = {
   status: string;
   stdout: string[];
 };
@@ -47,6 +49,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
   const { status } = useAccount();
   const [submissionUpdate, setSubmissionUpdate] =
     useState<SubmissionUpdate | null>(null);
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   const createSubmissionMutation = useCreateSubmission({
     mutationConfig: {
@@ -117,6 +120,21 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
       accessToken,
     });
   };
+
+  if (isMobile) {
+    return (
+      <ProblemEditorMobile
+        problem={problem}
+        createSubmission={createSubmission}
+        code={code}
+        changeCode={changeCode}
+        submissionId={submissionId}
+        submissionUpdate={submissionUpdate}
+        setSubmissionUpdate={setSubmissionUpdate}
+        createSubmissionMutation={createSubmissionMutation}
+      />
+    );
+  }
 
   return (
     <>
