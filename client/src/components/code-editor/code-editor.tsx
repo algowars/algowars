@@ -18,7 +18,7 @@ export const CodeEditor = ({
 }: CodeEditorProps) => {
   const { getThemeWithSystem } = useTheme();
 
-  const onChange = useCallback(changeCode, []);
+  const onChange = useCallback(changeCode, [changeCode]);
 
   const theme = getThemeWithSystem() === "dark" ? vscodeDark : vscodeLight;
 

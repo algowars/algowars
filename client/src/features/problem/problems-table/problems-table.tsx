@@ -41,9 +41,9 @@ export const ProblemsTable = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-3">
+    <div className="w-full flex flex-col gap-3 overflow-x-auto">
       <PaginationProvider paginationMutation={getProblemsPaginated}>
-        <Table>
+        <Table className="min-w-[37.5rem]">
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
