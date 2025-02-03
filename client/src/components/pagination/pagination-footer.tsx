@@ -20,7 +20,12 @@ export const PaginationFooter = ({
   const { sizeOptions, size, changeSize } = usePagination();
 
   return (
-    <div className={cn("flex justify-between items-center", className)}>
+    <div
+      className={cn(
+        "flex flex-col-reverse gap-5 md:flex-row justify-between items-center",
+        className
+      )}
+    >
       <Select
         value={`${size}`}
         onValueChange={(value) => changeSize(Number(value))}
