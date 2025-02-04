@@ -1,0 +1,71 @@
+import { Inject } from '@nestjs/common';
+import { Knex } from 'knex';
+import { DatabaseInjectionToken } from 'lib/database.module';
+import { InjectConnection } from 'nest-knexjs';
+import { Id } from 'src/common/domain/id';
+import { GameQuery } from 'src/game/application/queries/game-query';
+import { Game } from 'src/game/domain/game';
+import { GameFactory } from 'src/game/domain/game-factory';
+import { LobbyFactory } from 'src/game/domain/lobby-factory';
+
+export class GameQueryImplementation implements GameQuery {
+  constructor(
+    @InjectConnection(DatabaseInjectionToken.READ_CONNECTION)
+    private readonly knexConnection: Knex,
+    @Inject()
+    private readonly lobbyFactory: LobbyFactory,
+    @Inject()
+    private readonly gameFactory: GameFactory,
+  ) {}
+
+  async findById(id: Id): Promise<Game> {
+    const gameRecord = await this.knexConnection('games')
+      .where({ id: id.toString() })
+      .first();
+
+    if (!gameRecord) {
+      throw new Error(`Game not found with id ${id.toString()}`);
+    }
+
+    const lobbyRecord = await this.knexConnection('lobbies')
+      .where({ id: gameRecord.lobby_id })
+      .first();
+
+    if (!lobbyRecord) {
+      throw new Error(`Lobby not found for game id ${id.toString()}`);
+    }
+
+    const lobby = this.lobbyFactory.create({
+      id: lobbyRecord.id,
+      maxPlayers: lobbyRecord.max_players,
+      players: [],
+    });
+
+    let currentRoundRecord = await this.knexConnection('game_rounds')
+      .where({ game_id: id.toString() })
+      .andWhere('finished_at', null)
+      .first();
+
+    if (!currentRoundRecord) {
+      currentRoundRecord = await this.knexConnection('game_rounds')
+        .where({ game_id: id.toString() })
+        .orderBy('created_at', 'desc')
+        .first();
+    }
+
+    const createdBy = { id: gameRecord.created_by_id } as any;
+
+    const game = this.gameFactory.create({
+      id: gameRecord.id,
+      gameType: gameRecord.game_type,
+      createdBy,
+      gameMode: gameRecord.game_mode,
+      lobby,
+      createdAt: new Date(gameRecord.created_at),
+      updatedAt: new Date(gameRecord.updated_at),
+      startedAt: gameRecord.started_at ? new Date(gameRecord.started_at) : null,
+    });
+
+    return game;
+  }
+}

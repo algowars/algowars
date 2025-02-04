@@ -34,6 +34,9 @@ export const LandingNavbar = () => {
               <li>
                 <Link to={routerConfig.appRoot.path}>Home</Link>
               </li>
+              <li>
+                <Link to={routerConfig.problems.path}>Problems</Link>
+              </li>
               {roles.includes("Admin") && (
                 <li>
                   <Link to={routerConfig.admin.path}>Admin</Link>
@@ -70,6 +73,9 @@ export const LandingNavbar = () => {
             <>
               <li>
                 <Link to={routerConfig.dashboard.path}>Home</Link>
+              </li>
+              <li>
+                <Link to={routerConfig.problems.path}>Problems</Link>
               </li>
               <li>
                 <LoginButton variant="outline" className="w-24" />

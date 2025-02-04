@@ -32,6 +32,9 @@ export const NavbarFull = () => {
           <li>
             <Link to={routerConfig.root.path}>Home</Link>
           </li>
+          <li>
+            <Link to={routerConfig.problems.path}>Problems</Link>
+          </li>
           {status === AccountStatus.FullyAuthenticated ? (
             <>
               {roles.includes("Admin") && (

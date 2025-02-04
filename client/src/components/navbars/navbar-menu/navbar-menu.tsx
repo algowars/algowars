@@ -56,6 +56,9 @@ export const NavbarMenu = ({ className }: NavbarMenuProps) => {
           <div className="px-5">
             <h5 className="font-semibold text-lg">Links</h5>
             <ul className="flex flex-col gap-5">
+              <li>
+                <Link to={routerConfig.problems.path}>Problems</Link>
+              </li>
               {status === AccountStatus.FullyAuthenticated ? (
                 <>
                   <li>

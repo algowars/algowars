@@ -24,12 +24,19 @@ export const routerConfig = {
   admin: {
     path: "/admin",
   },
+  rushSolo: {
+    path: "/rush/solo/:rushId",
+    execute: (rushId: string) => `/rush/solo/${encodeURIComponent(rushId)}`,
+  },
   adminCreateProblem: {
     path: "/admin/create-problem",
   },
   problem: {
     path: "/problem/:slug",
     execute: (slug: string) => `/problem/${encodeURIComponent(slug)}`,
+  },
+  problems: {
+    path: "/problems",
   },
   problemSolutions: {
     path: "/problem/:slug/solutions",
@@ -69,6 +76,14 @@ export const createAppRouter = () => {
       },
     },
     {
+      path: routerConfig.problems.path,
+      lazy: async () => {
+        const { ProblemsRoute } = await import("./routes/app/problems");
+
+        return { Component: ProblemsRoute };
+      },
+    },
+    {
       path: routerConfig.accountSetup.path,
       lazy: async () => {
         const { AccountSetupRoute } = await import(
@@ -78,6 +93,18 @@ export const createAppRouter = () => {
         return {
           Component: (props: object) => (
             <ProtectedRoute component={AccountSetupRoute} {...props} />
+          ),
+        };
+      },
+    },
+    {
+      path: routerConfig.rushSolo.path,
+      lazy: async () => {
+        const { SoloRushRoute } = await import("./routes/app/rush/solo");
+
+        return {
+          Component: (props: object) => (
+            <ProtectedRoute component={SoloRushRoute} {...props} />
           ),
         };
       },
