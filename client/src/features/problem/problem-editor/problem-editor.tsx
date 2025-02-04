@@ -210,7 +210,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                 defaultSize={submissionId ? 40 : 0}
                 minSize={submissionId ? 40 : 0}
               >
-                <Card className="h-full overflow-auto bg-zinc-900">
+                <Card className="h-full overflow-auto dark:bg-zinc-900">
                   <ProblemEditorResult
                     submissionId={submissionId}
                     submissionUpdate={submissionUpdate}

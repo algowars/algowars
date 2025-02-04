@@ -9,7 +9,6 @@ import { GameMode } from '../domain/game-mode';
 import { FindRushByIdResult } from '../application/queries/find-rush-by-id-query/find-rush-by-id-result';
 import { FindRushByIdParam } from './dto/request/find-rush-by-id-param.dto';
 import { FindRushByIdQuery } from '../application/queries/find-rush-by-id-query/find-rush-by-id.query';
-
 @Controller('v1/game')
 export class GameController {
   constructor(

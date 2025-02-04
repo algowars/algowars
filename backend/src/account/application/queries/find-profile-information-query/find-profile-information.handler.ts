@@ -5,6 +5,8 @@ import { Inject, NotFoundException } from '@nestjs/common';
 import { AccountInjectionToken } from '../../injection-token';
 import { AccountQuery } from '../account-query';
 import { AccountErrorMessage } from 'src/account/domain/account-error-message';
+import { Id } from 'src/common/domain/id';
+import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 @QueryHandler(FindProfileInformationQuery)
 export class FindProfileInformationHandler
@@ -12,12 +14,12 @@ export class FindProfileInformationHandler
     IQueryHandler<FindProfileInformationQuery, FindProfileInformationResult>
 {
   @Inject(AccountInjectionToken.ACCOUNT_QUERY)
-  readonly accountQUery: AccountQuery;
+  readonly accountQuery: AccountQuery;
 
   async execute(
     query: FindProfileInformationQuery,
   ): Promise<FindProfileInformationResult> {
-    const data = await this.accountQUery.findByUsername(
+    const data = await this.accountQuery.findByUsername(
       query.username.toString(),
     );
 
@@ -34,6 +36,20 @@ export class FindProfileInformationHandler
             elo: elo.getElo(),
           }))
         : [],
+      recentSubmissions: await this.getRecentSubmissions(data.getId()),
     };
+  }
+
+  private async getRecentSubmissions(accountId: Id): Promise<
+    {
+      problemSlug: string;
+      problemId: string;
+      problemTitle: string;
+      status: SubmissionStatus | null;
+      createdAt: Date;
+      id: string;
+    }[]
+  > {
+    return this.accountQuery.findRecentSubmissions(accountId);
   }
 }

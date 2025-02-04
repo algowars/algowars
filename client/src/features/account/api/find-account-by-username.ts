@@ -1,14 +1,14 @@
 import { AxiosRequestConfig } from "axios";
-import { Account } from "../models/account.model";
 import { api } from "@/lib/api-client";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { QueryConfig } from "@/lib/react-query";
+import { AccountProfile } from "../models/account-profile";
 
 export const findAccountByUsername = ({
   username,
 }: {
   username: string;
-}): Promise<Account> => {
+}): Promise<AccountProfile> => {
   const config: AxiosRequestConfig = {
     url: `/api/v1/account/find/username/${encodeURIComponent(username)}/profile`,
   };
