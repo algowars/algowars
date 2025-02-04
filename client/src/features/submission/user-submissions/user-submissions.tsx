@@ -28,36 +28,28 @@ export const UserSubmissions = ({ submissions }: UserSubmissionsProps) => {
   }
 
   return (
-    <Table className="min-w-full border-separate border-spacing-0">
+    <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-            Problem
-          </TableHead>
-          <TableHead className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-            Status
-          </TableHead>
-          <TableHead className="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider">
-            Date
-          </TableHead>
+          <TableHead>Problem</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Date</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {submissions.map((sub) => (
           <TableRow
             key={sub.id}
-            className="cursor-pointer hover:bg-zinc-800 transition-colors"
+            className="hover:cursor-pointer"
             onClick={() =>
               navigate(routerConfig.problem.execute(sub.problemSlug))
             }
           >
-            <TableCell className="px-4 py-2 font-semibold text-white">
-              {sub.problemTitle}
-            </TableCell>
-            <TableCell className="px-4 py-2">
+            <TableCell>{sub.problemTitle}</TableCell>
+            <TableCell>
               {sub.status ? <SubmissionStatusView status={sub.status} /> : null}
             </TableCell>
-            <TableCell className="px-4 py-2 text-sm text-gray-400">
+            <TableCell className="text-muted-foreground">
               {formatDate(sub.createdAt)}
             </TableCell>
           </TableRow>
