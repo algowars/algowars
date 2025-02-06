@@ -1,4 +1,4 @@
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { Layout } from "@/components/layouts/layout/layout";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
@@ -13,7 +13,7 @@ export const NotFoundRoute = () => {
             The link you followed probably broken or the page has been removed.
           </p>
           <Link
-            to={routerConfig.appRoot.path}
+            to={routerConfig.root.path}
             className={buttonVariants({ variant: "default" })}
           >
             Go to home

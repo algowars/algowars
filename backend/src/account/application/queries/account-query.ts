@@ -18,4 +18,5 @@ export interface AccountQuery {
       id: string;
     }[]
   >;
+  getTotalSubmissions(accountId: Id): Promise<number>;
 }

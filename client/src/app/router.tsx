@@ -3,76 +3,15 @@ import { ProtectedRoute } from "@/components/auth/protected-route/protected-rout
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-export const routerConfig = {
-  root: {
-    path: "/",
-  },
-  profile: {
-    path: "/profile/:username",
-    execute: (username: string) => `/profile/${encodeURIComponent(username)}`,
-  },
-  appRoot: {
-    path: "/",
-  },
-  dashboard: {
-    path: "/dashboard",
-  },
-  accountSetup: {
-    path: "/account/setup",
-  },
-  admin: {
-    path: "/admin",
-  },
-  rushSolo: {
-    path: "/rush/solo/:rushId",
-    execute: (rushId: string) => `/rush/solo/${encodeURIComponent(rushId)}`,
-  },
-  adminCreateProblem: {
-    path: "/admin/create-problem",
-  },
-  problem: {
-    path: "/problem/:slug",
-    execute: (slug: string) => `/problem/${encodeURIComponent(slug)}`,
-  },
-  problems: {
-    path: "/problems",
-  },
-  problemSolutions: {
-    path: "/problem/:slug/solutions",
-    execute: (slug: string) => `/problem/${encodeURIComponent(slug)}/solutions`,
-  },
-  soloRush: {
-    path: "/rush/solo/",
-    execute: (rushId: string) => `/rush/solo/${encodeURIComponent(rushId)}`,
-  },
-  notFound: {
-    path: "*",
-  },
-};
+import { RootRouteWrapper } from "./root-route-wrapper";
+import { routerConfig } from "./router-config";
 
 export const createAppRouter = () => {
   return createBrowserRouter([
     {
       path: routerConfig.root.path,
       lazy: async () => {
-        const { LandingRoute } = await import("./routes/landing");
-
-        return { Component: LandingRoute };
-      },
-    },
-    {
-      path: routerConfig.appRoot.path,
-      lazy: async () => {
-        const { DashboardRoute } = await import("./routes/app/dashboard");
-        return { Component: DashboardRoute };
-      },
-    },
-    {
-      path: routerConfig.dashboard.path,
-      lazy: async () => {
-        const { DashboardRoute } = await import("./routes/app/dashboard");
-        return { Component: DashboardRoute };
+        return { Component: RootRouteWrapper };
       },
     },
     {
@@ -94,6 +33,16 @@ export const createAppRouter = () => {
           Component: (props: object) => (
             <ProtectedRoute component={AccountSetupRoute} {...props} />
           ),
+        };
+      },
+    },
+    {
+      path: routerConfig.rush.path,
+      lazy: async () => {
+        const { RushRoute } = await import("./routes/app/rush");
+
+        return {
+          Component: RushRoute,
         };
       },
     },

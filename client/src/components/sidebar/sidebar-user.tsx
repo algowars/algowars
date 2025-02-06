@@ -1,10 +1,9 @@
 import {
-  BadgeCheck,
   Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
   Sparkles,
+  UserRound,
 } from "lucide-react";
 import defaultPfp from "/pfp/default-pfp.png";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,10 +23,27 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAccount } from "@/features/account/account.provider";
+import { useAuth0 } from "@auth0/auth0-react";
+import { handleLogout } from "../auth/logout-button";
+import { useNavigate } from "react-router-dom";
+import { GearIcon } from "@radix-ui/react-icons";
+import { routerConfig } from "@/app/router-config";
 
 export const SidebarUser = () => {
-  const { user } = useAccount();
+  const { user, account } = useAccount();
+  const { logout } = useAuth0();
+  const navigate = useNavigate();
   const { isMobile } = useSidebar();
+
+  const redirectToProfile = () => {
+    if (account?.username) {
+      navigate(routerConfig.profile.execute(account?.username));
+    }
+  };
+
+  const redirectToSettings = () => {
+    navigate(routerConfig.settings.path);
+  };
 
   return (
     <SidebarMenu>
@@ -36,7 +52,7 @@ export const SidebarUser = () => {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user?.picture} alt={user?.name} />
@@ -80,21 +96,22 @@ export const SidebarUser = () => {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
+              <DropdownMenuItem onClick={redirectToProfile}>
+                <UserRound />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
+
               <DropdownMenuItem>
                 <Bell />
                 Notifications
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={redirectToSettings}>
+                <GearIcon />
+                Settings
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleLogout(logout)}>
               <LogOut />
               Log out
             </DropdownMenuItem>

@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { useCreateSoloRush } from "../../api/create-solo-rush";
 import { useNavigate } from "react-router-dom";
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "sonner";
 
@@ -37,7 +37,7 @@ export const CreateSoloProblemRushCard = () => {
   };
 
   return (
-    <Card>
+    <Card className="bg-sidebar">
       <CardHeader>
         <CardTitle>Solo Problem Rush</CardTitle>
         <CardDescription>

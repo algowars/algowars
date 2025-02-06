@@ -132,4 +132,12 @@ export class AccountQueryImplementation implements AccountQuery {
       status: row.status as SubmissionStatus | null,
     }));
   }
+
+  async getTotalSubmissions(accountId: Id): Promise<number> {
+    const result = await this.knexConnection(Aliases.SUBMISSIONS)
+      .where({ created_by_id: accountId.getValue() })
+      .count('id as total');
+
+    return Number(result[0].total);
+  }
 }

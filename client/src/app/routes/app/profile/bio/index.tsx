@@ -31,7 +31,7 @@ export const ProfileBioRoute = () => {
   return (
     <Layout>
       <Container className="py-6 flex flex-col gap-3">
-        <Card className="p-5 flex flex-col gap-5 bg-zinc-100 dark:bg-zinc-900 mb-5">
+        <Card className="p-5 flex flex-col gap-5 bg-sidebar mb-5">
           <h2 className="font-bold text-2xl">{account.username}</h2>
           {/* {profileRank ? <PlayerRankBadge elo={profileRank.elo} /> : null} */}
 
@@ -39,7 +39,7 @@ export const ProfileBioRoute = () => {
             Created on {dayjs(account.createdAt).format("DD/MM/YYYY")}
           </p>
         </Card>
-        <Card className="p-5 bg-zinc-100 dark:bg-zinc-900">
+        <Card className="p-5  bg-sidebar">
           <h3 className="text-xl font-bold mb-2">Recent Submissions</h3>
           <UserSubmissions submissions={account.recentSubmissions} />
         </Card>

@@ -13,8 +13,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
-import { routerConfig } from "@/app/router";
 import { DifficultyBadge } from "@/components/difficulty-badge/difficulty-badge";
+import { routerConfig } from "@/app/router-config";
 
 export const ProblemsTable = () => {
   const navigate = useNavigate();

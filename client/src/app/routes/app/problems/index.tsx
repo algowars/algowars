@@ -1,17 +1,32 @@
-import { Container } from "@/components/container";
-import { Layout } from "@/components/layouts/layout/layout";
-import { Card } from "@/components/ui/card";
+import { routerConfig } from "@/app/router-config";
+import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProblemsTable } from "@/features/problem/problems-table/problems-table";
 
 export const ProblemsRoute = () => {
   return (
-    <Layout>
-      <Container className="py-5 flex flex-col gap-5">
-        <Card className="flex flex-col gap-5 p-5 rounded-none lg:rounded-lg">
-          <h3 className="text-3xl font-bold">Problems</h3>
-          <ProblemsTable />
+    <SidebarLayout
+      breadcrumbs={[
+        {
+          href: routerConfig.root.path,
+          name: "Home",
+        },
+        {
+          href: routerConfig.problems.path,
+          name: "Problems",
+        },
+      ]}
+    >
+      <div className="flex flex-col gap-5 px-5">
+        <Card className="bg-sidebar">
+          <CardHeader>
+            <CardTitle>Problems</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ProblemsTable />
+          </CardContent>
         </Card>
-      </Container>
-    </Layout>
+      </div>
+    </SidebarLayout>
   );
 };

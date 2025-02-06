@@ -16,7 +16,7 @@ export const AdminCreateProblemRoute = () => {
     <Layout>
       <section>
         <Container className="flex items-center py-8">
-          <Card className="w-full p-5 flex flex-col gap-5">
+          <Card className="w-full p-5 flex flex-col gap-5 bg-sidebar">
             <h1 className="text-3xl font-bold">Create new Problem</h1>
             <AdminCreateProblemForm />
           </Card>

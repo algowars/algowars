@@ -3,12 +3,23 @@ import { AppSidebar } from "@/components/sidebar/sidebar";
 import { SidebarMainHeader } from "@/components/sidebar/sidebar-main-header";
 import {
   Sidebar,
+  SidebarFooter,
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { ComponentProps } from "react";
 
-export const SidebarLayout = ({ children }: ComponentProps<typeof Sidebar>) => {
+export interface SidebarLayoutProps extends ComponentProps<typeof Sidebar> {
+  breadcrumbs: {
+    href: string;
+    name: string;
+  }[];
+}
+
+export const SidebarLayout = ({
+  children,
+  breadcrumbs = [],
+}: SidebarLayoutProps) => {
   return (
     <>
       <Head title="Algowars" />
@@ -16,8 +27,9 @@ export const SidebarLayout = ({ children }: ComponentProps<typeof Sidebar>) => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <SidebarMainHeader />
+          <SidebarMainHeader breadCrumbLinks={breadcrumbs} />
           {children}
+          <SidebarFooter />
         </SidebarInset>
       </SidebarProvider>
     </>

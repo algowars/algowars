@@ -1,4 +1,5 @@
 import { LayoutFull } from "@/components/layouts/layout-full";
+import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layout";
 import { Spinner } from "@/components/ui/spinner";
 import { useGetProblemBySlug } from "@/features/problem/api/get-problem-by-slug";
 import { ProblemEditor } from "@/features/problem/problem-editor/problem-editor";
@@ -32,9 +33,9 @@ export const ProblemRoute = () => {
           key={location.pathname}
           fallback={<div>Something went wrong!</div>}
         >
-          <LayoutFull className="flex flex-col h-[1px]">
+          <SidebarLayout className="flex flex-col h-[1px]">
             <ProblemEditor problem={problem} />
-          </LayoutFull>
+          </SidebarLayout>
         </ErrorBoundary>
       </Suspense>
     </div>

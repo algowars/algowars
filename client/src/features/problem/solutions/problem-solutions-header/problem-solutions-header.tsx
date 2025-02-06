@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Problem } from "../../models/problem.model";
 import { Link } from "react-router-dom";
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { buttonVariants } from "@/components/ui/button";
 
 type ProblemSolutionsHeaderProps = {

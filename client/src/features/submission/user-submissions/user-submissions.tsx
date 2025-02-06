@@ -1,6 +1,6 @@
 import { SubmissionStatusView } from "../submission-status-view/submission-status-view";
 import { useNavigate } from "react-router-dom";
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { formatDate } from "@/utils/format-date";
 import { AccountProfile } from "@/features/account/models/account-profile";
 import {

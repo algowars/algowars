@@ -19,6 +19,9 @@ import { Account } from '../domain/account';
 import { FindProfileInformationResult } from '../application/queries/find-profile-information-query/find-profile-information-result';
 import { FindProfileInformationQuery } from '../application/queries/find-profile-information-query/find-profile-information.query';
 import { UsernameImplementation } from '../domain/username';
+import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard';
+import { FindAccountStatsByUsernameResult } from '../application/queries/find-account-stats-by-username-query/find-account-stats-by-username-result';
+import { FindAccountStatsByUsernameQuery } from '../application/queries/find-account-stats-by-username-query/find-account-stats-by-username.query';
 
 @Controller('v1/account')
 export class AccountController {
@@ -77,5 +80,19 @@ export class AccountController {
       username: foundAccount.username,
       createdAt: foundAccount.createdAt,
     };
+  }
+
+  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
+  @Get('find/username/:username/stats')
+  async getUserStats(
+    @Param() param: FindAccountByUsername,
+  ): Promise<FindAccountStatsByUsernameResult> {
+    const stats = await this.queryBus.execute(
+      new FindAccountStatsByUsernameQuery(
+        new UsernameImplementation(param.username),
+      ),
+    );
+
+    return stats;
   }
 }

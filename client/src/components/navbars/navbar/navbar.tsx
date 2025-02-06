@@ -1,4 +1,4 @@
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { LoginButton } from "@/components/auth/login-button";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
