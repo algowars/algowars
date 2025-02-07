@@ -39,7 +39,7 @@ export const ProblemEditorFooter = ({
   };
 
   return (
-    <footer className="flex items-center px-5 pb-5">
+    <footer className="flex items-center px-5 pb-0">
       <ul className="flex items-center gap-5 ml-auto">
         <li>
           <Button

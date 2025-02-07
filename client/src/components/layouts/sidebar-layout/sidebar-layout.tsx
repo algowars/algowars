@@ -27,7 +27,7 @@ export const SidebarLayout = ({
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <SidebarMainHeader breadCrumbLinks={breadcrumbs} />
+          <SidebarMainHeader breadcrumbs={breadcrumbs} />
           {children}
           <SidebarFooter />
         </SidebarInset>

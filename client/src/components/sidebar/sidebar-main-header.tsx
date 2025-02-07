@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 
 type SidebarMainHeaderProps = {
   children?: ReactNode;
-  breadCrumbLinks: {
+  breadcrumbs: {
     href: string;
     name: string;
   }[];
@@ -28,7 +28,7 @@ export const SidebarMainHeader = ({
       </li>
     </ul>
   ),
-  breadCrumbLinks = [],
+  breadcrumbs = [],
 }: SidebarMainHeaderProps) => {
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -37,8 +37,8 @@ export const SidebarMainHeader = ({
         <Separator orientation="vertical" className="mr-2 h-4" />
         <Breadcrumb>
           <BreadcrumbList>
-            {breadCrumbLinks.map((breadcrumb, index) => {
-              if (breadCrumbLinks.length - 1 === index) {
+            {breadcrumbs.map((breadcrumb, index) => {
+              if (breadcrumbs.length - 1 === index) {
                 return (
                   <BreadcrumbItem key={breadcrumb.href}>
                     <BreadcrumbPage>{breadcrumb.name}</BreadcrumbPage>
@@ -47,17 +47,14 @@ export const SidebarMainHeader = ({
               }
 
               return (
-                <>
-                  <BreadcrumbItem
-                    key={breadcrumb.href}
-                    className="hidden md:block"
-                  >
+                <Fragment key={breadcrumb.href + breadcrumb.name}>
+                  <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href={breadcrumb.href} asChild>
                       <Link to={breadcrumb.href}>{breadcrumb.name}</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
-                </>
+                </Fragment>
               );
             })}
           </BreadcrumbList>

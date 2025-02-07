@@ -12,6 +12,9 @@ export const routerConfig = {
   admin: {
     path: "/admin",
   },
+  adminViewProblems: {
+    path: "/admin/problems",
+  },
   settings: {
     path: "/settings",
   },

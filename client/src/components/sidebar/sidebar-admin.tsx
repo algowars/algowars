@@ -1,10 +1,4 @@
-import { ChevronRight, type LucideIcon } from "lucide-react";
-
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { useAccount } from "@/features/account/account.provider";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -14,12 +8,16 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar";
+} from "../ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../ui/collapsible";
+import { ChevronRight, LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export function SidebarMain({
-  items,
-}: {
+type SidebarAdminProps = {
   items: {
     title: string;
     url: string;
@@ -30,10 +28,18 @@ export function SidebarMain({
       url: string;
     }[];
   }[];
-}) {
+};
+
+export const SidebarAdmin = ({ items }: SidebarAdminProps) => {
+  const { isAdmin } = useAccount();
+
+  if (!isAdmin) {
+    return null;
+  }
+
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>Admin</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible key={item.title} asChild>
@@ -64,4 +70,4 @@ export function SidebarMain({
       </SidebarMenu>
     </SidebarGroup>
   );
-}
+};

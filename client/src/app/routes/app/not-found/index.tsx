@@ -1,11 +1,11 @@
 import { routerConfig } from "@/app/router-config";
-import { Layout } from "@/components/layouts/layout/layout";
+import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layout";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 
 export const NotFoundRoute = () => {
   return (
-    <Layout>
+    <SidebarLayout breadcrumbs={[]}>
       <section className="flex justify-center items-center py-24">
         <div className="flex flex-col items-center justify-start text-center gap-2">
           <h2 className="text-2xl font-semibold">404 Page Not Found</h2>
@@ -20,6 +20,6 @@ export const NotFoundRoute = () => {
           </Link>
         </div>
       </section>
-    </Layout>
+    </SidebarLayout>
   );
 };

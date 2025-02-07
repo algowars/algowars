@@ -8,6 +8,7 @@ import {
 } from "react";
 import { useFindAccountBySub } from "./api/find-account-by-sub";
 import { Account } from "./models/account.model";
+import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
 
 export enum AccountStatus {
   NoAccount = "No Account",
@@ -27,6 +28,8 @@ type AccountProviderState = {
   status: AccountStatus;
   account: Account | null;
   changeAccount: (newAccount: Account | null) => void;
+  roles: string[];
+  isAdmin: boolean;
 };
 
 const initialState: AccountProviderState = {
@@ -37,6 +40,8 @@ const initialState: AccountProviderState = {
   status: AccountStatus.NoAccount,
   account: null,
   changeAccount: () => null,
+  roles: [],
+  isAdmin: false,
 };
 
 const AccountProviderContext =
@@ -57,6 +62,9 @@ export function AccountProvider({ children, ...props }: AccountProviderProps) {
     isLoading: isAuthLoading,
     getAccessTokenSilently,
   } = useAuth0();
+  const { roles } = useAuthPermissions();
+
+  const isAdmin = roles.includes("Admin");
 
   useEffect(() => {
     (async () => {
@@ -113,6 +121,7 @@ export function AccountProvider({ children, ...props }: AccountProviderProps) {
     isAuthAuthenticated,
     accountData,
     accountError,
+    isAdmin,
   ]);
 
   const changeAccount = (newAccount: Account | null) => {
@@ -137,6 +146,8 @@ export function AccountProvider({ children, ...props }: AccountProviderProps) {
     error,
     status,
     changeAccount,
+    roles,
+    isAdmin,
   };
 
   return (

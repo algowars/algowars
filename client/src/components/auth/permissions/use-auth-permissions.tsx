@@ -11,14 +11,14 @@ export const useAuthPermissions = () => {
       const claim = await getIdTokenClaims();
 
       if (claim) {
-        const foundRoles = claim[namespace];
+        const foundRoles = await claim[namespace];
 
         if (Array.isArray(foundRoles)) {
           setRoles(foundRoles);
         }
       }
     })();
-  }, []);
+  }, [getIdTokenClaims, namespace]);
 
   return { roles };
 };

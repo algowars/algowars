@@ -1,5 +1,4 @@
-import { Container } from "@/components/container";
-import { Layout } from "@/components/layouts/layout/layout";
+import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layout";
 import { PageLoader } from "@/components/loader/page-loader/page-loader";
 import { Card } from "@/components/ui/card";
 import { useAccount } from "@/features/account/account.provider";
@@ -13,15 +12,13 @@ export const AdminCreateProblemRoute = () => {
   }
 
   return (
-    <Layout>
+    <SidebarLayout breadcrumbs={[]}>
       <section>
-        <Container className="flex items-center py-8">
-          <Card className="w-full p-5 flex flex-col gap-5 bg-sidebar">
-            <h1 className="text-3xl font-bold">Create new Problem</h1>
-            <AdminCreateProblemForm />
-          </Card>
-        </Container>
+        <Card className="w-full p-5 flex flex-col gap-5 bg-sidebar">
+          <h1 className="text-3xl font-bold">Create new Problem</h1>
+          <AdminCreateProblemForm />
+        </Card>
       </section>
-    </Layout>
+    </SidebarLayout>
   );
 };

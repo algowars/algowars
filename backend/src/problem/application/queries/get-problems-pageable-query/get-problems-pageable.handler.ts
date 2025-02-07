@@ -15,10 +15,28 @@ export class GetProblemsPageableHandler
   async execute(
     query: GetProblemsPageableQuery,
   ): Promise<GetProblemsPageableResult> {
-    return this.problemQuery.getPageable(
+    const pageResult = await this.problemQuery.getPageable(
       query.page,
       query.size,
       query.timestamp,
     );
+
+    const mappedResults = pageResult.getResults().map((problem) => ({
+      title: problem.getTitle(),
+      question: problem.getQuestion(),
+      createdAt: problem.getCreatedAt(),
+      difficulty: problem.getDifficulty(),
+      id: problem.getId().toString(),
+      slug: problem.getSlug(),
+      tags: problem.getTags().map((tag) => tag.getName()),
+    }));
+
+    const result = new GetProblemsPageableResult();
+    result.page = pageResult.getPage();
+    result.size = pageResult.getSize();
+    result.totalPages = pageResult.getTotalPages();
+    result.results = mappedResults;
+
+    return result;
   }
 }

@@ -1,4 +1,4 @@
-import { LayoutFull } from "@/components/layouts/layout-full";
+import { routerConfig } from "@/app/router-config";
 import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layout";
 import { Spinner } from "@/components/ui/spinner";
 import { useGetProblemBySlug } from "@/features/problem/api/get-problem-by-slug";
@@ -33,7 +33,23 @@ export const ProblemRoute = () => {
           key={location.pathname}
           fallback={<div>Something went wrong!</div>}
         >
-          <SidebarLayout className="flex flex-col h-[1px]">
+          <SidebarLayout
+            className="flex flex-col h-[1px]"
+            breadcrumbs={[
+              {
+                href: routerConfig.root.path,
+                name: "Home",
+              },
+              {
+                href: routerConfig.problems.path,
+                name: "Problems",
+              },
+              {
+                href: routerConfig.problem.execute(slug),
+                name: slug,
+              },
+            ]}
+          >
             <ProblemEditor problem={problem} />
           </SidebarLayout>
         </ErrorBoundary>
