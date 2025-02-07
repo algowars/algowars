@@ -8,13 +8,19 @@
   },
   "scripts": {
     "dev": "concurrently \"npm run start:dev --prefix backend\" \"npm run dev --prefix client\"",
+    "build": "npm run build:client && npm run build:backend",
+    "build:client": "(cd client && npm run build)",
+    "build:backend": "(cd backend && npm run build)",
     "install:all": "npm run install:backend && npm run install:client",
     "install:backend": "(cd backend && npm ci)",
     "install:client": "(cd client && npm ci --force)",
     "migrate:latest": "cd ./backend && npx knex migrate:latest",
     "migrate:rollback": "cd ./backend && npx knex migrate:rollback",
     "migrate:rollback:all": "cd ./backend && npx knex migrate:rollback --all",
-    "seed": "cd ./backend && npx knex seed:run"
+    "seed": "cd ./backend && npx knex seed:run",
+    "lint:client": "(cd client && npm run lint)",
+    "lint:backend": "(cd backend && npm run lint)",
+    "lint": "npm run lint:client && npm run lint:backend"
   },
   "repository": {
     "type": "git",
