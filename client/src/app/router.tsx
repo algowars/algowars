@@ -3,69 +3,23 @@ import { ProtectedRoute } from "@/components/auth/protected-route/protected-rout
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-export const routerConfig = {
-  root: {
-    path: "/",
-  },
-  profile: {
-    path: "/profile/:username",
-    execute: (username: string) => `/profile/${encodeURIComponent(username)}`,
-  },
-  appRoot: {
-    path: "/",
-  },
-  dashboard: {
-    path: "/dashboard",
-  },
-  accountSetup: {
-    path: "/account/setup",
-  },
-  admin: {
-    path: "/admin",
-  },
-  adminCreateProblem: {
-    path: "/admin/create-problem",
-  },
-  problem: {
-    path: "/problem/:slug",
-    execute: (slug: string) => `/problem/${encodeURIComponent(slug)}`,
-  },
-  problemSolutions: {
-    path: "/problem/:slug/solutions",
-    execute: (slug: string) => `/problem/${encodeURIComponent(slug)}/solutions`,
-  },
-  soloRush: {
-    path: "/rush/solo/",
-    execute: (rushId: string) => `/rush/solo/${encodeURIComponent(rushId)}`,
-  },
-  notFound: {
-    path: "*",
-  },
-};
+import { RootRouteWrapper } from "./root-route-wrapper";
+import { routerConfig } from "./router-config";
 
 export const createAppRouter = () => {
   return createBrowserRouter([
     {
       path: routerConfig.root.path,
       lazy: async () => {
-        const { LandingRoute } = await import("./routes/landing");
+        return { Component: RootRouteWrapper };
+      },
+    },
+    {
+      path: routerConfig.problems.path,
+      lazy: async () => {
+        const { ProblemsRoute } = await import("./routes/app/problems");
 
-        return { Component: LandingRoute };
-      },
-    },
-    {
-      path: routerConfig.appRoot.path,
-      lazy: async () => {
-        const { DashboardRoute } = await import("./routes/app/dashboard");
-        return { Component: DashboardRoute };
-      },
-    },
-    {
-      path: routerConfig.dashboard.path,
-      lazy: async () => {
-        const { DashboardRoute } = await import("./routes/app/dashboard");
-        return { Component: DashboardRoute };
+        return { Component: ProblemsRoute };
       },
     },
     {
@@ -78,6 +32,28 @@ export const createAppRouter = () => {
         return {
           Component: (props: object) => (
             <ProtectedRoute component={AccountSetupRoute} {...props} />
+          ),
+        };
+      },
+    },
+    {
+      path: routerConfig.rush.path,
+      lazy: async () => {
+        const { RushRoute } = await import("./routes/app/rush");
+
+        return {
+          Component: RushRoute,
+        };
+      },
+    },
+    {
+      path: routerConfig.rushSolo.path,
+      lazy: async () => {
+        const { SoloRushRoute } = await import("./routes/app/rush/solo");
+
+        return {
+          Component: (props: object) => (
+            <ProtectedRoute component={SoloRushRoute} {...props} />
           ),
         };
       },

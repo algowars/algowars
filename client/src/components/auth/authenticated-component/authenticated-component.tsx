@@ -3,7 +3,7 @@ import React from "react";
 import { LoginButton } from "../login-button";
 import { SignupButton } from "../signup-button";
 import { Link } from "@/components/ui/link";
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { buttonVariants } from "@/components/ui/button";
 
 interface AuthenticatedComponentProps {

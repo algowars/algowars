@@ -1,4 +1,4 @@
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { AccountStatus, useAccount } from "../account.provider";
 
 const AccountVerficiationBanner = () => {

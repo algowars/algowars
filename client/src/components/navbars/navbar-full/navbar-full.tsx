@@ -1,4 +1,4 @@
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { LoginButton } from "@/components/auth/login-button";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { SignupButton } from "@/components/auth/signup-button";
@@ -31,6 +31,9 @@ export const NavbarFull = () => {
         <ul className="hidden sm:flex items-center gap-5 ml-auto">
           <li>
             <Link to={routerConfig.root.path}>Home</Link>
+          </li>
+          <li>
+            <Link to={routerConfig.problems.path}>Problems</Link>
           </li>
           {status === AccountStatus.FullyAuthenticated ? (
             <>

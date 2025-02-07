@@ -30,5 +30,61 @@
     "initial_code": "function twoSum(nums, target) {\n  \n}",
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "problem_id": "a1b2c3d4-e5f6-4789-abcd-0123456789ab",
+    "language_id": 93,
+    "solution_id": "f0e5d4c3-b2a1-4f6d-8c7b-0123456789ab",
+    "initial_code": "function reverseString(str) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "problem_id": "b1c2d3e4-f5a6-4789-bcde-123456789abc",
+    "language_id": 93,
+    "solution_id": "aabbccdd-eeff-4a1b-9cde-0123456789ab",
+    "initial_code": "function factorialCalculation(n) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "problem_id": "c1d2e3f4-a5b6-4789-adef-23456789abcd",
+    "language_id": 93,
+    "solution_id": "11223344-5566-4a77-8b99-0123456789ab",
+    "initial_code": "function binarySearch(arr, target) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "problem_id": "d1e2f3a4-b5c6-4789-8ef0-3456789abcde",
+    "language_id": 93,
+    "solution_id": "22334455-6677-4a88-abcd-0123456789ab",
+    "initial_code": "function longestCommonPrefix(strs) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "problem_id": "e1f2a3b4-c5d6-4789-8f01-456789abcdef",
+    "language_id": 93,
+    "solution_id": "33445566-7788-4b99-bcde-0123456789ab",
+    "initial_code": "function anagramCheck(str1, str2) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "problem_id": "f1a2b3c4-d5e6-4789-9012-56789abcdef0",
+    "language_id": 93,
+    "solution_id": "44556677-8899-4caa-bdef-0123456789ab",
+    "initial_code": "function validParentheses(s) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "problem_id": "a2b3c4d5-e6f7-4c8d-9abc-0123456789de",
+    "language_id": 93,
+    "solution_id": "f1234567-89ab-4cde-8f12-3456789abcd0",
+    "initial_code": "function regexMatching(s, p) {\n  \n}",
+    "deleted_at": null,
+    "version": 1
   }
 ]

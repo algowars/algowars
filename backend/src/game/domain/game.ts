@@ -37,6 +37,18 @@ export abstract class Game {
     return this.id;
   }
 
+  getGameMode(): GameMode {
+    return this.gameMode;
+  }
+
+  getFinishedAt(): Date | null {
+    return this.finishedAt;
+  }
+
+  getCreatedAt(): Date {
+    return this.createdAt;
+  }
+
   public startGame(): void {
     if (this.startedAt) {
       throw new Error('Game is already active');

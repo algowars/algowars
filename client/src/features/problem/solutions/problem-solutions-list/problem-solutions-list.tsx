@@ -1,8 +1,7 @@
+import { CodeBlock } from "@/components/code-block/code-block";
 import { Card } from "@/components/ui/card";
 import { Submission } from "@/features/submission/models/submission.model";
 import { SubmissionStatusView } from "@/features/submission/submission-status-view/submission-status-view";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 type ProblemSolutionsListProps = {
   solutions?: Submission[];
@@ -36,9 +35,7 @@ const ProblemSolutionsList = ({ solutions }: ProblemSolutionsListProps) => {
             </div>
 
             <div className="overflow-hidden rounded-lg">
-              <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
-                {solution.sourceCode}
-              </SyntaxHighlighter>
+              <CodeBlock code={solution.sourceCode} />
             </div>
           </Card>
         </li>

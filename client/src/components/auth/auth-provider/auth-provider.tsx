@@ -30,6 +30,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         redirect_uri: redirectUri,
       }}
       onRedirectCallback={onRedirectCallback}
+      useRefreshTokens={true}
+      cacheLocation="localstorage"
     >
       {children}
     </Auth0Provider>

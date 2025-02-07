@@ -15,11 +15,11 @@ export class GameRepositoryImplementation implements GameRepository {
   constructor(
     @InjectConnection(DatabaseInjectionToken.WRITE_CONNECTION)
     private readonly knexConnection: Knex,
+    @Inject()
+    private readonly lobbyFactory: LobbyFactory,
+    @Inject()
+    private readonly gameFactory: GameFactory,
   ) {}
-  @Inject()
-  lobbyFactory: LobbyFactory;
-  @Inject()
-  gameFactory: GameFactory;
 
   async newId(): Promise<Id> {
     return new IdImplementation(new EntityId().toString());

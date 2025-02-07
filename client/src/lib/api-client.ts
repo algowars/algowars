@@ -14,6 +14,7 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
 
 export const api = Axios.create({
   baseURL: env.API_URL,
+  timeout: 5_000,
 });
 
 api.interceptors.request.use(authRequestInterceptor);

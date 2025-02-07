@@ -6,11 +6,12 @@ import { Knex } from 'knex';
 import { InjectConnection } from 'nest-knexjs';
 import { Aliases } from 'src/db/aliases';
 import { Account, AccountImplementation } from 'src/account/domain/account';
-import { IdImplementation } from 'src/common/domain/id';
+import { Id, IdImplementation } from 'src/common/domain/id';
 import { UserSubImplementation } from 'src/account/domain/user-sub';
 import { UsernameImplementation } from 'src/account/domain/username';
 import { AccountEloImplementation } from 'src/account/domain/account-elo';
 import { GameModes } from 'src/elo/domain/game-mode';
+import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 @Injectable()
 export class AccountQueryImplementation implements AccountQuery {
@@ -88,5 +89,55 @@ export class AccountQueryImplementation implements AccountQuery {
       version: entity.version,
       elos: eloInstances,
     });
+  }
+
+  async findRecentSubmissions(
+    accountId: Id,
+    limit = 10,
+  ): Promise<
+    {
+      problemSlug: string;
+      problemId: string;
+      problemTitle: string;
+      status: SubmissionStatus | null;
+      createdAt: Date;
+      id: string;
+    }[]
+  > {
+    const rows = await this.knexConnection('submissions')
+      .select([
+        'submissions.id as submissionId',
+        'submissions.created_at as createdAt',
+        'problems.id as problemId',
+        'problems.title as problemTitle',
+        'problems.slug as problemSlug',
+        'submission_results.status as status',
+      ])
+      .innerJoin('problems', 'submissions.problem_id', 'problems.id')
+      .leftJoin(
+        'submission_results',
+        'submission_results.submission_id',
+        'submissions.id',
+      )
+      .where('submissions.created_by_id', accountId.getValue())
+      .orderBy('submissions.created_at', 'desc')
+      .limit(limit);
+
+    return rows.map((row) => ({
+      id: row.submissionId,
+      createdAt: new Date(row.createdAt),
+      problemId: row.problemId,
+      problemTitle: row.problemTitle,
+      problemSlug: row.problemSlug,
+      status: row.status as SubmissionStatus | null,
+    }));
+  }
+
+  async getTotalSubmissions(accountId: Id): Promise<number> {
+    const result = await this.knexConnection(Aliases.SUBMISSIONS)
+      .where({ created_by_id: accountId.getValue() })
+      .count('id as total');
+
+    return Number(result[0].total);
   }
 }

@@ -1,4 +1,4 @@
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { LoginButton } from "@/components/auth/login-button";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
@@ -56,10 +56,13 @@ export const NavbarMenu = ({ className }: NavbarMenuProps) => {
           <div className="px-5">
             <h5 className="font-semibold text-lg">Links</h5>
             <ul className="flex flex-col gap-5">
+              <li>
+                <Link to={routerConfig.problems.path}>Problems</Link>
+              </li>
               {status === AccountStatus.FullyAuthenticated ? (
                 <>
                   <li>
-                    <Link to={routerConfig.appRoot.path}>Home</Link>
+                    <Link to={routerConfig.root.path}>Home</Link>
                   </li>
                   {roles.includes("Admin") && (
                     <li>
@@ -79,7 +82,7 @@ export const NavbarMenu = ({ className }: NavbarMenuProps) => {
                     <Link to={routerConfig.root.path}>Home</Link>
                   </li>
                   <li>
-                    <Link to={routerConfig.dashboard.path}>Dashboard</Link>
+                    <Link to={routerConfig.root.path}>Dashboard</Link>
                   </li>
                   <li>
                     <Link
@@ -97,7 +100,7 @@ export const NavbarMenu = ({ className }: NavbarMenuProps) => {
                 <>
                   <li>
                     <Link
-                      to={routerConfig.dashboard.path}
+                      to={routerConfig.root.path}
                       className={cn(
                         buttonVariants({ variant: "ghost" }),
                         "w-full text-start"

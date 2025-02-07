@@ -1,5 +1,5 @@
 import { CodeEditor } from "@/components/code-editor/code-editor";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -138,13 +138,13 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
 
   return (
     <>
-      <div className="grow pb-5 px-2 lg:px-5">
+      <div className="grow pb-3 px-2 lg:px-5">
         <ResizablePanelGroup direction="horizontal">
           <ResizablePanel defaultSize={55} minSize={10}>
-            <Card className="h-full max-h-full overflow-hidden">
-              <div className="p-2 border-b">
+            <Card className="h-full max-h-full overflow-hidden bg-sidebar">
+              <CardHeader className="p-2 border-b">
                 <h4 className="font-semibold">Code</h4>
-              </div>
+              </CardHeader>
               <CodeEditor
                 code={code}
                 changeCode={changeCode}
@@ -159,10 +159,10 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                 defaultSize={submissionId ? 60 : 100}
                 minSize={15}
               >
-                <Card className="h-full dark:bg-zinc-900 overflow-auto flex flex-col">
-                  <div className="p-2 border-b bg-background">
-                    <h4 className="font-semibold">Description</h4>
-                  </div>
+                <Card className="h-full bg-sidebar overflow-auto flex flex-col">
+                  <CardHeader className="p-2 border-b">
+                    <h4 className="font-semibold">Question</h4>
+                  </CardHeader>
                   <div className="p-5">
                     <div className="mb-3">
                       <h2 className="text-2xl font-semibold mb-1">
@@ -210,7 +210,7 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                 defaultSize={submissionId ? 40 : 0}
                 minSize={submissionId ? 40 : 0}
               >
-                <Card className="h-full overflow-auto bg-zinc-900">
+                <Card className="h-full overflow-auto bg-sidebar">
                   <ProblemEditorResult
                     submissionId={submissionId}
                     submissionUpdate={submissionUpdate}

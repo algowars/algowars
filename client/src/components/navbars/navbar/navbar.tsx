@@ -1,25 +1,22 @@
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { LoginButton } from "@/components/auth/login-button";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
 import { SignupButton } from "@/components/auth/signup-button";
 import { Container } from "@/components/container";
 import { Logo } from "@/components/logos/logo";
-import { ModeToggle } from "@/components/theme/mode-toggle";
 import { Link } from "@/components/ui/link";
 import { NavbarMenu } from "../navbar-menu/navbar-menu";
 import { AccountStatus, useAccount } from "@/features/account/account.provider";
 import { buttonVariants } from "@/components/ui/button";
+import { NavbarAvatar } from "../navbar-avatar/navbar-avatar";
 
 export const Navbar = () => {
-  const { status, account } = useAccount();
-  const profileUrl = account
-    ? routerConfig.profile.execute(account.username)
-    : "";
+  const { status } = useAccount();
   const { roles } = useAuthPermissions();
 
   return (
-    <nav>
+    <nav className="border-b">
       <Container className="flex items-center py-3 px-3 lg:px-0">
         <ul className="flex items-center gap-5">
           <li>
@@ -32,6 +29,9 @@ export const Navbar = () => {
           <li>
             <Link to={routerConfig.root.path}>Home</Link>
           </li>
+          <li>
+            <Link to={routerConfig.problems.path}>Problems</Link>
+          </li>
           {status === AccountStatus.FullyAuthenticated ? (
             <>
               {roles.includes("Admin") && (
@@ -43,10 +43,7 @@ export const Navbar = () => {
                 <Link to={routerConfig.soloRush.path}>Rush</Link>
               </li>
               <li>
-                <Link to={profileUrl}>Profile</Link>
-              </li>
-              <li>
-                <LogoutButton />
+                <NavbarAvatar />
               </li>
             </>
           ) : status === AccountStatus.PartiallyAuthenticated ? (
@@ -74,7 +71,6 @@ export const Navbar = () => {
             </>
           )}
         </ul>
-        <ModeToggle className="ml-3" />
         <NavbarMenu className="lg:hidden ml-auto" />
       </Container>
     </nav>

@@ -1,4 +1,4 @@
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { ReactNode } from "react";

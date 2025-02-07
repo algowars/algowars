@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAccount, AccountStatus } from "@/features/account/account.provider";
 import { Container } from "@/components/container";
-import { routerConfig } from "@/app/router";
+import { routerConfig } from "@/app/router-config";
 import { PageLoader } from "@/components/loader/page-loader/page-loader";
 import { Layout } from "@/components/layouts/layout/layout";
 import { AccountSetupForm } from "@/features/account/account-setup-form/account-setup-form";
@@ -14,7 +14,7 @@ export const AccountSetupRoute = () => {
   useEffect(() => {
     if (!isLoading) {
       if (status === AccountStatus.FullyAuthenticated) {
-        navigate(routerConfig.appRoot.path);
+        navigate(routerConfig.root.path);
       }
     }
   }, [status, isLoading, navigate]);
