@@ -22,7 +22,7 @@ export const DashboardRoute = () => {
       <div className="px-3 grid grid-cols-12 gap-3">
         <CreateSoloProblemRushCard className="col-span-12" />
 
-        <Card className="bg-sidebar col-span-9">
+        <Card className="bg-sidebar col-span-12 lg:col-span-9">
           <CardHeader>
             <CardTitle>Problems</CardTitle>
           </CardHeader>
@@ -30,7 +30,7 @@ export const DashboardRoute = () => {
             <ProblemsTable />
           </CardContent>
         </Card>
-        <AccountStats className="col-span-3" />
+        <AccountStats className="col-span-12 lg:col-span-3" />
       </div>
     </SidebarLayout>
   );
