@@ -14,8 +14,15 @@ import { useNavigate } from "react-router-dom";
 import { routerConfig } from "@/app/router-config";
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
-export const CreateSoloProblemRushCard = () => {
+type CreateSoloProblemRushCardProps = {
+  className?: string;
+};
+
+export const CreateSoloProblemRushCard = ({
+  className,
+}: CreateSoloProblemRushCardProps) => {
   const { getAccessTokenSilently } = useAuth0();
 
   const navigate = useNavigate();
@@ -37,7 +44,7 @@ export const CreateSoloProblemRushCard = () => {
   };
 
   return (
-    <Card className="bg-sidebar">
+    <Card className={cn("bg-sidebar", className)}>
       <CardHeader>
         <CardTitle>Solo Problem Rush</CardTitle>
         <CardDescription>

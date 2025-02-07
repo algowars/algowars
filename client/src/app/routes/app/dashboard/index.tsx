@@ -20,15 +20,7 @@ export const DashboardRoute = () => {
       ]}
     >
       <div className="px-3 grid grid-cols-12 gap-3">
-        <div className="col-span-4">
-          <CreateSoloProblemRushCard />
-        </div>
-        <div className="col-span-4">
-          <CreateSoloProblemRushCard />
-        </div>
-        <div className="col-span-4">
-          <CreateSoloProblemRushCard />
-        </div>
+        <CreateSoloProblemRushCard className="col-span-12" />
 
         <Card className="bg-sidebar col-span-9">
           <CardHeader>

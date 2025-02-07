@@ -10,6 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ModeToggle } from "../theme/mode-toggle";
+import { Link } from "react-router-dom";
 
 type SidebarMainHeaderProps = {
   children?: ReactNode;
@@ -51,8 +52,8 @@ export const SidebarMainHeader = ({
                     key={breadcrumb.href}
                     className="hidden md:block"
                   >
-                    <BreadcrumbLink href={breadcrumb.href}>
-                      {breadcrumb.name}
+                    <BreadcrumbLink href={breadcrumb.href} asChild>
+                      <Link to={breadcrumb.href}>{breadcrumb.name}</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
