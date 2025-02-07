@@ -38,5 +38,75 @@
     "problem_id": "49ae4175-629c-49b2-a25c-c700e112d15b",
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "id": "f0e5d4c3-b2a1-4f6d-8c7b-0123456789ab",
+    "source_code": "function reverseString(str) {\n  return str.split('').reverse().join('');\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "a1b2c3d4-e5f6-4789-abcd-0123456789ab",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "aabbccdd-eeff-4a1b-9cde-0123456789ab",
+    "source_code": "function factorialCalculation(n) {\n  if (n === 0) return 1;\n  let result = 1;\n  for (let i = 1; i <= n; i++) {\n    result *= i;\n  }\n  return result;\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "b1c2d3e4-f5a6-4789-bcde-123456789abc",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "11223344-5566-4a77-8b99-0123456789ab",
+    "source_code": "function binarySearch(arr, target) {\n  let low = 0, high = arr.length - 1;\n  while (low <= high) {\n    let mid = Math.floor((low + high) / 2);\n    if (arr[mid] === target) {\n      return mid;\n    } else if (arr[mid] < target) {\n      low = mid + 1;\n    } else {\n      high = mid - 1;\n    }\n  }\n  return -1;\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "c1d2e3f4-a5b6-4789-adef-23456789abcd",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "22334455-6677-4a88-abcd-0123456789ab",
+    "source_code": "function longestCommonPrefix(strs) {\n  if (strs.length === 0) return \"\";\n  let prefix = strs[0];\n  for (let i = 1; i < strs.length; i++) {\n    while (strs[i].indexOf(prefix) !== 0) {\n      prefix = prefix.slice(0, prefix.length - 1);\n      if (prefix === \"\") return \"\";\n    }\n  }\n  return prefix;\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "d1e2f3a4-b5c6-4789-8ef0-3456789abcde",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "33445566-7788-4b99-bcde-0123456789ab",
+    "source_code": "function anagramCheck(str1, str2) {\n  if (str1.length !== str2.length) return false;\n  return str1.split('').sort().join('') === str2.split('').sort().join('');\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "e1f2a3b4-c5d6-4789-8f01-456789abcdef",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "44556677-8899-4caa-bdef-0123456789ab",
+    "source_code": "function validParentheses(s) {\n  const stack = [];\n  const pairs = { '(': ')', '{': '}', '[': ']' };\n  for (let char of s) {\n    if (pairs[char]) {\n      stack.push(pairs[char]);\n    } else {\n      if (stack.pop() !== char) {\n        return false;\n      }\n    }\n  }\n  return stack.length === 0;\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "f1a2b3c4-d5e6-4789-9012-56789abcdef0",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "f1234567-89ab-4cde-8f12-3456789abcd0",
+    "source_code": "function regexMatching(s, p) {\n  const memo = {};\n  \n  function dp(i, j) {\n    const key = i + \",\" + j;\n    if (memo.hasOwnProperty(key)) return memo[key];\n    if (j === p.length) return i === s.length;\n    \n    const first_match = i < s.length && (p[j] === s[i] || p[j] === '.');\n    let ans;\n    \n    if (j + 1 < p.length && p[j + 1] === '*') {\n      ans = dp(i, j + 2) || (first_match && dp(i + 1, j));\n    } else {\n      ans = first_match && dp(i + 1, j + 1);\n    }\n    \n    memo[key] = ans;\n    return ans;\n  }\n  \n  return dp(0, 0);\n}\n",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "a2b3c4d5-e6f7-4c8d-9abc-0123456789de",
+    "deleted_at": null,
+    "version": 1
   }
 ]

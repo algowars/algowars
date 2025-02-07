@@ -34,5 +34,68 @@
     "language_id": 93,
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "id": "7f4ac6b9-3e9a-4d3e-ae85-9e9a1f45d2b7",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('reverseString should reverse a given string', () => {\n  assert.is(reverseString(\"hello\"), \"olleh\");\n  assert.is(reverseString(\"world\"), \"dlrow\");\n  assert.is(reverseString(\"a\"), \"a\");\n  assert.is(reverseString(\"\"), \"\");\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "a1b2c3d4-e5f6-4789-abcd-0123456789ab",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "8e1f3d45-2fce-4d7a-9a4c-1f2d3e4b5c6d",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('factorialCalculation should return 1 for 0', () => {\n  assert.is(factorialCalculation(0), 1);\n});\n\ntest('factorialCalculation should return factorial of 1', () => {\n  assert.is(factorialCalculation(1), 1);\n});\n\ntest('factorialCalculation should return factorial of 3', () => {\n  assert.is(factorialCalculation(3), 6);\n});\n\ntest('factorialCalculation should return factorial of 5', () => {\n  assert.is(factorialCalculation(5), 120);\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "b1c2d3e4-f5a6-4789-bcde-123456789abc",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "9f3b5c1d-1a2b-4c3d-8a7e-23456789abcf",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('binarySearch should return correct index for existing elements', () => {\n  assert.is(binarySearch([1, 2, 3, 4, 5], 3), 2);\n  assert.is(binarySearch([1, 2, 3, 4, 5], 1), 0);\n  assert.is(binarySearch([1, 2, 3, 4, 5], 5), 4);\n});\n\ntest('binarySearch should return -1 for non-existing element', () => {\n  assert.is(binarySearch([1, 2, 3, 4, 5], 6), -1);\n});\n\ntest('binarySearch should handle empty array', () => {\n  assert.is(binarySearch([], 3), -1);\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "c1d2e3f4-a5b6-4789-adef-23456789abcd",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "afb6c1d2-e3f4-4a5b-8d9e-abcdef012345",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('longestCommonPrefix should return common prefix', () => {\n  assert.is(longestCommonPrefix([\"flower\", \"flow\", \"flight\"]), \"fl\");\n});\n\ntest('longestCommonPrefix should return empty string if no common prefix', () => {\n  assert.is(longestCommonPrefix([\"dog\", \"racecar\", \"car\"]), \"\");\n});\n\ntest('longestCommonPrefix should handle single string', () => {\n  assert.is(longestCommonPrefix([\"single\"]), \"single\");\n});\n\ntest('longestCommonPrefix should handle empty array', () => {\n  assert.is(longestCommonPrefix([]), \"\");\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "d1e2f3a4-b5c6-4789-8ef0-3456789abcde",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "b0f7e8a1-2d3c-4e5f-8a9b-abcdef012345",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('anagramCheck should return true for anagrams', () => {\n  assert.is(anagramCheck(\"listen\", \"silent\"), true);\n  assert.is(anagramCheck(\"triangle\", \"integral\"), true);\n});\n\ntest('anagramCheck should return false for non-anagrams', () => {\n  assert.is(anagramCheck(\"apple\", \"pale\"), false);\n});\n\ntest('anagramCheck should handle empty strings', () => {\n  assert.is(anagramCheck(\"\", \"\"), true);\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "e1f2a3b4-c5d6-4789-8f01-456789abcdef",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "c2d3e4f5-a6b7-4c8d-9e01-23456789abcd",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('validParentheses should return true for valid parentheses', () => {\n  assert.is(validParentheses(\"()\"), true);\n  assert.is(validParentheses(\"()[]{}\"), true);\n  assert.is(validParentheses(\"{[]}\"), true);\n  assert.is(validParentheses(\"\") , true);\n});\n\ntest('validParentheses should return false for invalid parentheses', () => {\n  assert.is(validParentheses(\"(]\"), false);\n  assert.is(validParentheses(\"([)]\"), false);\n});\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "f1a2b3c4-d5e6-4789-9012-56789abcdef0",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "d1234567-89ab-4cde-8f12-3456789abcde",
+    "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\n\ntest('regexMatching should return false when s = \"aa\" and p = \"a\"', () => {\n  assert.is(regexMatching(\"aa\", \"a\"), false);\n});\n\ntest('regexMatching should return true when s = \"aa\" and p = \"a*\"', () => {\n  assert.is(regexMatching(\"aa\", \"a*\"), true);\n});\n\ntest('regexMatching should return true when s = \"ab\" and p = \".*\"', () => {\n  assert.is(regexMatching(\"ab\", \".*\"), true);\n});\n\ntest('regexMatching should return true when s = \"aab\" and p = \"c*a*b\"', () => {\n  assert.is(regexMatching(\"aab\", \"c*a*b\"), true);\n});\n\ntest('regexMatching should return false when s = \"mississippi\" and p = \"mis*is*p*.\"', () => {\n  assert.is(regexMatching(\"mississippi\", \"mis*is*p*.\"), false);\n});\n\n\ntest.run();",
+    "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "problem_id": "a2b3c4d5-e6f7-4c8d-9abc-0123456789de",
+    "language_id": 93,
+    "deleted_at": null,
+    "version": 1
   }
 ]

@@ -18,5 +18,33 @@
   {
     "id": 5,
     "name": "String"
+  },
+  {
+    "id": 6,
+    "name": "Search"
+  },
+  {
+    "id": 7,
+    "name": "Stack"
+  },
+  {
+    "id": 8,
+    "name": "Sorting"
+  },
+  {
+    "id": 9,
+    "name": "Dynamic Programming"
+  },
+  {
+    "id": 10,
+    "name": "Regular Expression"
+  },
+  {
+    "id": 11,
+    "name": "Memoization"
+  },
+  {
+    "id": 12,
+    "name": "Backtracking"
   }
 ]

@@ -16,7 +16,7 @@
     "question": "Return the nth number in the Fibonacci sequence.",
     "slug": "fibonacci-sequence",
     "status": "Accepted",
-    "difficulty": 500,
+    "difficulty": 1200,
     "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
     "deleted_at": null,
     "version": 1
@@ -39,6 +39,83 @@
     "slug": "two-sum",
     "status": "Accepted",
     "difficulty": 600,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "a1b2c3d4-e5f6-4789-abcd-0123456789ab",
+    "title": "Reverse String",
+    "question": "Given a string, return the reversed version of the string.",
+    "slug": "reverse-string",
+    "status": "Accepted",
+    "difficulty": 350,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "b1c2d3e4-f5a6-4789-bcde-123456789abc",
+    "title": "Factorial Calculation",
+    "question": "Return the factorial of a given non-negative integer.",
+    "slug": "factorial-calculation",
+    "status": "Accepted",
+    "difficulty": 400,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "c1d2e3f4-a5b6-4789-adef-23456789abcd",
+    "title": "Binary Search",
+    "question": "Implement binary search on a sorted array. Return the index of the target element or -1 if it does not exist.",
+    "slug": "binary-search",
+    "status": "Accepted",
+    "difficulty": 500,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "d1e2f3a4-b5c6-4789-8ef0-3456789abcde",
+    "title": "Longest Common Prefix",
+    "question": "Given an array of strings, return the longest common prefix among them. If there is none, return an empty string.",
+    "slug": "longest-common-prefix",
+    "status": "Accepted",
+    "difficulty": 550,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "e1f2a3b4-c5d6-4789-8f01-456789abcdef",
+    "title": "Anagram Check",
+    "question": "Check if two strings are anagrams of each other.",
+    "slug": "anagram-check",
+    "status": "Accepted",
+    "difficulty": 450,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "f1a2b3c4-d5e6-4789-9012-56789abcdef0",
+    "title": "Valid Parentheses",
+    "question": "Given a string containing '(', ')', '{', '}', '[' and ']', determine if the input string is valid.",
+    "slug": "valid-parentheses",
+    "status": "Accepted",
+    "difficulty": 1500,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "a2b3c4d5-e6f7-4c8d-9abc-0123456789de",
+    "title": "Regular Expression Matching",
+    "question": "Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*' where '.' matches any single character and '*' matches zero or more of the preceding element. The matching should cover the entire input string (not partial).",
+    "slug": "regex-matching",
+    "status": "Accepted",
+    "difficulty": 2500,
     "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
     "deleted_at": null,
     "version": 1
