@@ -61,8 +61,8 @@ export const ProblemsTable = () => {
                 className="hover:cursor-pointer"
               >
                 <TableCell>{problem.title}</TableCell>
-                <TableCell>
-                  {problem?.tags?.map((tag) => tag.name).join(", ")}
+                <TableCell className="text-muted-foreground">
+                  {problem?.tags?.join(", ")}
                 </TableCell>
                 <TableCell>
                   <DifficultyBadge difficulty={problem.difficulty} />

@@ -1,5 +1,7 @@
 import { Account } from 'src/account/domain/account';
 import { Id } from 'src/common/domain/id';
+import { PageResult } from 'src/common/pagination/page-result';
+import { Problem } from 'src/problem/domain/problem';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 export interface AccountQuery {
@@ -19,4 +21,10 @@ export interface AccountQuery {
     }[]
   >;
   getTotalSubmissions(accountId: Id): Promise<number>;
+
+  getAdminProblems(
+    page: number,
+    size: number,
+    timestamp: Date,
+  ): Promise<PageResult<Problem>>;
 }

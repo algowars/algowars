@@ -12,6 +12,12 @@ import { UsernameImplementation } from 'src/account/domain/username';
 import { AccountEloImplementation } from 'src/account/domain/account-elo';
 import { GameModes } from 'src/elo/domain/game-mode';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
+import {
+  PageResult,
+  PageResultImplementation,
+} from 'src/common/pagination/page-result';
+import { Problem, ProblemImplementation } from 'src/problem/domain/problem';
+import { TagImplementation } from 'src/problem/domain/tag';
 
 @Injectable()
 export class AccountQueryImplementation implements AccountQuery {
@@ -139,5 +145,108 @@ export class AccountQueryImplementation implements AccountQuery {
       .count('id as total');
 
     return Number(result[0].total);
+  }
+
+  async getAdminProblems(
+    page: number,
+    size: number,
+    timestamp: Date,
+  ): Promise<PageResult<Problem>> {
+    const offset = (page - 1) * size;
+
+    const rawResults = await this.knexConnection(Aliases.PROBLEMS)
+      .select(
+        'problems.*',
+        'tags.id as tag_id',
+        'tags.name as tag_name',
+        `${Aliases.ACCOUNTS}.id as createdById`,
+        `${Aliases.ACCOUNTS}.username as createdByUsername`,
+      )
+      .leftJoin('problem_tags', 'problems.id', 'problem_tags.problem_id')
+      .leftJoin('tags', 'problem_tags.tag_id', 'tags.id')
+      .leftJoin(
+        Aliases.ACCOUNTS,
+        'problems.created_by_id',
+        `${Aliases.ACCOUNTS}.id`,
+      )
+      .where('problems.created_at', '<', timestamp)
+      .orderBy('problems.created_at', 'desc')
+      .offset(offset)
+      .limit(size);
+
+    if (!rawResults.length) {
+      return new PageResultImplementation<Problem>([], page, size, 0);
+    }
+
+    const total = await this.knexConnection(Aliases.PROBLEMS)
+      .where('created_at', '<', timestamp)
+      .count<{ count: number }>({ count: '*' })
+      .first();
+
+    const totalRecords = total?.count ?? 0;
+    const totalPages = Math.ceil(totalRecords / size);
+
+    const problemsById = rawResults.reduce(
+      (acc, row) => {
+        const problemId = row.id;
+
+        if (!acc[problemId]) {
+          acc[problemId] = {
+            entity: row,
+            tags: [],
+            createdBy: {
+              id: row.createdById,
+              username: row.createdByUsername,
+            },
+          };
+        }
+
+        if (row.tag_id && row.tag_name) {
+          acc[problemId].tags.push(
+            new TagImplementation({
+              id: new IdImplementation(row.tag_id),
+              name: row.tag_name,
+            }),
+          );
+        }
+
+        return acc;
+      },
+      {} as Record<
+        string,
+        {
+          entity: any;
+          tags: TagImplementation[];
+        }
+      >,
+    );
+
+    const formattedResults = Object.values(problemsById).map(
+      ({ entity, tags }: any) =>
+        new ProblemImplementation({
+          id: new IdImplementation(entity.id),
+          title: entity.title,
+          question: entity.question,
+          slug: entity.slug,
+          status: entity.status,
+          createdAt: entity.created_at,
+          updatedAt: entity.updated_at,
+          deletedAt: entity.deleted_at,
+          version: entity.version,
+          tags,
+          difficulty: entity.difficulty,
+          createdBy: new AccountImplementation({
+            id: new IdImplementation(entity.createdById),
+            username: new UsernameImplementation(entity.createdByUsername),
+          }),
+        }),
+    );
+
+    return new PageResultImplementation<Problem>(
+      formattedResults,
+      page,
+      size,
+      totalPages,
+    );
   }
 }

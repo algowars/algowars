@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -22,6 +23,10 @@ import { UsernameImplementation } from '../domain/username';
 import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard';
 import { FindAccountStatsByUsernameResult } from '../application/queries/find-account-stats-by-username-query/find-account-stats-by-username-result';
 import { FindAccountStatsByUsernameQuery } from '../application/queries/find-account-stats-by-username-query/find-account-stats-by-username.query';
+import { PermissionsGuard } from 'src/auth/permission.guard';
+import { AccountPermissions } from '../application/permissions/account-permissions';
+import { GetAdminProblemsQuery } from '../application/queries/get-admin-problems-query/get-admin-problem.query';
+import { GetAdminProblemsParam } from './dto/request/get-admin-problems.dto';
 
 @Controller('v1/account')
 export class AccountController {
@@ -94,5 +99,14 @@ export class AccountController {
     );
 
     return stats;
+  }
+
+  @UseGuards(PermissionsGuard([AccountPermissions.LIST_ADMIN_PROBLEMS]))
+  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
+  @Get('/admin/problems')
+  async getAdminProblems(@Query() param: GetAdminProblemsParam) {
+    return this.queryBus.execute(
+      new GetAdminProblemsQuery(param.page, param.size, param.timestamp),
+    );
   }
 }

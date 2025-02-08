@@ -67,7 +67,7 @@ export const PaginationProvider = ({
 
   useEffect(() => {
     paginationMutation(page, size, timestamp);
-  }, [page, size]);
+  }, [page, paginationMutation, size, timestamp]);
 
   const value = {
     page,
