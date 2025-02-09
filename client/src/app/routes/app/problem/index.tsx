@@ -49,6 +49,7 @@ export const ProblemRoute = () => {
                 name: slug,
               },
             ]}
+            isOpenedByDefault={false}
           >
             <ProblemEditor problem={problem} />
           </SidebarLayout>
