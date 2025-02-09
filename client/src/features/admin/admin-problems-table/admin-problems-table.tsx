@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGetAdminProblems } from "../admin-create-problem/api/get-admin-problems";
+import { useGetAdminProblems } from "../api/get-admin-problems";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   Table,

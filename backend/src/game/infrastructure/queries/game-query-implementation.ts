@@ -18,21 +18,26 @@ export class GameQueryImplementation implements GameQuery {
     private readonly gameFactory: GameFactory,
   ) {}
 
-  async findById(id: Id): Promise<Game> {
+  async findById(id: Id): Promise<Game | null> {
     const gameRecord = await this.knexConnection('games')
       .where({ id: id.toString() })
       .first();
 
+    console.log('R: ', gameRecord);
+
     if (!gameRecord) {
-      throw new Error(`Game not found with id ${id.toString()}`);
+      return null;
     }
 
     const lobbyRecord = await this.knexConnection('lobbies')
       .where({ id: gameRecord.lobby_id })
       .first();
 
+    console.log('LOBBY: ', lobbyRecord);
+
     if (!lobbyRecord) {
-      throw new Error(`Lobby not found for game id ${id.toString()}`);
+      console.error(`Lobby not found for game id ${id.toString()}`);
+      return null;
     }
 
     const lobby = this.lobbyFactory.create({
@@ -40,18 +45,6 @@ export class GameQueryImplementation implements GameQuery {
       maxPlayers: lobbyRecord.max_players,
       players: [],
     });
-
-    let currentRoundRecord = await this.knexConnection('game_rounds')
-      .where({ game_id: id.toString() })
-      .andWhere('finished_at', null)
-      .first();
-
-    if (!currentRoundRecord) {
-      currentRoundRecord = await this.knexConnection('game_rounds')
-        .where({ game_id: id.toString() })
-        .orderBy('created_at', 'desc')
-        .first();
-    }
 
     const createdBy = { id: gameRecord.created_by_id } as any;
 

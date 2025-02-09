@@ -25,6 +25,9 @@ export class CreateProblemRushGameHandler
       GameType.RUSH,
       this.playerCountMatrix.getPlayerCountFromGameMode(gameMode),
     );
+
+    console.log('GAME: ', game);
+
     return game.getId();
   }
 }

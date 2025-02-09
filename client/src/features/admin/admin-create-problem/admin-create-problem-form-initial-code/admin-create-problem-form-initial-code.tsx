@@ -1,6 +1,6 @@
 import { CodeEditor } from "@/components/code-editor/code-editor";
 import { ControllerRenderProps } from "react-hook-form";
-import { createProblemRenderProps } from "../api/create-problem";
+import { createProblemRenderProps } from "../../api/create-problem";
 
 type AdminCreateProblemFormInitialCodeProps = {
   field: ControllerRenderProps<createProblemRenderProps, "initialCode">;

@@ -7,12 +7,21 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 export const findSoloRushById = ({
   accessToken,
   rushId,
+  startByDefault,
 }: {
   accessToken: string;
   rushId: string;
+  startByDefault: boolean;
 }): Promise<Rush> => {
+  if (!accessToken) {
+    return Promise.reject("No access token available");
+  }
+
   const config: AxiosRequestConfig = {
     url: `/api/v1/game/rush/${encodeURIComponent(rushId)}`,
+    params: {
+      start: startByDefault,
+    },
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -23,27 +32,30 @@ export const findSoloRushById = ({
 
 export const findSoloRushByIdQueryOptions = (
   accessToken: string,
-  rushId: string
+  rushId: string,
+  startByDefault: boolean
 ) => {
   return queryOptions({
     queryKey: ["rush", rushId, accessToken],
-    queryFn: () => findSoloRushById({ rushId, accessToken }),
+    queryFn: () => findSoloRushById({ rushId, accessToken, startByDefault }),
   });
 };
 
 type UseFindSoloRushByIdOptions = {
   accessToken: string;
   rushId: string;
-  queryConfig: QueryConfig<typeof findSoloRushById>;
+  startByDefault: boolean;
+  queryConfig?: QueryConfig<typeof findSoloRushByIdQueryOptions>;
 };
 
 export const useFindSoloRushById = ({
   accessToken,
   rushId,
-  queryConfig,
+  queryConfig = {},
+  startByDefault = false,
 }: UseFindSoloRushByIdOptions) => {
   return useQuery({
-    ...findSoloRushByIdQueryOptions(accessToken, rushId),
+    ...findSoloRushByIdQueryOptions(accessToken, rushId, startByDefault),
     ...queryConfig,
   });
 };

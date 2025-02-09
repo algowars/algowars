@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ControllerRenderProps } from "react-hook-form";
-import { createProblemRenderProps } from "../api/create-problem";
+import { createProblemRenderProps } from "../../api/create-problem";
 
 type AdminCreateProblemLanguageSelectProps = {
   field: ControllerRenderProps<createProblemRenderProps, "languageId">;

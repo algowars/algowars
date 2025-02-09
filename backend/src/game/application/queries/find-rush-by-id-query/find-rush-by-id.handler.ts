@@ -17,6 +17,8 @@ export class FindRushByIdHandler
   async execute(query: FindRushByIdQuery): Promise<FindRushByIdResult> {
     const game = await this.gameQuery.findById(new IdImplementation(query.id));
 
+    console.log('GAME: ', game);
+
     if (!game) {
       throw new NotFoundException(GameErrorMessage.GAME_NOT_FOUND);
     }

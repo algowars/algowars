@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Request } from 'express';
 import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard';
@@ -9,6 +17,7 @@ import { GameMode } from '../domain/game-mode';
 import { FindRushByIdResult } from '../application/queries/find-rush-by-id-query/find-rush-by-id-result';
 import { FindRushByIdParam } from './dto/request/find-rush-by-id-param.dto';
 import { FindRushByIdQuery } from '../application/queries/find-rush-by-id-query/find-rush-by-id.query';
+import { FindRushByIdQueryDto } from './dto/request/find-rush-by-id-query.dto';
 @Controller('v1/game')
 export class GameController {
   constructor(
@@ -32,9 +41,14 @@ export class GameController {
   @Get('/rush/:rushId')
   async findRushById(
     @Param() param: FindRushByIdParam,
+    @Query() query: FindRushByIdQueryDto,
+    @Req() request: Request,
   ): Promise<FindRushByIdResult> {
+    console.log(param, query);
+    const account = request?.account;
+
     return this.queryBus.execute<FindRushByIdQuery, FindRushByIdResult>(
-      new FindRushByIdQuery(param.id),
+      new FindRushByIdQuery(param.rushId, !!query.start, account),
     );
   }
 }

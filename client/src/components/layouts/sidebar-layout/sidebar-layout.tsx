@@ -7,6 +7,7 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { ComponentProps } from "react";
 
 export interface SidebarLayoutProps extends ComponentProps<typeof Sidebar> {
@@ -14,17 +15,19 @@ export interface SidebarLayoutProps extends ComponentProps<typeof Sidebar> {
     href: string;
     name: string;
   }[];
+  isOpenedByDefault?: boolean;
 }
 
 export const SidebarLayout = ({
   children,
   breadcrumbs = [],
+  isOpenedByDefault = true,
 }: SidebarLayoutProps) => {
   return (
     <>
       <Head title="Algowars" />
 
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={isOpenedByDefault}>
         <AppSidebar />
         <SidebarInset>
           <SidebarMainHeader breadcrumbs={breadcrumbs} />
@@ -32,6 +35,7 @@ export const SidebarLayout = ({
           <SidebarFooter />
         </SidebarInset>
       </SidebarProvider>
+      <Toaster />
     </>
   );
 };
