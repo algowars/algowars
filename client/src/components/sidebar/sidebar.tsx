@@ -14,10 +14,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { SidebarUser } from "./sidebar-user";
 import { SidebarMain } from "./sidebar-main";
 import { SidebarLogo } from "./sidebar-logo";
-import { useAccount } from "@/features/account/account.provider";
 import { SidebarAuth } from "./sidebar-auth";
 import { routerConfig } from "@/app/router-config";
 import { SidebarAdmin } from "./sidebar-admin";
@@ -87,8 +85,6 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { isAuthenticated } = useAccount();
-
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -99,7 +95,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarAdmin items={data.admin} />
       </SidebarContent>
       <SidebarFooter>
-        {isAuthenticated ? <SidebarUser /> : <SidebarAuth />}
+        <SidebarAuth />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

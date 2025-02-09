@@ -82,8 +82,6 @@ export const PaginationProvider = ({
     sizeOptions,
   };
 
-  console.log("VALUE: ", value);
-
   return (
     <PaginationProviderContext.Provider {...props} value={value}>
       {children}
