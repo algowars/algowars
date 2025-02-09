@@ -33,9 +33,8 @@ export class GameRepositoryImplementation implements GameRepository {
   ): Promise<Game> {
     const gameId = await this.newId();
     const lobbyId = await this.newId();
-    const trx = await this.knexConnection.transaction();
 
-    try {
+    const game: Game = await this.knexConnection.transaction(async (trx) => {
       await trx('lobbies').insert({
         id: lobbyId.toString(),
         max_players: maxPlayers,
@@ -60,7 +59,7 @@ export class GameRepositoryImplementation implements GameRepository {
         players: [],
       });
 
-      const game: Game = this.gameFactory.create({
+      const createdGame: Game = this.gameFactory.create({
         id: gameId,
         gameType: gameType,
         createdBy: account,
@@ -69,10 +68,9 @@ export class GameRepositoryImplementation implements GameRepository {
         lobby,
       });
 
-      return game;
-    } catch (error) {
-      await trx.rollback();
-      throw error;
-    }
+      return createdGame;
+    });
+
+    return game;
   }
 }

@@ -23,6 +23,8 @@ export class GameQueryImplementation implements GameQuery {
       .where({ id: id.toString() })
       .first();
 
+    console.log('R: ', gameRecord);
+
     if (!gameRecord) {
       return null;
     }
@@ -30,6 +32,8 @@ export class GameQueryImplementation implements GameQuery {
     const lobbyRecord = await this.knexConnection('lobbies')
       .where({ id: gameRecord.lobby_id })
       .first();
+
+    console.log('LOBBY: ', lobbyRecord);
 
     if (!lobbyRecord) {
       console.error(`Lobby not found for game id ${id.toString()}`);
@@ -41,18 +45,6 @@ export class GameQueryImplementation implements GameQuery {
       maxPlayers: lobbyRecord.max_players,
       players: [],
     });
-
-    let currentRoundRecord = await this.knexConnection('game_rounds')
-      .where({ game_id: id.toString() })
-      .andWhere('finished_at', null)
-      .first();
-
-    if (!currentRoundRecord) {
-      currentRoundRecord = await this.knexConnection('game_rounds')
-        .where({ game_id: id.toString() })
-        .orderBy('created_at', 'desc')
-        .first();
-    }
 
     const createdBy = { id: gameRecord.created_by_id } as any;
 
