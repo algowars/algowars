@@ -5,15 +5,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Tag } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProblemRushSoloEditorScore } from "./problem-rush-solo-editor-score/problem-rush-solo-editor-score";
+import { useFindSoloRushById } from "../../api/find-solo-rush-by-id";
+import { useAuth0 } from "@auth0/auth0-react";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 type ProblemRushSoloEditorProps = {
   rushId: string;
@@ -23,8 +27,39 @@ export const ProblemRushSoloEditor = ({
   rushId,
 }: ProblemRushSoloEditorProps) => {
   const [code, setCode] = useState<string>("");
+  const [accessToken, setAccessToken] = useState<string>("");
+  const { getAccessTokenSilently } = useAuth0();
 
-  console.log(rushId, code);
+  useEffect(() => {
+    (async () => {
+      if (!accessToken) {
+        const token = await getAccessTokenSilently();
+        setAccessToken(token);
+      }
+    })();
+  }, [accessToken, getAccessTokenSilently]);
+
+  console.log(rushId, code, accessToken);
+
+  const soloRushQuery = useFindSoloRushById({
+    accessToken,
+    rushId,
+    startByDefault: true,
+  });
+
+  useEffect(() => {
+    if (soloRushQuery.isError) {
+      let errorMessage: string;
+      if (isAxiosError(soloRushQuery.error)) {
+        errorMessage =
+          soloRushQuery.error.response?.data?.message ||
+          soloRushQuery.error.message;
+      } else {
+        errorMessage = (soloRushQuery.error as Error).message;
+      }
+      toast(`Error getting challenge: "${errorMessage}"`);
+    }
+  }, [soloRushQuery.error, soloRushQuery.isError]);
 
   function changeCode(newCode: string): void {
     setCode(newCode);
@@ -33,10 +68,10 @@ export const ProblemRushSoloEditor = ({
     <div className="grow pb-5 px-2 lg:px-5">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={55} minSize={10}>
-          <Card className="h-full max-h-full overflow-hidden">
-            <div className="p-2 border-b">
+          <Card className="h-full max-h-full overflow-hidden bg-sidebar">
+            <CardHeader className="p-2 border-b">
               <h4 className="font-semibold">Code</h4>
-            </div>
+            </CardHeader>
             <CodeEditor
               code={""}
               changeCode={changeCode}
@@ -49,10 +84,10 @@ export const ProblemRushSoloEditor = ({
           <ResizablePanelGroup direction="vertical">
             {/* Add your content here */}
             <ResizablePanel defaultSize={60} minSize={15}>
-              <Card className="h-full dark:bg-zinc-900 overflow-auto flex flex-col">
-                <div className="p-2 border-b bg-background">
+              <Card className="h-full overflow-auto flex flex-col bg-sidebar">
+                <CardHeader className="p-2 border-b">
                   <h4 className="font-semibold">Description</h4>
-                </div>
+                </CardHeader>
                 {/* <div className="p-5">
                   <div className="mb-3">
                     <h2 className="text-2xl font-semibold mb-1">
@@ -91,7 +126,7 @@ export const ProblemRushSoloEditor = ({
             </ResizablePanel>
             <ResizableHandle className="p-2 bg-inherit hover:bg-muted" />
             <ResizablePanel defaultSize={40} minSize={10}>
-              <Card className="h-full dark:bg-zinc-900 overflow-auto">
+              <Card className="h-full overflow-auto bg-sidebar">
                 <ProblemRushSoloEditorScore />
               </Card>
             </ResizablePanel>

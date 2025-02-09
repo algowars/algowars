@@ -18,13 +18,13 @@ export class GameQueryImplementation implements GameQuery {
     private readonly gameFactory: GameFactory,
   ) {}
 
-  async findById(id: Id): Promise<Game> {
+  async findById(id: Id): Promise<Game | null> {
     const gameRecord = await this.knexConnection('games')
       .where({ id: id.toString() })
       .first();
 
     if (!gameRecord) {
-      throw new Error(`Game not found with id ${id.toString()}`);
+      return null;
     }
 
     const lobbyRecord = await this.knexConnection('lobbies')
@@ -32,7 +32,8 @@ export class GameQueryImplementation implements GameQuery {
       .first();
 
     if (!lobbyRecord) {
-      throw new Error(`Lobby not found for game id ${id.toString()}`);
+      console.error(`Lobby not found for game id ${id.toString()}`);
+      return null;
     }
 
     const lobby = this.lobbyFactory.create({
