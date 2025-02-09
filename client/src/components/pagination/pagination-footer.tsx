@@ -18,6 +18,7 @@ export const PaginationFooter = ({
   totalPages,
 }: PaginationFooterProps) => {
   const { sizeOptions, size, changeSize } = usePagination();
+  console.log("SIZE OPTIONS: ", sizeOptions, size);
 
   return (
     <div

@@ -7,20 +7,20 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "concurrently \"npm run start:dev --prefix backend\" \"npm run dev --prefix client\"",
-    "build": "npm run build:client && npm run build:backend",
-    "build:client": "(cd client && npm run build)",
-    "build:backend": "(cd backend && npm run build)",
-    "install:all": "npm run install:backend && npm run install:client",
-    "install:backend": "(cd backend && npm ci)",
-    "install:client": "(cd client && npm ci --force)",
+    "dev": "concurrently \"cd backend && pnpm run start:dev\" \"cd client && pnpm run dev\"",
+    "build:all": "pnpm run build:client && pnpm run build:backend",
+    "build:client": "(cd client && pnpm build)",
+    "build:backend": "(cd backend && pnpm build)",
+    "install:all": "pnpm run install:backend && pnpm run install:client",
+    "install:backend": "(cd backend && pnpm install --frozen-lockfile)",
+    "install:client": "(cd client && pnpm install --frozen-lockfile)",
     "migrate:latest": "cd ./backend && npx knex migrate:latest",
     "migrate:rollback": "cd ./backend && npx knex migrate:rollback",
     "migrate:rollback:all": "cd ./backend && npx knex migrate:rollback --all",
     "seed": "cd ./backend && npx knex seed:run",
-    "lint:client": "(cd client && npm run lint)",
-    "lint:backend": "(cd backend && npm run lint)",
-    "lint": "npm run lint:client && npm run lint:backend"
+    "lint:client": "(cd client && pnpm run lint)",
+    "lint:backend": "(cd backend && pnpm run lint)",
+    "lint": "pnpm run lint:client && pnpm run lint:backend"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,10 @@
   },
   "homepage": "https://github.com/algowars/algowars#readme",
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "msw": "^2.7.0"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.1"
   }
 }

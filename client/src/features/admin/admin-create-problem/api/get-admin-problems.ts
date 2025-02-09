@@ -21,7 +21,7 @@ export const getAdminProblems = ({
     params: {
       page,
       size,
-      timestamp,
+      timestamp: timestamp.toISOString(),
     },
     headers: {
       Authorization: `Bearer ${accessToken}`,

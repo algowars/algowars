@@ -1,26 +1,32 @@
-# algowars
+#Algowars
 
 Algowars core application
 
-## Setup
+##Setup
 
-in the root directory run the following commands:
+In the root directory, run the following command:
 
-`npm run install:all`
+`pnpm run install:all`
 
-This runs the commands `install:backend` and `install:client`. This will clean install the required dependencies in the backend and client.
+This runs the commands install:backend and install:client. This will clean install the required dependencies in both the backend and client.
 
-Next fill out the env variables.
+Environment Variables
 
-Lastly, you can now run
+Next, fill out the required environment variables.
 
-`npm ci`
+Install Dependencies
+
+To ensure dependencies are installed exactly as specified, run:
+
+`pnpm install --frozen-lockfile`
 
 Do this in the root directory so you can use concurrently to run the monolith application.
 
-Now you can start the server by running:
+##Start the Server
 
-`npm run dev`
+Now, start the application by running:
+
+`pnpm run dev`
 
 ## Documentation Website
 
