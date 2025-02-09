@@ -12,7 +12,7 @@ type LoaderProps = {
 
 export const Loader = ({ size = "md" }: LoaderProps) => {
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="flex justify-center items-center">
       <div role="status">
         <svg
           aria-hidden="true"

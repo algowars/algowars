@@ -3,7 +3,7 @@ import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layou
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AccountStats } from "@/features/account/account-stats/account-stats";
 import { CreateSoloProblemRushCard } from "@/features/game/solo/create-solo-problem-rush-card/create-solo-problem-rush-card";
-import { ProblemsTable } from "@/features/problem/problems-table/problems-table";
+import { ProblemsTableCard } from "@/features/problem/problems-table/problems-table-card";
 
 export const DashboardRoute = () => {
   return (
@@ -27,7 +27,7 @@ export const DashboardRoute = () => {
             <CardTitle>Problems</CardTitle>
           </CardHeader>
           <CardContent>
-            <ProblemsTable />
+            <ProblemsTableCard />
           </CardContent>
         </Card>
         <AccountStats className="col-span-12 lg:col-span-3" />

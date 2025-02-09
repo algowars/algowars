@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AdminProblemsTable } from "@/features/admin/admin-problems-table/admin-problems-table";
+import { AdminProblemsCard } from "@/features/admin/admin-problems-table/admin-problems-card";
 
 export const AdminViewProblemsRoute = () => {
   return (
@@ -34,7 +34,7 @@ export const AdminViewProblemsRoute = () => {
             <CardDescription>View Recently created problems.</CardDescription>
           </CardHeader>
           <CardContent>
-            <AdminProblemsTable />
+            <AdminProblemsCard />
           </CardContent>
         </Card>
       </section>

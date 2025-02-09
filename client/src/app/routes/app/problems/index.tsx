@@ -1,7 +1,7 @@
 import { routerConfig } from "@/app/router-config";
 import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ProblemsTable } from "@/features/problem/problems-table/problems-table";
+import { ProblemsTableCard } from "@/features/problem/problems-table/problems-table-card";
 
 export const ProblemsRoute = () => {
   return (
@@ -23,7 +23,7 @@ export const ProblemsRoute = () => {
             <CardTitle>Problems</CardTitle>
           </CardHeader>
           <CardContent>
-            <ProblemsTable />
+            <ProblemsTableCard />
           </CardContent>
         </Card>
       </div>

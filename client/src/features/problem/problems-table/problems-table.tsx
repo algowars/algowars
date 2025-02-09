@@ -12,12 +12,21 @@ import {
 import { useNavigate } from "react-router-dom";
 import { DifficultyBadge } from "@/components/difficulty-badge/difficulty-badge";
 import { routerConfig } from "@/app/router-config";
+import { Loader } from "@/components/loader/loader";
 
 export const ProblemsTable = () => {
   const navigate = useNavigate();
   const { page, size, timestamp } = usePagination();
 
   const problemsQuery = useGetProblems({ page, size, timestamp });
+
+  if (problemsQuery.isPending) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader size="lg" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -30,6 +39,13 @@ export const ProblemsTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
+          {!problemsQuery.data ? (
+            <TableRow>
+              <span className="py-3 text-center block">
+                No Problems Available
+              </span>
+            </TableRow>
+          ) : null}
           {problemsQuery.data?.results.map((problem) => (
             <TableRow
               key={problem.id}
