@@ -108,6 +108,24 @@ export const createAppRouter = () => {
       },
     },
     {
+      path: routerConfig.adminViewProblems.path,
+      lazy: async () => {
+        const { AdminViewProblemsRoute } = await import(
+          "./routes/app/admin/view-problems"
+        );
+
+        return {
+          Component: (props: object) => (
+            <PermissionProtectedRoute
+              component={AdminViewProblemsRoute}
+              {...props}
+              allowedPermissions={["Admin"]}
+            />
+          ),
+        };
+      },
+    },
+    {
       path: routerConfig.problemSolutions.path,
       lazy: async () => {
         const { ProblemSolutionsRoute } = await import(

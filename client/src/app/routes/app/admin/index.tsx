@@ -15,7 +15,18 @@ export const AdminRoute = () => {
   }
 
   return (
-    <SidebarLayout breadcrumbs={[]}>
+    <SidebarLayout
+      breadcrumbs={[
+        {
+          href: routerConfig.root.path,
+          name: "Home",
+        },
+        {
+          href: routerConfig.admin.path,
+          name: "Admin",
+        },
+      ]}
+    >
       <section>
         <Card className="w-full p-5 flex flex-col gap-5 bg-sidebar">
           <h1 className="text-3xl font-bold">Admin Panel</h1>

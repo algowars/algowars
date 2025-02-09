@@ -4,8 +4,8 @@ import { useAccount, AccountStatus } from "@/features/account/account.provider";
 import { Container } from "@/components/container";
 import { routerConfig } from "@/app/router-config";
 import { PageLoader } from "@/components/loader/page-loader/page-loader";
-import { Layout } from "@/components/layouts/layout/layout";
 import { AccountSetupForm } from "@/features/account/account-setup-form/account-setup-form";
+import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layout";
 
 export const AccountSetupRoute = () => {
   const { status, isLoading } = useAccount();
@@ -24,12 +24,23 @@ export const AccountSetupRoute = () => {
   }
 
   return (
-    <Layout hideBanners>
+    <SidebarLayout
+      breadcrumbs={[
+        {
+          href: routerConfig.root.path,
+          name: "Home",
+        },
+        {
+          href: routerConfig.accountSetup.path,
+          name: "Account Setup",
+        },
+      ]}
+    >
       <section>
         <Container className="flex items-center justify-center py-8">
           <AccountSetupForm />
         </Container>
       </section>
-    </Layout>
+    </SidebarLayout>
   );
 };

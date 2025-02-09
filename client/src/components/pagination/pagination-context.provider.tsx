@@ -1,15 +1,8 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 type PaginationProviderProps = {
   children?: ReactNode;
   sizeOptions?: { size: number; label: string }[];
-  paginationMutation: (page: number, size: number, timestamp: Date) => void;
   defaultSize?: number;
 };
 
@@ -24,19 +17,32 @@ type PaginationProviderState = {
 
 const initialState: PaginationProviderState = {
   page: 1,
-  size: 25,
+  size: 20,
   timestamp: new Date(),
   changePage: () => null,
   changeSize: () => null,
-  sizeOptions: [],
+  sizeOptions: [
+    {
+      size: 20,
+      label: "20 / page",
+    },
+    {
+      size: 50,
+      label: "50 / page",
+    },
+    {
+      size: 100,
+      label: "100 / page",
+    },
+  ],
 };
 
-const PaginationContext = createContext<PaginationProviderState>(initialState);
+const PaginationProviderContext =
+  createContext<PaginationProviderState>(initialState);
 
 export const PaginationProvider = ({
   children,
-  paginationMutation,
-  sizeOptions = [
+  sizeOptions: defaultSizeOptions = [
     {
       size: 20,
       label: "20 / page",
@@ -55,6 +61,8 @@ export const PaginationProvider = ({
 }: PaginationProviderProps) => {
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(defaultSize ?? 20);
+  const [sizeOptions] =
+    useState<{ size: number; label: string }[]>(defaultSizeOptions);
   const [timestamp] = useState<Date>(new Date());
 
   const changePage = (newPage: number) => {
@@ -64,10 +72,6 @@ export const PaginationProvider = ({
   const changeSize = (newSize: number) => {
     setSize(newSize);
   };
-
-  useEffect(() => {
-    paginationMutation(page, size, timestamp);
-  }, [page, size]);
 
   const value = {
     page,
@@ -79,14 +83,14 @@ export const PaginationProvider = ({
   };
 
   return (
-    <PaginationContext.Provider {...props} value={value}>
+    <PaginationProviderContext.Provider {...props} value={value}>
       {children}
-    </PaginationContext.Provider>
+    </PaginationProviderContext.Provider>
   );
 };
 
 export const usePagination = () => {
-  const context = useContext(PaginationContext);
+  const context = useContext(PaginationProviderContext);
 
   if (context === undefined) {
     throw new Error("usePagination must be used within a PaginationProvider");

@@ -20,13 +20,18 @@ export const AccountStats = ({ className }: AccountStatsProps) => {
   });
 
   useEffect(() => {
+    let isMounted = true;
     (async () => {
       if (!accessToken) {
         const token = await getAccessTokenSilently();
-        setAccessToken(token);
+        if (isMounted) setAccessToken(token);
       }
     })();
-  }, [accessToken, getAccessTokenSilently]);
+    return () => {
+      isMounted = false;
+    };
+  }, [getAccessTokenSilently, accessToken]);
+
   return (
     <Card className={cn("bg-sidebar", className)}>
       <CardHeader>

@@ -4,7 +4,6 @@ import { LogoutButton } from "@/components/auth/logout-button";
 import { useAuthPermissions } from "@/components/auth/permissions/use-auth-permissions";
 import { SignupButton } from "@/components/auth/signup-button";
 import { buttonVariants } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import {
   Sheet,
   SheetContent,
@@ -37,27 +36,18 @@ export const NavbarMenu = ({ className }: NavbarMenuProps) => {
           <SheetHeader className="p-3">
             <SheetTitle>Algowars</SheetTitle>
           </SheetHeader>
-          <div className="p-2">
-            <Card className="py-5 flex flex-col gap-5 p-3">
-              <div className="mb-2">
-                <h4 className="text-lg font-semibold">
-                  Join the Algowars Community
-                </h4>
-                <p className="text-muted-foreground">
-                  Sign up to interact, compete against other developers.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3">
-                <SignupButton variant="outline" />
-                <LoginButton variant="ghost" />
-              </div>
-            </Card>
-          </div>
           <div className="px-5">
-            <h5 className="font-semibold text-lg">Links</h5>
             <ul className="flex flex-col gap-5">
               <li>
-                <Link to={routerConfig.problems.path}>Problems</Link>
+                <Link
+                  to={routerConfig.problems.path}
+                  className={cn(
+                    buttonVariants({ variant: "ghost" }),
+                    "w-full text-start justify-start"
+                  )}
+                >
+                  Problems
+                </Link>
               </li>
               {status === AccountStatus.FullyAuthenticated ? (
                 <>
@@ -103,11 +93,23 @@ export const NavbarMenu = ({ className }: NavbarMenuProps) => {
                       to={routerConfig.root.path}
                       className={cn(
                         buttonVariants({ variant: "ghost" }),
-                        "w-full text-start"
+                        "w-full text-start justify-start"
                       )}
                     >
                       Home
                     </Link>
+                  </li>
+                  <li>
+                    <LoginButton
+                      variant="ghost"
+                      className="w-full text-start justify-start"
+                    />
+                  </li>
+                  <li>
+                    <SignupButton
+                      variant="ghost"
+                      className="w-full text-start justify-start"
+                    />
                   </li>
                 </>
               )}

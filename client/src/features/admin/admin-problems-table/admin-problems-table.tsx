@@ -1,6 +1,7 @@
-import { usePagination } from "@/components/pagination/pagination-context.provider";
-import { PaginationFooter } from "@/components/pagination/pagination-footer";
-import { useGetProblems } from "../api/get-problems-paginated";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useGetAdminProblems } from "../admin-create-problem/api/get-admin-problems";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   Table,
   TableBody,
@@ -9,18 +10,35 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useNavigate } from "react-router-dom";
+import { Loader } from "@/components/loader/loader";
 import { DifficultyBadge } from "@/components/difficulty-badge/difficulty-badge";
 import { routerConfig } from "@/app/router-config";
-import { Loader } from "@/components/loader/loader";
+import { usePagination } from "@/components/pagination/pagination-context.provider";
+import { PaginationFooter } from "@/components/pagination/pagination-footer";
 
-export const ProblemsTable = () => {
+export const AdminProblemsTable = () => {
   const navigate = useNavigate();
   const { page, size, timestamp } = usePagination();
+  const { getAccessTokenSilently } = useAuth0();
+  const [accessToken, setAccessToken] = useState<string>("");
 
-  const problemsQuery = useGetProblems({ page, size, timestamp });
+  const adminProblemsQuery = useGetAdminProblems({
+    accessToken,
+    page,
+    size,
+    timestamp,
+  });
 
-  if (problemsQuery.isPending) {
+  useEffect(() => {
+    (async () => {
+      if (!accessToken) {
+        const token = await getAccessTokenSilently();
+        setAccessToken(token);
+      }
+    })();
+  }, [accessToken, getAccessTokenSilently]);
+
+  if (adminProblemsQuery.isPending) {
     return (
       <div className="flex justify-center items-center">
         <Loader size="lg" />
@@ -36,17 +54,18 @@ export const ProblemsTable = () => {
             <TableHead>Title</TableHead>
             <TableHead>Tags</TableHead>
             <TableHead>Difficulty</TableHead>
+            <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {!problemsQuery.data ? (
+          {!adminProblemsQuery.data ? (
             <TableRow>
               <span className="py-3 text-center block">
                 No Problems Available
               </span>
             </TableRow>
           ) : null}
-          {problemsQuery.data?.results.map((problem) => (
+          {adminProblemsQuery.data?.results.map((problem) => (
             <TableRow
               key={problem.id}
               onClick={() =>
@@ -61,13 +80,16 @@ export const ProblemsTable = () => {
               <TableCell>
                 <DifficultyBadge difficulty={problem.difficulty} />
               </TableCell>
+              <TableCell className="text-muted-foreground">
+                {problem.status}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
       <PaginationFooter
         className="w-full"
-        totalPages={problemsQuery.data?.totalPages ?? 0}
+        totalPages={adminProblemsQuery.data?.totalPages ?? 0}
       />
     </>
   );

@@ -1,26 +1,46 @@
-# algowars
+# Algowars
 
-Algowars core application
+Algowars is an online competitive coding platform where users compete to solve coding challenges as fast as possible.
 
 ## Setup
 
-in the root directory run the following commands:
+### Root Directory
 
-`npm run install:all`
+Inside the root directory, run the following command:
 
-This runs the commands `install:backend` and `install:client`. This will clean install the required dependencies in the backend and client.
+`pnpm install --frozen-lockfile`
 
-Next fill out the env variables.
+This will use pnpm to install the commands to run the mono repo.
 
-Lastly, you can now run
+To install the required dependencies of the client and backend, run: 
 
-`npm ci`
+`pnpm run install:all`
 
-Do this in the root directory so you can use concurrently to run the monolith application.
+Environment Variables
 
-Now you can start the server by running:
+Next, fill out the required environment variables.
 
-`npm run dev`
+## Start the Server
+
+Now, start the application by running:
+
+`pnpm run dev`
+
+## Linting the Application
+
+To lint the application, run the following command:
+
+`pnpm run lint:all`
+
+This will lint the client and backend applications. This will be important to run when making a PR.
+
+## Building the application
+
+To build the application, run the following command:
+
+`pnpm run build:all`
+
+This will build the client and backend application. This is for testing the build so that the PR will be successful.
 
 ## Documentation Website
 

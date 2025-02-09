@@ -1,9 +1,15 @@
 import { routerConfig } from "@/app/router-config";
 import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ProblemsTableCard } from "@/features/problem/problems-table/problems-table-card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { AdminProblemsCard } from "@/features/admin/admin-problems-table/admin-problems-card";
 
-export const ProblemsRoute = () => {
+export const AdminViewProblemsRoute = () => {
   return (
     <SidebarLayout
       breadcrumbs={[
@@ -12,21 +18,26 @@ export const ProblemsRoute = () => {
           name: "Home",
         },
         {
-          href: routerConfig.problems.path,
+          href: routerConfig.admin.path,
+          name: "Admin",
+        },
+        {
+          href: routerConfig.adminViewProblems.path,
           name: "Problems",
         },
       ]}
     >
-      <div className="flex flex-col gap-5 px-5">
+      <section className="px-3">
         <Card className="bg-sidebar">
           <CardHeader>
             <CardTitle>Problems</CardTitle>
+            <CardDescription>View Recently created problems.</CardDescription>
           </CardHeader>
           <CardContent>
-            <ProblemsTableCard />
+            <AdminProblemsCard />
           </CardContent>
         </Card>
-      </div>
+      </section>
     </SidebarLayout>
   );
 };
