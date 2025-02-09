@@ -20,7 +20,7 @@
     "seed": "cd ./backend && npx knex seed:run",
     "lint:client": "(cd client && pnpm run lint)",
     "lint:backend": "(cd backend && pnpm run lint)",
-    "lint": "pnpm run lint:client && pnpm run lint:backend"
+    "lint:all": "pnpm run lint:client && pnpm run lint:backend"
   },
   "repository": {
     "type": "git",
