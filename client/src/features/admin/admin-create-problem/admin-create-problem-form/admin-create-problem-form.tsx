@@ -1,7 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { createProblemSchema, useCreateProblem } from "../api/create-problem";
+import {
+  createProblemSchema,
+  useCreateProblem,
+} from "../../api/create-problem";
 import {
   Form,
   FormControl,
@@ -20,7 +23,7 @@ import { AdminCreateProblemLanguageSelect } from "../admin-create-problem-langua
 import { AdminCreateProblemFormInitialCode } from "../admin-create-problem-form-initial-code/admin-create-problem-form-initial-code";
 import { AdminCreateProblemFormSolution } from "../admin-create-problem-form-solution/admin-create-problem-form-solution";
 import { AdminCreateProblemFormTest } from "../admin-create-problem-form-test/admin-create-problem-form-test";
-import { useGetInitialProblemCreation } from "../api/get-initial-problem-creation";
+import { useGetInitialProblemCreation } from "../../api/get-initial-problem-creation";
 import { useEffect, useState } from "react";
 
 type AdminCreateProblemFormProps = {
