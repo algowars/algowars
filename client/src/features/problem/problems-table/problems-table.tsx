@@ -13,12 +13,29 @@ import { useNavigate } from "react-router-dom";
 import { DifficultyBadge } from "@/components/difficulty-badge/difficulty-badge";
 import { routerConfig } from "@/app/router-config";
 import { Loader } from "@/components/loader/loader";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 export const ProblemsTable = () => {
   const navigate = useNavigate();
   const { page, size, timestamp } = usePagination();
 
   const problemsQuery = useGetProblems({ page, size, timestamp });
+
+  useEffect(() => {
+    if (problemsQuery.isError) {
+      let errorMessage: string;
+      if (isAxiosError(problemsQuery.error)) {
+        errorMessage =
+          problemsQuery.error.response?.data?.message ||
+          problemsQuery.error.message;
+      } else {
+        errorMessage = (problemsQuery.error as Error).message;
+      }
+      toast(`Error getting challenge: "${errorMessage}"`);
+    }
+  }, [problemsQuery.error, problemsQuery.isError]);
 
   if (problemsQuery.isPending) {
     return (

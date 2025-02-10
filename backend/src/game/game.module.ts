@@ -12,6 +12,7 @@ import { PlayerCountMatrix } from './domain/game-mode-player-count-matrix';
 import { LobbyFactory } from './domain/lobby-factory';
 import { GameQueryHandlers } from './application/queries';
 import { GameQueryImplementation } from './infrastructure/queries/game-query-implementation';
+import { GameRoundBuilderImplementation } from './domain/game-round-builder';
 
 const infrastructure: Provider[] = [
   {
@@ -21,6 +22,10 @@ const infrastructure: Provider[] = [
   {
     provide: GameInjectionToken.GAME_QUERY,
     useClass: GameQueryImplementation,
+  },
+  {
+    provide: GameInjectionToken.GAME_ROUND_BUILDER,
+    useClass: GameRoundBuilderImplementation,
   },
 ];
 

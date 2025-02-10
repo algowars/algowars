@@ -26,6 +26,7 @@ export class RushImplementation
   getGameMode() {
     return this.gameMode;
   }
+
   getCreatedBy(): Account {
     return this.createdBy;
   }

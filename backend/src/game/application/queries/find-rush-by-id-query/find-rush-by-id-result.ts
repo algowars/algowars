@@ -6,4 +6,8 @@ export class FindRushByIdResult implements IQueryResult {
   gameMode: GameMode;
   createdAt: Date;
   finishedAt?: Date | null;
+  currentRound: {
+    roundIndex: number;
+    submissionCount: number;
+  };
 }

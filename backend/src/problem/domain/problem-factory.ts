@@ -11,7 +11,7 @@ export interface CreateProblemOptions {
   title: string;
   slug: string;
   question: string;
-  createdBy: Account;
+  createdBy?: Account;
   status: ProblemStatus;
   createdAt: Date;
   updatedAt: Date;

@@ -10,6 +10,13 @@ export async function up(knex: Knex): Promise<void> {
       .inTable('games')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
+    table
+      .uuid('problem_id')
+      .notNullable()
+      .references('id')
+      .inTable('problems')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.dateTime('deleted_at').nullable().defaultTo(null);
     table.integer('version').defaultTo(0);
     table.timestamps(true, true);

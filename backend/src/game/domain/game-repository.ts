@@ -1,15 +1,10 @@
 import { Id } from 'src/common/domain/id';
 import { Game } from './game';
-import { Account } from 'src/account/domain/account';
-import { GameMode } from './game-mode';
-import { GameType } from './game-factory';
+import { Problem } from 'src/problem/domain/problem';
 
 export interface GameRepository {
   newId(): Promise<Id>;
-  createGame(
-    account: Account,
-    gameMode: GameMode,
-    gameType: GameType,
-    maxPlayers: number,
-  ): Promise<Game>;
+  createGame(game: Game): Promise<Game>;
+  getHighestDifficulty(): Promise<number>;
+  findProblemsInDifficultyRange(low: number, high: number): Promise<Problem[]>;
 }

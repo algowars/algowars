@@ -41,6 +41,7 @@ export class GameFactory {
           createdAt,
           updatedAt,
           lobby,
+          gameType: GameType.RUSH,
           id: this.createId(id),
         });
       default:

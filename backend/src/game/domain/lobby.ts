@@ -8,6 +8,7 @@ export interface LobbyProperties {
 }
 
 export interface Lobby {
+  getId(): Id;
   getMaxPlayers(): number;
   getPlayerCount(): number;
   addPlayer(player: Account): void;
@@ -19,6 +20,7 @@ export interface Lobby {
 export class LobbyImplementation implements Lobby {
   private readonly maxPlayers: number;
   private players: Account[];
+  private id: Id;
 
   constructor(properties: LobbyProperties) {
     const players = properties?.players ? properties.players : [];
@@ -31,6 +33,10 @@ export class LobbyImplementation implements Lobby {
 
   getPlayerCount(): number {
     return this.players.length;
+  }
+
+  getId(): Id {
+    return this.id;
   }
 
   addPlayer(player: Account): void {
