@@ -1,4 +1,3 @@
-// game.ts
 import { Id } from 'src/common/domain/id';
 import { Account } from 'src/account/domain/account';
 import { GameMode } from './game-mode';
