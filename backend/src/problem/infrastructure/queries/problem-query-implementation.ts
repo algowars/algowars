@@ -47,13 +47,10 @@ export class ProblemQueryImplementation implements ProblemQuery {
       .leftJoin('problem_tags', 'problems.id', 'problem_tags.problem_id')
       .leftJoin('tags', 'problem_tags.tag_id', 'tags.id')
       .where({ slug });
-
     if (!rawResults.length) {
       return null;
     }
-
     const entity = rawResults[0];
-
     const tags = rawResults
       .filter((row) => row.tag_id && row.tag_name)
       .map(
@@ -63,16 +60,13 @@ export class ProblemQueryImplementation implements ProblemQuery {
             name: row.tag_name,
           }),
       );
-
     let createdBy = null;
-
     if (entity.username) {
       createdBy = new AccountImplementation({
         id: new IdImplementation(entity.id),
         username: new UsernameImplementation(entity.username),
       });
     }
-
     return new ProblemImplementation({
       id: new IdImplementation(entity.id),
       title: entity.title,
@@ -95,38 +89,34 @@ export class ProblemQueryImplementation implements ProblemQuery {
     timestamp: Date,
   ): Promise<PageResult<Problem>> {
     const offset = (page - 1) * size;
+    const distinctIdsRows = await this.knexConnection(Aliases.PROBLEMS)
+      .distinct('id', 'created_at')
+      .where('created_at', '<', timestamp)
+      .orderBy('created_at', 'desc')
+      .offset(offset)
+      .limit(size);
 
+    const problemIds = distinctIdsRows.map((row: any) => row.id);
     const rawResults = await this.knexConnection(Aliases.PROBLEMS)
       .select('problems.*', 'tags.id as tag_id', 'tags.name as tag_name')
       .leftJoin('problem_tags', 'problems.id', 'problem_tags.problem_id')
       .leftJoin('tags', 'problem_tags.tag_id', 'tags.id')
-      .where('problems.created_at', '<', timestamp)
-      .orderBy('problems.created_at', 'desc')
-      .offset(offset)
-      .limit(size);
-
+      .whereIn('problems.id', problemIds)
+      .orderBy('problems.created_at', 'desc');
     if (!rawResults.length) {
       return new PageResultImplementation<Problem>([], page, size, 0);
     }
-
     const total = await this.knexConnection(Aliases.PROBLEMS)
       .where('created_at', '<', timestamp)
       .count<{ count: number }>({ count: '*' })
       .first();
-
     const totalRecords = total?.count ?? 0;
     const totalPages = Math.ceil(totalRecords / size);
-
     const problemsById = rawResults.reduce((acc, row) => {
       const problemId = row.id;
-
       if (!acc[problemId]) {
-        acc[problemId] = {
-          entity: row,
-          tags: [],
-        };
+        acc[problemId] = { entity: row, tags: [] };
       }
-
       if (row.tag_id && row.tag_name) {
         acc[problemId].tags.push(
           new TagImplementation({
@@ -135,10 +125,8 @@ export class ProblemQueryImplementation implements ProblemQuery {
           }),
         );
       }
-
       return acc;
     }, {});
-
     const formattedResults = Object.values(problemsById).map(
       ({ entity, tags }: any) =>
         new ProblemImplementation({
@@ -155,7 +143,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
           difficulty: entity.difficulty,
         }),
     );
-
     return new PageResultImplementation<Problem>(
       formattedResults,
       page,
@@ -194,10 +181,8 @@ export class ProblemQueryImplementation implements ProblemQuery {
       )
       .where(`${Aliases.SUBMISSIONS}.problem_id`, problemId.getValue())
       .andWhere(`${Aliases.SUBMISSIONS}.deleted_at`, null);
-
     const groupedResults = rawResults.reduce((acc, row) => {
       const submissionId = row.submission_id;
-
       if (!acc[submissionId]) {
         acc[submissionId] = {
           submissionId,
@@ -213,14 +198,11 @@ export class ProblemQueryImplementation implements ProblemQuery {
           results: [],
         };
       }
-
       if (row.result_status) {
         acc[submissionId].results.push({ status: row.result_status });
       }
-
       return acc;
     }, {});
-
     return Object.values(groupedResults).map((result: any) => {
       const language = new LanguageImplementation({
         id: new IdImplementation(result.language.id),
@@ -228,12 +210,10 @@ export class ProblemQueryImplementation implements ProblemQuery {
         isAvailable: result.language.isAvailable,
         isArchived: result.language.isArchived,
       });
-
       const createdBy = new AccountImplementation({
         id: new IdImplementation(''),
         username: new UsernameImplementation(result.createdBy),
       });
-
       const submissionResults = result.results.map(
         (r: { token: string; status: SubmissionStatus }) =>
           new SubmissionResultImplementation({
@@ -241,7 +221,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
             status: r.status,
           }),
       );
-
       return new SubmissionImplementation({
         id: new IdImplementation(result.submissionId),
         sourceCode: result.sourceCode,
@@ -266,11 +245,9 @@ export class ProblemQueryImplementation implements ProblemQuery {
       .where('problem_id', problemId)
       .andWhere('language_id', languageId)
       .first();
-
     if (!entity) {
       return null;
     }
-
     return new ProblemSetupImplementation({
       id: new IdImplementation(entity.id),
       initialCode: entity.initial_code,
@@ -291,11 +268,9 @@ export class ProblemQueryImplementation implements ProblemQuery {
       .andWhere('difficulty', '<=', maxDifficulty)
       .orderByRaw('RANDOM()')
       .first();
-
     if (!entity) {
       return null;
     }
-
     return new ProblemImplementation({
       id: entity.id,
       difficulty: entity.difficulty,
@@ -304,7 +279,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
 
   async getTotalProblems(): Promise<number> {
     const result = await this.knexConnection('problems').count('* as count');
-
     return result ? Number(result[0].count) : 0;
   }
 
@@ -313,11 +287,9 @@ export class ProblemQueryImplementation implements ProblemQuery {
       .select('id', 'difficulty')
       .orderBy('difficulty', 'desc')
       .first();
-
     if (!entity) {
       throw new Error('No problems found');
     }
-
     return new ProblemImplementation({
       id: entity.id,
       difficulty: entity.difficulty,

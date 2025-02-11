@@ -27,8 +27,13 @@ export class FindAccountStatsByUsernameHandler
       account.getId(),
     );
 
+    const totalSolutions = await this.accountQuery.getTotalSolutions(
+      account.getId(),
+    );
+
     return {
       totalSubmissions,
+      totalSolutions,
     };
   }
 }

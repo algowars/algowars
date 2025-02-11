@@ -1,35 +1,38 @@
+import { Id } from 'src/common/domain/id';
 import { Account } from 'src/account/domain/account';
 import { GameMode } from './game-mode';
+import { GameType } from './game-factory';
 import { Lobby } from './lobby';
-import { Id } from 'src/common/domain/id';
 
 export interface GameProperties {
   id: Id;
   createdBy: Account;
   gameMode: GameMode;
+  createdAt: Date;
+  lobby: Lobby;
   startedAt?: Date;
   finishedAt?: Date;
-  lobby: Lobby;
-  createdAt: Date;
   updatedAt?: Date;
   deletedAt?: Date;
   version?: number;
+  gameType: GameType;
 }
 
 export abstract class Game {
-  public readonly id: Id;
-  public readonly createdBy: Account;
-  public readonly gameMode: GameMode;
-  public readonly createdAt: Date;
-  public startedAt?: Date;
-  public finishedAt?: Date;
-  public lobby: Lobby;
+  // Change private to protected if derived classes need direct access.
+  protected readonly id: Id;
+  protected readonly createdBy: Account;
+  protected readonly gameMode: GameMode;
+  protected readonly createdAt: Date;
+  protected startedAt?: Date;
+  protected finishedAt?: Date;
+  protected lobby: Lobby;
+  protected gameType: GameType;
 
   constructor(properties: GameProperties) {
     if (!properties.gameMode) {
       throw new Error('Game mode must be provided');
     }
-
     Object.assign(this, properties);
   }
 
@@ -41,23 +44,33 @@ export abstract class Game {
     return this.gameMode;
   }
 
-  getFinishedAt(): Date | null {
-    return this.finishedAt;
+  getGameType(): GameType {
+    return this.gameType;
   }
 
   getCreatedAt(): Date {
     return this.createdAt;
   }
 
+  getCreatedBy(): Account {
+    return this.createdBy;
+  }
+
+  getLobby(): Lobby {
+    return this.lobby;
+  }
+
+  getFinishedAt(): Date | null {
+    return this.finishedAt || null;
+  }
+
   public startGame(): void {
     if (this.startedAt) {
       throw new Error('Game is already active');
     }
-
     if (!this.lobby.isReady()) {
       throw new Error('Lobby is not ready. Please check the number of players');
     }
-
     this.startedAt = new Date();
     this.onStart();
   }
@@ -66,22 +79,13 @@ export abstract class Game {
     if (!this.startedAt) {
       throw new Error('Game has yet started');
     }
-
     if (this.finishedAt) {
       throw new Error('Game has already been finished');
     }
-
     this.finishedAt = new Date();
     this.onFinish();
   }
 
-  /**
-   * Called when the game starts
-   */
   protected abstract onStart(): void;
-
-  /**
-   * Called when the game finishes
-   */
   protected abstract onFinish(): void;
 }

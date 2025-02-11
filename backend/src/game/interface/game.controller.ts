@@ -44,7 +44,6 @@ export class GameController {
     @Query() query: FindRushByIdQueryDto,
     @Req() request: Request,
   ): Promise<FindRushByIdResult> {
-    console.log(param, query);
     const account = request?.account;
 
     return this.queryBus.execute<FindRushByIdQuery, FindRushByIdResult>(

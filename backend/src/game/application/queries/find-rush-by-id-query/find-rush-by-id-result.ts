@@ -1,9 +1,18 @@
 import { IQueryResult } from '@nestjs/cqrs';
-import { GameMode } from 'src/game/domain/game-mode';
 
 export class FindRushByIdResult implements IQueryResult {
   id: string;
-  gameMode: GameMode;
+  title: string;
+  slug: string;
+  initialCode: string;
+  question: string;
   createdAt: Date;
   finishedAt?: Date | null;
+  createdBy: {
+    id: string;
+    username: string;
+  };
+  tags: string[];
+  difficulty: number;
+  roundIndex: number;
 }

@@ -30,6 +30,18 @@ export const ProblemRushSoloEditor = ({
   const [accessToken, setAccessToken] = useState<string>("");
   const { getAccessTokenSilently } = useAuth0();
 
+  const soloRushQuery = useFindSoloRushById({
+    accessToken,
+    rushId,
+    startByDefault: true,
+  });
+
+  useEffect(() => {
+    if (soloRushQuery.data?.initialCode) {
+      setCode(soloRushQuery.data.initialCode);
+    }
+  }, [soloRushQuery?.data?.initialCode]);
+
   useEffect(() => {
     (async () => {
       if (!accessToken) {
@@ -38,14 +50,6 @@ export const ProblemRushSoloEditor = ({
       }
     })();
   }, [accessToken, getAccessTokenSilently]);
-
-  console.log(rushId, code, accessToken);
-
-  const soloRushQuery = useFindSoloRushById({
-    accessToken,
-    rushId,
-    startByDefault: true,
-  });
 
   useEffect(() => {
     if (soloRushQuery.isError) {
@@ -73,7 +77,7 @@ export const ProblemRushSoloEditor = ({
               <h4 className="font-semibold">Code</h4>
             </CardHeader>
             <CodeEditor
-              code={""}
+              code={code}
               changeCode={changeCode}
               className="h-full overflow-auto"
             />

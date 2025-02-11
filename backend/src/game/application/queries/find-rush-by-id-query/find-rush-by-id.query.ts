@@ -6,5 +6,6 @@ export class FindRushByIdQuery implements IQuery {
     readonly id: string,
     readonly shouldStart: boolean,
     readonly account: Account,
+    readonly languageId: number = 93,
   ) {}
 }
