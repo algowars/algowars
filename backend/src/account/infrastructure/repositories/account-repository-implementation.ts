@@ -31,6 +31,7 @@ export class AccountRepositoryImplementation implements AccountRepository {
         created_at: model.getCreatedAt(),
         updated_at: model.getUpdatedAt(),
         version: model.getVersion(),
+        picture: model.getPicture() ?? null,
       }));
 
       await trx(Aliases.ACCOUNTS).insert(entities);

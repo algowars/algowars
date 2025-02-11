@@ -43,18 +43,20 @@ export class AccountController {
   ): Promise<{
     id: string;
     username: string;
+    picture?: string;
     createdAt: Date;
   }> {
     const sub = request.auth.payload.sub;
 
     const account = await this.commandBus.execute<OpenAccountCommand, Account>(
-      new OpenAccountCommand(sub, body.username),
+      new OpenAccountCommand(sub, body.username, body.picture),
     );
 
     return {
       id: account.getId().toString(),
       username: account.getUsername().toString(),
       createdAt: account.getCreatedAt(),
+      picture: account.getPicture() ?? '',
     };
   }
 
