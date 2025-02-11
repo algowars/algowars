@@ -46,5 +46,10 @@
   {
     "id": 12,
     "name": "Backtracking"
-  }
+  },
+  { "id": 13, "name": "Beginner" },
+  { "id": 14, "name": "Easy" },
+  { "id": 15, "name": "Simple" },
+  { "id": 16, "name": "Loop" },
+  { "id": 17, "name": "Basic" }
 ]

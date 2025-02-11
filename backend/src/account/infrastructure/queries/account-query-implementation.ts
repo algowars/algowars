@@ -139,6 +139,22 @@ export class AccountQueryImplementation implements AccountQuery {
     }));
   }
 
+  async getTotalSolutions(accountId: Id): Promise<number> {
+    const result = await this.knexConnection(Aliases.SUBMISSIONS)
+      .innerJoin(
+        'submission_results',
+        'submissions.id',
+        'submission_results.submission_id',
+      )
+      .where({
+        created_by_id: accountId.getValue(),
+        'submission_results.status': SubmissionStatus.ACCEPTED,
+      })
+      .countDistinct('submissions.problem_id as total');
+
+    return Number(result[0].total);
+  }
+
   async getTotalSubmissions(accountId: Id): Promise<number> {
     const result = await this.knexConnection(Aliases.SUBMISSIONS)
       .where({ created_by_id: accountId.getValue() })

@@ -108,5 +108,105 @@
     "problem_id": "a2b3c4d5-e6f7-4c8d-9abc-0123456789de",
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "id": "6f0f1e7a-2b1a-4c0b-a6f5-1234567890ab",
+    "source_code": "function arraySum(arr) {\n  return arr.reduce((sum, val) => sum + val, 0);\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "7f3c9c88-20a7-4e81-8c4b-5a3c04a7fc3e",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "7e1f2a8b-3c4d-4e5f-b7a8-234567890abc",
+    "source_code": "function findMaximum(arr) {\n  return Math.max(...arr);\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "5d1e8e56-2e2a-4a7c-9a6f-bd9a93cfb915",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "8d2e3f4c-4d5e-4f6a-c8b9-34567890abcd",
+    "source_code": "function countOccurrences(arr, target) {\n  return arr.filter(item => item === target).length;\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "2a8d0c3e-5e7d-47e9-8a5f-fb97c5d95eaa",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "9c3d4e5f-5f6a-4b7c-d8e9-4567890abcde",
+    "source_code": "function reverseArray(arr) {\n  return arr.slice().reverse();\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "c3d8a86f-4bda-47f4-96e3-3b24c3e7e926",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "a4d5e6f7-6a7b-4c8d-e9f0-567890abcdef",
+    "source_code": "function mergeSortedArrays(arr1, arr2) {\n  let merged = [];\n  let i = 0, j = 0;\n  while (i < arr1.length && j < arr2.length) {\n    if (arr1[i] < arr2[j]) {\n      merged.push(arr1[i]);\n      i++;\n    } else {\n      merged.push(arr2[j]);\n      j++;\n    }\n  }\n  return merged.concat(arr1.slice(i)).concat(arr2.slice(j));\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "9e3f10de-dc4a-44a1-8b17-d22f3e5a4b91",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "b5e6f7a8-7b8c-4d9e-f0a1-67890abcdef1",
+    "source_code": "function countWords(str) {\n  if (str.trim() === \"\") return 0;\n  return str.trim().split(/\\s+/).length;\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "e5a8e5d2-7b9c-4f4f-a7a8-36e3a3b1f8c2",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "c6f7a8b9-8c9d-4e0f-a1b2-7890abcdef12",
+    "source_code": "function celsiusToFahrenheit(celsius) {\n  return (celsius * 9/5) + 32;\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "1d2a3f4b-5c6d-4e7f-8a9b-0c1d2e3f4b5a",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "d7a8b9c0-9d0e-4f1a-b2c3-890abcdef123",
+    "source_code": "function square(n) {\n  return n * n;\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "3b4c5d6e-7f8a-49b0-8c1d-2e3f4a5b6c7d",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "e8b9c0d1-0e1f-4a2b-c3d4-90abcdef1234",
+    "source_code": "function findRemainder(a, b) {\n  return a % b;\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "8c7b6a5d-4e3f-4ba0-b9c8-d7e6f5a4b3c2",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "f9c0d1e2-1f2a-4b3c-d4e5-abcdef123456",
+    "source_code": "function toUppercase(str) {\n  return str.toUpperCase();\n}",
+    "language_id": 93,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "code_execution_context": "Judge0",
+    "problem_id": "f1e2d3c4-b5a6-4789-90ab-cdef12345678",
+    "deleted_at": null,
+    "version": 1
   }
 ]

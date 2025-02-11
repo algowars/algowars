@@ -21,6 +21,7 @@ export interface AccountQuery {
     }[]
   >;
   getTotalSubmissions(accountId: Id): Promise<number>;
+  getTotalSolutions(accountId: Id): Promise<number>;
 
   getAdminProblems(
     page: number,

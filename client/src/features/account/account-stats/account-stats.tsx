@@ -38,12 +38,20 @@ export const AccountStats = ({ className }: AccountStatsProps) => {
         <CardTitle>Stats</CardTitle>
       </CardHeader>
       <CardContent>
-        <ul>
+        <ul className="flex flex-col gap-5">
           <li className="flex items-center">
             <span className="text-sm">Total Submissions</span>
-            <span className="ml-auto font-semibold text-sm">
+            <span className="ml-auto font-semibold text-sm text-muted-foreground">
               {statsQuery.data?.totalSubmissions
                 ? statsQuery.data.totalSubmissions
+                : 0}
+            </span>
+          </li>
+          <li className="flex items-center">
+            <span className="text-sm">Total Solutions</span>
+            <span className="ml-auto font-semibold text-sm text-muted-foreground">
+              {statsQuery.data?.totalSolutions
+                ? statsQuery.data.totalSolutions
                 : 0}
             </span>
           </li>

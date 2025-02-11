@@ -119,5 +119,115 @@
     "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "id": "7f3c9c88-20a7-4e81-8c4b-5a3c04a7fc3e",
+    "title": "Array Sum",
+    "question": "Given an array of numbers, return the sum of its elements.",
+    "slug": "array-sum",
+    "status": "Accepted",
+    "difficulty": 150,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "5d1e8e56-2e2a-4a7c-9a6f-bd9a93cfb915",
+    "title": "Find Maximum",
+    "question": "Given an array of numbers, return the maximum value.",
+    "slug": "find-maximum",
+    "status": "Accepted",
+    "difficulty": 200,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "2a8d0c3e-5e7d-47e9-8a5f-fb97c5d95eaa",
+    "title": "Count Occurrences",
+    "question": "Given an array and a target value, count how many times the target appears in the array.",
+    "slug": "count-occurrences",
+    "status": "Accepted",
+    "difficulty": 250,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "c3d8a86f-4bda-47f4-96e3-3b24c3e7e926",
+    "title": "Reverse Array",
+    "question": "Given an array, return a new array with the elements in reverse order.",
+    "slug": "reverse-array",
+    "status": "Accepted",
+    "difficulty": 300,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "9e3f10de-dc4a-44a1-8b17-d22f3e5a4b91",
+    "title": "Merge Sorted Arrays",
+    "question": "Given two sorted arrays, merge them into one sorted array.",
+    "slug": "merge-sorted-arrays",
+    "status": "Accepted",
+    "difficulty": 350,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "e5a8e5d2-7b9c-4f4f-a7a8-36e3a3b1f8c2",
+    "title": "Count Words",
+    "question": "Given a string, return the number of words in the string.",
+    "slug": "count-words",
+    "status": "Accepted",
+    "difficulty": 200,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "1d2a3f4b-5c6d-4e7f-8a9b-0c1d2e3f4b5a",
+    "title": "Celsius to Fahrenheit",
+    "question": "Write a function that converts Celsius to Fahrenheit.",
+    "slug": "celsius-to-fahrenheit",
+    "status": "Accepted",
+    "difficulty": 100,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "3b4c5d6e-7f8a-49b0-8c1d-2e3f4a5b6c7d",
+    "title": "Square a Number",
+    "question": "Given a number, return its square.",
+    "slug": "square-a-number",
+    "status": "Accepted",
+    "difficulty": 150,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "8c7b6a5d-4e3f-4ba0-b9c8-d7e6f5a4b3c2",
+    "title": "Find Remainder",
+    "question": "Given two numbers, return the remainder of their division.",
+    "slug": "find-remainder",
+    "status": "Accepted",
+    "difficulty": 200,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
+  },
+  {
+    "id": "f1e2d3c4-b5a6-4789-90ab-cdef12345678",
+    "title": "String to Uppercase",
+    "question": "Given a string, return the string converted to uppercase.",
+    "slug": "string-to-uppercase",
+    "status": "Accepted",
+    "difficulty": 150,
+    "created_by_id": "c110d58f-bfa4-4fbc-bfac-fd70415ee7d5",
+    "deleted_at": null,
+    "version": 1
   }
 ]
