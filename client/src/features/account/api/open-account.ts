@@ -17,14 +17,19 @@ export type OpenAccountInput = z.infer<typeof openAccountSchema>;
 export const openAccount = ({
   data,
   accessToken,
+  picture = "",
 }: {
   data: OpenAccountInput;
   accessToken: string;
+  picture?: string;
 }): Promise<Account> => {
   const config: AxiosRequestConfig = {
     url: "/api/v1/account",
     method: "POST",
-    data,
+    data: {
+      ...data,
+      picture,
+    },
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
