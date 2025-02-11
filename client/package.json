@@ -42,6 +42,7 @@
     "@radix-ui/react-tooltip": "^1.1.8",
     "@tanstack/react-query": "^5.55.4",
     "@tanstack/react-query-devtools": "^5.55.4",
+    "@tanstack/react-table": "^8.20.6",
     "@uiw/codemirror-extensions-langs": "^4.23.5",
     "@uiw/codemirror-themes": "^4.23.5",
     "@uiw/react-codemirror": "^4.23.5",
