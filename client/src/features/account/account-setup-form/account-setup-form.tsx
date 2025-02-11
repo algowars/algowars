@@ -27,7 +27,7 @@ type AccountSetupFormProps = {
 export const AccountSetupForm = ({ className }: AccountSetupFormProps) => {
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
-  const { status, changeAccount } = useAccount();
+  const { status, changeAccount, user } = useAccount();
 
   const form = useForm<z.infer<typeof openAccountSchema>>({
     resolver: zodResolver(openAccountSchema),
@@ -49,7 +49,11 @@ export const AccountSetupForm = ({ className }: AccountSetupFormProps) => {
   const onSubmit = async (values: z.infer<typeof openAccountSchema>) => {
     if (status === AccountStatus.PartiallyAuthenticated) {
       const accessToken = await getAccessTokenSilently();
-      openAccountMutation.mutate({ data: values, accessToken });
+      openAccountMutation.mutate({
+        data: values,
+        accessToken,
+        picture: user?.picture,
+      });
     }
   };
 
