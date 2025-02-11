@@ -39,7 +39,10 @@ export class FindProblemBySlugHandler
       question: problem.getQuestion(),
       createdAt: problem.getCreatedAt(),
       updatedAt: problem.getUpdatedAt(),
-      createdBy: problem.getCreatedBy()?.getUsername().toString() ?? '',
+      createdBy: {
+        username: problem.getCreatedBy()?.getUsername().toString() ?? '',
+        picture: problem.getCreatedBy()?.getPicture() ?? '',
+      },
       tags: problem.getTags()?.map((tag) => ({
         id: tag.getId()?.toNumber(),
         name: tag.getName(),

@@ -5,7 +5,18 @@ import { Link } from "@/components/ui/link";
 
 export const NotFoundRoute = () => {
   return (
-    <SidebarLayout breadcrumbs={[]}>
+    <SidebarLayout
+      breadcrumbs={[
+        {
+          href: routerConfig.root.path,
+          name: "Home",
+        },
+        {
+          href: routerConfig.notFound.path,
+          name: "Not Found",
+        },
+      ]}
+    >
       <section className="flex justify-center items-center py-24">
         <div className="flex flex-col items-center justify-start text-center gap-2">
           <h2 className="text-2xl font-semibold">404 Page Not Found</h2>

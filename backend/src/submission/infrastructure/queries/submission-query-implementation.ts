@@ -43,6 +43,7 @@ export class SubmissionQueryImplementation implements SubmissionQuery {
         'submission_results.version as result_version',
         'accounts.username',
         'accounts.id as account_id',
+        'accounts.picture as account_picture',
         'languages.id as language_id',
         'languages.name as language_name',
         'languages.is_archived',
@@ -97,6 +98,7 @@ export class SubmissionQueryImplementation implements SubmissionQuery {
       createdBy: new AccountImplementation({
         id: new IdImplementation(entity[0].account_id),
         username: new UsernameImplementation(entity[0].username),
+        picture: entity[0].account_picture,
       }),
       language: language,
       results: results,

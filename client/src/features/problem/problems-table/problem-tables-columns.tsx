@@ -50,4 +50,11 @@ export const columns: ColumnDef<Problem>[] = [
       return <DifficultyBadge difficulty={row.getValue("difficulty")} />;
     },
   },
+  {
+    accessorKey: "slug",
+    header: "Slug",
+    enableSorting: false,
+    enableHiding: true,
+    cell: ({ row }) => row.getValue("slug"),
+  },
 ];

@@ -1,3 +1,4 @@
+import { routerConfig } from "@/app/router-config";
 import { PaginationDataTableFooter } from "@/components/pagination/pagination-data-table-footer";
 import {
   Table,
@@ -17,6 +18,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ProblemDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -27,6 +29,7 @@ export function ProblemDataTable<TData, TValue>({
   columns,
   data,
 }: ProblemDataTableProps<TData, TValue>) {
+  const navigate = useNavigate();
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
@@ -40,6 +43,10 @@ export function ProblemDataTable<TData, TValue>({
     },
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  const redirectToProblem = (problemSlug: string) => {
+    navigate(routerConfig.problem.execute(problemSlug));
+  };
 
   return (
     <div className="flex flex-col gap-3">
@@ -68,6 +75,10 @@ export function ProblemDataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                onClick={() =>
+                  redirectToProblem((row.original as { slug: string }).slug)
+                }
+                className="hover:cursor-pointer"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

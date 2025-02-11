@@ -40,6 +40,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
         `problems.${select}`,
         'accounts.username',
         'accounts.id as account_id',
+        'accounts.picture as account_picture',
         'tags.id as tag_id',
         'tags.name as tag_name',
       )
@@ -63,8 +64,9 @@ export class ProblemQueryImplementation implements ProblemQuery {
     let createdBy = null;
     if (entity.username) {
       createdBy = new AccountImplementation({
-        id: new IdImplementation(entity.id),
+        id: new IdImplementation(entity.account_id),
         username: new UsernameImplementation(entity.username),
+        picture: entity.account_picture,
       });
     }
     return new ProblemImplementation({

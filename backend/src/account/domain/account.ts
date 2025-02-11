@@ -11,6 +11,7 @@ export interface AccountProperties extends BaseDomainProperties {
   sub?: UserSub;
   username?: Username;
   elos?: AccountElo[];
+  picture?: string;
 }
 
 export interface Account extends BaseDomainAggregateRoot {
@@ -18,6 +19,7 @@ export interface Account extends BaseDomainAggregateRoot {
   getUsername(): Username;
   open(): void;
   getElos(): AccountElo[];
+  getPicture(): string;
 }
 
 export class AccountImplementation
@@ -27,10 +29,15 @@ export class AccountImplementation
   private readonly sub: UserSub;
   private readonly username: Username;
   private readonly elos: AccountElo[];
+  private readonly picture: string;
 
   constructor(properties: AccountProperties) {
     super(properties);
     Object.assign(this, properties);
+
+    if (!this.isValidImageUrl(this.picture)) {
+      this.picture = '';
+    }
   }
 
   getSub(): UserSub {
@@ -45,7 +52,24 @@ export class AccountImplementation
     return this.elos;
   }
 
+  getPicture(): string {
+    return this.picture;
+  }
+
   open(): void {
     // this.apply(new AccountOpenedEvent(this.getId()));
+  }
+
+  private isValidImageUrl(imageUrl: string | undefined | null): boolean {
+    if (imageUrl) {
+      try {
+        new URL(imageUrl);
+        return true;
+      } catch (error) {
+        throw new Error('Invalid URL provided for picture property');
+      }
+    }
+
+    return false;
   }
 }

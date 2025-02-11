@@ -5,4 +5,5 @@ export interface Account {
   username: string;
   createdAt: Date;
   ranks?: AccountElo[];
+  picture?: string;
 }

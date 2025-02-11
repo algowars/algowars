@@ -4,5 +4,6 @@ export interface AccountEntity extends BaseEntity {
   id: string;
   sub?: string;
   username: string;
+  picture?: string | null;
   deleted_at: Date | null;
 }
