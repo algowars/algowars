@@ -36,6 +36,7 @@ export class FindProfileInformationHandler
             elo: elo.getElo(),
           }))
         : [],
+      picture: data.getPicture() ?? '',
       recentSubmissions: await this.getRecentSubmissions(data.getId()),
     };
   }

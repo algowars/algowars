@@ -1,3 +1,4 @@
+import { Account } from "@/features/account/models/account.model";
 import { Tag } from "./tag.model";
 
 export interface Problem {
@@ -5,7 +6,7 @@ export interface Problem {
   title: string;
   slug: string;
   question: string;
-  createdBy?: string;
+  createdBy?: Account;
   initialCode?: string;
   tags?: Tag[];
   difficulty: number;

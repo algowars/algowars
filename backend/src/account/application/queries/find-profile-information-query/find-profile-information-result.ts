@@ -9,6 +9,7 @@ export class FindProfileInformationResult implements IQueryResult {
     gameMode: GameModes;
     elo: number;
   }[];
+  readonly picture?: string;
   readonly recentSubmissions: {
     problemSlug: string;
     problemId: string;

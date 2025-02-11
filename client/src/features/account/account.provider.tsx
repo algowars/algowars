@@ -64,6 +64,8 @@ export function AccountProvider({ children, ...props }: AccountProviderProps) {
   } = useAuth0();
   const { roles } = useAuthPermissions();
 
+  console.log("USER: ", user);
+
   const isAdmin = roles.includes("Admin");
 
   useEffect(() => {
