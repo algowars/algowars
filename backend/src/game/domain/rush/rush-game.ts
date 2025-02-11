@@ -39,6 +39,7 @@ export class RushGameImplementation extends Game implements RushGame {
   }
 
   getCurrentRound(account: Account): RushRound {
+    console.log('ROUNDS: ', this.rounds);
     for (const round of this.rounds) {
       const submissions = round.getSubmissionsForAccount(account);
       const hasAccepted = submissions.some(

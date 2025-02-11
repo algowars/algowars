@@ -12,6 +12,7 @@ export interface CreateProblemOptions {
   slug: string;
   question: string;
   createdBy?: Account;
+  difficulty?: number;
   status: ProblemStatus;
   createdAt: Date;
   updatedAt: Date;
