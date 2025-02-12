@@ -16,7 +16,7 @@ export const routerConfig = {
     path: "/admin/problems",
   },
   adminViewProblem: {
-    path: "/admin/problem/:problemSlug",
+    path: "/admin/problem/:slug",
     execute: (slug: string) => `/admin/problem/${encodeURIComponent(slug)}`,
   },
   settings: {

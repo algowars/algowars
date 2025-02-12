@@ -22,3 +22,7 @@ export const formatDate = (date: Date): string => {
     return `${inputDate.format("MMM D")} (${diffMinutes} minutes old)`;
   }
 };
+
+export const formatDateWithYear = (date: Date): string => {
+  return dayjs(date).format("MMM D, YYYY");
+};

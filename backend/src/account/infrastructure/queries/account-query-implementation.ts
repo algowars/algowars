@@ -265,4 +265,55 @@ export class AccountQueryImplementation implements AccountQuery {
       totalPages,
     );
   }
+
+  async getAdminProblem(slug: string): Promise<Problem> {
+    const rawResults = await this.knexConnection(Aliases.PROBLEMS)
+      .select(
+        'problems.*',
+        'accounts.username',
+        'accounts.id as account_id',
+        'accounts.picture as account_picture',
+        'tags.id as tag_id',
+        'tags.name as tag_name',
+      )
+      .join('accounts', 'problems.created_by_id', 'accounts.id')
+      .leftJoin('problem_tags', 'problems.id', 'problem_tags.problem_id')
+      .leftJoin('tags', 'problem_tags.tag_id', 'tags.id')
+      .where({ slug });
+    if (!rawResults.length) {
+      return null;
+    }
+    const entity = rawResults[0];
+    const tags = rawResults
+      .filter((row) => row.tag_id && row.tag_name)
+      .map(
+        (row) =>
+          new TagImplementation({
+            id: new IdImplementation(row.tag_id),
+            name: row.tag_name,
+          }),
+      );
+    let createdBy = null;
+    if (entity.username) {
+      createdBy = new AccountImplementation({
+        id: new IdImplementation(entity.account_id),
+        username: new UsernameImplementation(entity.username),
+        picture: entity.account_picture,
+      });
+    }
+    return new ProblemImplementation({
+      id: new IdImplementation(entity.id),
+      title: entity.title,
+      question: entity.question,
+      slug: entity.slug,
+      status: entity.status,
+      createdAt: entity.created_at,
+      updatedAt: entity.updated_at,
+      deletedAt: entity.deleted_at,
+      version: entity.version,
+      createdBy,
+      tags: tags,
+      difficulty: entity.difficulty,
+    });
+  }
 }

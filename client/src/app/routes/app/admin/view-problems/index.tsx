@@ -30,7 +30,7 @@ export const AdminViewProblemsRoute = () => {
       <section className="px-3">
         <Card className="bg-sidebar">
           <CardHeader>
-            <CardTitle>Problems</CardTitle>
+            <CardTitle>Admin Problems</CardTitle>
             <CardDescription>View Recently created problems.</CardDescription>
           </CardHeader>
           <CardContent>

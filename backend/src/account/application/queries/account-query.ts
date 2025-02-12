@@ -28,4 +28,6 @@ export interface AccountQuery {
     size: number,
     timestamp: Date,
   ): Promise<PageResult<Problem>>;
+
+  getAdminProblem(slug: string): Promise<Problem>;
 }
