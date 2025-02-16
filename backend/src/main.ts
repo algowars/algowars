@@ -9,11 +9,9 @@ import { ConfigService } from '@nestjs/config';
 function checkEnvironment(configService: ConfigService) {
   const requiredEnvVars = [
     'PORT',
-    'DATABASE_HOST',
-    'DATABASE_PORT',
-    'DATABASE_USER',
+    'DATABASE_URL',
+    'PRODUCTION_DATABASE_URL',
     'DATABASE_PASSWORD',
-    'DATABASE_NAME',
     'CLIENT_ORIGIN_URLS',
     'ISSUER_BASE_URL',
     'AUDIENCE',

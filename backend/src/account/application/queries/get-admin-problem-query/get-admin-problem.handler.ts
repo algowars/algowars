@@ -19,6 +19,17 @@ export class GetAdminProblemHandler
 
     return {
       title: problem.getTitle(),
+      question: problem.getQuestion(),
+      slug: problem.getSlug(),
+      createdBy: {
+        id: problem.getCreatedBy().getId().toString(),
+        username: problem.getCreatedBy().getUsername().toString(),
+      },
+      createdAt: problem.getCreatedAt(),
+      updatedAt: problem.getUpdatedAt(),
+      version: problem.getVersion(),
+      difficulty: problem.getDifficulty(),
+      status: problem.getStatus(),
     };
   }
 }

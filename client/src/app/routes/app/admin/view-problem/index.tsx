@@ -1,9 +1,13 @@
 import { routerConfig } from "@/app/router-config";
 import { SidebarLayout } from "@/components/layouts/sidebar-layout/sidebar-layout";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { useGetAdminProblemBySlug } from "@/features/admin/api/get-admin-problem-by-slug";
+import { formatDateWithYear } from "@/utils/format-date";
 import { useAuth0 } from "@auth0/auth0-react";
 import { isAxiosError } from "axios";
+import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -64,12 +68,71 @@ export const AdminViewProblemRoute = () => {
     >
       <section className="px-3">
         <Card className="bg-sidebar">
-          <CardHeader>
-            <CardTitle>{adminProblemQuery.data.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <h1>TESTING</h1>
-          </CardContent>
+          <form>
+            <CardHeader>
+              <CardTitle>
+                <Label>Title</Label>
+                <br />
+                {adminProblemQuery.data.title}
+                <Button variant="ghost" className="text-muted-foreground">
+                  <Pencil size={16} />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex items-center gap-10">
+              <div>
+                <Label>Question</Label>
+                <br />
+                <span className="text-muted-foreground">
+                  {adminProblemQuery.data.question}
+                  <Button variant="ghost" className="text-muted-foreground">
+                    <Pencil size={16} />
+                  </Button>
+                </span>
+              </div>
+              <div>
+                <Label>Slug</Label>
+                <br />
+                <span className="text-muted-foreground">
+                  {adminProblemQuery.data.slug}
+                  <Button variant="ghost" className="text-muted-foreground">
+                    <Pencil size={16} />
+                  </Button>
+                </span>
+              </div>
+              <div>
+                <Label>Difficulty</Label>
+                <br />
+                <span className="text-muted-foreground">
+                  {adminProblemQuery.data.difficulty}
+                  <Button variant="ghost" className="text-muted-foreground">
+                    <Pencil size={16} />
+                  </Button>
+                </span>
+              </div>
+              <div>
+                <Label>Created At</Label>
+                <br />
+                <span className="text-muted-foreground">
+                  {formatDateWithYear(adminProblemQuery.data.createdAt)}
+                </span>
+              </div>
+              <div>
+                <Label>Updated At</Label>
+                <br />
+                <span className="text-muted-foreground">
+                  {formatDateWithYear(adminProblemQuery.data.updatedAt)}
+                </span>
+              </div>
+              <div>
+                <Label>Version</Label>
+                <br />
+                <span className="text-muted-foreground">
+                  {adminProblemQuery.data.version}
+                </span>
+              </div>
+            </CardContent>
+          </form>
         </Card>
       </section>
     </SidebarLayout>

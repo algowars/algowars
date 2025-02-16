@@ -35,10 +35,6 @@
   },
   "homepage": "https://github.com/algowars/algowars#readme",
   "devDependencies": {
-    "concurrently": "^9.1.2",
-    "msw": "^2.7.0"
-  },
-  "dependencies": {
-    "socket.io": "^4.8.1"
+    "concurrently": "^9.1.2"
   }
 }
