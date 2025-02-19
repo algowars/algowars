@@ -15,6 +15,7 @@ function checkEnvironment(configService: ConfigService) {
     'CLIENT_ORIGIN_URLS',
     'ISSUER_BASE_URL',
     'AUDIENCE',
+    'SERVER_URL',
   ];
 
   requiredEnvVars.forEach((envVar) => {
@@ -43,8 +44,6 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   app.use(nocache());
-
-  console.log('ORIGINS: ', configService.get('CLIENT_ORIGIN_URLS').split(','));
 
   app.enableCors({
     origin: configService.get<string>('CLIENT_ORIGIN_URLS').split(','),

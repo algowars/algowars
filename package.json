@@ -7,7 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "concurrently \"cd backend && pnpm run start:dev\" \"cd client && pnpm run dev\"",
+    "dev": "concurrently \"pnpm run dev:client\" \"pnpm run dev:backend\"",
+    "dev:client": "cd client && pnpm run dev",
+    "dev:backend": "cd backend && pnpm run start:dev",
     "build:all": "pnpm run build:client && pnpm run build:backend",
     "build:client": "(cd client && pnpm build)",
     "build:backend": "(cd backend && pnpm build)",

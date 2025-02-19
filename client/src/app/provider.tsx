@@ -3,6 +3,7 @@ import { MainErrorFallback } from "@/components/error/main-error-fallback";
 import { PageLoader } from "@/components/loader/page-loader/page-loader";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { AccountProvider } from "@/features/account/account.provider";
+import { ServerHealthBanner } from "@/features/server-health/server-health-banner/server-health-banner";
 import { queryConfig } from "@/lib/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -31,6 +32,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
               <AccountProvider>
                 <ThemeProvider>
                   {import.meta.env.DEV && <ReactQueryDevtools />}
+                  <ServerHealthBanner />
                   {children}
                 </ThemeProvider>
               </AccountProvider>

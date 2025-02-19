@@ -4,6 +4,12 @@ Algowars is an online competitive coding platform where users compete to solve c
 
 ## Setup
 
+### Requirements
+
+node version: `20`
+
+pnpm version: `10`
+
 ### Root Directory
 
 Inside the root directory, run the following command:
@@ -12,7 +18,7 @@ Inside the root directory, run the following command:
 
 This will use pnpm to install the commands to run the mono repo.
 
-To install the required dependencies of the client and backend, run: 
+To install the required dependencies of the client and backend, run:
 
 `pnpm run install:all`
 

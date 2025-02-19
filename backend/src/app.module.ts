@@ -11,6 +11,7 @@ import { ProblemModule } from './problem/problem.module';
 import { SubmissionModule } from './submission/submission.module';
 import { EloModule } from './elo/elo.module';
 import { GameModule } from './game/game.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { GameModule } from './game/game.module';
     SubmissionModule,
     EloModule,
     GameModule,
+    HealthModule,
   ],
   providers: [
     {
