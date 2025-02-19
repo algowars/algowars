@@ -28,6 +28,8 @@ import { AccountStatus, useAccount } from "@/features/account/account.provider";
 import AuthenticatedComponent from "@/components/auth/authenticated-component/authenticated-component";
 import { useMediaQuery } from "react-responsive";
 import { ProblemEditorMobile } from "../problem-editor-mobile/problem-editor-mobile";
+import { ProblemEditorTestCase } from "./problem-editor-testcase/problem-editor-testcase";
+import { ProblemEditorTestCard } from "./problem-editor-tests/problem-editor-tests";
 
 export type ProblemEditorProps = {
   problem: Problem | undefined;
@@ -203,27 +205,39 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
                   </p>
                 </Card>
               </ResizablePanel>
+              <ResizableHandle className="p-2 bg-inherit hover:bg-muted" />
               {submissionId ? (
-                <ResizableHandle className="p-2 bg-inherit hover:bg-muted" />
-              ) : null}
-              <ResizablePanel
-                defaultSize={submissionId ? 40 : 0}
-                minSize={submissionId ? 40 : 0}
-              >
-                <Card className="h-full overflow-auto bg-sidebar">
-                  <ProblemEditorResult
-                    submissionId={submissionId}
-                    submissionUpdate={submissionUpdate}
-                  />
-                </Card>
-              </ResizablePanel>
-              {status !== AccountStatus.FullyAuthenticated ? (
-                <ResizablePanel defaultSize={20} minSize={20} className="mt-4">
-                  <Card className="dark:bg-zinc-900 p-5 h-full flex flex-col gap-5 overflow-auto">
-                    <AuthenticatedComponent></AuthenticatedComponent>
+                <ResizablePanel
+                  defaultSize={submissionId ? 40 : 0}
+                  minSize={submissionId ? 40 : 0}
+                >
+                  <Card className="h-full overflow-auto bg-sidebar">
+                    <ProblemEditorResult
+                      submissionId={submissionId}
+                      submissionUpdate={submissionUpdate}
+                    />
                   </Card>
                 </ResizablePanel>
-              ) : null}
+              ) : (
+                <ResizablePanel defaultSize={20} minSize={20}>
+                  <Card className="dark:bg-zinc-900 p-5 h-full flex flex-col gap-5 overflow-auto">
+                    {status !== AccountStatus.FullyAuthenticated ? (
+                      <AuthenticatedComponent />
+                    ) : problem.testCases.length > 0 ? (
+                      problem.testCases.map((testCase) => (
+                        <ProblemEditorTestCase
+                          key={testCase.id}
+                          testCase={testCase}
+                        />
+                      ))
+                    ) : problem.tests.length > 0 ? (
+                      problem.tests.map((test) => (
+                        <ProblemEditorTestCard key={test.id} test={test} />
+                      ))
+                    ) : null}
+                  </Card>
+                </ResizablePanel>
+              )}
             </ResizablePanelGroup>
           </ResizablePanel>
         </ResizablePanelGroup>

@@ -9,4 +9,5 @@ export enum Aliases {
   PROBLEM_SETUPS = 'problem_setups',
   TAGS = 'tags',
   PROBLEM_TAGS = 'problem_tags',
+  TEST_CASES = 'test_cases',
 }

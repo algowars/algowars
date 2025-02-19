@@ -7,11 +7,13 @@ import { AdditionalTestFile } from './additional-test-file';
 
 export interface TestProperties extends BaseDomainProperties {
   code: string;
-  additionalTestFile: AdditionalTestFile;
+  additionalTestFile?: AdditionalTestFile;
+  isEditable?: boolean;
 }
 
 export interface Test extends BaseDomain {
   getCode(): string;
+  getIsEditable(): boolean;
   getAdditionalTestFile(): AdditionalTestFile | null;
 }
 
@@ -21,6 +23,7 @@ export class TestImplementation
 {
   private readonly code: string;
   private readonly additionalTestFile: AdditionalTestFile | null;
+  private readonly isEditable: boolean;
 
   constructor(properties: TestProperties) {
     super(properties);
@@ -33,5 +36,9 @@ export class TestImplementation
 
   getAdditionalTestFile(): AdditionalTestFile | null {
     return this.additionalTestFile ?? null;
+  }
+
+  getIsEditable(): boolean {
+    return this.isEditable;
   }
 }

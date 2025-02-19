@@ -1,4 +1,5 @@
 import { IQueryResult } from '@nestjs/cqrs';
+import { SubmissionType } from 'src/problem/domain/submission-type';
 
 export class FindProblemBySlugResult implements IQueryResult {
   readonly id: string;
@@ -8,6 +9,7 @@ export class FindProblemBySlugResult implements IQueryResult {
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly initialCode: string;
+  readonly submissionType: SubmissionType;
   readonly createdBy: {
     username: string;
     picture?: string;
@@ -17,4 +19,12 @@ export class FindProblemBySlugResult implements IQueryResult {
     name: string;
   }[];
   readonly difficulty: number;
+  readonly tests?: {
+    id: string;
+    code: string;
+  }[];
+  readonly testCases?: {
+    id: string;
+    input: string;
+  }[];
 }
