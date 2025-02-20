@@ -237,16 +237,16 @@ export const ProblemEditor = ({ problem }: ProblemEditorProps) => {
     ],
   };
 
-  console.log("TABS: ", tabs);
-
   return (
-    <div className="grow pb-3 px-2 lg:px-5">
-      <Editor tabs={tabs} />
+    <>
+      <div className="grow pb-3 px-2 lg:px-5">
+        <Editor tabs={tabs} />
+      </div>
       <ProblemEditorFooter
         onSubmit={createSubmission}
         submissionUpdate={submissionUpdate}
         createSubmissionMutation={createSubmissionMutation}
       />
-    </div>
+    </>
   );
 };
