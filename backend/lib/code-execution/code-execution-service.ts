@@ -1,3 +1,5 @@
+import { SubmissionStatus } from 'src/submission/domain/submission-status';
+
 export interface CodeExecutionRequest {
   getSourceCode(): string;
   getLanguageId(): number | string;
@@ -66,7 +68,7 @@ export interface CodeExecutionResponse {
   getCompileOut(): string | undefined;
   getStatus(): {
     id: number;
-    description: string;
+    description: SubmissionStatus;
   };
   getTime(): string | undefined;
   getMemory(): number | undefined;
@@ -81,7 +83,7 @@ export class CodeExecutionResponseImplementation
   private readonly compileOut?: string;
   private readonly status?: {
     id: number;
-    description: string;
+    description: SubmissionStatus;
   };
   private readonly time?: string;
   private readonly memory?: number;
@@ -132,4 +134,5 @@ export class CodeExecutionResponseImplementation
 
 export interface CodeExecutionService {
   getSubmission(token: string): Promise<CodeExecutionResponse>;
+  getBatchSubmissions(tokens: string[]): Promise<CodeExecutionResponse[]>;
 }

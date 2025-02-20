@@ -1,15 +1,36 @@
 import { AdditionalTestFile } from 'src/problem/domain/additional-test-file';
 import { CodeExecutionEngines } from './code-execution-engines';
+import {
+  CodeExecutionRequest,
+  CodeExecutionResponse,
+} from './code-execution-service';
 
 export interface CodeExecutionContext {
-  build(
-    sourceCode: string,
-    additionalFiles?: AdditionalTestFile,
-    input?: string,
-    expectedOutput?: string,
-  ): Promise<any>;
+  build(context: {
+    sourceCode?: string;
+    additionalFiles?: AdditionalTestFile;
+    languageId: number;
+    input?: string;
+    expectedOutput?: string;
+  }): Promise<CodeExecutionRequest>;
+
+  batchBuild(
+    contexts: {
+      sourceCode?: string;
+      additionalFiles?: AdditionalTestFile;
+      languageId: number;
+      input?: string;
+      expectedOutput?: string;
+    }[],
+  ): Promise<CodeExecutionRequest[]>;
 
   getEngine(): CodeExecutionEngines;
 
-  execute(codeExecutionRequest: {}): Promise<any>;
+  execute(
+    codeExecutionRequest: CodeExecutionRequest,
+  ): Promise<CodeExecutionResponse>;
+
+  batchExecute(
+    codeExecutionRequests: CodeExecutionRequest[],
+  ): Promise<CodeExecutionResponse[]>;
 }

@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/common/entities/base-entity';
+import { TestType } from 'src/problem/domain/test-type';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 export interface SubmissionResultEntity extends BaseEntity {
@@ -14,4 +15,5 @@ export interface SubmissionResultEntity extends BaseEntity {
   message?: string;
   submission_id: string;
   status: SubmissionStatus;
+  test_type: TestType;
 }

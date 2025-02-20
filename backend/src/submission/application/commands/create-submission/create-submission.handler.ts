@@ -11,7 +11,6 @@ import { ProblemSetup } from 'src/problem/domain/problem-setup';
 import { ProblemErrorMessage } from 'src/problem/domain/problem-error-message';
 import { CodeExecutionContextFactory } from 'lib/code-execution/code-execution-context-factory';
 import { Language } from 'src/problem/domain/language';
-import { AdditionalTestFile } from 'src/problem/domain/additional-test-file';
 import { SubmissionInjectionToken } from '../../injection-token';
 import { SubmissionRepository } from 'src/submission/domain/submission-repository';
 import { SubmissionFactory } from 'src/submission/domain/submission-factory';
@@ -20,6 +19,8 @@ import { SubmissionStatus } from 'src/submission/domain/submission-status';
 import { CodeExecutionEngines } from 'lib/code-execution/code-execution-engines';
 import { Submission } from 'src/submission/domain/submission';
 import { SubmissionResultImplementation } from 'src/submission/domain/submission-result';
+import { CodeExecutionResponse } from 'lib/code-execution/code-execution-service';
+import { Test } from 'src/problem/domain/test';
 
 @CommandHandler(CreateSubmissionCommand)
 export class CreateSubmissionHandler
@@ -58,10 +59,12 @@ export class CreateSubmissionHandler
 
     const results = await this.executeCode(
       executionContext,
-      `${command.request.sourceCode}
-      ${setupAggregate.getTests()[0].getCode()}`,
-      setupAggregate.getTests()[0].getAdditionalTestFile(),
+      command.request.sourceCode,
+      setupAggregate.getTests(),
+      setupAggregate.getLanguage(),
     );
+
+    console.log('RESULTS: ', results);
 
     const submission = await this.createSubmission(
       setupAggregate.getLanguage(),
@@ -69,6 +72,7 @@ export class CreateSubmissionHandler
       command.account,
       results,
       setupAggregate.getProblem(),
+      setupAggregate.getTests(),
     );
 
     return submission.getId();
@@ -94,21 +98,32 @@ export class CreateSubmissionHandler
 
   private async executeCode(
     executionContext: CodeExecutionContext,
-    code: string,
-    additionalTestFile: AdditionalTestFile,
-  ) {
-    const builtRequest = await executionContext.build(code, additionalTestFile);
+    sourceCode: string,
+    tests: Test[],
+    language: Language,
+  ): Promise<CodeExecutionResponse[]> {
+    const contexts = tests.map((test) => ({
+      sourceCode,
+      input: test.getInput(),
+      expectedOutput: test.getExpectedOutput(),
+      languageId: language.getId().toNumber(),
+      additionalTestFiles: test.getAdditionalTestFile(),
+    }));
 
-    return executionContext.execute(builtRequest);
+    const batchRequests = await executionContext.batchBuild(contexts);
+
+    return executionContext.batchExecute(batchRequests);
   }
 
   private async createSubmission(
     language: Language,
     sourceCode: string,
     createdBy: Account,
-    results: any,
+    results: any[],
     problem: Problem,
+    tests: Test[],
   ): Promise<Submission> {
+    console.log('RESULTS: ', results);
     const submissionId = await this.submissionRepository.newId();
 
     const submission = this.submissionFactory.create({
@@ -116,12 +131,14 @@ export class CreateSubmissionHandler
       language,
       sourceCode,
       createdBy,
-      results: [
-        new SubmissionResultImplementation({
-          ...results,
-          status: SubmissionStatus.POLLING,
-        }),
-      ],
+      results: results.map(
+        (result, index) =>
+          new SubmissionResultImplementation({
+            token: result.token,
+            testType: tests[index].getTestType(),
+            status: SubmissionStatus.POLLING,
+          }),
+      ),
       status: SubmissionStatus.POLLING,
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -42,6 +42,9 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
+  await knex.schema.alterTable('tests', (table) => {
+    table.dropColumn('test_type');
+  });
   await knex.raw('DROP TYPE IF EXISTS "test_type_enum"');
   return knex.schema.dropTable('tests');
 }

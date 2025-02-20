@@ -1,5 +1,6 @@
 import type { Knex } from 'knex';
 import { SubmissionStatus } from '../../submission/domain/submission-status';
+import { TestType } from '../../problem/domain/test-type';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('submission_results', (table) => {
@@ -20,6 +21,13 @@ export async function up(knex: Knex): Promise<void> {
       .inTable('submissions')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
+
+    table
+      .enu('test_type', Object.values(TestType), {
+        useNative: true,
+        enumName: 'submission_result_test_type_enum',
+      })
+      .notNullable();
     table
       .enu('status', Object.values(SubmissionStatus), {
         useNative: true,

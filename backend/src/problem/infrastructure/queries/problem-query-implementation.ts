@@ -184,6 +184,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
         `${Aliases.SUBMISSIONS}.source_code`,
         `${Aliases.SUBMISSIONS}.code_execution_context`,
         `${Aliases.SUBMISSION_RESULTS}.status as result_status`,
+        `${Aliases.SUBMISSION_RESULTS}.test_type`,
       )
       .join(
         `${Aliases.LANGUAGES}`,
@@ -236,10 +237,11 @@ export class ProblemQueryImplementation implements ProblemQuery {
         username: new UsernameImplementation(result.createdBy),
       });
       const submissionResults = result.results.map(
-        (r: { token: string; status: SubmissionStatus }) =>
+        (r: { token: string; status: SubmissionStatus; testType: TestType }) =>
           new SubmissionResultImplementation({
             token: r.token,
             status: r.status,
+            testType: r.testType,
           }),
       );
       return new SubmissionImplementation({

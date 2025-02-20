@@ -7,4 +7,5 @@ export interface SubmissionRepository {
   save(data: Submission | Submission[]): Promise<void>;
   findById(id: Id): Promise<Submission | null>;
   updateResult(result: SubmissionResult): Promise<void>;
+  updateResults(results: SubmissionResult[]): Promise<void>;
 }

@@ -29,6 +29,22 @@ export class Judge0CodeExecutionService implements CodeExecutionService {
     return this.httpService.axiosRef<T>(requestConfig);
   }
 
+  public async batchRun(
+    requests: CodeExecutionRequest[],
+  ): Promise<CodeExecutionResponse[]> {
+    const config: AxiosRequestConfig = {
+      url: `${this.judge0Config.url}/submissions/batch?base64_encoded=true&wait=false`,
+      method: 'POST',
+      headers: this.judge0Config.headers,
+      data: {
+        submissions: requests.map((request) => this.buildRequestData(request)),
+      },
+    };
+
+    const response = await this.execute<CodeExecutionResponse[]>(config);
+    return response.data;
+  }
+
   public async run(
     request: CodeExecutionRequest,
   ): Promise<CodeExecutionResponse> {
@@ -59,6 +75,50 @@ export class Judge0CodeExecutionService implements CodeExecutionService {
       compile_command: request.getCompileCommand(),
       execute_command: request.getExecuteCommand(),
     };
+  }
+
+  async getBatchSubmissions(
+    tokens: string[],
+  ): Promise<CodeExecutionResponse[]> {
+    const config: AxiosRequestConfig = {
+      url: `${this.judge0Config.url}/submissions/batch`,
+      params: {
+        tokens: tokens.join(','),
+        base64_encoded: 'true',
+        fields: '*',
+      },
+      headers: this.judge0Config.headers,
+    };
+
+    const { data } = await this.execute<{
+      submissions: {
+        token: string;
+        stdout?: string;
+        stderr?: string;
+        compileOut?: string;
+        status: {
+          id: number;
+          description: string;
+        };
+        time?: string;
+        memory?: number;
+      }[];
+    }>(config);
+
+    console.log('THA DATA: ', data);
+
+    return data.submissions.map((sub) => {
+      console.log('SUB: ', sub);
+      return new CodeExecutionResponseImplementation({
+        token: sub.token,
+        stdout: sub.stdout ? this.decode(sub.stdout) : '',
+        stderr: sub.stderr ? this.decode(sub.stderr) : '',
+        compileOut: sub.compileOut,
+        status: sub.status,
+        time: sub.time,
+        memory: sub.memory,
+      });
+    });
   }
 
   async getSubmission(token: string): Promise<CodeExecutionResponse> {

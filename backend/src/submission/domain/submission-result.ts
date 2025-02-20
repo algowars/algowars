@@ -4,6 +4,7 @@ import {
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
 import { SubmissionStatus } from './submission-status';
+import { TestType } from 'src/problem/domain/test-type';
 
 export interface SubmissionResultProperties extends BaseDomainProperties {
   token: string;
@@ -21,6 +22,7 @@ export interface SubmissionResultProperties extends BaseDomainProperties {
   deletedAt?: Date | null;
   version?: number;
   status: SubmissionStatus;
+  testType: TestType;
 }
 
 export interface SubmissionResult extends BaseDomain {
@@ -37,6 +39,7 @@ export interface SubmissionResult extends BaseDomain {
   getMessage(): string;
   getStatus(): SubmissionStatus;
   setStatus(newStatus: SubmissionStatus): void;
+  getTestType(): TestType;
 }
 
 export class SubmissionResultImplementation
@@ -53,6 +56,7 @@ export class SubmissionResultImplementation
   private readonly stderr?: string | null;
   private readonly expectedOutput: string;
   private readonly message: string;
+  private readonly testType: TestType;
   private status: SubmissionStatus;
 
   constructor(properties: SubmissionResultProperties) {
@@ -110,5 +114,9 @@ export class SubmissionResultImplementation
 
   getTime(): string {
     return this.time;
+  }
+
+  getTestType(): TestType {
+    return this.testType;
   }
 }

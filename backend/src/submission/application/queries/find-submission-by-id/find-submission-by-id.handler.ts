@@ -18,6 +18,8 @@ export class FindSubmissionByIdHandler
       new IdImplementation(query.id),
     );
 
+    console.log('FOUND SUB: ', foundSubmission);
+
     if (!foundSubmission) {
       throw new NotFoundException('Submission not found.');
     }

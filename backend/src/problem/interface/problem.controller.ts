@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetProblemsPageableParam } from './dto/request/get-problems-pageable-param.dto';
 import { PageResult } from 'src/common/pagination/page-result';
@@ -24,9 +15,6 @@ import { PermissionsGuard } from 'src/auth/permission.guard';
 import { ProblemPermissions } from '../application/permissions/problem-permissions';
 import { AuthorizationGuard } from 'src/auth/authorization.guard';
 import { AccountAuthorizationGuard } from 'src/auth/account-authorization.guard';
-import { CreateProblemRequest } from './dto/request/create-problem.dto';
-import { CreateProblemCommand } from '../application/commands/create-problem/create-problem.command';
-import { Request } from 'express';
 import { FindProblemSolutionsBySlugResult } from '../application/queries/find-problem-solutions-by-slug-query/find-problem-solutions-by-slug-result';
 import { FindProblemSolutionsBySlugQuery } from '../application/queries/find-problem-solutions-by-slug-query/find-problem-solutions-by-slug.query';
 
@@ -75,19 +63,19 @@ export class ProblemController {
     return this.queryBus.execute(new GetProblemSetupQuery(query.languageId));
   }
 
-  @UseGuards(PermissionsGuard([ProblemPermissions.CREATE_PROBLEM]))
-  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
-  @Post()
-  async createProblem(
-    @Body() body: CreateProblemRequest,
-    @Req() request: Request,
-  ): Promise<string> {
-    const account = request?.account;
+  // @UseGuards(PermissionsGuard([ProblemPermissions.CREATE_PROBLEM]))
+  // @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
+  // @Post()
+  // async createProblem(
+  //   @Body() body: CreateProblemRequest,
+  //   @Req() request: Request,
+  // ): Promise<string> {
+  //   const account = request?.account;
 
-    const id = await this.commandBus.execute(
-      new CreateProblemCommand(body, account),
-    );
+  //   const id = await this.commandBus.execute(
+  //     new CreateProblemCommand(body, account),
+  //   );
 
-    return id.toString();
-  }
+  //   return id.toString();
+  // }
 }

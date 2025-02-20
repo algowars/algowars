@@ -31,6 +31,7 @@ export interface Submission extends BaseDomainAggregateRoot {
   getAggregateStatus(): SubmissionStatus;
   setResult(index: number, result: SubmissionResult): void;
   setResults(newResults: SubmissionResult[]): void;
+  getResultByToken(token: string): SubmissionResult;
   create(): void;
 }
 
@@ -89,6 +90,10 @@ export class SubmissionImplementation
 
   setResults(results: SubmissionResult[]): void {
     this.results = results;
+  }
+
+  getResultByToken(token: string): SubmissionResult {
+    return this.results.find((result) => result.getToken() === token);
   }
 
   getAggregateStatus(): SubmissionStatus {

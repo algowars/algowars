@@ -19,25 +19,75 @@ export class JavaScriptJudge0CodeExecutionContext
     private readonly s3Service: S3Service,
   ) {}
 
-  async build(
-    sourceCode: string,
-    additionalTestFile: AdditionalTestFile | null,
-    input: string = '',
-  ): Promise<CodeExecutionRequest> {
+  getEngine(): CodeExecutionEngines {
+    return CodeExecutionEngines.JUDGE0;
+  }
+
+  async build({
+    sourceCode,
+    additionalTestFiles,
+    languageId,
+    input = '',
+    expectedOutput = '',
+  }: {
+    sourceCode?: string;
+    additionalTestFiles?: AdditionalTestFile | null;
+    languageId: number;
+    input?: string;
+    expectedOutput?: string;
+  }): Promise<CodeExecutionRequest> {
+    console.log('ADDITIONAL FILES: ', additionalTestFiles);
     const request = {
-      sourceCode: Buffer.from(sourceCode).toString('base64'),
-      languageId: 93,
-      stdin: input,
+      sourceCode: sourceCode ? Buffer.from(sourceCode).toString('base64') : '',
+      languageId,
+      stdin: input ? Buffer.from(input).toString('base64') : '',
       additionalFiles: '',
+      expectedOutput: expectedOutput
+        ? Buffer.from(expectedOutput).toString('base64')
+        : '',
     };
 
-    if (additionalTestFile) {
+    if (additionalTestFiles) {
       request['additionalFiles'] = await this.getAdditionalFiles(
-        additionalTestFile.getFileName(),
+        additionalTestFiles.getFileName(),
       );
     }
 
     return new CodeExecutionRequestImplementation(request);
+  }
+
+  async batchBuild(
+    contexts: {
+      sourceCode?: string;
+      additionalFiles?: AdditionalTestFile;
+      languageId: number;
+      input?: string;
+      expectedOutput: any;
+    }[],
+  ): Promise<CodeExecutionRequest[]> {
+    return Promise.all(contexts.map((context) => this.build(context)));
+  }
+
+  async execute(request: CodeExecutionRequest): Promise<CodeExecutionResponse> {
+    try {
+      return await this.judge0CodeExecutionService.run(request);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async batchExecute(
+    codeExecutionRequests: CodeExecutionRequest[],
+  ): Promise<CodeExecutionResponse[]> {
+    console.log('CODE EXECUTION REQUESTS: ', codeExecutionRequests);
+    try {
+      return await this.judge0CodeExecutionService.batchRun(
+        codeExecutionRequests,
+      );
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
   }
 
   private async getAdditionalFiles(s3Key: string): Promise<string> {
@@ -49,18 +99,6 @@ export class JavaScriptJudge0CodeExecutionContext
       return sourceCodeBuffer.toString('utf-8');
     } catch (error) {
       throw new Error('Failed to retrieve additional files from s3');
-    }
-  }
-
-  getEngine(): CodeExecutionEngines {
-    return CodeExecutionEngines.JUDGE0;
-  }
-
-  async execute(request: CodeExecutionRequest): Promise<CodeExecutionResponse> {
-    try {
-      return await this.judge0CodeExecutionService.run(request);
-    } catch (error) {
-      console.log(error);
     }
   }
 }

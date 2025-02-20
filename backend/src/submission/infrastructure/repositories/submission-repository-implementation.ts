@@ -95,6 +95,7 @@ export class SubmissionRepositoryImplementation
           updatedAt: result.updated_at,
           deletedAt: result.deleted_at,
           version: result.version,
+          testType: result.test_type,
         }),
     );
 
@@ -148,6 +149,7 @@ export class SubmissionRepositoryImplementation
           message: result.getMessage(),
           submission_id: submission.getId().toString(),
           status: result.getStatus(),
+          test_type: result.getTestType(),
           created_at: result.getCreatedAt(),
           updated_at: result.getUpdatedAt(),
           deleted_at: result.getDeletedAt(),
@@ -188,6 +190,37 @@ export class SubmissionRepositoryImplementation
       throw new Error(
         `No submission result found with token: ${result.getToken()}`,
       );
+    }
+  }
+
+  async updateResults(results: SubmissionResult[]): Promise<void> {
+    const updatedResults = results.map((result) => ({
+      token: result.getToken(),
+      source_code: result.getSourceCode(),
+      language_id: result.getLanguageId(),
+      stdin: result.getStdin(),
+      stdout: result.getStdout(),
+      time: result.getTime(),
+      memory: result.getMemory(),
+      stderr: result.getStderr(),
+      expected_output: result.getExpectedOutput(),
+      message: result.getMessage(),
+      status: result.getStatus(),
+      updated_at: result.getUpdatedAt() ?? new Date(),
+      deleted_at: result.getDeletedAt(),
+      version: result.getVersion(),
+    }));
+
+    for (const updatedResult of updatedResults) {
+      const rowsAffected = await this.knexConnection(Aliases.SUBMISSION_RESULTS)
+        .where({ token: updatedResult.token })
+        .update(updatedResult);
+
+      if (rowsAffected === 0) {
+        throw new Error(
+          `No submission result found with token: ${updatedResult.token}`,
+        );
+      }
     }
   }
 }

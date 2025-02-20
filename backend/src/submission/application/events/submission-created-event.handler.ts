@@ -36,8 +36,8 @@ export class SubmissionCreatedEventHandler
     const maxRetries = 10;
     const retryDelay = 4_000;
 
-    const result = await this.pollForRequest(
-      foundSubmission.getResults()[0].getToken(),
+    const results = await this.pollForRequest(
+      foundSubmission.getResults().map((result) => result.getToken()),
       maxRetries,
       retryDelay,
     );
@@ -46,51 +46,65 @@ export class SubmissionCreatedEventHandler
       foundSubmission.getLanguage(),
     );
 
-    const evaluationResult = evaluator.evaluate(result);
+    const evaluationResults = results.map((result) =>
+      evaluator.evaluate(
+        result,
+        foundSubmission.getResultByToken(result.getToken()).getTestType(),
+      ),
+    );
 
-    const submissionResult = foundSubmission.getResults()[0];
+    const submissionResults = foundSubmission.getResults();
 
-    submissionResult.setStdout(evaluationResult.stdout);
-    submissionResult.setStatus(evaluationResult.status);
+    console.log('FINAL LRESULTS: ', submissionResults);
 
-    foundSubmission.setResults([submissionResult]);
+    submissionResults.forEach((submissionResult, index) => {
+      submissionResult.setStdout(evaluationResults[index].stdout);
+      submissionResult.setStatus(evaluationResults[index].status);
+    });
 
-    await this.submissionRepository.updateResult(submissionResult);
+    foundSubmission.setResults(submissionResults);
+
+    await this.submissionRepository.updateResults(submissionResults);
 
     this.logger.log(
-      `Execution result: ${JSON.stringify(result)}, updatedSubmission: ${foundSubmission}`,
+      `Execution results: ${JSON.stringify(results)}, updatedSubmission: ${foundSubmission}`,
     );
   }
 
   private async pollForRequest(
-    token: string,
+    tokens: string[],
     maxRetries: number,
     retryDelay: number,
-  ): Promise<CodeExecutionResponse> {
+  ): Promise<CodeExecutionResponse[]> {
     const codeExecutionService =
       this.codeExecutionServiceFactory.createService();
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
-      const response = await codeExecutionService.getSubmission(token);
+      const responses = await codeExecutionService.getBatchSubmissions(tokens);
 
-      if (
-        response.getStatus().description !== 'In Queue' &&
-        response.getStatus().description !== 'Processing'
-      ) {
-        return response;
+      const completedResponses = responses.filter(
+        (response) =>
+          response.getStatus().description !== 'In Queue' &&
+          response.getStatus().description !== 'Processing',
+      );
+
+      if (completedResponses.length === responses.length) {
+        return responses;
       }
 
       this.logger.log(
-        `Retry attempt ${attempt + 1}/${maxRetries}: Status is ${response.getStatus().description}`,
+        `Retry attempt ${attempt + 1}/${maxRetries}: Statuses are ${responses
+          .map((response) => response.getStatus().description)
+          .join(', ')}`,
       );
 
       await this.delay(retryDelay);
     }
 
     this.logger.error(
-      'Max retries reached. Failed to retrieve a valid submission status.',
+      'Max retries reached. Failed to retrieve valid submission statuses.',
     );
-    return null;
+    return [];
   }
 
   private delay(ms: number): Promise<void> {

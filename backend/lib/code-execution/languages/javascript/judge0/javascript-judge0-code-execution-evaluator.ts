@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CodeExecutionEvaluationResult } from 'lib/code-execution/code-execution-evaluation-result';
 import { CodeExecutionResponse } from 'lib/code-execution/code-execution-service';
 import { Judge0CodeExecutionEvaluator } from 'lib/code-execution/judge0/judge0-code-execution-evaluator';
+import { TestType } from 'src/problem/domain/test-type';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 @Injectable()
@@ -10,12 +11,31 @@ export class JavaScriptJudge0CodeExecutionEvaluator
 {
   evaluate(
     submissionResult: CodeExecutionResponse,
+    testType: TestType,
   ): CodeExecutionEvaluationResult {
-    return this.parseUvuLibrary(submissionResult);
+    switch (testType) {
+      case TestType.UVU:
+        return this.parseUvuLibrary(submissionResult);
+      case TestType.JUDGE0:
+        return this.parseJudge0(submissionResult);
+      default:
+        throw new Error(`Unsupported test type: ${testType}`);
+    }
   }
 
-  private parseJudge0(submissionResult: CodeExecutionResponse): any {
-    return {};
+  private parseJudge0(
+    submissionResult: CodeExecutionResponse,
+  ): CodeExecutionEvaluationResult {
+    return {
+      status: submissionResult.getStatus().description,
+      stdout: submissionResult.getStdout(),
+      summary: {
+        passed: 0,
+        failed: 0,
+        skipped: 0,
+        details: [],
+      },
+    };
   }
 
   private parseUvuLibrary(
