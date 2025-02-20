@@ -55,6 +55,5 @@ export const columns: ColumnDef<Problem>[] = [
     header: "Slug",
     enableSorting: false,
     enableHiding: true,
-    cell: ({ row }) => row.getValue("slug"),
   },
 ];

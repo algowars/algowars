@@ -1,12 +1,12 @@
 import 'dotenv/config';
-import * as path from 'path';
+import path from 'path';
 
 const {
   DATABASE_PASSWORD = '',
   DEBUG,
   DATABASE_URL = '',
-  PRODUCTION_DATABASE_URL,
-  PRODUCTION_DATABASE_PASSWORD,
+  PRODUCTION_DATABASE_URL = '',
+  PRODUCTION_DATABASE_PASSWORD = '',
 } = process.env;
 
 const config = {

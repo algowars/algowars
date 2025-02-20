@@ -6,7 +6,7 @@ import {
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
 import { Tag } from './tag';
-
+import { Test } from './test';
 export interface ProblemProperties extends BaseDomainProperties {
   title?: string;
   slug?: string;
@@ -15,6 +15,7 @@ export interface ProblemProperties extends BaseDomainProperties {
   createdBy?: Account;
   tags?: Tag[];
   difficulty?: number;
+  tests?: Test[];
 }
 
 export interface Problem extends BaseDomainAggregateRoot {
@@ -26,6 +27,7 @@ export interface Problem extends BaseDomainAggregateRoot {
   getTags(): Tag[];
   getDifficulty(): number;
   setDifficulty(newDifficulty: number): void;
+  getAllowedTests(): Test[];
 }
 
 export class ProblemImplementation
@@ -39,6 +41,7 @@ export class ProblemImplementation
   private readonly status: ProblemStatus;
   private readonly tags: Tag[];
   private difficulty: number;
+  private readonly tests: Test[];
 
   constructor(properties: ProblemProperties) {
     super(properties);
@@ -79,5 +82,9 @@ export class ProblemImplementation
 
   getTags(): Tag[] {
     return this.tags;
+  }
+
+  getAllowedTests(): Test[] {
+    return this.tests;
   }
 }

@@ -1,4 +1,5 @@
 import { IQueryResult } from '@nestjs/cqrs';
+import { TestType } from 'src/problem/domain/test-type';
 
 export class FindProblemBySlugResult implements IQueryResult {
   readonly id: string;
@@ -17,4 +18,9 @@ export class FindProblemBySlugResult implements IQueryResult {
     name: string;
   }[];
   readonly difficulty: number;
+  readonly tests?: {
+    id: string;
+    code: string;
+    testType: TestType;
+  }[];
 }

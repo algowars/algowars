@@ -27,6 +27,8 @@ import { PermissionsGuard } from 'src/auth/permission.guard';
 import { AccountPermissions } from '../application/permissions/account-permissions';
 import { GetAdminProblemsQuery } from '../application/queries/get-admin-problems-query/get-admin-problem.query';
 import { GetAdminProblemsParam } from './dto/request/get-admin-problems.dto';
+import { GetAdminProblemParams } from './dto/request/get-admin-problem.dto';
+import { GetAdminProblemQuery } from '../application/queries/get-admin-problem-query/get-admin-problem.query';
 
 @Controller('v1/account')
 export class AccountController {
@@ -110,5 +112,12 @@ export class AccountController {
     return this.queryBus.execute(
       new GetAdminProblemsQuery(param.page, param.size, param.timestamp),
     );
+  }
+
+  @UseGuards(PermissionsGuard([AccountPermissions.READ_ADMIN_PROBLEMS]))
+  @UseGuards(AuthorizationGuard, AccountAuthorizationGuard)
+  @Get('/admin/problem/find/slug/:slug')
+  async getAdminProblem(@Param() param: GetAdminProblemParams) {
+    return this.queryBus.execute(new GetAdminProblemQuery(param.slug));
   }
 }

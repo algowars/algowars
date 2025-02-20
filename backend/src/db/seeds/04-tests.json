@@ -3,8 +3,10 @@
     "id": "2f176e33-7ed8-4fbf-a5b3-1c3eca9fe43a",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('isEven should return \"true\" for even numbers', () => {\n  assert.is(isEven(2), \"true\");\n  assert.is(isEven(4), \"true\");\n  assert.is(isEven(0), \"true\");\n});\n\ntest('isEven should return \"false\" for odd numbers', () => {\n  assert.is(isEven(1), \"false\");\n  assert.is(isEven(3), \"false\");\n  assert.is(isEven(-1), \"false\");\n});\n\ntest('isEven should handle negative even numbers', () => {\n  assert.is(isEven(-2), \"true\");\n  assert.is(isEven(-4), \"true\");\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -12,8 +14,10 @@
     "id": "c994434e-daad-4dd9-ad3c-294ba1962964",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('fibonacci should return correct Fibonacci number', () => {\n  assert.is(fibonacci(0), 0);\n  assert.is(fibonacci(1), 1);\n  assert.is(fibonacci(2), 1);\n  assert.is(fibonacci(3), 2);\n  assert.is(fibonacci(10), 55);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "46070217-1aa3-420a-83e3-0b39b3d9c2af",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -21,8 +25,10 @@
     "id": "5dfaf1c0-76ad-4899-9151-8fadecfbff34",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('palindromeCheck should return true for palindromes', () => {\n  assert.is(palindromeCheck('racecar'), true);\n  assert.is(palindromeCheck('madam'), true);\n  assert.is(palindromeCheck(''), true);\n});\n\ntest('palindromeCheck should return false for non-palindromes', () => {\n  assert.is(palindromeCheck('hello'), false);\n  assert.is(palindromeCheck('world'), false);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "7224c3f8-4395-4a3d-845d-f1999cbabfa8",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -30,8 +36,10 @@
     "id": "4960c3f6-5e5c-4489-9924-f0312a1f5b97",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('twoSum should return correct indices', () => {\n  assert.equal(twoSum([2, 7, 11, 15], 9), [0, 1]);\n  assert.equal(twoSum([3, 2, 4], 6), [1, 2]);\n  assert.equal(twoSum([3, 3], 6), [0, 1]);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "49ae4175-629c-49b2-a25c-c700e112d15b",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -39,8 +47,10 @@
     "id": "7f4ac6b9-3e9a-4d3e-ae85-9e9a1f45d2b7",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('reverseString should reverse a given string', () => {\n  assert.is(reverseString(\"hello\"), \"olleh\");\n  assert.is(reverseString(\"world\"), \"dlrow\");\n  assert.is(reverseString(\"a\"), \"a\");\n  assert.is(reverseString(\"\"), \"\");\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "a1b2c3d4-e5f6-4789-abcd-0123456789ab",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -48,8 +58,10 @@
     "id": "8e1f3d45-2fce-4d7a-9a4c-1f2d3e4b5c6d",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('factorialCalculation should return 1 for 0', () => {\n  assert.is(factorialCalculation(0), 1);\n});\n\ntest('factorialCalculation should return factorial of 1', () => {\n  assert.is(factorialCalculation(1), 1);\n});\n\ntest('factorialCalculation should return factorial of 3', () => {\n  assert.is(factorialCalculation(3), 6);\n});\n\ntest('factorialCalculation should return factorial of 5', () => {\n  assert.is(factorialCalculation(5), 120);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "b1c2d3e4-f5a6-4789-bcde-123456789abc",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -57,8 +69,10 @@
     "id": "9f3b5c1d-1a2b-4c3d-8a7e-23456789abcf",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('binarySearch should return correct index for existing elements', () => {\n  assert.is(binarySearch([1, 2, 3, 4, 5], 3), 2);\n  assert.is(binarySearch([1, 2, 3, 4, 5], 1), 0);\n  assert.is(binarySearch([1, 2, 3, 4, 5], 5), 4);\n});\n\ntest('binarySearch should return -1 for non-existing element', () => {\n  assert.is(binarySearch([1, 2, 3, 4, 5], 6), -1);\n});\n\ntest('binarySearch should handle empty array', () => {\n  assert.is(binarySearch([], 3), -1);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "c1d2e3f4-a5b6-4789-adef-23456789abcd",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -66,8 +80,10 @@
     "id": "afb6c1d2-e3f4-4a5b-8d9e-abcdef012345",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('longestCommonPrefix should return common prefix', () => {\n  assert.is(longestCommonPrefix([\"flower\", \"flow\", \"flight\"]), \"fl\");\n});\n\ntest('longestCommonPrefix should return empty string if no common prefix', () => {\n  assert.is(longestCommonPrefix([\"dog\", \"racecar\", \"car\"]), \"\");\n});\n\ntest('longestCommonPrefix should handle single string', () => {\n  assert.is(longestCommonPrefix([\"single\"]), \"single\");\n});\n\ntest('longestCommonPrefix should handle empty array', () => {\n  assert.is(longestCommonPrefix([]), \"\");\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "d1e2f3a4-b5c6-4789-8ef0-3456789abcde",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -75,8 +91,10 @@
     "id": "b0f7e8a1-2d3c-4e5f-8a9b-abcdef012345",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('anagramCheck should return true for anagrams', () => {\n  assert.is(anagramCheck(\"listen\", \"silent\"), true);\n  assert.is(anagramCheck(\"triangle\", \"integral\"), true);\n});\n\ntest('anagramCheck should return false for non-anagrams', () => {\n  assert.is(anagramCheck(\"apple\", \"pale\"), false);\n});\n\ntest('anagramCheck should handle empty strings', () => {\n  assert.is(anagramCheck(\"\", \"\"), true);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "e1f2a3b4-c5d6-4789-8f01-456789abcdef",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -84,8 +102,10 @@
     "id": "c2d3e4f5-a6b7-4c8d-9e01-23456789abcd",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('validParentheses should return true for valid parentheses', () => {\n  assert.is(validParentheses(\"()\"), true);\n  assert.is(validParentheses(\"()[]{}\"), true);\n  assert.is(validParentheses(\"{[]}\"), true);\n  assert.is(validParentheses(\"\") , true);\n});\n\ntest('validParentheses should return false for invalid parentheses', () => {\n  assert.is(validParentheses(\"(]\"), false);\n  assert.is(validParentheses(\"([)]\"), false);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "f1a2b3c4-d5e6-4789-9012-56789abcdef0",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -93,8 +113,10 @@
     "id": "d1234567-89ab-4cde-8f12-3456789abcde",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\n\ntest('regexMatching should return false when s = \"aa\" and p = \"a\"', () => {\n  assert.is(regexMatching(\"aa\", \"a\"), false);\n});\n\ntest('regexMatching should return true when s = \"aa\" and p = \"a*\"', () => {\n  assert.is(regexMatching(\"aa\", \"a*\"), true);\n});\n\ntest('regexMatching should return true when s = \"ab\" and p = \".*\"', () => {\n  assert.is(regexMatching(\"ab\", \".*\"), true);\n});\n\ntest('regexMatching should return true when s = \"aab\" and p = \"c*a*b\"', () => {\n  assert.is(regexMatching(\"aab\", \"c*a*b\"), true);\n});\n\ntest('regexMatching should return false when s = \"mississippi\" and p = \"mis*is*p*.\"', () => {\n  assert.is(regexMatching(\"mississippi\", \"mis*is*p*.\"), false);\n});\n\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "a2b3c4d5-e6f7-4c8d-9abc-0123456789de",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -102,8 +124,10 @@
     "id": "a8a2f75d-1e9b-4f2f-8e35-0b7d82b84f5e",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('arraySum returns correct sum', () => {\n  assert.is(arraySum([1, 2, 3, 4]), 10);\n  assert.is(arraySum([-1, -2, -3, -4]), -10);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "7f3c9c88-20a7-4e81-8c4b-5a3c04a7fc3e",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -111,8 +135,10 @@
     "id": "b1b2c3d4-e5f6-4789-9abc-abcdef123456",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('findMaximum returns the maximum value', () => {\n  assert.is(findMaximum([1, 3, 5, 7, 2]), 7);\n  assert.is(findMaximum([-10, -3, -20]), -3);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "5d1e8e56-2e2a-4a7c-9a6f-bd9a93cfb915",
     "language_id": 93,
+    "is_editable": false,
     "deleted_at": null,
     "version": 1
   },
@@ -120,8 +146,10 @@
     "id": "c2d3e4f5-a6b7-4890-8cde-123456abcdef",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('countOccurrences returns correct count', () => {\n  assert.is(countOccurrences([1, 2, 3, 2, 2, 4], 2), 3);\n  assert.is(countOccurrences(['a', 'b', 'a'], 'a'), 2);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "2a8d0c3e-5e7d-47e9-8a5f-fb97c5d95eaa",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -129,8 +157,10 @@
     "id": "d3e4f5a6-b7c8-4901-8d2e-abcdef987654",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('reverseArray returns reversed array', () => {\n  assert.equal(reverseArray([1, 2, 3]), [3, 2, 1]);\n  assert.equal(reverseArray(['x', 'y', 'z']), ['z', 'y', 'x']);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "c3d8a86f-4bda-47f4-96e3-3b24c3e7e926",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -138,8 +168,10 @@
     "id": "e4f5a6b7-c8d9-4012-8e3f-1234567890ab",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('mergeSortedArrays returns merged sorted array', () => {\n  assert.equal(mergeSortedArrays([1, 3, 5], [2, 4, 6]), [1, 2, 3, 4, 5, 6]);\n  assert.equal(mergeSortedArrays([], [1, 2]), [1, 2]);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "9e3f10de-dc4a-44a1-8b17-d22f3e5a4b91",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -147,8 +179,10 @@
     "id": "f5a6b7c8-d9e0-4123-8f4a-234567890abc",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('countWords returns correct word count', () => {\n  assert.is(countWords(\"hello world\"), 2);\n  assert.is(countWords(\"  multiple   spaces  \"), 2);\n  assert.is(countWords(\"\"), 0);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "e5a8e5d2-7b9c-4f4f-a7a8-36e3a3b1f8c2",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -156,8 +190,10 @@
     "id": "a6b7c8d9-e0f1-4234-8f5a-34567890abcd",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('celsiusToFahrenheit converts correctly', () => {\n  assert.is(celsiusToFahrenheit(0), 32);\n  assert.is(celsiusToFahrenheit(100), 212);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "1d2a3f4b-5c6d-4e7f-8a9b-0c1d2e3f4b5a",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -165,8 +201,10 @@
     "id": "b7c8d9e0-f1a2-4345-8f6a-4567890abcde",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('square returns the square of a number', () => {\n  assert.is(square(3), 9);\n  assert.is(square(-4), 16);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "3b4c5d6e-7f8a-49b0-8c1d-2e3f4a5b6c7d",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -174,8 +212,10 @@
     "id": "c8d9e0f1-a2b3-4456-8f7a-567890abcdef",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('findRemainder returns correct remainder', () => {\n  assert.is(findRemainder(10, 3), 1);\n  assert.is(findRemainder(20, 5), 0);\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "8c7b6a5d-4e3f-4ba0-b9c8-d7e6f5a4b3c2",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
   },
@@ -183,9 +223,398 @@
     "id": "d9e0f1a2-b3c4-4567-8f8a-67890abcdef1",
     "code": "import { test } from \"uvu\";\nimport * as assert from \"uvu/assert\";\n\ntest('toUppercase converts string to uppercase', () => {\n  assert.is(toUppercase(\"hello\"), \"HELLO\");\n  assert.is(toUppercase(\"World\"), \"WORLD\");\n});\n\ntest.run();",
     "additional_test_file_id": "4b77974b-6cfe-441c-b9e6-ae93e7a37901",
+    "test_type": "uvu",
     "problem_id": "f1e2d3c4-b5a6-4789-90ab-cdef12345678",
     "language_id": 93,
+    "is_editable": true,
     "deleted_at": null,
     "version": 1
+  },
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "problem_id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "2",
+    "expected_output": "true",
+    "is_editable": true
+  },
+  {
+    "id": "d9428888-122b-4efc-bf54-cedc6e5a1f4e",
+    "problem_id": "77bef21b-bc5b-40fc-bc6f-f8c8e744f0d4",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "3",
+    "expected_output": "false",
+    "is_editable": true
+  },
+  {
+    "id": "a7f8e9c0-1f5d-42d4-9c82-63f237f81234",
+    "problem_id": "46070217-1aa3-420a-83e3-0b39b3d9c2af",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "5",
+    "expected_output": "5",
+    "is_editable": true
+  },
+  {
+    "id": "b2e5d7a3-c4d2-4f6e-91f8-27eb2b8efacd",
+    "problem_id": "46070217-1aa3-420a-83e3-0b39b3d9c2af",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "10",
+    "expected_output": "55",
+    "is_editable": true
+  },
+  {
+    "id": "e3a9c7d1-45b2-4b16-b0e2-7e5f8d32c1b9",
+    "problem_id": "7224c3f8-4395-4a3d-845d-f1999cbabfa8",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "racecar",
+    "expected_output": "true",
+    "is_editable": true
+  },
+  {
+    "id": "f1c4e5a6-3d2b-4c1e-8e7f-62d0f9a0b123",
+    "problem_id": "7224c3f8-4395-4a3d-845d-f1999cbabfa8",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "hello",
+    "expected_output": "false",
+    "is_editable": true
+  },
+  {
+    "id": "c4d3e2f1-9876-4a12-b3cd-1234567890ab",
+    "problem_id": "49ae4175-629c-49b2-a25c-c700e112d15b",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"array\": [2,7,11,15], \"target\": 9}",
+    "expected_output": "[0,1]",
+    "is_editable": true
+  },
+  {
+    "id": "e5f6a7b8-4321-4c3d-8f1e-abcdef123456",
+    "problem_id": "49ae4175-629c-49b2-a25c-c700e112d15b",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"array\": [3,2,4], \"target\": 6}",
+    "expected_output": "[1,2]",
+    "is_editable": true
+  },
+  {
+    "id": "b1a2c3d4-5e6f-4a7b-8c9d-0123456789ab",
+    "problem_id": "a1b2c3d4-e5f6-4789-abcd-0123456789ab",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "hello",
+    "expected_output": "olleh",
+    "is_editable": true
+  },
+  {
+    "id": "c2d3e4f5-6a7b-4c8d-9e0f-123456789abc",
+    "problem_id": "a1b2c3d4-e5f6-4789-abcd-0123456789ab",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "OpenAI",
+    "expected_output": "IAnepO",
+    "is_editable": true
+  },
+  {
+    "id": "d3e4f5a6-7b8c-4d9e-0f1a-23456789abcd",
+    "problem_id": "b1c2d3e4-f5a6-4789-bcde-123456789abc",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "5",
+    "expected_output": "120",
+    "is_editable": true
+  },
+  {
+    "id": "e4f5a6b7-8c9d-4e0f-1a2b-3456789abcde",
+    "problem_id": "b1c2d3e4-f5a6-4789-bcde-123456789abc",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "0",
+    "expected_output": "1",
+    "is_editable": true
+  },
+  {
+    "id": "f5a6b7c8-9d0e-4f1a-2b3c-456789abcdef",
+    "problem_id": "c1d2e3f4-a5b6-4789-adef-23456789abcd",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"array\": [1,2,3,4,5], \"target\": 3}",
+    "expected_output": "2",
+    "is_editable": true
+  },
+  {
+    "id": "a6b7c8d9-0e1f-4a2b-3c4d-56789abcdef0",
+    "problem_id": "c1d2e3f4-a5b6-4789-adef-23456789abcd",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"array\": [1,2,3,4,5], \"target\": 6}",
+    "expected_output": "-1",
+    "is_editable": true
+  },
+  {
+    "id": "b7c8d9e0-1f2a-4b3c-8d4e-6789abcdef01",
+    "problem_id": "d1e2f3a4-b5c6-4789-8ef0-3456789abcde",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "[\"flower\", \"flow\", \"flight\"]",
+    "expected_output": "fl",
+    "is_editable": true
+  },
+  {
+    "id": "c8d9e0f1-2a3b-4c5d-9e0f-789abcdef012",
+    "problem_id": "d1e2f3a4-b5c6-4789-8ef0-3456789abcde",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "[\"dog\", \"racecar\", \"car\"]",
+    "expected_output": "",
+    "is_editable": true
+  },
+  {
+    "id": "d9e0f1a2-3b4c-4d5e-8f1a-89abcdef0123",
+    "problem_id": "e1f2a3b4-c5d6-4789-8f01-456789abcdef",
+    "test_type": "judge0",
+    "input": "{\"str1\": \"listen\", \"str2\": \"silent\"}",
+    "language_id": 93,
+    "expected_output": "true",
+    "is_editable": true
+  },
+  {
+    "id": "e0f1a2b3-4c5d-4e6f-9a0b-9abcdef01234",
+    "problem_id": "e1f2a3b4-c5d6-4789-8f01-456789abcdef",
+    "test_type": "judge0",
+    "input": "{\"str1\": \"hello\", \"str2\": \"bello\"}",
+    "language_id": 93,
+    "expected_output": "false",
+    "is_editable": true
+  },
+  {
+    "id": "f1a2b3c4-5d6e-4f7a-8b9c-abcdef012345",
+    "problem_id": "f1a2b3c4-d5e6-4789-9012-56789abcdef0",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "()[]{}",
+    "expected_output": "true",
+    "is_editable": true
+  },
+  {
+    "id": "a2b3c4d5-6e7f-4a8b-9c0d-bcdef0123456",
+    "problem_id": "f1a2b3c4-d5e6-4789-9012-56789abcdef0",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "(]",
+    "expected_output": "false",
+    "is_editable": true
+  },
+  {
+    "id": "b3c4d5e6-7f8a-4b9c-0d1e-cdef01234567",
+    "problem_id": "a2b3c4d5-e6f7-4c8d-9abc-0123456789de",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"s\": \"aa\", \"p\": \"a\"}",
+    "expected_output": "false",
+    "is_editable": true
+  },
+  {
+    "id": "c4d5e6f7-8a9b-4c0d-1e2f-def012345678",
+    "problem_id": "a2b3c4d5-e6f7-4c8d-9abc-0123456789de",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"s\": \"aa\", \"p\": \"a*\"}",
+    "expected_output": "true",
+    "is_editable": true
+  },
+  {
+    "id": "d5e6f7a8-9b0c-4d1e-2f3a-ef0123456789",
+    "problem_id": "a2b3c4d5-e6f7-4c8d-9abc-0123456789de",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"s\": \"ab\", \"p\": \".*\"}",
+    "expected_output": "true",
+    "is_editable": true
+  },
+  {
+    "id": "e6f7a8b9-0c1d-4e2f-3a4b-f0123456789a",
+    "problem_id": "7f3c9c88-20a7-4e81-8c4b-5a3c04a7fc3e",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "[1,2,3,4]",
+    "expected_output": "10",
+    "is_editable": true
+  },
+  {
+    "id": "f7a8b9c0-1d2e-4f3a-5b6c-0123456789ab",
+    "problem_id": "7f3c9c88-20a7-4e81-8c4b-5a3c04a7fc3e",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "[-1, -2, 3]",
+    "expected_output": "0",
+    "is_editable": true
+  },
+  {
+    "id": "a8b9c0d1-2e3f-4a5b-6c7d-123456789abc",
+    "problem_id": "5d1e8e56-2e2a-4a7c-9a6f-bd9a93cfb915",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "[1,5,3,9,2]",
+    "expected_output": "9",
+    "is_editable": true
+  },
+  {
+    "id": "b9c0d1e2-3f4a-5b6c-7d8e-23456789abcd",
+    "problem_id": "5d1e8e56-2e2a-4a7c-9a6f-bd9a93cfb915",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "[-10, -5, -3]",
+    "expected_output": "-3",
+    "is_editable": true
+  },
+  {
+    "id": "c0d1e2f3-4a5b-6c7d-8e9f-3456789abcde",
+    "problem_id": "2a8d0c3e-5e7d-47e9-8a5f-fb97c5d95eaa",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"array\": [1,2,3,2,2,4], \"target\": 2}",
+    "expected_output": "3",
+    "is_editable": true
+  },
+  {
+    "id": "d1e2f3a4-5b6c-7d8e-9f0a-456789abcdef",
+    "problem_id": "2a8d0c3e-5e7d-47e9-8a5f-fb97c5d95eaa",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"array\": [5,5,5,5], \"target\": 5}",
+    "expected_output": "4",
+    "is_editable": true
+  },
+  {
+    "id": "e2f3a4b5-6c7d-8e9f-0a1b-56789abcdef0",
+    "problem_id": "c3d8a86f-4bda-47f4-96e3-3b24c3e7e926",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "[1,2,3,4]",
+    "expected_output": "[4,3,2,1]",
+    "is_editable": true
+  },
+  {
+    "id": "f3a4b5c6-7d8e-9f0a-1b2c-6789abcdef01",
+    "problem_id": "c3d8a86f-4bda-47f4-96e3-3b24c3e7e926",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "[\"a\", \"b\", \"c\"]",
+    "expected_output": "[\"c\", \"b\", \"a\"]",
+    "is_editable": true
+  },
+  {
+    "id": "a4b5c6d7-8e9f-0a1b-2c3d-789abcdef012",
+    "problem_id": "9e3f10de-dc4a-44a1-8b17-d22f3e5a4b91",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"array1\": [1,3,5], \"array2\": [2,4,6]}",
+    "expected_output": "[1,2,3,4,5,6]",
+    "is_editable": true
+  },
+  {
+    "id": "b5c6d7e8-9f0a-1b2c-3d4e-89abcdef0123",
+    "problem_id": "9e3f10de-dc4a-44a1-8b17-d22f3e5a4b91",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"array1\": [0,0,1], \"array2\": [0,2,2]}",
+    "expected_output": "[0,0,0,1,2,2]",
+    "is_editable": true
+  },
+  {
+    "id": "c6d7e8f9-0a1b-2c3d-4e5f-9abcdef01234",
+    "problem_id": "e5a8e5d2-7b9c-4f4f-a7a8-36e3a3b1f8c2",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "Hello world",
+    "expected_output": "2",
+    "is_editable": true
+  },
+  {
+    "id": "d7e8f9a0-1b2c-3d4e-5f6a-abcdef012345",
+    "problem_id": "e5a8e5d2-7b9c-4f4f-a7a8-36e3a3b1f8c2",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "This is a test",
+    "expected_output": "4",
+    "is_editable": true
+  },
+  {
+    "id": "e8f9a0b1-2c3d-4e5f-6a7b-bcdef0123456",
+    "problem_id": "1d2a3f4b-5c6d-4e7f-8a9b-0c1d2e3f4b5a",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "0",
+    "expected_output": "32",
+    "is_editable": true
+  },
+  {
+    "id": "f9a0b1c2-3d4e-5f6a-7b8c-cdef01234567",
+    "problem_id": "1d2a3f4b-5c6d-4e7f-8a9b-0c1d2e3f4b5a",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "100",
+    "expected_output": "212",
+    "is_editable": true
+  },
+  {
+    "id": "a0b1c2d3-4e5f-6a7b-8c9d-def012345678",
+    "problem_id": "3b4c5d6e-7f8a-49b0-8c1d-2e3f4a5b6c7d",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "5",
+    "expected_output": "25",
+    "is_editable": true
+  },
+  {
+    "id": "b1c2d3e4-5f6a-7b8c-9d0e-ef0123456789",
+    "problem_id": "3b4c5d6e-7f8a-49b0-8c1d-2e3f4a5b6c7d",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "-3",
+    "expected_output": "9",
+    "is_editable": true
+  },
+  {
+    "id": "c2d3e4f5-6a7b-8c9d-0e1f-0123456789ab",
+    "problem_id": "8c7b6a5d-4e3f-4ba0-b9c8-d7e6f5a4b3c2",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"dividend\": 10, \"divisor\": 3}",
+    "expected_output": "1",
+    "is_editable": true
+  },
+  {
+    "id": "d3e4f5a6-7b8c-9d0e-1f2a-123456789abc",
+    "problem_id": "8c7b6a5d-4e3f-4ba0-b9c8-d7e6f5a4b3c2",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "{\"dividend\": 14, \"divisor\": 5}",
+    "expected_output": "4",
+    "is_editable": true
+  },
+  {
+    "id": "e4f5a6b7-8c9d-0e1f-2a3b-23456789abcd",
+    "problem_id": "f1e2d3c4-b5a6-4789-90ab-cdef12345678",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "hello",
+    "expected_output": "HELLO",
+    "is_editable": true
+  },
+  {
+    "id": "f5a6b7c8-9d0e-1f2a-3b4c-3456789abcde",
+    "problem_id": "f1e2d3c4-b5a6-4789-90ab-cdef12345678",
+    "language_id": 93,
+    "test_type": "judge0",
+    "input": "Test",
+    "expected_output": "TEST",
+    "is_editable": true
   }
 ]

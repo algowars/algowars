@@ -6,6 +6,7 @@ export interface CodeExecutionContext {
     sourceCode: string,
     additionalFiles?: AdditionalTestFile,
     input?: string,
+    expectedOutput?: string,
   ): Promise<any>;
 
   getEngine(): CodeExecutionEngines;

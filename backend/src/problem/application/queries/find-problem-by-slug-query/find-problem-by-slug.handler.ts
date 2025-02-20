@@ -48,6 +48,12 @@ export class FindProblemBySlugHandler
         name: tag.getName(),
       })),
       difficulty: problem.getDifficulty(),
+      tests: problem.getAllowedTests()?.map((test) => ({
+        id: test.getId().toString(),
+        code: test.getCode(),
+        testType: test.getTestType(),
+        input: test.getInput(),
+      })),
     };
   }
 }

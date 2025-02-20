@@ -5,6 +5,7 @@ export interface CodeExecutionRequest {
   getAdditionalFiles(): string | Buffer | undefined;
   getCompileCommand(): string | undefined;
   getExecuteCommand(): string | undefined;
+  getExpectedOutput(): string | undefined;
 }
 
 export class CodeExecutionRequestImplementation
@@ -14,6 +15,7 @@ export class CodeExecutionRequestImplementation
   private readonly languageId: number | string;
   private readonly stdin?: string;
   private readonly additionalFiles?: string | Buffer;
+  private readonly expectedOutput?: string;
   private readonly compileCommand?: string;
   private readonly executeCommand?: string;
 
@@ -22,6 +24,8 @@ export class CodeExecutionRequestImplementation
     languageId: number;
     stdin: string;
     additionalFiles: string;
+    expectedOutput?: string;
+    compileCommand?: string;
   }) {
     Object.assign(this, properties);
   }
@@ -48,6 +52,10 @@ export class CodeExecutionRequestImplementation
 
   getStdin(): string | undefined {
     return this.stdin;
+  }
+
+  getExpectedOutput(): string | undefined {
+    return this.expectedOutput;
   }
 }
 

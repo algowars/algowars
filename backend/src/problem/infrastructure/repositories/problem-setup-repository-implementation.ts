@@ -60,8 +60,11 @@ export class ProblemSetupRepositoryImplementation
       .select(
         't.id as test_id',
         't.code',
+        't.input',
+        't.expected_output',
         't.created_at as test_created_at',
         't.updated_at as test_updated_at',
+        't.test_type',
         'atf.id as additional_test_file_id',
         'atf.file_name as additional_test_file_name',
         'atf.name as additional_test_file_display_name',
@@ -114,9 +117,12 @@ export class ProblemSetupRepositoryImplementation
       return new TestImplementation({
         id: new IdImplementation(test.test_id),
         code: test.code,
+        input: test.input ?? null,
+        expectedOutput: test.expected_output ?? null,
         additionalTestFile,
         createdAt: test.test_created_at,
         updatedAt: test.test_updated_at,
+        testType: test.test_type,
       });
     });
 

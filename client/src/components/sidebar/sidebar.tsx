@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  Dumbbell,
-  Frame,
-  Map,
-  NotepadText,
-  PieChart,
-  Swords,
-} from "lucide-react";
+import { Dumbbell, NotepadText, Swords } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -45,23 +38,6 @@ const data = {
           url: routerConfig.problems.path,
         },
       ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
     },
   ],
   admin: [

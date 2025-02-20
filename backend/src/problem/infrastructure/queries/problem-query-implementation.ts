@@ -26,6 +26,8 @@ import { SubmissionResultImplementation } from 'src/submission/domain/submission
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 import { TagImplementation } from 'src/problem/domain/tag';
 import { ProblemEntity } from '../entities/problem.entity';
+import { TestImplementation } from 'src/problem/domain/test';
+import { TestType } from 'src/problem/domain/test-type';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
@@ -69,6 +71,22 @@ export class ProblemQueryImplementation implements ProblemQuery {
         picture: entity.account_picture,
       });
     }
+
+    // Query tests
+    const testsData = await this.knexConnection(Aliases.TESTS)
+      .select('id', 'code', 'input', 'test_type')
+      .where('problem_id', entity.id);
+
+    const tests = testsData.map(
+      (test) =>
+        new TestImplementation({
+          id: new IdImplementation(test.id),
+          code: test.code ?? null,
+          input: test.input ?? null,
+          testType: test.test_type as TestType,
+        }),
+    );
+
     return new ProblemImplementation({
       id: new IdImplementation(entity.id),
       title: entity.title,
@@ -82,6 +100,7 @@ export class ProblemQueryImplementation implements ProblemQuery {
       createdBy,
       tags: tags,
       difficulty: entity.difficulty,
+      tests,
     });
   }
 
