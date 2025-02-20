@@ -64,8 +64,6 @@ export class CreateSubmissionHandler
       setupAggregate.getLanguage(),
     );
 
-    console.log('RESULTS: ', results);
-
     const submission = await this.createSubmission(
       setupAggregate.getLanguage(),
       command.request.sourceCode,
@@ -123,7 +121,6 @@ export class CreateSubmissionHandler
     problem: Problem,
     tests: Test[],
   ): Promise<Submission> {
-    console.log('RESULTS: ', results);
     const submissionId = await this.submissionRepository.newId();
 
     const submission = this.submissionFactory.create({

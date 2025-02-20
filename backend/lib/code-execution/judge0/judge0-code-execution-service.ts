@@ -105,10 +105,7 @@ export class Judge0CodeExecutionService implements CodeExecutionService {
       }[];
     }>(config);
 
-    console.log('THA DATA: ', data);
-
     return data.submissions.map((sub) => {
-      console.log('SUB: ', sub);
       return new CodeExecutionResponseImplementation({
         token: sub.token,
         stdout: sub.stdout ? this.decode(sub.stdout) : '',

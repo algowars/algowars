@@ -55,8 +55,6 @@ export class SubmissionCreatedEventHandler
 
     const submissionResults = foundSubmission.getResults();
 
-    console.log('FINAL LRESULTS: ', submissionResults);
-
     submissionResults.forEach((submissionResult, index) => {
       submissionResult.setStdout(evaluationResults[index].stdout);
       submissionResult.setStatus(evaluationResults[index].status);

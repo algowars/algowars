@@ -36,7 +36,6 @@ export class JavaScriptJudge0CodeExecutionContext
     input?: string;
     expectedOutput?: string;
   }): Promise<CodeExecutionRequest> {
-    console.log('ADDITIONAL FILES: ', additionalTestFiles);
     const request = {
       sourceCode: sourceCode ? Buffer.from(sourceCode).toString('base64') : '',
       languageId,
@@ -79,7 +78,6 @@ export class JavaScriptJudge0CodeExecutionContext
   async batchExecute(
     codeExecutionRequests: CodeExecutionRequest[],
   ): Promise<CodeExecutionResponse[]> {
-    console.log('CODE EXECUTION REQUESTS: ', codeExecutionRequests);
     try {
       return await this.judge0CodeExecutionService.batchRun(
         codeExecutionRequests,
