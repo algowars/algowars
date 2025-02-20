@@ -8,6 +8,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { ServerHealthBanner } from "@/features/server-health/server-health-banner/server-health-banner";
 import { ComponentProps } from "react";
 
 export interface SidebarLayoutProps extends ComponentProps<typeof Sidebar> {
@@ -30,6 +31,7 @@ export const SidebarLayout = ({
       <SidebarProvider defaultOpen={isOpenedByDefault}>
         <AppSidebar />
         <SidebarInset>
+          <ServerHealthBanner />
           <SidebarMainHeader breadcrumbs={breadcrumbs} />
           {children}
           <SidebarFooter />

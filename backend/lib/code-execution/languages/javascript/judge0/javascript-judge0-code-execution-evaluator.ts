@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  CodeExecutionEvaluationResult,
-  SubmissionResultStatus,
-} from 'lib/code-execution/code-execution-evaluation-result';
+import { CodeExecutionEvaluationResult } from 'lib/code-execution/code-execution-evaluation-result';
 import { CodeExecutionResponse } from 'lib/code-execution/code-execution-service';
 import { Judge0CodeExecutionEvaluator } from 'lib/code-execution/judge0/judge0-code-execution-evaluator';
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
@@ -17,11 +14,14 @@ export class JavaScriptJudge0CodeExecutionEvaluator
     return this.parseUvuLibrary(submissionResult);
   }
 
+  private parseJudge0(submissionResult: CodeExecutionResponse): any {
+    return {};
+  }
+
   private parseUvuLibrary(
     submissionResult: CodeExecutionResponse,
   ): CodeExecutionEvaluationResult {
     const stdout = submissionResult.getStdout();
-    const stderr = submissionResult.getStderr();
 
     // Parse stdout for uvu result information
     const resultLines = stdout?.split('\n') || [];
