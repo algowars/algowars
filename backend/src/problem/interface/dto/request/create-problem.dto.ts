@@ -37,4 +37,12 @@ export class CreateProblemRequest {
   @IsString()
   @IsOptional()
   readonly additionalTestFileId: string;
+
+  @IsString()
+  @IsOptional()
+  readonly input: string;
+
+  @IsString()
+  @IsOptional()
+  readonly expectedOutput: string;
 }

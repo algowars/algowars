@@ -6,10 +6,7 @@ import {
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
 import { Tag } from './tag';
-import { SubmissionType } from './submission-type';
 import { Test } from './test';
-import { TestCase } from './test_case';
-
 export interface ProblemProperties extends BaseDomainProperties {
   title?: string;
   slug?: string;
@@ -18,9 +15,7 @@ export interface ProblemProperties extends BaseDomainProperties {
   createdBy?: Account;
   tags?: Tag[];
   difficulty?: number;
-  submissionType?: SubmissionType;
   tests?: Test[];
-  testCases?: TestCase[];
 }
 
 export interface Problem extends BaseDomainAggregateRoot {
@@ -32,9 +27,7 @@ export interface Problem extends BaseDomainAggregateRoot {
   getTags(): Tag[];
   getDifficulty(): number;
   setDifficulty(newDifficulty: number): void;
-  getSubmissionType(): SubmissionType;
   getAllowedTests(): Test[];
-  getAllowedTestCases(): TestCase[];
 }
 
 export class ProblemImplementation
@@ -48,9 +41,7 @@ export class ProblemImplementation
   private readonly status: ProblemStatus;
   private readonly tags: Tag[];
   private difficulty: number;
-  private readonly submissionType: SubmissionType;
   private readonly tests: Test[];
-  private readonly testCases: TestCase[];
 
   constructor(properties: ProblemProperties) {
     super(properties);
@@ -93,15 +84,7 @@ export class ProblemImplementation
     return this.tags;
   }
 
-  getSubmissionType(): SubmissionType {
-    return this.submissionType;
-  }
-
   getAllowedTests(): Test[] {
     return this.tests;
-  }
-
-  getAllowedTestCases(): TestCase[] {
-    return this.testCases;
   }
 }

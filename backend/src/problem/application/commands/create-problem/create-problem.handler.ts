@@ -25,6 +25,7 @@ import { CodeExecutionEngines } from 'lib/code-execution/code-execution-engines'
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 import { TestImplementation } from 'src/problem/domain/test';
 import { SubmissionResultImplementation } from 'src/submission/domain/submission-result';
+import { TestType } from 'src/problem/domain/test-type';
 
 @CommandHandler(CreateProblemCommand)
 export class CreateProblemHandler
@@ -101,9 +102,6 @@ ${command.createProblemRequest.test}`,
 
     await this.problemRepository.saveAggregate(problem, setups, submission);
 
-    // submission.create();
-    // submission.commit();
-
     problem.commit();
 
     return problem.getId();
@@ -146,6 +144,11 @@ ${command.createProblemRequest.test}`,
     additionalTestFile: AdditionalTestFile,
     createProblemRequest: CreateProblemRequest,
   ): Promise<ProblemSetup> {
+    const testType = this.determineTestType({
+      input: createProblemRequest.input,
+      expectedOutput: createProblemRequest.expectedOutput,
+    });
+
     return new ProblemSetupImplementation({
       problem,
       language,
@@ -154,14 +157,27 @@ ${command.createProblemRequest.test}`,
         new TestImplementation({
           id: new IdImplementation(await this.problemRepository.newId()),
           code: createProblemRequest.test,
+          input: createProblemRequest.input ?? null,
+          expectedOutput: createProblemRequest.expectedOutput ?? null,
           createdAt: new Date(),
           updatedAt: new Date(),
           deletedAt: null,
           version: 0,
           additionalTestFile,
+          testType,
         }),
       ],
     });
+  }
+
+  private determineTestType(test: {
+    input?: string;
+    expectedOutput?: string;
+  }): TestType {
+    if (test.input && test.expectedOutput) {
+      return TestType.JUDGE0;
+    }
+    return TestType.UVU;
   }
 
   private async createSubmission(

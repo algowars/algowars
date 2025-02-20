@@ -4,17 +4,24 @@ import {
   BaseDomainProperties,
 } from 'src/common/entities/base-domain';
 import { AdditionalTestFile } from './additional-test-file';
+import { TestType } from './test-type';
 
 export interface TestProperties extends BaseDomainProperties {
-  code: string;
+  code?: string;
   additionalTestFile?: AdditionalTestFile;
   isEditable?: boolean;
+  input?: string;
+  expectedOutput?: string;
+  testType: TestType;
 }
 
 export interface Test extends BaseDomain {
   getCode(): string;
   getIsEditable(): boolean;
   getAdditionalTestFile(): AdditionalTestFile | null;
+  getInput(): string;
+  getExpectedOutput(): string;
+  getTestType(): TestType;
 }
 
 export class TestImplementation
@@ -24,6 +31,9 @@ export class TestImplementation
   private readonly code: string;
   private readonly additionalTestFile: AdditionalTestFile | null;
   private readonly isEditable: boolean;
+  private readonly input: string;
+  private readonly expectedOutput: string;
+  private readonly testType: TestType;
 
   constructor(properties: TestProperties) {
     super(properties);
@@ -40,5 +50,17 @@ export class TestImplementation
 
   getIsEditable(): boolean {
     return this.isEditable;
+  }
+
+  getInput(): string {
+    return this.input;
+  }
+
+  getExpectedOutput(): string {
+    return this.expectedOutput;
+  }
+
+  getTestType(): TestType {
+    return this.testType;
   }
 }

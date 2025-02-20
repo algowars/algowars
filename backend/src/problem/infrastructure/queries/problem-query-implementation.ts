@@ -26,11 +26,8 @@ import { SubmissionResultImplementation } from 'src/submission/domain/submission
 import { SubmissionStatus } from 'src/submission/domain/submission-status';
 import { TagImplementation } from 'src/problem/domain/tag';
 import { ProblemEntity } from '../entities/problem.entity';
-import { SubmissionType } from 'src/problem/domain/submission-type';
-import { TestCase } from 'src/problem/domain/test_case';
-import { Test } from 'src/problem/domain/test';
 import { TestImplementation } from 'src/problem/domain/test';
-import { TestCaseImplementation } from 'src/problem/domain/test_case';
+import { TestType } from 'src/problem/domain/test-type';
 
 @Injectable()
 export class ProblemQueryImplementation implements ProblemQuery {
@@ -75,8 +72,19 @@ export class ProblemQueryImplementation implements ProblemQuery {
       });
     }
 
-    const { submissionType, testCases, tests } = await this.findTestAggregate(
-      entity.id,
+    // Query tests
+    const testsData = await this.knexConnection(Aliases.TESTS)
+      .select('id', 'code', 'input', 'test_type')
+      .where('problem_id', entity.id);
+
+    const tests = testsData.map(
+      (test) =>
+        new TestImplementation({
+          id: new IdImplementation(test.id),
+          code: test.code ?? null,
+          input: test.input ?? null,
+          testType: test.test_type as TestType,
+        }),
     );
 
     return new ProblemImplementation({
@@ -93,8 +101,6 @@ export class ProblemQueryImplementation implements ProblemQuery {
       tags: tags,
       difficulty: entity.difficulty,
       tests,
-      testCases,
-      submissionType,
     });
   }
 
@@ -309,54 +315,5 @@ export class ProblemQueryImplementation implements ProblemQuery {
       id: entity.id,
       difficulty: entity.difficulty,
     });
-  }
-
-  private async findTestAggregate(problemId: string): Promise<{
-    submissionType: SubmissionType;
-    testCases: TestCase[];
-    tests: Test[];
-  }> {
-    const hasTestCases = await this.knexConnection(Aliases.TEST_CASES)
-      .where('problem_id', problemId)
-      .first();
-
-    if (hasTestCases) {
-      const testCasesData = await this.knexConnection(Aliases.TEST_CASES)
-        .where('problem_id', problemId)
-        .select('*');
-      const testCases = testCasesData.map(
-        (testCase) =>
-          new TestCaseImplementation({
-            id: new IdImplementation(testCase.id),
-            input: testCase.input,
-            output: testCase.output,
-            isEditable: testCase.is_editable,
-            languageId: testCase.language_id,
-            expectedOutput: testCase.expected_output,
-          }),
-      );
-      return {
-        submissionType: SubmissionType.TEST_CASES,
-        testCases: testCases,
-        tests: [],
-      };
-    } else {
-      const testsData = await this.knexConnection(Aliases.TESTS)
-        .where('problem_id', problemId)
-        .select('*');
-      const tests = testsData.map(
-        (test) =>
-          new TestImplementation({
-            id: new IdImplementation(test.id),
-            code: test.code,
-            isEditable: test.is_editable,
-          }),
-      );
-      return {
-        submissionType: SubmissionType.TESTS,
-        tests: tests,
-        testCases: [],
-      };
-    }
   }
 }
