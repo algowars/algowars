@@ -94,6 +94,7 @@ export class AccountQueryImplementation implements AccountQuery {
       deletedAt: entity.deleted_at,
       version: entity.version,
       elos: eloInstances,
+      picture: entity.picture,
     });
   }
 
