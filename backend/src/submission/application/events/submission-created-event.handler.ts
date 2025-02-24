@@ -60,6 +60,8 @@ export class SubmissionCreatedEventHandler
       submissionResult.setStatus(evaluationResults[index].status);
     });
 
+    console.log('FINAL RESULTS: ', submissionResults);
+
     foundSubmission.setResults(submissionResults);
 
     await this.submissionRepository.updateResults(submissionResults);
@@ -79,6 +81,8 @@ export class SubmissionCreatedEventHandler
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       const responses = await codeExecutionService.getBatchSubmissions(tokens);
+
+      console.log('RESPONSES: ', responses);
 
       const completedResponses = responses.filter(
         (response) =>

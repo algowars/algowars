@@ -9,6 +9,7 @@ import {
 import { Judge0CodeExecutionService } from 'lib/code-execution/judge0/judge0-code-execution-service';
 import { S3Service } from 'lib/s3.module';
 import { AdditionalTestFile } from 'src/problem/domain/additional-test-file';
+import { Test } from 'src/problem/domain/test';
 
 @Injectable()
 export class JavaScriptJudge0CodeExecutionContext
@@ -62,6 +63,7 @@ export class JavaScriptJudge0CodeExecutionContext
       languageId: number;
       input?: string;
       expectedOutput: any;
+      test: Test;
     }[],
   ): Promise<CodeExecutionRequest[]> {
     return Promise.all(contexts.map((context) => this.build(context)));
@@ -98,5 +100,39 @@ export class JavaScriptJudge0CodeExecutionContext
     } catch (error) {
       throw new Error('Failed to retrieve additional files from s3');
     }
+  }
+
+  private buildUvuSourceCode({
+    sourceCode,
+    test,
+  }: {
+    sourceCode?: string;
+    additionalFiles?: AdditionalTestFile;
+    languageId: number;
+    input?: string;
+    expectedOutput: any;
+    test: Test;
+  }): string {
+    return `${sourceCode}
+    ${test.getCode()}`;
+  }
+
+  private buildJudge0SourceCode({
+    sourceCode,
+  }: {
+    sourceCode?: string;
+    additionalFiles?: AdditionalTestFile;
+    languageId: number;
+    input?: string;
+    expectedOutput: any;
+    test: Test;
+  }): string {
+    return `
+    ${sourceCode}
+    
+process.stdin.on("data", data => {
+    var array = data.toString().split(",").map(i => Number(i));
+    myFunction(array);
+});`;
   }
 }

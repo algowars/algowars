@@ -101,7 +101,9 @@ export class CreateSubmissionHandler
     language: Language,
   ): Promise<CodeExecutionResponse[]> {
     const contexts = tests.map((test) => ({
-      sourceCode,
+      sourceCode: test.getCode()
+        ? `${sourceCode}\n${test.getCode()}`
+        : sourceCode,
       input: test.getInput(),
       expectedOutput: test.getExpectedOutput(),
       languageId: language.getId().toNumber(),
@@ -109,6 +111,8 @@ export class CreateSubmissionHandler
     }));
 
     const batchRequests = await executionContext.batchBuild(contexts);
+
+    console.log('BATCH REQUESTS: ', batchRequests);
 
     return executionContext.batchExecute(batchRequests);
   }

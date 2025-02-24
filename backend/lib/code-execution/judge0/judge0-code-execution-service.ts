@@ -66,6 +66,7 @@ export class Judge0CodeExecutionService implements CodeExecutionService {
     additional_files?: string | Buffer;
     compile_command?: string;
     execute_command?: string;
+    expected_output?: string;
   } {
     return {
       source_code: request.getSourceCode(),
@@ -74,6 +75,7 @@ export class Judge0CodeExecutionService implements CodeExecutionService {
       additional_files: request.getAdditionalFiles(),
       compile_command: request.getCompileCommand(),
       execute_command: request.getExecuteCommand(),
+      expected_output: request.getExpectedOutput(),
     };
   }
 
