@@ -37,7 +37,7 @@ export const ProblemEditorTestsTab = ({
         ))}
       </nav>
       <div className="editor-content">
-        {currentTest.testType === TestType.UVU ? (
+        {currentTest.testType === TestType.CODE ? (
           <ProblemEditorTestCodeCard key={currentTest.id} test={currentTest} />
         ) : (
           <ProblemEditorTestsInput key={currentTest.id} test={currentTest} />

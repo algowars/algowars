@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CreateSubmissionRequest {
   @IsNumber()
@@ -9,8 +9,4 @@ export class CreateSubmissionRequest {
 
   @IsString()
   readonly sourceCode: string;
-
-  @IsNumber()
-  @IsOptional()
-  readonly additionalTestFileId: number;
 }

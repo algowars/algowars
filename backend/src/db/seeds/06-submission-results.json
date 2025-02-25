@@ -13,7 +13,7 @@
     "submission_id": "c02b2e96-2b9e-4139-b694-90a2c65b92ba",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -32,7 +32,7 @@
     "submission_id": "8861caac-8156-4e64-8a91-912e4a8431f7",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -51,7 +51,7 @@
     "submission_id": "9f61206d-7da6-4094-9639-a06524b192a8",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -70,7 +70,7 @@
     "submission_id": "35a20c46-31bc-452d-be7a-4ea2c471534d",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -89,7 +89,7 @@
     "submission_id": "f0e5d4c3-b2a1-4f6d-8c7b-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -108,7 +108,7 @@
     "submission_id": "aabbccdd-eeff-4a1b-9cde-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -127,7 +127,7 @@
     "submission_id": "11223344-5566-4a77-8b99-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -146,7 +146,7 @@
     "submission_id": "22334455-6677-4a88-abcd-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -165,7 +165,7 @@
     "submission_id": "33445566-7788-4b99-bcde-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -184,7 +184,7 @@
     "submission_id": "44556677-8899-4caa-bdef-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -203,7 +203,7 @@
     "submission_id": "f1234567-89ab-4cde-8f12-3456789abcd0",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -222,7 +222,7 @@
     "submission_id": "c02b2e96-2b9e-4139-b694-90a2c65b92ba",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -241,7 +241,7 @@
     "submission_id": "8861caac-8156-4e64-8a91-912e4a8431f7",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -260,7 +260,7 @@
     "submission_id": "9f61206d-7da6-4094-9639-a06524b192a8",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -279,7 +279,7 @@
     "submission_id": "35a20c46-31bc-452d-be7a-4ea2c471534d",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -298,7 +298,7 @@
     "submission_id": "f0e5d4c3-b2a1-4f6d-8c7b-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -317,7 +317,7 @@
     "submission_id": "aabbccdd-eeff-4a1b-9cde-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -336,7 +336,7 @@
     "submission_id": "11223344-5566-4a77-8b99-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -355,7 +355,7 @@
     "submission_id": "22334455-6677-4a88-abcd-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -374,7 +374,7 @@
     "submission_id": "33445566-7788-4b99-bcde-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -393,7 +393,7 @@
     "submission_id": "44556677-8899-4caa-bdef-0123456789ab",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"
@@ -412,7 +412,7 @@
     "submission_id": "f1234567-89ab-4cde-8f12-3456789abcd0",
     "status": "Accepted",
     "deleted_at": null,
-    "test_type": "judge0",
+    "test_type": "input output",
     "version": 1,
     "created_at": "2024-12-07 05:31:39.5+00",
     "updated_at": "2024-12-07 05:31:39.895575+00"

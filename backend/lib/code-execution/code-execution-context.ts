@@ -4,6 +4,7 @@ import {
   CodeExecutionRequest,
   CodeExecutionResponse,
 } from './code-execution-service';
+import { Test } from 'src/problem/domain/test';
 
 export interface CodeExecutionContext {
   build(context: {
@@ -33,4 +34,6 @@ export interface CodeExecutionContext {
   batchExecute(
     codeExecutionRequests: CodeExecutionRequest[],
   ): Promise<CodeExecutionResponse[]>;
+
+  buildSourceCode(sourceCode: string, test: Test): string;
 }

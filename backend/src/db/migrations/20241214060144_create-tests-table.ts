@@ -34,6 +34,7 @@ export async function up(knex: Knex): Promise<void> {
         enumName: 'test_type_enum',
       })
       .notNullable();
+    table.text('test_runner').nullable().defaultTo('');
     table.text('is_editable').defaultTo(false);
     table.dateTime('deleted_at').nullable().defaultTo(null);
     table.integer('version').defaultTo(0);

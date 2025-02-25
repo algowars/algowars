@@ -1,4 +1,4 @@
 export enum TestType {
-  UVU = 'uvu',
-  JUDGE0 = 'judge0',
+  INPUT_OUTPUT = 'input output',
+  CODE = 'code',
 }

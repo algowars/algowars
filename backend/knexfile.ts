@@ -43,6 +43,20 @@ const config = {
     },
     debug: !!DEBUG,
   },
+  test: {
+    client: 'sqlite3',
+    connection: {
+      filename: ':memory:',
+    },
+    useNullAsDefault: true,
+    migrations: {
+      directory: path.resolve(__dirname, 'src', 'db', 'migrations'),
+    },
+    seeds: {
+      directory: path.resolve(__dirname, 'src', 'db', 'seeds'),
+    },
+    debug: !!DEBUG,
+  },
 };
 
 export default config;

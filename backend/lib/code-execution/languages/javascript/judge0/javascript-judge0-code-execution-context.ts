@@ -10,6 +10,7 @@ import { Judge0CodeExecutionService } from 'lib/code-execution/judge0/judge0-cod
 import { S3Service } from 'lib/s3.module';
 import { AdditionalTestFile } from 'src/problem/domain/additional-test-file';
 import { Test } from 'src/problem/domain/test';
+import { TestType } from 'src/problem/domain/test-type';
 
 @Injectable()
 export class JavaScriptJudge0CodeExecutionContext
@@ -102,15 +103,26 @@ export class JavaScriptJudge0CodeExecutionContext
     }
   }
 
+  public buildSourceCode(sourceCode: string, test: Test): string {
+    switch (test.getTestType()) {
+      case TestType.CODE:
+        return this.buildUvuSourceCode({ sourceCode, test });
+      case TestType.INPUT_OUTPUT:
+        return this.buildJudge0SourceCode({ sourceCode, test });
+      default:
+        throw new Error('Error building source code as test type not found');
+    }
+  }
+
   private buildUvuSourceCode({
     sourceCode,
     test,
   }: {
     sourceCode?: string;
     additionalFiles?: AdditionalTestFile;
-    languageId: number;
+    languageId?: number;
     input?: string;
-    expectedOutput: any;
+    expectedOutput?: string;
     test: Test;
   }): string {
     return `${sourceCode}
@@ -119,20 +131,18 @@ export class JavaScriptJudge0CodeExecutionContext
 
   private buildJudge0SourceCode({
     sourceCode,
+    test,
   }: {
     sourceCode?: string;
     additionalFiles?: AdditionalTestFile;
-    languageId: number;
+    languageId?: number;
     input?: string;
-    expectedOutput: any;
+    expectedOutput?: string;
     test: Test;
   }): string {
     return `
     ${sourceCode}
     
-process.stdin.on("data", data => {
-    var array = data.toString().split(",").map(i => Number(i));
-    myFunction(array);
-});`;
+${test.getTestRunner()}`;
   }
 }

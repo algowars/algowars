@@ -2,6 +2,7 @@ import { SubmissionStatus } from 'src/submission/domain/submission-status';
 
 export interface CodeExecutionRequest {
   getSourceCode(): string;
+  setSourceCode(newSourceCode: string): void;
   getLanguageId(): number | string;
   getStdin(): string | undefined;
   getAdditionalFiles(): string | Buffer | undefined;
@@ -13,7 +14,7 @@ export interface CodeExecutionRequest {
 export class CodeExecutionRequestImplementation
   implements CodeExecutionRequest
 {
-  private readonly sourceCode: string;
+  private sourceCode: string;
   private readonly languageId: number | string;
   private readonly stdin?: string;
   private readonly additionalFiles?: string | Buffer;
@@ -50,6 +51,10 @@ export class CodeExecutionRequestImplementation
 
   getSourceCode(): string {
     return this.sourceCode;
+  }
+
+  setSourceCode(newSourceCode: string): void {
+    this.sourceCode = newSourceCode;
   }
 
   getStdin(): string | undefined {

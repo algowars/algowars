@@ -14,9 +14,9 @@ export class JavaScriptJudge0CodeExecutionEvaluator
     testType: TestType,
   ): CodeExecutionEvaluationResult {
     switch (testType) {
-      case TestType.UVU:
+      case TestType.CODE:
         return this.parseUvuLibrary(submissionResult);
-      case TestType.JUDGE0:
+      case TestType.INPUT_OUTPUT:
         return this.parseJudge0(submissionResult);
       default:
         throw new Error(`Unsupported test type: ${testType}`);

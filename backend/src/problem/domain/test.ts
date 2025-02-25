@@ -13,6 +13,7 @@ export interface TestProperties extends BaseDomainProperties {
   input?: string;
   expectedOutput?: string;
   testType: TestType;
+  testRunner?: string;
 }
 
 export interface Test extends BaseDomain {
@@ -22,6 +23,7 @@ export interface Test extends BaseDomain {
   getInput(): string;
   getExpectedOutput(): string;
   getTestType(): TestType;
+  getTestRunner(): string;
 }
 
 export class TestImplementation
@@ -34,6 +36,7 @@ export class TestImplementation
   private readonly input: string;
   private readonly expectedOutput: string;
   private readonly testType: TestType;
+  private readonly testRunner: string;
 
   constructor(properties: TestProperties) {
     super(properties);
@@ -62,5 +65,9 @@ export class TestImplementation
 
   getTestType(): TestType {
     return this.testType;
+  }
+
+  getTestRunner(): string {
+    return this.testRunner ?? '';
   }
 }
